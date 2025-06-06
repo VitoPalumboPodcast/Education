@@ -829,7 +829,8 @@ document.getElementById("open-sidebar").onclick = () => {
     else if (appState.selectedConnection) apriSidebarConnessione();
     else showToast("Seleziona un nodo o una connessione per modificarla.", "error");
 };
-document.getElementById("close-sidebar").onclick = chiudiSidebar;
+// Ensure the close button reliably triggers the handler
+document.getElementById("close-sidebar").addEventListener("click", chiudiSidebar);
 
 function apriSidebarNodo() {
     sidebar.classList.add("open");
@@ -844,6 +845,7 @@ function apriSidebarConnessione() {
     aggiornaEditorConn();
 }
 function chiudiSidebar() {
+    console.log("chiudiSidebar called");
     sidebar.classList.remove("open");
 }
 
