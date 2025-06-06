@@ -263,6 +263,7 @@ function disegnaNodo(nodo) {
         .on("dblclick", (event) => {
             event.stopPropagation();
             apriDescrizioneNodo(nodo);
+            speakNode(nodo);
         })
         .on("click", (event) => {
             event.stopPropagation();
@@ -849,6 +850,14 @@ function chiudiSidebar() {
     sidebar.classList.remove("open");
 }
 
+function speakNode(nodo) {
+    if (!window.speechSynthesis) return;
+    const utter = new SpeechSynthesisUtterance(`${nodo.text}. ${nodo.description || ""}`);
+    utter.lang = "it-IT";
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+}
+
 function aggiornaEditorNodo() {
     const n = appState.selectedNode; if (!n) return;
     document.getElementById("node-text").value = n.text;
@@ -972,6 +981,7 @@ function apriDescrizioneNodo(nodo) {
                      </small>`;
     overlay.style.display = "flex";
     overlay.focus(); // For Esc key
+    speakNode(nodo);
     
     // No auto-close. User closes with Esc or click.
     // if (nodo.description && window.speechSynthesis) {
@@ -1018,12 +1028,17 @@ function exportPNG() {
             });
         }
     }).then(canvas => {
-        canvas.toBlob(blob => {
-            downloadFile(blob, "mappa-mentale.png", "image/png");
-            hideLoading();
-            appState.searchTerm = currentSearchTerm; // Restore search
-            redrawAllNodes(); // Redraw with search term
-        });
+        const dataUrl = canvas.toDataURL("image/png");
+        document.getElementById("preview-img").src = dataUrl;
+        const preview = document.getElementById("print-preview");
+        preview.style.display = "flex";
+        hideLoading();
+        appState.searchTerm = currentSearchTerm; // Restore search
+        redrawAllNodes();
+        if (confirm("Scaricare l'immagine PNG?")) {
+            canvas.toBlob(blob => downloadFile(blob, "mappa-mentale.png", "image/png"));
+        }
+        preview.style.display = "none";
     }).catch(err => {
         console.error("Errore esportazione PNG:", err);
         showToast("Errore esportazione PNG.", "error");
@@ -1052,17 +1067,23 @@ function exportPDF() {
         }
     }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({
-            orientation: canvas.width > canvas.height ? "landscape" : "portrait",
-            unit: "px",
-            format: [canvas.width, canvas.height]
-        });
-        pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-        pdf.save("mappa-mentale.pdf");
+        document.getElementById("preview-img").src = imgData;
+        const preview = document.getElementById("print-preview");
+        preview.style.display = "flex";
         hideLoading();
         appState.searchTerm = currentSearchTerm;
         redrawAllNodes();
+        if (confirm("Scaricare il PDF?")) {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: canvas.width > canvas.height ? "landscape" : "portrait",
+                unit: "px",
+                format: [canvas.width, canvas.height]
+            });
+            pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+            pdf.save("mappa-mentale.pdf");
+        }
+        preview.style.display = "none";
     }).catch(err => {
         console.error("Errore esportazione PDF:", err);
         showToast("Errore esportazione PDF.", "error");
@@ -1097,6 +1118,10 @@ document.getElementById("btn-import-json").onclick = () => {
 };
 document.getElementById("btn-close-json").onclick = () => {
     document.getElementById("json-modal").style.display = "none";
+};
+document.getElementById("close-preview").onclick = () => {
+    document.getElementById("print-preview").style.display = "none";
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
 };
 
 function salvaMappaFormat() {

@@ -47,6 +47,8 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 .overlay-desc .overlay-desc-box h3{margin-top:0;font-size:1.5em;color:#2c3e50;border-bottom:2px solid #3498db;padding-bottom:10px;}
 .overlay-desc .overlay-desc-box div {max-height: 70vh; overflow-y: auto; margin-top:10px;}
 @keyframes slideIn{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+#print-preview {position:fixed;top:0;left:0;width:100vw;height:100vh;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:950;background:rgba(20,34,50,0.8);backdrop-filter:blur(5px);}
+#print-preview img {max-width:90vw;max-height:80vh;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,0.4);}
 #json-modal { position:fixed;top:0;left:0;right:0;bottom:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);z-index:500; }
 #json-modal-box { background:rgba(255,255,255,0.98);backdrop-filter:blur(15px);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);padding:30px;max-width:90vw;max-height:85vh; display:flex; flex-direction:column; }
 #json-area { width: 500px; max-width:85vw; height: 300px; font-family:'Courier New',monospace; font-size:13px; margin-bottom:15px;border:2px solid #e9ecef;border-radius:8px;padding:15px; flex-grow:1;}
@@ -87,6 +89,7 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 .dark-theme .overlay-desc .overlay-desc-box { background:rgba(35,37,38,0.98); }
 .dark-theme .overlay-desc .overlay-desc-box h3 { color:#ecf0f1; border-bottom-color:#3498db; }
 .dark-theme .overlay-desc .overlay-desc-box div { color:#ccc; }
+.dark-theme #print-preview {background:rgba(20,20,20,0.8);}
 .node-category-indicator { position:absolute; top:5px; right:5px; width:12px; height:12px; border-radius:50%; border:2px solid white; z-index: 10; pointer-events: none;}
 @media(max-width:768px){
   .toolbar { flex-direction:column; align-items:stretch; padding:8px; top:0; max-height: 150px; overflow-y: auto;}
