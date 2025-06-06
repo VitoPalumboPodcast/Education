@@ -1599,8 +1599,11 @@ function layoutRadialeMulti() {
         const children = childrenMap.get(parent.id) || [];
         if (children.length === 0) return;
 
-        const radius = Math.max(100, parent.size * 1.2) + level * 30; // Dynamic radius
         const angleStep = (2 * Math.PI) / children.length;
+        const maxChildSize = Math.max(...children.map(c => c.size));
+        const baseRadius = Math.max(120, parent.size + maxChildSize) + level * 50;
+        const spacingRadius = (maxChildSize / Math.sin(angleStep / 2)) * 1.2;
+        const radius = Math.max(baseRadius, spacingRadius); // prevent overlap
         let startAngle = -Math.PI / 2; // Start at the top
 
         // Avoid overlap with parent's parent if possible
