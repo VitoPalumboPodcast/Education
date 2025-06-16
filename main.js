@@ -125,6 +125,37 @@ function hideLoading() {
     loadingIndicator.classList.remove("show");
 }
 
+function calcolaLineeTesto(nodo) {
+    const charWidth = nodo.textSize * 0.6;
+    while (true) {
+        const maxCharsPerLine = Math.floor((nodo.size * 1.4 * 0.8) / charWidth);
+        const words = (nodo.text || "").split(/\s+/);
+        let line = "";
+        const lines = [];
+        for (let word of words) {
+            if ((line + word).length > maxCharsPerLine && line) {
+                lines.push(line.trim());
+                line = word + " ";
+            } else {
+                line += word + " ";
+            }
+        }
+        if (line.trim()) lines.push(line.trim());
+
+        const lineHeight = nodo.textSize + 2;
+        const requiredHeight = nodo.iconSize + lineHeight * lines.length + 10;
+        const maxLineLength = Math.max(...lines.map(l => l.length), 0);
+        const requiredWidth = (maxLineLength * charWidth) / 0.8;
+        const requiredSize = Math.max(nodo.size, requiredHeight, requiredWidth / 1.4);
+
+        if (requiredSize > nodo.size + 1) {
+            nodo.size = requiredSize;
+        } else {
+            return { lines, lineHeight };
+        }
+    }
+}
+
 function saveToHistory() {
     const state = {
         nodes: JSON.parse(JSON.stringify(appState.nodes)), // Deep clone
@@ -313,6 +344,8 @@ function disegnaNodo(nodo) {
         })
     );
     
+    const { lines, lineHeight } = calcolaLineeTesto(nodo);
+
     // SHAPE
     let shapeElement;
     const strokeColor = CONFIG.colors.priority[nodo.priority] || "#2c3e50";
@@ -357,7 +390,7 @@ function disegnaNodo(nodo) {
         .style("pointer-events", "none")
         .html(getIconSVG(nodo.icon, nodo.iconSize, nodo.textColor));
     
-    // TESTO (max 2 lines, improved wrapping)
+    // TESTO con wrapping automatico
     const textYOffset = nodo.iconSize / 1.5 + (nodo.shape === 'circle' || nodo.shape === 'hex' ? 5 : 0); // Adjust Y for text
     const textElement = g.append("text")
         .attr("class", "node-text")
@@ -366,32 +399,12 @@ function disegnaNodo(nodo) {
         .attr("fill", nodo.textColor)
         .style("pointer-events", "none");
 
-    const words = (nodo.text || "").split(/\s+/);
-    let line = "";
-    let tspan1 = textElement.append("tspan").attr("x", 0).attr("dy", textYOffset);
-    let tspan2;
-    const maxCharsPerLine = Math.floor((nodo.size * 1.4 * 0.8) / (nodo.textSize * 0.6)); // Approx chars
-
-    for (let word of words) {
-        if ((line + word).length > maxCharsPerLine) {
-            tspan1.text(line.trim());
-            if (!tspan2) {
-                tspan2 = textElement.append("tspan").attr("x", 0).attr("dy", `${nodo.textSize + 2}px`);
-                line = word + " ";
-            } else { // third line or more, truncate
-                tspan2.text(tspan2.text() + "..."); // indicate truncation
-                line = ""; // stop adding words
-                break;
-            }
-        } else {
-            line += word + " ";
-        }
-    }
-    if (line) { // Remaining text
-      if (tspan2 && tspan2.text()) tspan2.text(line.trim());
-      else tspan1.text(line.trim());
-    }
-    if(tspan2 && tspan2.text().length === 0) tspan2.remove();
+    lines.forEach((ln, idx) => {
+        textElement.append("tspan")
+            .attr("x", 0)
+            .attr("dy", idx === 0 ? textYOffset : lineHeight)
+            .text(ln);
+    });
 
 
     // CATEGORY INDICATOR (small dot)
