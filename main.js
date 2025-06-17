@@ -382,16 +382,17 @@ function disegnaNodo(nodo) {
                 .attr("stroke-width", strokeWidth);
 
     // ICONA
+    const shapeOffset = nodo.shape === 'circle' || nodo.shape === 'hex' ? 5 : 0;
     g.append("foreignObject")
         .attr("x", -nodo.iconSize / 2)
-        .attr("y", -nodo.size / 2.2 + (nodo.shape === 'circle' || nodo.shape === 'hex' ? 5 : 0) ) // Adjust Y for icon based on shape
+        .attr("y", -nodo.iconSize / 2 - shapeOffset)
         .attr("width", nodo.iconSize)
-        .attr("height", nodo.iconSize + 8) // Extra space for potential descenders
+        .attr("height", nodo.iconSize)
         .style("pointer-events", "none")
         .html(getIconSVG(nodo.icon, nodo.iconSize, nodo.textColor));
     
     // TESTO con wrapping automatico
-    const textYOffset = nodo.iconSize / 1.5 + (nodo.shape === 'circle' || nodo.shape === 'hex' ? 5 : 0); // Adjust Y for text
+    const textYOffset = nodo.iconSize / 2 + 4 + shapeOffset; // Keep text close to icon
     const textElement = g.append("text")
         .attr("class", "node-text")
         .attr("font-size", nodo.textSize)
