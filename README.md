@@ -9,6 +9,7 @@ This single page application runs entirely in the browser and lets you create no
 ## Features
 
 - Add, remove and edit nodes with titles, descriptions, tags and icons
+- Choose icon color independently from text color
 - Connect nodes with directional arrows
 - Radial, grid, physics and hierarchical layouts
 - Zoom, pan and fit to screen
