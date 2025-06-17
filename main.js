@@ -3,6 +3,7 @@ const CONFIG = {
     colors: {
         nodes: ["#3498db","#e67e22","#2ecc71","#e74c3c","#9b59b6","#f1c40f","#34495e","#8e44ad","#16a085","#d35400"],
         text: ["#ffffff","#2c3e50","#34495e","#7f8c8d"],
+        icons: ["#ffffff","#2c3e50","#34495e","#f1c40f","#e74c3c","#3498db"],
         connections: ["#34495e","#9b59b6","#e67e22","#2ecc71","#e74c3c","#c0392b","#3498db","#f39c12"],
         categories: {
             idea: "#f1c40f", // Giallo
@@ -245,6 +246,7 @@ function creaNodo(x, y, testo = "Nuovo nodo", descr = "", parentId = null) {
         category: "default",
         backgroundColor: CONFIG.colors.nodes[Math.floor(Math.random() * CONFIG.colors.nodes.length)],
         textColor: CONFIG.colors.text[0], // Default white
+        iconColor: CONFIG.colors.icons[0],
         icon: CONFIG.icons[Math.floor(Math.random() * CONFIG.icons.length)],
         size: 90,
         textSize: 16,
@@ -389,7 +391,7 @@ function disegnaNodo(nodo) {
         .attr("width", nodo.iconSize)
         .attr("height", nodo.iconSize)
         .style("pointer-events", "none")
-        .html(getIconSVG(nodo.icon, nodo.iconSize, nodo.textColor));
+        .html(getIconSVG(nodo.icon, nodo.iconSize, nodo.iconColor));
     
     // TESTO con wrapping automatico
     const textYOffset = nodo.iconSize / 2 + 4 + shapeOffset; // Keep text close to icon
@@ -890,6 +892,7 @@ function aggiornaEditorNodo() {
     popolaColorPicker("node-bg-colors", CONFIG.colors.nodes, n.backgroundColor, (c) => { n.backgroundColor = c; aggiornaNodo(n); saveToHistory(); });
     popolaColorPicker("node-text-colors", CONFIG.colors.text, n.textColor, (c) => { n.textColor = c; aggiornaNodo(n); saveToHistory(); });
     popolaIconPicker("node-icon-picker", CONFIG.icons, n.icon, (icon) => { n.icon = icon; aggiornaNodo(n); saveToHistory(); });
+    popolaColorPicker("node-icon-colors", CONFIG.colors.icons, n.iconColor || n.textColor, (c) => { n.iconColor = c; aggiornaNodo(n); saveToHistory(); });
 }
 
 function aggiornaEditorConn() {
@@ -1180,6 +1183,7 @@ function caricaMappa(data) {
         newNode.category = newNode.category || "default";
         newNode.priority = newNode.priority || "medium";
         newNode.iconSize = newNode.iconSize || 26;
+        newNode.iconColor = newNode.iconColor || newNode.textColor || CONFIG.colors.icons[0];
         newNode.createdAt = newNode.createdAt || new Date().toISOString();
         newNode.updatedAt = newNode.updatedAt || new Date().toISOString();
         appState.nodes.push(newNode);
@@ -1471,9 +1475,10 @@ function toggleTheme() {
     document.body.classList.toggle("dark-theme", appState.isDarkTheme);
     localStorage.setItem("mindMapTheme", appState.isDarkTheme ? "dark" : "light");
     
-    // Update icon picker icon colors
+    // Update pickers with theme-dependent previews
     if (appState.selectedNode) { // If sidebar is open and showing icons
         popolaIconPicker("node-icon-picker", CONFIG.icons, appState.selectedNode.icon, (icon) => { appState.selectedNode.icon = icon; aggiornaNodo(appState.selectedNode); saveToHistory(); });
+        popolaColorPicker("node-icon-colors", CONFIG.colors.icons, appState.selectedNode.iconColor || appState.selectedNode.textColor, (c) => { appState.selectedNode.iconColor = c; aggiornaNodo(appState.selectedNode); saveToHistory(); });
     }
     redrawAll(); // Redraw for theme-dependent colors in nodes/connections
     showToast(`Tema ${appState.isDarkTheme ? "Scuro" : "Chiaro"} attivato`, "success");
