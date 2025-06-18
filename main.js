@@ -54,17 +54,37 @@ const ICON_SVGS = {
   "fas fa-brain": `<svg viewBox="0 0 576 512"><path d="M288 0C196.5 0 128 32.7 128 96c0 28.7 16.2 56.5 30.3 76.9C111.8 199.6 64 258.7 64 320c0 79.5 100.5 144 224 144s224-64.5 224-144c0-61.3-47.8-120.4-102.3-147.1C331.8 152.5 348 124.7 348 96c0-63.3-68.5-96-160-96zm160 336c0 17.7-14.3 32-32 32H256c-17.7 0-32-14.3-32-32V272h160v64zm48-160c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64s28.7-64 64-64h128c35.3 0 64 28.7 64 64z"/></svg>`,
   "fas fa-book": `<svg viewBox="0 0 448 512"><path d="M448 32H0v448h448V32zM192 416H64V128h128v288zm192 0H256V128h128v288z"/></svg>`,
   "fas fa-users": `<svg viewBox="0 0 640 512"><path d="M192 256c61.9 0 112-50.1 112-112S253.9 32 192 32 80 82.1 80 144s50.1 112 112 112zm76.8 32h-8.3c-20.8 10-43.9 16-68.5 16s-47.6-6-68.5-16h-8.3C51.6 288 0 339.6 0 403.2V432c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48v-28.8c0-63.6-51.6-115.2-115.2-115.2zM480 256c53 0 96-43 96-96s-43-96-96-96-96 43-96 96 43 96 96 96zm48 32h-3.8c-13.9 4.8-28.6 8-44.2 8s-30.3-3.2-44.2-8H432c-20.4 0-38.5 5.9-53.7 15.6C364 325.2 352 349.1 352 374.4V432c0 17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32v-57.6c0-35.7-20.8-67.3-51.1-82.9-.1-.1-.2-.1-.2-.2z"/></svg>`,
-  // Add more SVG paths here for other icons in CONFIG.icons for better export quality
+  "fas fa-heart": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M256 464l-60-56C84 320 16 248 16 168 16 96 80 32 152 32c38 0 74 18 104 47 30-29 66-47 104-47 72 0 136 64 136 136 0 80-68 152-180 240l-60 56z"/></svg>`,
+  "fas fa-globe": `<svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="208" fill="currentColor"/></svg>`,
+  "fas fa-comments": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M32 224h160v80H96L32 384zM480 96H192v160h160l96 80V96z"/></svg>`,
+  "fas fa-graduation-cap": `<svg viewBox="0 0 640 512"><path fill="currentColor" d="M320 32L0 160l320 128 320-128L320 32zm0 192l-192-76v92c0 62 86 112 192 112s192-50 192-112v-92l-192 76z"/></svg>`,
+  "fas fa-cube": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M256 32L32 128v256l224 96 224-96V128L256 32zm0 64l160 64v160L256 384 96 320V160l160-64z"/></svg>`,
+  "fas fa-leaf": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M448 64C256 64 64 256 64 256s96 160 256 160c96 0 160-64 160-160V64z"/></svg>`,
+  "fas fa-music": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M448 32L176 96v256a64 64 0 1 0 32 55V180l208-52v170a64 64 0 1 0 32 55V32z"/></svg>`,
+  "fas fa-flask": `<svg viewBox="0 0 448 512"><path fill="currentColor" d="M144 32h160v32l-48 96v160a80 80 0 1 1-64 0V160l-48-96V32z"/></svg>`,
+  "fas fa-rocket": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M240 0L96 96v128L0 288l96 32 32 96 64-96h128l96-144L240 0z"/></svg>`,
+  "fas fa-home": `<svg viewBox="0 0 576 512"><path fill="currentColor" d="M288 32L32 256h96v192h128V320h64v128h128V256h96L288 32z"/></svg>`,
+  "fas fa-car": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M64 256l48-96h288l48 96v128H64V256zm48 128a32 32 0 1 0 0-64 32 32 0 0 0 0 64zm288 0a32 32 0 1 0 0-64 32 32 0 0 0 0 64z"/></svg>`,
+  "fas fa-phone": `<svg viewBox="0 0 384 512"><path fill="currentColor" d="M320 0H64a32 32 0 0 0-32 32v448a32 32 0 0 0 32 32h256a32 32 0 0 0 32-32V32a32 32 0 0 0-32-32zM192 472a24 24 0 1 1 0-48 24 24 0 0 1 0 48z"/></svg>`,
+  "fas fa-envelope": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M32 96h448v320H32V96zm224 160L64 128h384L256 256z"/></svg>`,
+  "fas fa-camera": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M96 128l48-48h224l48 48h48v256H48V128h48zm160 64a96 96 0 1 0 0 192 96 96 0 0 0 0-192z"/></svg>`,
+  "fas fa-gamepad": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M96 192l-64 96v64h64l64-64h192l64 64h64v-64l-64-96H96zm64 32h64v64h-64v-64zm192 0h32v32h-32v-32z"/></svg>`,
+  "fas fa-gift": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M32 160h192V96h-48a48 48 0 0 1 0-96 48 48 0 0 1 48 48h64a48 48 0 0 1 48-48 48 48 0 0 1 0 96h-48v64h192v320H32V160zm96 96v64h256v-64H128z"/></svg>`,
+  "fas fa-key": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M336 0a144 144 0 1 0 96 248h48v64h-64v64h-64v64h-96v-64H96V256a144 144 0 0 0 240-256z"/></svg>`,
+  "fas fa-lock": `<svg viewBox="0 0 448 512"><path fill="currentColor" d="M352 192h-32v-56a96 96 0 0 0-192 0v56h-32a32 32 0 0 0-32 32v224a32 32 0 0 0 32 32h256a32 32 0 0 0 32-32V224a32 32 0 0 0-32-32zM224 336a32 32 0 1 1 0-64 32 32 0 0 1 0 64z"/></svg>`,
+  "fas fa-magic": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M96 416l320-320-32-32-320 320v32h32zm256-96l64 64-32 32-64-64 32-32z"/></svg>`,
+  "fas fa-flag": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M64 32v448h64V320h320L416 32H64z"/></svg>`,
+  "fas fa-cog": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M256 176a80 80 0 1 0 0 160 80 80 0 0 0 0-160zm224 48h-48a176 176 0 0 0-20-80l34-34-34-34-34 34a176 176 0 0 0-80-20v-48h-64v48a176 176 0 0 0-80 20l-34-34-34 34 34 34a176 176 0 0 0-20 80h-48v64h48a176 176 0 0 0 20 80l-34 34 34 34 34-34a176 176 0 0 0 80 20v48h64v-48a176 176 0 0 0 80-20l34 34 34-34-34-34a176 176 0 0 0 20-80h48z"/></svg>`,
+  "fas fa-briefcase": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M128 128V96a64 64 0 0 1 64-64h128a64 64 0 0 1 64 64v32h96v256H32V128h96zm64 0h128V96H192v32z"/></svg>`,
+  "fas fa-chart-line": `<svg viewBox="0 0 512 512"><path fill="currentColor" d="M32 448v32h448v-32H32zm64-96l96-96 64 64 160-160v96h32V128h-128v32h64L256 320l-64-64-128 128h32z"/></svg>`
+  // Additional icons ensure canvas exports always use SVG
 };
 function getIconSVG(iconClass, size, color) {
     const svgData = ICON_SVGS[iconClass];
-    if (svgData) {
-        let svgHtml = svgData.replace(/currentColor/g, color);
-        svgHtml = svgHtml.replace(/<svg /, `<svg width="${size}" height="${size}" `);
-        return `<div style="width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;">${svgHtml}</div>`;
-    }
-    // Fallback to Font Awesome class if SVG not found (won't export to canvas well)
-    return `<div style="width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;font-size:${size*0.8}px;color:${color};"><i class="${iconClass}"></i></div>`;
+    if (!svgData) return "";
+    let svgHtml = svgData.replace(/currentColor/g, color);
+    svgHtml = svgHtml.replace(/<svg /, `<svg width="${size}" height="${size}" `);
+    return `<div style="width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;">${svgHtml}</div>`;
 }
 
 
