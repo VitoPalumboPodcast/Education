@@ -492,6 +492,7 @@ function creaConnessione(sourceNode, targetNode, label = "") {
         source: sourceNode,
         target: targetNode,
         label,
+        labelSize: 12,
         color: CONFIG.colors.connections[Math.floor(Math.random() * CONFIG.colors.connections.length)],
         arrow: "forward",
         style: "solid" // solid, dashed, dotted
@@ -585,6 +586,7 @@ function disegnaConnessione(conn) {
             .attr("x", mx)
             .attr("y", my - 7)
             .attr("text-anchor", "middle")
+            .style("font-size", (conn.labelSize || 12) + "px")
             .text(conn.label);
     }
     if (appState.selectedConnection && appState.selectedConnection.id === conn.id) {
@@ -927,6 +929,8 @@ function aggiornaEditorConn() {
     document.getElementById("connection-label").value = c.label || "";
     document.getElementById("connection-arrow").value = c.arrow || "forward";
     document.getElementById("connection-style").value = c.style || "solid";
+    document.getElementById("connection-label-size").value = c.labelSize || 12;
+    document.getElementById("connection-label-size-value").textContent = (c.labelSize || 12) + "px";
     popolaColorPicker("connection-colors", CONFIG.colors.connections, c.color, (col) => { c.color = col; aggiornaConnessioni(); saveToHistory(); });
 }
 
@@ -967,6 +971,7 @@ document.getElementById("node-shape").onchange = e => { if(appState.selectedNode
 
 // Connection editor inputs
 handleSidebarInput("connection-label", "label", false, false, aggiornaConnessioni);
+handleSidebarInput("connection-label-size", "labelSize", true, false, aggiornaConnessioni);
 document.getElementById("connection-arrow").onchange = e => { if(appState.selectedConnection) { appState.selectedConnection.arrow = e.target.value; aggiornaConnessioni(); saveToHistory(); }};
 document.getElementById("connection-style").onchange = e => { if(appState.selectedConnection) { appState.selectedConnection.style = e.target.value; aggiornaConnessioni(); saveToHistory(); }};
 
@@ -1224,6 +1229,7 @@ function caricaMappa(data) {
             if (sourceNode && targetNode) {
                 const newConn = { ...connData, source: sourceNode, target: targetNode };
                 newConn.style = newConn.style || "solid";
+                newConn.labelSize = newConn.labelSize || 12;
                 appState.connections.push(newConn);
             } else {
                 console.warn("Impossibile trovare nodi per la connessione:", connData);
