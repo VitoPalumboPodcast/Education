@@ -368,6 +368,12 @@ function disegnaNodo(nodo) {
     
     const { lines, lineHeight } = calcolaLineeTesto(nodo);
 
+    // Dynamically space icon and text based on current sizes
+    const totalTextHeight = lines.length * lineHeight;
+    const gap = Math.max(4, nodo.size * 0.05);
+    const totalHeight = nodo.iconSize + totalTextHeight + gap;
+    const offset = (nodo.size - totalHeight) / 2;
+
     // SHAPE
     let shapeElement;
     const strokeColor = CONFIG.colors.priority[nodo.priority] || "#2c3e50";
@@ -407,14 +413,14 @@ function disegnaNodo(nodo) {
     const shapeOffset = nodo.shape === 'circle' || nodo.shape === 'hex' ? 5 : 0;
     g.append("foreignObject")
         .attr("x", -nodo.iconSize / 2)
-        .attr("y", -nodo.iconSize / 2 - shapeOffset)
+        .attr("y", -nodo.size / 2 + offset - shapeOffset)
         .attr("width", nodo.iconSize)
         .attr("height", nodo.iconSize)
         .style("pointer-events", "none")
         .html(getIconSVG(nodo.icon, nodo.iconSize, nodo.iconColor));
-    
+
     // TESTO con wrapping automatico
-    const textYOffset = nodo.iconSize / 2 + 4 + shapeOffset; // Keep text close to icon
+    const textYOffset = -nodo.size / 2 + offset + nodo.iconSize + gap + shapeOffset;
     const textElement = g.append("text")
         .attr("class", "node-text")
         .attr("font-size", nodo.textSize)
