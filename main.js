@@ -164,10 +164,12 @@ function calcolaLineeTesto(nodo) {
         if (line.trim()) lines.push(line.trim());
 
         const lineHeight = nodo.textSize + 2;
-        const requiredHeight = nodo.iconSize + lineHeight * lines.length + 10;
+        const gapCalc = Math.max(8, nodo.iconSize * 0.2);
+        const textHeight = lineHeight * lines.length;
+        const halfHeightNeeded = Math.max(nodo.iconSize, gapCalc + textHeight);
         const maxLineLength = Math.max(...lines.map(l => l.length), 0);
         const requiredWidth = (maxLineLength * charWidth) / 0.8;
-        const requiredSize = Math.max(nodo.size, requiredHeight, requiredWidth / 1.4);
+        const requiredSize = Math.max(nodo.size, 2 * halfHeightNeeded + 10, requiredWidth / 1.4);
 
         if (requiredSize > nodo.size + 1) {
             nodo.size = requiredSize;
@@ -368,12 +370,9 @@ function disegnaNodo(nodo) {
     
     const { lines, lineHeight } = calcolaLineeTesto(nodo);
 
-    // Dynamically space icon and text based on current sizes
-    const totalTextHeight = lines.length * lineHeight;
-    // use icon size so large icons get more space
+    // Baseline between icon and text
     const gap = Math.max(8, nodo.iconSize * 0.2);
-    const totalHeight = nodo.iconSize + totalTextHeight + gap;
-    const offset = (nodo.size - totalHeight) / 2;
+    const baseline = 0;
 
     // SHAPE
     let shapeElement;
@@ -412,16 +411,17 @@ function disegnaNodo(nodo) {
 
     // ICONA
     const shapeOffset = nodo.shape === 'circle' || nodo.shape === 'hex' ? 5 : 0;
+    const iconBottom = baseline - shapeOffset;
     g.append("foreignObject")
         .attr("x", -nodo.iconSize / 2)
-        .attr("y", -nodo.size / 2 + offset - shapeOffset)
+        .attr("y", iconBottom - nodo.iconSize)
         .attr("width", nodo.iconSize)
         .attr("height", nodo.iconSize)
         .style("pointer-events", "none")
         .html(getIconSVG(nodo.icon, nodo.iconSize, nodo.iconColor));
 
     // TESTO con wrapping automatico
-    const textYOffset = -nodo.size / 2 + offset + nodo.iconSize + gap + shapeOffset;
+    const textYOffset = baseline + gap + shapeOffset;
     const textElement = g.append("text")
         .attr("class", "node-text")
         .attr("font-size", nodo.textSize)
