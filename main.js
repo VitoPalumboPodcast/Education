@@ -370,7 +370,8 @@ function disegnaNodo(nodo) {
 
     // Dynamically space icon and text based on current sizes
     const totalTextHeight = lines.length * lineHeight;
-    const gap = Math.max(4, nodo.size * 0.05);
+    // use icon size so large icons get more space
+    const gap = Math.max(8, nodo.iconSize * 0.2);
     const totalHeight = nodo.iconSize + totalTextHeight + gap;
     const offset = (nodo.size - totalHeight) / 2;
 
