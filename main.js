@@ -112,6 +112,7 @@ const svgElem = document.getElementById("mindmap-svg");
 const svg = d3.select(svgElem);
 const nodesGroup = svg.select("#nodes-group");
 const connectionsGroup = svg.select("#connections-group");
+const defs = svg.select('defs');
 const sidebar = document.getElementById("sidebar");
 const nodeEditor = document.getElementById("node-editor");
 const connEditor = document.getElementById("connection-editor");
@@ -508,6 +509,8 @@ function rimuoviConnessione(conn) {
     if (!conn) return;
     appState.connections = appState.connections.filter(c => c.id !== conn.id);
     d3.select("#" + conn.id).remove();
+    defs.select(`#arrowhead-${conn.id}`).remove();
+    defs.select(`#arrowhead-reverse-${conn.id}`).remove();
     if(appState.selectedConnection && appState.selectedConnection.id === conn.id) {
         appState.selectedConnection = null;
         chiudiSidebar();
@@ -524,6 +527,33 @@ function disegnaConnessione(conn) {
 
     let g = connectionsGroup.select("#" + conn.id);
     if (!g.empty()) g.remove();
+
+    // Remove existing markers for this connection if redrawing
+    defs.select(`#arrowhead-${conn.id}`).remove();
+    defs.select(`#arrowhead-reverse-${conn.id}`).remove();
+
+    // Create dedicated arrow markers for this connection
+    const markerForward = defs.append('marker')
+        .attr('id', `arrowhead-${conn.id}`)
+        .attr('markerWidth', 10)
+        .attr('markerHeight', 7)
+        .attr('refX', 9)
+        .attr('refY', 3.5)
+        .attr('orient', 'auto');
+    markerForward.append('polygon')
+        .attr('points', '0 0, 10 3.5, 0 7')
+        .attr('fill', conn.color);
+
+    const markerBackward = defs.append('marker')
+        .attr('id', `arrowhead-reverse-${conn.id}`)
+        .attr('markerWidth', 10)
+        .attr('markerHeight', 7)
+        .attr('refX', 1)
+        .attr('refY', 3.5)
+        .attr('orient', 'auto');
+    markerBackward.append('polygon')
+        .attr('points', '10 0, 0 3.5, 10 7')
+        .attr('fill', conn.color);
 
     g = connectionsGroup.append("g")
         .attr("class", "connection-group")
@@ -560,9 +590,12 @@ function disegnaConnessione(conn) {
     const p2y = ty - dy * r2 / len;
     
     let markerEnd = "", markerStart = "";
-    if (conn.arrow === "forward") markerEnd = "url(#arrowhead)";
-    if (conn.arrow === "backward") markerStart = "url(#arrowhead-reverse)";
-    if (conn.arrow === "both") { markerEnd = "url(#arrowhead)"; markerStart = "url(#arrowhead-reverse)"; }
+    if (conn.arrow === "forward") markerEnd = `url(#arrowhead-${conn.id})`;
+    if (conn.arrow === "backward") markerStart = `url(#arrowhead-reverse-${conn.id})`;
+    if (conn.arrow === "both") {
+        markerEnd = `url(#arrowhead-${conn.id})`;
+        markerStart = `url(#arrowhead-reverse-${conn.id})`;
+    }
 
     const line = g.append("line")
         .attr("class", "connection")
@@ -575,9 +608,6 @@ function disegnaConnessione(conn) {
     // Style for dashed/dotted lines
     if (conn.style === "dashed") line.attr("stroke-dasharray", "8,4");
     else if (conn.style === "dotted") line.attr("stroke-dasharray", "2,3");
-
-    // Set fill for arrowheads based on connection color
-    svg.selectAll("#arrowhead polygon, #arrowhead-reverse polygon").attr("fill", conn.color);
 
     if (conn.label) {
         const mx = (p1x + p2x) / 2, my = (p1y + p2y) / 2;
