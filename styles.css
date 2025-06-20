@@ -22,6 +22,7 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 .node-icon { pointer-events:none; }
 .connection { stroke:#34495e; stroke-width:2.5; transition: stroke 0.2s, stroke-width 0.2s; }
 .connection.selected { stroke:#3498db; stroke-width:3.5; }
+.connection-hit { stroke: transparent; stroke-width:10; pointer-events: stroke; }
 .connection-label { font-size:12px; fill:#2c3e50; font-weight:500; user-select:none; pointer-events:none; }
 .sidebar { position:fixed;right:-380px;top:75px;width:380px;height:calc(100vh - 75px);background:rgba(255,255,255,0.98);backdrop-filter:blur(15px);box-shadow:-4px 0 20px rgba(0,0,0,0.15);transition:right .35s;z-index:200;padding:20px;overflow-y:auto;border-radius:12px 0 0 0;}
 .sidebar.open {right:0;}

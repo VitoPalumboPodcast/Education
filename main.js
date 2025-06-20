@@ -563,6 +563,12 @@ function disegnaConnessione(conn) {
     if (conn.arrow === "backward") markerStart = "url(#arrowhead-reverse)";
     if (conn.arrow === "both") { markerEnd = "url(#arrowhead)"; markerStart = "url(#arrowhead-reverse)"; }
 
+    // Invisible thicker line for easier hit detection
+    g.append("line")
+        .attr("class", "connection-hit")
+        .attr("x1", p1x).attr("y1", p1y)
+        .attr("x2", p2x).attr("y2", p2y);
+
     const line = g.append("line")
         .attr("class", "connection")
         .attr("x1", p1x).attr("y1", p1y)
