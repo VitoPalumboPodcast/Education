@@ -18,6 +18,7 @@ This single page application runs entirely in the browser and lets you create no
 - Import/export JSON
 - Export map as PNG or PDF
 - Save to local storage
+- Icon/text spacing now scales with icon size to avoid overlap
 
 ## Keyboard Shortcuts
 
