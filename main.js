@@ -332,7 +332,8 @@ function disegnaNodo(nodo) {
         .style("cursor", "pointer")
         .on("dblclick", (event) => {
             event.stopPropagation();
-            apriDescrizioneNodo(nodo);
+            selezionaNodo(nodo);
+            apriSidebarNodo();
             speakNode(nodo);
         })
         .on("click", (event) => {
@@ -545,7 +546,6 @@ function selezionaNodo(nodo) {
     appState.selectedNode = nodo;
     appState.selectedConnection = null;
     evidenziaSelezione();
-    apriSidebarNodo();
 }
 
 
