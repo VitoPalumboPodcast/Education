@@ -985,7 +985,7 @@ document.getElementById("open-sidebar").onclick = () => {
     else showToast("Seleziona un nodo o una connessione per modificarla.", "error");
 };
 // Ensure the close button reliably triggers the handler
-document.getElementById("close-sidebar").addEventListener("click", chiudiSidebar);
+document.getElementById("close-sidebar").addEventListener("click", () => chiudiSidebar(true));
 
 function apriSidebarNodo() {
     sidebar.classList.add("open");
@@ -999,9 +999,16 @@ function apriSidebarConnessione() {
     connEditor.style.display = "";
     aggiornaEditorConn();
 }
-function chiudiSidebar() {
-    console.log("chiudiSidebar called");
+function chiudiSidebar(clearSelection = false) {
     sidebar.classList.remove("open");
+    nodeEditor.style.display = "none";
+    connEditor.style.display = "none";
+
+    if (clearSelection) {
+        appState.selectedNode = null;
+        appState.selectedConnection = null;
+        evidenziaSelezione();
+    }
 }
 
 function speakNode(nodo) {
