@@ -298,6 +298,13 @@ function rimuoviNodo(nodo) {
         hideAddChildArrow();
     }
 
+    const connectionsToRemove = appState.connections.filter(c => c.source.id === nodo.id || c.target.id === nodo.id);
+    connectionsToRemove.forEach(conn => {
+        d3.select("#" + conn.id).remove();
+        defs.select(`#arrowhead-${conn.id}`).remove();
+        defs.select(`#arrowhead-reverse-${conn.id}`).remove();
+    });
+
     appState.connections = appState.connections.filter(c => c.source.id !== nodo.id && c.target.id !== nodo.id);
     appState.nodes = appState.nodes.filter(n => n.id !== nodo.id);
 
