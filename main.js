@@ -134,6 +134,8 @@ let appState = {
 
 let addChildArrow = null;
 let addChildArrowNodeId = null;
+let iconModalOnSelect = null;
+let iconModalCurrentIcon = null;
 
 // === ELEMENTI DOM ===
 const svgElem = document.getElementById("mindmap-svg");
@@ -152,6 +154,10 @@ const minimapViewportRect = minimapSvg.select("#minimap-viewport-rect");
 const loadingIndicator = document.getElementById("loading");
 const undoButton = document.getElementById("undo");
 const redoButton = document.getElementById("redo");
+const iconModal = document.getElementById("icon-modal");
+const iconModalList = document.getElementById("icon-modal-list");
+const iconModalSearch = document.getElementById("icon-modal-search");
+const iconModalCloseBtn = document.getElementById("icon-modal-close");
 
 
 // === UTILITY FUNCTIONS ===
@@ -1137,20 +1143,117 @@ function popolaColorPicker(containerId, colors, selectedColor, callback) {
 
 function popolaIconPicker(containerId, icons, selectedIcon, callback) {
     const container = document.getElementById(containerId);
+    if (!container) return;
     container.innerHTML = "";
+    const previewColor = appState.isDarkTheme ? "#dfe6f0" : "#4a5b6b";
+    let hasSelectedIcon = false;
+
     icons.forEach(icon => {
         const option = document.createElement("div");
         option.className = "icon-option";
-        // Use a neutral color for picker preview, actual color applied in node
-        option.innerHTML = getIconSVG(icon, 22, appState.isDarkTheme ? "#ccc" : "#666");
-        if (icon === selectedIcon) option.classList.add("selected");
+        option.title = icon;
+        option.innerHTML = getIconSVG(icon, 22, previewColor);
+        if (icon === selectedIcon) {
+            option.classList.add("selected");
+            hasSelectedIcon = true;
+        }
         option.onclick = () => {
             callback(icon);
-            Array.from(container.children).forEach(child => child.classList.remove("selected"));
-            option.classList.add("selected");
+            popolaIconPicker(containerId, icons, icon, callback);
         };
         container.appendChild(option);
     });
+
+    if (selectedIcon && !hasSelectedIcon && ICON_SVGS[selectedIcon]) {
+        const customOption = document.createElement("div");
+        customOption.className = "icon-option icon-option-custom selected";
+        customOption.title = selectedIcon;
+        customOption.innerHTML = getIconSVG(selectedIcon, 22, previewColor);
+        customOption.onclick = () => {
+            callback(selectedIcon);
+            popolaIconPicker(containerId, icons, selectedIcon, callback);
+        };
+        container.appendChild(customOption);
+    }
+
+    const moreOption = document.createElement("div");
+    moreOption.className = "icon-option icon-option-more";
+    moreOption.innerHTML = `<i class="fas fa-ellipsis-h"></i><span>Altre icone</span>`;
+    moreOption.onclick = () => {
+        apriIconModal(selectedIcon, (iconSelezionata) => {
+            callback(iconSelezionata);
+            popolaIconPicker(containerId, icons, iconSelezionata, callback);
+        });
+    };
+    container.appendChild(moreOption);
+}
+
+function apriIconModal(selectedIcon, callback) {
+    if (!iconModal || !iconModalList) return;
+    iconModalOnSelect = callback;
+    iconModalCurrentIcon = selectedIcon || null;
+    if (iconModalSearch) {
+        iconModalSearch.value = "";
+    }
+    renderIconModalList();
+    iconModal.style.display = "flex";
+    iconModalList.scrollTop = 0;
+    if (iconModalSearch) {
+        setTimeout(() => iconModalSearch.focus(), 50);
+    }
+}
+
+function chiudiIconModal() {
+    if (!iconModal) return;
+    iconModal.style.display = "none";
+    iconModalOnSelect = null;
+    iconModalCurrentIcon = null;
+    if (iconModalSearch) iconModalSearch.value = "";
+    if (iconModalList) iconModalList.scrollTop = 0;
+}
+
+function renderIconModalList() {
+    if (!iconModalList) return;
+    iconModalList.innerHTML = "";
+    const filtro = (iconModalSearch && iconModalSearch.value ? iconModalSearch.value : "").toLowerCase().trim();
+    const tutteLeIcone = Object.keys(ICON_SVGS).filter(icon => icon.toLowerCase().includes(filtro)).sort();
+
+    if (tutteLeIcone.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "icon-modal-empty";
+        empty.textContent = "Nessuna icona trovata.";
+        iconModalList.appendChild(empty);
+        return;
+    }
+
+    const previewColor = appState.isDarkTheme ? "#dfe6f0" : "#4a5b6b";
+
+    tutteLeIcone.forEach(icon => {
+        const option = document.createElement("div");
+        option.className = "icon-option";
+        option.title = icon;
+        option.innerHTML = getIconSVG(icon, 32, previewColor);
+        const label = document.createElement("span");
+        label.textContent = icon.replace("fas fa-", "").replace(/-/g, " ");
+        option.appendChild(label);
+        if (icon === iconModalCurrentIcon) option.classList.add("selected");
+        option.onclick = () => {
+            iconModalCurrentIcon = icon;
+            if (iconModalOnSelect) iconModalOnSelect(icon);
+            chiudiIconModal();
+        };
+        iconModalList.appendChild(option);
+    });
+}
+
+if (iconModalCloseBtn) iconModalCloseBtn.addEventListener("click", chiudiIconModal);
+if (iconModal) {
+    iconModal.addEventListener("click", (event) => {
+        if (event.target === iconModal) chiudiIconModal();
+    });
+}
+if (iconModalSearch) {
+    iconModalSearch.addEventListener("input", () => renderIconModalList());
 }
 
 // === DESCRIZIONE NODO (overlay) ===
@@ -1654,6 +1757,9 @@ function toggleTheme() {
         popolaIconPicker("node-icon-picker", CONFIG.icons, appState.selectedNode.icon, (icon) => { appState.selectedNode.icon = icon; aggiornaNodo(appState.selectedNode); saveToHistory(); });
         popolaColorPicker("node-icon-colors", CONFIG.colors.icons, appState.selectedNode.iconColor || appState.selectedNode.textColor, (c) => { appState.selectedNode.iconColor = c; aggiornaNodo(appState.selectedNode); saveToHistory(); });
     }
+    if (iconModal && iconModal.style.display === "flex") {
+        renderIconModalList();
+    }
     redrawAll(); // Redraw for theme-dependent colors in nodes/connections
     showToast(`Tema ${appState.isDarkTheme ? "Scuro" : "Chiaro"} attivato`, "success");
 }
@@ -1671,10 +1777,24 @@ function applySavedTheme() {
 
 // === KEYBOARD SHORTCUTS ===
 document.addEventListener("keydown", (event) => {
+    if (event.target === iconModalSearch) {
+        if (event.key === "Escape") {
+            event.preventDefault();
+            chiudiIconModal();
+        }
+        return;
+    }
     if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
         if (event.key === "Escape") event.target.blur(); // Allow Esc to unfocus inputs
         return; // Don't trigger shortcuts if typing in input/textarea
     }
+
+    const iconModalVisible = iconModal && iconModal.style.display === "flex";
+    if (iconModalVisible) {
+        if (event.key === "Escape") chiudiIconModal();
+        return;
+    }
+
     if (document.getElementById("json-modal").style.display === "flex" && event.key !== "Escape") return; // Only Esc if JSON modal is open
     if (document.getElementById("overlay-desc").style.display === "flex" && event.key !== "Escape") return; // Only Esc if overlay is open
     
