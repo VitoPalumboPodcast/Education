@@ -18,6 +18,8 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 .node { transition: opacity 0.3s; }
 .node.dimmed { opacity: 0.3; }
 .node.selected > :first-child { filter: drop-shadow(3px 3px 12px rgba(52,152,219,0.6));} /* Apply shadow to shape */
+.add-child-arrow { transition: opacity 0.2s ease; }
+.add-child-arrow:hover { opacity: 1 !important; }
 .node-text { user-select:none; pointer-events:none; font-weight:500; }
 .node-icon { pointer-events:none; }
 .connection { stroke:#34495e; stroke-width:2.5; transition: stroke 0.2s, stroke-width 0.2s; }

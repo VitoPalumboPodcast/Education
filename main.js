@@ -107,6 +107,9 @@ let appState = {
     currentViewBox: CONFIG.defaultViewBox.split(" ").map(Number)
 };
 
+let addChildArrow = null;
+let addChildArrowNodeId = null;
+
 // === ELEMENTI DOM ===
 const svgElem = document.getElementById("mindmap-svg");
 const svg = d3.select(svgElem);
@@ -290,10 +293,14 @@ function creaNodo(x, y, testo = "Nuovo nodo", descr = "", parentId = null) {
 
 function rimuoviNodo(nodo) {
     if (!nodo) return;
-    
+
+    if (addChildArrowNodeId === nodo.id) {
+        hideAddChildArrow();
+    }
+
     appState.connections = appState.connections.filter(c => c.source.id !== nodo.id && c.target.id !== nodo.id);
     appState.nodes = appState.nodes.filter(n => n.id !== nodo.id);
-    
+
     d3.select("#" + nodo.id).remove();
     
     if(appState.selectedNode && appState.selectedNode.id === nodo.id) {
@@ -456,11 +463,74 @@ function disegnaNodo(nodo) {
     }
 }
 
+function hideAddChildArrow() {
+    if (addChildArrow) {
+        addChildArrow.remove();
+        addChildArrow = null;
+        addChildArrowNodeId = null;
+    }
+}
+
+function showAddChildArrow(nodo) {
+    if (!nodo) return;
+
+    const nodeGroup = nodesGroup.select("#" + nodo.id);
+    if (nodeGroup.empty()) return;
+
+    hideAddChildArrow();
+
+    const baseOffset = nodo.shape === "rect" ? nodo.size * 0.7 : nodo.size / 2;
+    const arrowDistance = Math.max(40, nodo.size * 0.6);
+    const arrowRadius = Math.max(16, nodo.size * 0.25);
+    const triangleWidth = arrowRadius * 1.1;
+    const triangleHeight = arrowRadius * 0.9;
+
+    addChildArrow = nodeGroup.append("g")
+        .attr("class", "add-child-arrow")
+        .attr("transform", `translate(${baseOffset + arrowDistance}, 0)`)
+        .style("opacity", 0.75)
+        .style("cursor", "pointer")
+        .on("mousedown", (event) => {
+            event.stopPropagation();
+        })
+        .on("click", (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            const childDistance = Math.max(160, nodo.size * 1.8);
+            const angleOffset = (Math.random() - 0.5) * Math.PI / 6;
+            const childX = nodo.x + childDistance;
+            const childY = nodo.y + Math.sin(angleOffset) * childDistance * 0.3;
+
+            const nuovo = creaNodo(childX, childY, "Nuovo Figlio", "", nodo.id);
+            creaConnessione(nodo, nuovo, "");
+            selezionaNodo(nuovo);
+            showToast("Nodo figlio aggiunto", "success");
+        });
+
+    addChildArrow.append("circle")
+        .attr("r", arrowRadius)
+        .attr("fill", "#3498db")
+        .attr("fill-opacity", 0.25)
+        .attr("stroke", "#3498db")
+        .attr("stroke-width", 2);
+
+    addChildArrow.append("path")
+        .attr("d", `M${-triangleWidth / 2} ${-triangleHeight} L${triangleWidth / 2} 0 L${-triangleWidth / 2} ${triangleHeight} Z`)
+        .attr("fill", "#3498db")
+        .attr("fill-opacity", 0.85);
+
+    addChildArrowNodeId = nodo.id;
+}
+
 function aggiornaNodo(nodo) {
     nodo.updatedAt = new Date().toISOString();
     disegnaNodo(nodo);
     aggiornaConnessioni(); // Connections might need to adjust if node size/shape changes
     updateMinimap();
+    if (appState.selectedNode && appState.selectedNode.id === nodo.id) {
+        showAddChildArrow(nodo);
+    }
 }
 
 function selezionaNodo(nodo) {
@@ -637,11 +707,13 @@ function selezionaConnessione(conn) {
 
 // === SELEZIONE GLOBALE ===
 function evidenziaSelezione() {
+    hideAddChildArrow();
     nodesGroup.selectAll(".node").classed("selected", false);
     connectionsGroup.selectAll(".connection").classed("selected", false); // Target line directly
 
     if (appState.selectedNode) {
         nodesGroup.select("#" + appState.selectedNode.id).classed("selected", true);
+        showAddChildArrow(appState.selectedNode);
     }
     if (appState.selectedConnection) {
         const connGroup = connectionsGroup.select("#" + appState.selectedConnection.id);
