@@ -20,6 +20,12 @@ This single page application runs entirely in the browser and lets you create no
 - Save to local storage
 - Icon/text spacing now scales with icon size to avoid overlap
 
+## Icone e personalizzazione
+
+- L'editor include ora un set ampliato di icone tematiche (tecnologia, educazione, salute, creatività, sport, ecc.) selezionabili dal pannello laterale.
+- Se hai bisogno di ulteriori icone, apri `main.js` e aggiungi la classe Font Awesome desiderata all'array `CONFIG.icons`, quindi definisci l'SVG corrispondente all'interno dell'oggetto `ICON_SVGS` per garantirne il corretto rendering ed export.
+- I nuovi esempi nel file mostrano come creare icone personalizzate combinando forme SVG di base (`path`, `rect`, `circle`, `ellipse`).
+
 ## Keyboard Shortcuts
 
 - **N** – Add node
