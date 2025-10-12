@@ -316,6 +316,60 @@ function sanitizeIconClass(value) {
         .trim();
 }
 
+const ICON_SUGGESTION_CLASSES = (() => {
+    const sources = [
+        Object.keys(ICON_SVGS || {}),
+        CONFIG.icons || [],
+        (ICON_LIBRARY && ICON_LIBRARY.icons) || [],
+        (ICON_LIBRARY && ICON_LIBRARY.keywords ? Object.keys(ICON_LIBRARY.keywords) : [])
+    ];
+
+    const unique = new Set();
+    sources.forEach(list => {
+        (list || []).forEach(icon => {
+            const sanitized = sanitizeIconClass(icon);
+            if (sanitized) unique.add(sanitized);
+        });
+    });
+
+    return Array.from(unique).sort();
+})();
+
+function getIconSuggestions(query) {
+    const rawQuery = (query || "").trim().toLowerCase();
+    if (!rawQuery) {
+        return ICON_SUGGESTION_CLASSES.slice(0, 50);
+    }
+
+    const normalizedQuery = sanitizeIconClass(query).toLowerCase();
+    const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
+
+    return ICON_SUGGESTION_CLASSES.filter(iconClass => {
+        const lowerClass = iconClass.toLowerCase();
+        if (!tokens.length) return true;
+
+        if (tokens.length > 1) {
+            return lowerClass.startsWith(normalizedQuery);
+        }
+
+        const baseClass = lowerClass.split(/\s+/).pop();
+        return lowerClass.startsWith(normalizedQuery) || (baseClass && baseClass.startsWith(tokens[0]));
+    }).slice(0, 50);
+}
+
+function populateIconSuggestionDatalist(datalist, query) {
+    if (!datalist) return;
+    const suggestions = getIconSuggestions(query);
+    datalist.innerHTML = "";
+    suggestions.forEach(iconClass => {
+        const option = document.createElement("option");
+        option.value = iconClass;
+        const label = getIconLabel(iconClass);
+        if (label) option.label = label;
+        datalist.appendChild(option);
+    });
+}
+
 function isSafeExternalUrl(url) {
     if (!url) return false;
     try {
@@ -1636,18 +1690,29 @@ function renderNodeSourcesList(nodo) {
         iconInput.type = "text";
         iconInput.placeholder = "Classe Font Awesome (es. fas fa-book)";
         iconInput.value = source.icon || "";
+        const iconDatalist = document.createElement("datalist");
+        const datalistId = `icon-suggestions-${source.id}`;
+        iconDatalist.id = datalistId;
+        iconInput.setAttribute("list", datalistId);
+        populateIconSuggestionDatalist(iconDatalist, iconInput.value);
         iconInput.addEventListener("input", () => {
+            populateIconSuggestionDatalist(iconDatalist, iconInput.value);
             source.icon = sanitizeIconClass(iconInput.value);
             iconInput.value = source.icon;
             preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
         });
         iconInput.addEventListener("change", () => {
+            populateIconSuggestionDatalist(iconDatalist, iconInput.value);
             source.icon = sanitizeIconClass(iconInput.value);
             iconInput.value = source.icon;
             preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
             commitChanges();
         });
+        iconInput.addEventListener("focus", () => {
+            populateIconSuggestionDatalist(iconDatalist, iconInput.value);
+        });
         fields.appendChild(iconInput);
+        fields.appendChild(iconDatalist);
 
         item.appendChild(fields);
 
@@ -1665,6 +1730,7 @@ function renderNodeSourcesList(nodo) {
                 const className = iconSelezionata && iconSelezionata.className ? iconSelezionata.className : iconSelezionata;
                 source.icon = sanitizeIconClass(className);
                 iconInput.value = source.icon;
+                populateIconSuggestionDatalist(iconDatalist, iconInput.value);
                 preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
                 commitChanges();
             });
@@ -1685,6 +1751,7 @@ function renderNodeSourcesList(nodo) {
 
             source.icon = iconClass;
             iconInput.value = source.icon;
+            populateIconSuggestionDatalist(iconDatalist, iconInput.value);
             preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
 
             applyNodeIconSelection(nodo, {
