@@ -1,4 +1,6 @@
 // === CONFIGURAZIONE MIGLIORATA ===
+const ICON_LIBRARY = window.ICON_LIBRARY || {};
+
 const CONFIG = {
     colors: {
         nodes: ["#3498db","#e67e22","#2ecc71","#e74c3c","#9b59b6","#f1c40f","#34495e","#8e44ad","#16a085","#d35400"],
@@ -20,7 +22,7 @@ const CONFIG = {
             high: "#e74c3c"  // Rosso
         }
     },
-    icons: [
+    icons: (ICON_LIBRARY.icons && ICON_LIBRARY.icons.length ? ICON_LIBRARY.icons : [
         "fas fa-lightbulb","fas fa-star","fas fa-brain","fas fa-book","fas fa-heart",
         "fas fa-users","fas fa-globe","fas fa-comments","fas fa-graduation-cap",
         "fas fa-cube","fas fa-leaf","fas fa-music","fas fa-flask","fas fa-rocket",
@@ -35,7 +37,7 @@ const CONFIG = {
         // Icone aggiuntive dalle librerie compatibili
         "far fa-smile","far fa-calendar-alt",
         "fab fa-github","fab fa-youtube","fab fa-figma"
-    ],
+    ]),
     defaultViewBox: "0 0 1200 800",
     localStorageKey: "mindMapAdvancedData",
     shortcuts: {
@@ -56,7 +58,7 @@ const CONFIG = {
     }
 };
 
-const ICON_SVGS = {
+const ICON_SVGS = (ICON_LIBRARY.svgMap && Object.keys(ICON_LIBRARY.svgMap).length ? ICON_LIBRARY.svgMap : {
   "fas fa-lightbulb": `<svg viewBox="0 0 384 512"><path fill="currentColor" d="M96 464a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-16H96zm96-464C112.9 0 48 64.6 48 144c0 61.9 37.2 114.6 89.7 135.2C149.6 297.8 176 336 176 384v8a24 24 0 0 0 24 24h16a24 24 0 0 0 24-24v-8c0-48 26.4-86.2 56.3-104.8C314.8 258.6 352 205.9 352 144c0-79.4-64.9-144-144-144z"/></svg>`,
   "fas fa-star": `<svg viewBox="0 0 576 512"><path fill="currentColor" d="M287.9 17.8L354 150.2 490.5 171.5c26.2 3.8 36.7 36 17.7 54.6L402.3 312l23.7 138.4c4.5 26.3-23.2 46-46.4 33.7L288 439.6l-91.6 48.1c-23.2 12.2-50.9-7.4-46.4-33.7L173.7 312 67.8 226.1c-19-18.6-8.5-50.8 17.7-54.6L222 150.2 288.1 17.8c11.7-23.6 45.6-23.9 57.8 0z"/></svg>`,
   "fas fa-brain": `<svg viewBox="0 0 576 512"><path fill="currentColor" d="M288 0C196.5 0 128 32.7 128 96c0 28.7 16.2 56.5 30.3 76.9C111.8 199.6 64 258.7 64 320c0 79.5 100.5 144 224 144s224-64.5 224-144c0-61.3-47.8-120.4-102.3-147.1C331.8 152.5 348 124.7 348 96c0-63.3-68.5-96-160-96zm160 336c0 17.7-14.3 32-32 32H256c-17.7 0-32-14.3-32-32V272h160v64zm48-160c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64s28.7-64 64-64h128c35.3 0 64 28.7 64 64z"/></svg>`,
@@ -111,16 +113,16 @@ const ICON_SVGS = {
   ,"fab fa-github": `<svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="208" fill="currentColor" opacity="0.15"/><path d="M320 408c-16 8-32 12-64 12s-48-4-64-12v-56c0-24 16-48 40-48-56-4-104-28-104-112 0-24 8-44 20-60-2-8-6-36 2-52 0 0 26 0 56 24 14-4 30-6 46-6s32 2 46 6c30-24 56-24 56-24 8 16 4 44 2 52 12 16 20 36 20 60 0 84-48 108-104 112 24 0 40 24 40 48v56z" fill="currentColor"/></svg>`
   ,"fab fa-youtube": `<svg viewBox="0 0 576 512"><rect x="64" y="128" width="448" height="256" rx="72" ry="72" fill="currentColor" opacity="0.85"/><polygon points="260 192 260 320 360 256" fill="#fff" opacity="0.95"/></svg>`
   ,"fab fa-figma": `<svg viewBox="0 0 512 512"><circle cx="192" cy="160" r="88" fill="currentColor" opacity="0.85"/><circle cx="320" cy="160" r="88" fill="currentColor" opacity="0.55"/><circle cx="192" cy="288" r="88" fill="currentColor" opacity="0.55"/><circle cx="320" cy="288" r="88" fill="currentColor" opacity="0.35"/><rect x="224" y="288" width="96" height="160" rx="48" ry="48" fill="currentColor" opacity="0.85"/></svg>`
-};
+});
 
-const ICON_LIBRARY_ALIASES = {
+const ICON_LIBRARY_ALIASES = (ICON_LIBRARY.aliases && Object.keys(ICON_LIBRARY.aliases).length ? ICON_LIBRARY.aliases : {
     fas: ["solid", "pieno", "riempita"],
     far: ["regular", "outline", "contorno"],
     fab: ["brand", "logo", "social"]
-};
+});
 
 // Parole chiave aggiuntive per facilitare la ricerca delle icone nel modal
-const ICON_KEYWORDS = {
+const ICON_KEYWORDS = (ICON_LIBRARY.keywords && Object.keys(ICON_LIBRARY.keywords).length ? ICON_LIBRARY.keywords : {
     "fas fa-lightbulb": ["idea", "lampadina", "ispirazione", "intuizione", "creatività"],
     "fas fa-star": ["stella", "preferito", "valutazione", "qualità", "premio"],
     "fas fa-brain": ["cervello", "pensiero", "mente", "apprendimento", "conoscenza"],
@@ -174,7 +176,7 @@ const ICON_KEYWORDS = {
     "fab fa-github": ["github", "repository", "sviluppo", "versionamento", "git"],
     "fab fa-youtube": ["youtube", "video", "tutorial", "lezione", "streaming"],
     "fab fa-figma": ["figma", "design", "ux", "ui", "prototipo"]
-};
+});
 
 function getIconLibraries(iconClass) {
     if (!iconClass) return [];

@@ -24,9 +24,10 @@ This single page application runs entirely in the browser and lets you create no
 ## Icone e personalizzazione
 
 - L'editor include ora un set ampliato di icone tematiche (tecnologia, educazione, salute, creatività, sport, ecc.) selezionabili dal pannello laterale.
-- Se hai bisogno di ulteriori icone, apri `main.js` e aggiungi la classe Font Awesome desiderata all'array `CONFIG.icons`, quindi definisci l'SVG corrispondente all'interno dell'oggetto `ICON_SVGS` per garantirne il corretto rendering ed export.
+- Se hai bisogno di ulteriori icone, apri `icon-library.js` e aggiungi la classe Font Awesome desiderata all'array `ICONS`, quindi definisci l'SVG corrispondente all'interno dell'oggetto `SVG_MAP` per garantirne il corretto rendering ed export.
 - I nuovi esempi nel file mostrano come creare icone personalizzate combinando forme SVG di base (`path`, `rect`, `circle`, `ellipse`).
 - La ricerca del selettore icone utilizza le stesse sorgenti: per estenderla ad altre librerie supportate dalla pagina (ad esempio le varianti **`far`** o **`fab`** di Font Awesome, oppure set SVG personalizzati) aggiungi i relativi identificativi a `ICON_SVGS` e, facoltativamente, inserisci sinonimi in `ICON_KEYWORDS` per migliorare i risultati. Ricorda di includere il foglio di stile della libreria in `index.html` se non è già presente.
+- Il file `icon-library.js` carica automaticamente il foglio di stile ufficiale di Font Awesome se non è già incluso nella pagina, così l'utente non deve più occuparsene manualmente.
 - Le singole fonti collegate ai nodi possono utilizzare direttamente le classi Font Awesome: inserisci l'URL completo (https://) e, se serve, scegli l'icona tramite il pulsante dedicato. La pagina continua a funzionare correttamente anche con icone non presenti nella libreria SVG interna, grazie al fallback automatico verso il CDN ufficiale.
 
 ## Keyboard Shortcuts
