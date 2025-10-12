@@ -121,6 +121,24 @@ const ICON_LIBRARY_ALIASES = (ICON_LIBRARY.aliases && Object.keys(ICON_LIBRARY.a
     fab: ["brand", "logo", "social"]
 });
 
+const CURATED_ICON_SET = new Set(Object.keys(ICON_SVGS));
+const FONT_AWESOME_STYLE_PREFIXES = {
+    solid: "fas",
+    regular: "far",
+    brands: "fab",
+    light: "fal",
+    thin: "fat",
+    duotone: "fad"
+};
+const FULL_ICON_CATALOG_URLS = [
+    "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/metadata/icons.json",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/metadata/icons.json"
+];
+
+let fullIconCatalog = [];
+let fullIconCatalogPromise = null;
+let fullIconCatalogError = null;
+
 // Parole chiave aggiuntive per facilitare la ricerca delle icone nel modal
 const ICON_KEYWORDS = (ICON_LIBRARY.keywords && Object.keys(ICON_LIBRARY.keywords).length ? ICON_LIBRARY.keywords : {
     "fas fa-lightbulb": ["idea", "lampadina", "ispirazione", "intuizione", "creatività"],
@@ -221,6 +239,8 @@ let addChildArrow = null;
 let addChildArrowNodeId = null;
 let iconModalOnSelect = null;
 let iconModalCurrentIcon = null;
+let iconModalCurrentRenderMode = "svg";
+let iconModalRenderToken = 0;
 
 // === ELEMENTI DOM ===
 const svgElem = document.getElementById("mindmap-svg");
@@ -296,6 +316,145 @@ function getIconMarkupForSource(iconClass, size, color) {
     }
     const fallbackClass = sanitized || "fas fa-link";
     return `<i class="${fallbackClass}" style="font-size:${size}px;color:${color};"></i>`;
+}
+
+function normalizeIconClass(iconClass) {
+    return sanitizeIconClass(iconClass);
+}
+
+function isCuratedIconClass(iconClass) {
+    if (!iconClass) return false;
+    return CURATED_ICON_SET.has(normalizeIconClass(iconClass));
+}
+
+function resolveRenderModeForClass(iconClass, preferredMode) {
+    const normalized = normalizeIconClass(iconClass);
+    if (!normalized) return "svg";
+    if (preferredMode === "webfont") return "webfont";
+    if (preferredMode === "svg" && isCuratedIconClass(normalized)) return "svg";
+    return isCuratedIconClass(normalized) ? "svg" : "webfont";
+}
+
+function getIconPreviewMarkup(iconClass, size, color, renderMode) {
+    const normalized = normalizeIconClass(iconClass);
+    const effectiveMode = resolveRenderModeForClass(normalized, renderMode);
+    if (effectiveMode === "svg" && normalized && ICON_SVGS[normalized]) {
+        return getIconSVG(normalized, size, color);
+    }
+    const fallback = normalized || "fas fa-circle";
+    const fontSize = Math.max(12, Math.round(size * 0.85));
+    return `<div style="width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;"><i class="${fallback}" style="font-size:${fontSize}px;color:${color};line-height:1;"></i></div>`;
+}
+
+function getNodeIconClass(nodo) {
+    if (!nodo) return "";
+    return normalizeIconClass(nodo.iconClass || nodo.icon || "");
+}
+
+function getNodeIconRenderMode(nodo) {
+    if (!nodo) return "svg";
+    const preferred = nodo.iconRenderMode === "webfont" ? "webfont" : "svg";
+    return resolveRenderModeForClass(getNodeIconClass(nodo), preferred);
+}
+
+function getNodeIconSelection(nodo) {
+    return {
+        className: getNodeIconClass(nodo),
+        renderMode: getNodeIconRenderMode(nodo)
+    };
+}
+
+function ensureNodeIconData(nodo) {
+    if (!nodo) return;
+    const normalized = getNodeIconClass(nodo);
+    nodo.iconClass = normalized;
+    nodo.icon = normalized;
+    nodo.iconRenderMode = getNodeIconRenderMode(nodo);
+}
+
+function applyNodeIconSelection(nodo, selection) {
+    if (!nodo) return;
+    const className = normalizeIconClass(selection && selection.className ? selection.className : selection || "");
+    const preferred = selection && selection.renderMode ? selection.renderMode : undefined;
+    nodo.iconClass = className;
+    nodo.icon = className;
+    nodo.iconRenderMode = resolveRenderModeForClass(className, preferred);
+    nodo.updatedAt = new Date().toISOString();
+}
+
+function getNodeIconHTML(nodo) {
+    const selection = getNodeIconSelection(nodo);
+    const color = nodo.iconColor || nodo.textColor || CONFIG.colors.icons[0];
+    return getIconPreviewMarkup(selection.className, nodo.iconSize, color, selection.renderMode);
+}
+
+function buildFullIconCatalogEntries(metadata) {
+    const entries = [];
+    const seen = new Set();
+    if (!metadata || typeof metadata !== "object") return entries;
+    Object.entries(metadata).forEach(([name, data]) => {
+        if (!data || !Array.isArray(data.styles)) return;
+        const label = (data.label || name || "").trim() || name;
+        const baseTerms = new Set();
+        baseTerms.add(name);
+        if (label) baseTerms.add(label);
+        (data.search && Array.isArray(data.search.terms) ? data.search.terms : []).forEach(term => {
+            if (term) baseTerms.add(term);
+        });
+        (data.aliases && Array.isArray(data.aliases.names) ? data.aliases.names : []).forEach(alias => {
+            if (alias) baseTerms.add(alias);
+        });
+        data.styles.forEach(style => {
+            const prefix = FONT_AWESOME_STYLE_PREFIXES[style];
+            if (!prefix || !["fas", "far", "fab"].includes(prefix)) return;
+            const className = normalizeIconClass(`${prefix} fa-${name}`);
+            if (!className || CURATED_ICON_SET.has(className) || seen.has(className)) return;
+            seen.add(className);
+            entries.push({
+                className,
+                classNameLower: className.toLowerCase(),
+                label,
+                labelLower: label.toLowerCase(),
+                terms: Array.from(baseTerms).map(term => String(term).toLowerCase())
+            });
+        });
+    });
+    return entries;
+}
+
+async function loadFullIconCatalog() {
+    if (fullIconCatalog.length > 0) return fullIconCatalog;
+    if (fullIconCatalogPromise) return fullIconCatalogPromise;
+    fullIconCatalogPromise = (async () => {
+        for (const url of FULL_ICON_CATALOG_URLS) {
+            try {
+                const response = await fetch(url, { cache: "force-cache" });
+                if (!response.ok) continue;
+                const metadata = await response.json();
+                fullIconCatalog = buildFullIconCatalogEntries(metadata);
+                fullIconCatalogError = null;
+                return fullIconCatalog;
+            } catch (err) {
+                fullIconCatalogError = err;
+            }
+        }
+        throw fullIconCatalogError || new Error("Impossibile caricare il catalogo completo delle icone.");
+    })();
+    try {
+        return await fullIconCatalogPromise;
+    } catch (err) {
+        fullIconCatalogPromise = null;
+        throw err;
+    }
+}
+
+function filterFullCatalogMatches(tokens) {
+    if (!Array.isArray(tokens) || tokens.length === 0) return fullIconCatalog;
+    return fullIconCatalog.filter(entry => tokens.every(token =>
+        entry.labelLower.includes(token) ||
+        entry.classNameLower.includes(token) ||
+        entry.terms.some(term => term.includes(token))
+    ));
 }
 
 function showToast(message, type = 'success', duration = 3000) {
@@ -377,6 +536,7 @@ function loadStateFromHistory(state) {
     state.nodes.forEach(nodeData => {
         // Create node without adding to history or redrawing yet
         const nodo = { ...nodeData }; // Create a copy
+        ensureNodeIconData(nodo);
         appState.nodes.push(nodo);
     });
     
@@ -427,6 +587,7 @@ function updateUndoRedoButtons() {
 // === GESTIONE NODI ===
 function creaNodo(x, y, testo = "Nuovo nodo", descr = "", parentId = null) {
     const now = new Date().toISOString();
+    const defaultIcon = normalizeIconClass(CONFIG.icons[Math.floor(Math.random() * CONFIG.icons.length)] || "");
     const nodo = {
         id: uniqueId("node"),
         x, y,
@@ -437,7 +598,9 @@ function creaNodo(x, y, testo = "Nuovo nodo", descr = "", parentId = null) {
         backgroundColor: CONFIG.colors.nodes[Math.floor(Math.random() * CONFIG.colors.nodes.length)],
         textColor: CONFIG.colors.text[0], // Default white
         iconColor: CONFIG.colors.icons[0],
-        icon: CONFIG.icons[Math.floor(Math.random() * CONFIG.icons.length)],
+        icon: defaultIcon,
+        iconClass: defaultIcon,
+        iconRenderMode: resolveRenderModeForClass(defaultIcon, "svg"),
         size: 90,
         textSize: 16,
         iconSize: 26, // Default icon size from old code
@@ -449,6 +612,7 @@ function creaNodo(x, y, testo = "Nuovo nodo", descr = "", parentId = null) {
         updatedAt: now
     };
     
+    ensureNodeIconData(nodo);
     appState.nodes.push(nodo);
     disegnaNodo(nodo);
     if (appState.autoSave !== false) saveToHistory(); // Allow disabling for batch ops
@@ -489,7 +653,7 @@ function rimuoviNodo(nodo) {
 function disegnaNodo(nodo) {
     let g = nodesGroup.select("#" + nodo.id);
     if (!g.empty()) g.remove();
-    
+
     g = nodesGroup.append("g")
         .attr("class", "node")
         .attr("id", nodo.id)
@@ -513,6 +677,8 @@ function disegnaNodo(nodo) {
                 selezionaNodo(nodo);
             }
         });
+
+    ensureNodeIconData(nodo);
 
     // Apply dimming if search is active and node doesn't match
     if (appState.searchTerm && !nodoMatchesSearch(nodo, appState.searchTerm)) {
@@ -593,13 +759,15 @@ function disegnaNodo(nodo) {
     // ICONA
     const shapeOffset = nodo.shape === 'circle' || nodo.shape === 'hex' ? 5 : 0;
     const iconBottom = baseline - shapeOffset;
+    const iconMarkup = getNodeIconHTML(nodo);
     g.append("foreignObject")
         .attr("x", -nodo.iconSize / 2)
         .attr("y", iconBottom - nodo.iconSize)
         .attr("width", nodo.iconSize)
         .attr("height", nodo.iconSize)
         .style("pointer-events", "none")
-        .html(getIconSVG(nodo.icon, nodo.iconSize, nodo.iconColor));
+        // SVG export remains vector-only for curated icons; webfont markup is ideal for PNG/PDF exports.
+        .html(iconMarkup);
 
     // TESTO con wrapping automatico
     const textYOffset = baseline + gap + shapeOffset;
@@ -1201,7 +1369,11 @@ function aggiornaEditorNodo() {
     
     popolaColorPicker("node-bg-colors", CONFIG.colors.nodes, n.backgroundColor, (c) => { n.backgroundColor = c; aggiornaNodo(n); saveToHistory(); });
     popolaColorPicker("node-text-colors", CONFIG.colors.text, n.textColor, (c) => { n.textColor = c; aggiornaNodo(n); saveToHistory(); });
-    popolaIconPicker("node-icon-picker", CONFIG.icons, n.icon, (icon) => { n.icon = icon; aggiornaNodo(n); saveToHistory(); });
+    popolaIconPicker("node-icon-picker", CONFIG.icons, getNodeIconSelection(n), (selection) => {
+        applyNodeIconSelection(n, selection);
+        aggiornaNodo(n);
+        saveToHistory();
+    });
     popolaColorPicker("node-icon-colors", CONFIG.colors.icons, n.iconColor || n.textColor, (c) => { n.iconColor = c; aggiornaNodo(n); saveToHistory(); });
     renderNodeSourcesList(n);
 }
@@ -1285,48 +1457,79 @@ function popolaColorPicker(containerId, colors, selectedColor, callback) {
     });
 }
 
-function popolaIconPicker(containerId, icons, selectedIcon, callback) {
+function popolaIconPicker(containerId, icons, selectedIconSelection, callback) {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = "";
     const previewColor = appState.isDarkTheme ? "#dfe6f0" : "#4a5b6b";
+    const selectedClass = normalizeIconClass(selectedIconSelection && selectedIconSelection.className);
+    let selectedMode = selectedIconSelection && selectedIconSelection.renderMode === "webfont" ? "webfont" : "svg";
+    if (selectedMode === "svg" && selectedClass && !isCuratedIconClass(selectedClass)) {
+        selectedMode = "webfont";
+    }
     let hasSelectedIcon = false;
 
     icons.forEach(icon => {
+        const normalizedIcon = normalizeIconClass(icon);
         const option = document.createElement("div");
         option.className = "icon-option";
-        option.title = icon;
-        option.innerHTML = getIconSVG(icon, 22, previewColor);
-        if (icon === selectedIcon) {
+        option.title = normalizedIcon;
+        option.innerHTML = getIconSVG(normalizedIcon, 22, previewColor);
+        if (normalizedIcon === selectedClass && selectedMode === "svg") {
             option.classList.add("selected");
             hasSelectedIcon = true;
         }
         option.onclick = () => {
-            callback(icon);
-            popolaIconPicker(containerId, icons, icon, callback);
+            const selection = { className: normalizedIcon, renderMode: "svg" };
+            callback(selection);
+            popolaIconPicker(containerId, icons, selection, callback);
         };
         container.appendChild(option);
     });
 
-    if (selectedIcon && !hasSelectedIcon && ICON_SVGS[selectedIcon]) {
+    if (selectedClass && selectedMode === "svg" && !hasSelectedIcon && isCuratedIconClass(selectedClass)) {
         const customOption = document.createElement("div");
         customOption.className = "icon-option icon-option-custom selected";
-        customOption.title = selectedIcon;
-        customOption.innerHTML = getIconSVG(selectedIcon, 22, previewColor);
+        customOption.title = selectedClass;
+        customOption.innerHTML = getIconSVG(selectedClass, 22, previewColor);
         customOption.onclick = () => {
-            callback(selectedIcon);
-            popolaIconPicker(containerId, icons, selectedIcon, callback);
+            const selection = { className: selectedClass, renderMode: "svg" };
+            callback(selection);
+            popolaIconPicker(containerId, icons, selection, callback);
         };
         container.appendChild(customOption);
+        hasSelectedIcon = true;
+    }
+
+    if (selectedClass && selectedMode === "webfont") {
+        const customOption = document.createElement("div");
+        customOption.className = "icon-option icon-option-custom selected";
+        customOption.title = selectedClass;
+        customOption.innerHTML = getIconPreviewMarkup(selectedClass, 22, previewColor, "webfont");
+        customOption.onclick = () => {
+            const selection = { className: selectedClass, renderMode: "webfont" };
+            callback(selection);
+            popolaIconPicker(containerId, icons, selection, callback);
+        };
+        container.appendChild(customOption);
+        hasSelectedIcon = true;
     }
 
     const moreOption = document.createElement("div");
     moreOption.className = "icon-option icon-option-more";
     moreOption.innerHTML = `<i class="fas fa-ellipsis-h"></i><span>Altre icone</span>`;
     moreOption.onclick = () => {
-        apriIconModal(selectedIcon, (iconSelezionata) => {
-            callback(iconSelezionata);
-            popolaIconPicker(containerId, icons, iconSelezionata, callback);
+        const currentSelection = { className: selectedClass, renderMode: selectedMode };
+        apriIconModal(currentSelection, (iconSelezionata) => {
+            const selection = iconSelezionata && iconSelezionata.className ? iconSelezionata : (() => {
+                const normalizedSelection = normalizeIconClass(iconSelezionata);
+                return {
+                    className: normalizedSelection,
+                    renderMode: resolveRenderModeForClass(normalizedSelection, selectedMode)
+                };
+            })();
+            callback(selection);
+            popolaIconPicker(containerId, icons, selection, callback);
         });
     };
     container.appendChild(moreOption);
@@ -1426,8 +1629,10 @@ function renderNodeSourcesList(nodo) {
         iconBtn.title = "Scegli icona";
         iconBtn.innerHTML = "<i class=\"fas fa-icons\"></i>";
         iconBtn.onclick = () => {
-            apriIconModal(source.icon, (iconSelezionata) => {
-                source.icon = sanitizeIconClass(iconSelezionata);
+            const currentSelection = { className: source.icon, renderMode: isCuratedIconClass(source.icon) ? "svg" : "webfont" };
+            apriIconModal(currentSelection, (iconSelezionata) => {
+                const className = iconSelezionata && iconSelezionata.className ? iconSelezionata.className : iconSelezionata;
+                source.icon = sanitizeIconClass(className);
                 iconInput.value = source.icon;
                 preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
                 commitChanges();
@@ -1455,13 +1660,20 @@ function renderNodeSourcesList(nodo) {
 function apriIconModal(selectedIcon, callback) {
     if (!iconModal || !iconModalList) return;
     iconModalOnSelect = callback;
-    iconModalCurrentIcon = selectedIcon || null;
+    if (selectedIcon && typeof selectedIcon === "object") {
+        iconModalCurrentIcon = normalizeIconClass(selectedIcon.className);
+        iconModalCurrentRenderMode = resolveRenderModeForClass(iconModalCurrentIcon, selectedIcon.renderMode);
+    } else {
+        iconModalCurrentIcon = normalizeIconClass(selectedIcon);
+        const fallbackMode = iconModalCurrentIcon && isCuratedIconClass(iconModalCurrentIcon) ? "svg" : "webfont";
+        iconModalCurrentRenderMode = resolveRenderModeForClass(iconModalCurrentIcon, fallbackMode);
+    }
     if (iconModalSearch) {
         iconModalSearch.value = "";
     }
-    renderIconModalList();
     iconModal.style.display = "flex";
     iconModalList.scrollTop = 0;
+    renderIconModalList();
     if (iconModalSearch) {
         setTimeout(() => iconModalSearch.focus(), 50);
     }
@@ -1472,16 +1684,21 @@ function chiudiIconModal() {
     iconModal.style.display = "none";
     iconModalOnSelect = null;
     iconModalCurrentIcon = null;
+    iconModalCurrentRenderMode = "svg";
     if (iconModalSearch) iconModalSearch.value = "";
     if (iconModalList) iconModalList.scrollTop = 0;
+    iconModalRenderToken++;
 }
 
-function renderIconModalList() {
+async function renderIconModalList() {
     if (!iconModalList) return;
+    const requestToken = ++iconModalRenderToken;
     iconModalList.innerHTML = "";
-    const filtro = (iconModalSearch && iconModalSearch.value ? iconModalSearch.value : "").toLowerCase().trim();
-    const tokens = filtro.split(/\s+/).filter(Boolean);
-    const tutteLeIcone = Object.keys(ICON_SVGS).filter(icon => {
+    const filtro = (iconModalSearch && iconModalSearch.value ? iconModalSearch.value : "").toLowerCase();
+    const filtroTrimmed = filtro.trim();
+    const tokens = filtroTrimmed.split(/\s+/).filter(Boolean);
+
+    const curatedMatches = Object.keys(ICON_SVGS).filter(icon => {
         if (tokens.length === 0) return true;
         const iconLower = icon.toLowerCase();
         const parts = iconLower.split(/\s+/);
@@ -1501,17 +1718,9 @@ function renderIconModalList() {
         );
     }).sort();
 
-    if (tutteLeIcone.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "icon-modal-empty";
-        empty.textContent = "Nessuna icona trovata.";
-        iconModalList.appendChild(empty);
-        return;
-    }
-
     const previewColor = appState.isDarkTheme ? "#dfe6f0" : "#4a5b6b";
-
-    tutteLeIcone.forEach(icon => {
+    const curatedFragment = document.createDocumentFragment();
+    curatedMatches.forEach(icon => {
         const option = document.createElement("div");
         option.className = "icon-option";
         option.title = icon;
@@ -1521,14 +1730,84 @@ function renderIconModalList() {
         const librarySuffix = libraries.length > 0 ? ` (${libraries.join('/')})` : "";
         label.textContent = `${getIconLabel(icon)}${librarySuffix}`;
         option.appendChild(label);
-        if (icon === iconModalCurrentIcon) option.classList.add("selected");
+        if (iconModalCurrentIcon === icon && iconModalCurrentRenderMode === "svg") {
+            option.classList.add("selected");
+        }
         option.onclick = () => {
             iconModalCurrentIcon = icon;
-            if (iconModalOnSelect) iconModalOnSelect(icon);
+            iconModalCurrentRenderMode = "svg";
+            if (iconModalOnSelect) iconModalOnSelect({ className: icon, renderMode: "svg" });
             chiudiIconModal();
         };
-        iconModalList.appendChild(option);
+        curatedFragment.appendChild(option);
     });
+
+    if (curatedMatches.length > 0) {
+        iconModalList.appendChild(curatedFragment);
+    }
+
+    if (tokens.length === 0) {
+        if (curatedMatches.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "icon-modal-empty";
+            empty.textContent = "Nessuna icona trovata.";
+            iconModalList.appendChild(empty);
+        }
+        return;
+    }
+
+    const loading = document.createElement("div");
+    loading.className = "icon-modal-loading";
+    loading.textContent = "Caricamento catalogo completo...";
+    iconModalList.appendChild(loading);
+
+    try {
+        const catalog = await loadFullIconCatalog();
+        if (requestToken !== iconModalRenderToken) return;
+        const curatedSet = new Set(curatedMatches.map(icon => normalizeIconClass(icon)));
+        const extraMatches = filterFullCatalogMatches(tokens).filter(entry => !curatedSet.has(entry.className));
+        loading.remove();
+        if (extraMatches.length > 0) {
+            const fragment = document.createDocumentFragment();
+            extraMatches.slice(0, 200).forEach(entry => {
+                const option = document.createElement("div");
+                option.className = "icon-option icon-option-webfont";
+                option.title = entry.className;
+                option.innerHTML = getIconPreviewMarkup(entry.className, 32, previewColor, "webfont");
+                const label = document.createElement("span");
+                label.textContent = entry.label;
+                option.appendChild(label);
+                if (iconModalCurrentIcon === entry.className && iconModalCurrentRenderMode === "webfont") {
+                    option.classList.add("selected");
+                }
+                option.onclick = () => {
+                    iconModalCurrentIcon = entry.className;
+                    iconModalCurrentRenderMode = "webfont";
+                    if (iconModalOnSelect) iconModalOnSelect({ className: entry.className, renderMode: "webfont" });
+                    chiudiIconModal();
+                };
+                fragment.appendChild(option);
+            });
+            iconModalList.appendChild(fragment);
+        }
+
+        if (curatedMatches.length === 0 && extraMatches.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "icon-modal-empty";
+            empty.textContent = "Nessuna icona trovata.";
+            iconModalList.appendChild(empty);
+        }
+    } catch (error) {
+        if (requestToken !== iconModalRenderToken) return;
+        console.warn("Impossibile caricare il catalogo Font Awesome completo:", error);
+        loading.textContent = "Impossibile caricare il catalogo completo delle icone.";
+        if (curatedMatches.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "icon-modal-empty";
+            empty.textContent = "Nessuna icona trovata nel set curato.";
+            iconModalList.appendChild(empty);
+        }
+    }
 }
 
 if (iconModalCloseBtn) iconModalCloseBtn.addEventListener("click", chiudiIconModal);
@@ -1766,6 +2045,7 @@ function caricaMappa(data) {
             url: src.url ? String(src.url).trim() : "",
             icon: sanitizeIconClass(src.icon)
         })) : [];
+        ensureNodeIconData(newNode);
         appState.nodes.push(newNode);
     });
 
@@ -2058,7 +2338,11 @@ function toggleTheme() {
     
     // Update pickers with theme-dependent previews
     if (appState.selectedNode) { // If sidebar is open and showing icons
-        popolaIconPicker("node-icon-picker", CONFIG.icons, appState.selectedNode.icon, (icon) => { appState.selectedNode.icon = icon; aggiornaNodo(appState.selectedNode); saveToHistory(); });
+        popolaIconPicker("node-icon-picker", CONFIG.icons, getNodeIconSelection(appState.selectedNode), (selection) => {
+            applyNodeIconSelection(appState.selectedNode, selection);
+            aggiornaNodo(appState.selectedNode);
+            saveToHistory();
+        });
         popolaColorPicker("node-icon-colors", CONFIG.colors.icons, appState.selectedNode.iconColor || appState.selectedNode.textColor, (c) => { appState.selectedNode.iconColor = c; aggiornaNodo(appState.selectedNode); saveToHistory(); });
         renderNodeSourcesList(appState.selectedNode);
     }
