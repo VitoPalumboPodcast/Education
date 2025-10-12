@@ -135,6 +135,31 @@ const FULL_ICON_CATALOG_URLS = [
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/metadata/icons.json"
 ];
 
+function createOfflineCatalogEntry(className, label, terms = []) {
+    const normalized = normalizeIconClass(className);
+    if (!normalized) return null;
+    const safeLabel = (label || normalized).trim();
+    return {
+        className: normalized,
+        classNameLower: normalized.toLowerCase(),
+        label: safeLabel,
+        labelLower: safeLabel.toLowerCase(),
+        terms: terms.filter(Boolean).map(term => String(term).toLowerCase())
+    };
+}
+
+const OFFLINE_ICON_CATALOG = [
+    createOfflineCatalogEntry("fab fa-twitter", "Twitter", ["social", "brand", "tweet", "bird"]),
+    createOfflineCatalogEntry("fab fa-facebook", "Facebook", ["social", "brand", "meta"]),
+    createOfflineCatalogEntry("fab fa-linkedin", "LinkedIn", ["social", "brand", "lavoro", "professionale"]),
+    createOfflineCatalogEntry("fab fa-instagram", "Instagram", ["social", "brand", "foto", "media"]),
+    createOfflineCatalogEntry("fas fa-user", "Utente", ["persona", "profilo", "account"]),
+    createOfflineCatalogEntry("fas fa-chart-bar", "Grafico a barre", ["analytics", "statistiche", "report"]),
+    createOfflineCatalogEntry("fas fa-comments", "Commenti", ["chat", "messaggi", "comunicazione"]),
+    createOfflineCatalogEntry("fas fa-bell", "Campanella", ["notifiche", "avviso", "alert"]),
+    createOfflineCatalogEntry("fas fa-share-alt", "Condividi", ["share", "social", "diffondi"])
+].filter(Boolean);
+
 let fullIconCatalog = [];
 let fullIconCatalogPromise = null;
 let fullIconCatalogError = null;
@@ -437,6 +462,12 @@ async function loadFullIconCatalog() {
             } catch (err) {
                 fullIconCatalogError = err;
             }
+        }
+        if (OFFLINE_ICON_CATALOG.length > 0) {
+            console.warn("Catalogo completo non disponibile, utilizzo fallback offline di base.");
+            fullIconCatalog = OFFLINE_ICON_CATALOG.slice();
+            fullIconCatalogError = null;
+            return fullIconCatalog;
         }
         throw fullIconCatalogError || new Error("Impossibile caricare il catalogo completo delle icone.");
     })();

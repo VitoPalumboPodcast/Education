@@ -9,6 +9,7 @@
         'fa-file-pdf': ['fa-file-pdf-o'],
         'fa-redo': ['fa-repeat'],
         'fa-edit': ['fa-pencil'],
+        'fa-chart-bar': ['fa-bar-chart'],
         'fa-icons': ['fa-th-large'],
         'fa-trash': ['fa-trash-o'],
         'fa-file-import': ['fa-upload'],
