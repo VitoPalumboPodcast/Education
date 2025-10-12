@@ -28,6 +28,7 @@ This single page application runs entirely in the browser and lets you create no
 - I nuovi esempi nel file mostrano come creare icone personalizzate combinando forme SVG di base (`path`, `rect`, `circle`, `ellipse`).
 - La ricerca del selettore icone utilizza le stesse sorgenti: per estenderla ad altre librerie supportate dalla pagina (ad esempio le varianti **`far`** o **`fab`** di Font Awesome, oppure set SVG personalizzati) aggiungi i relativi identificativi a `ICON_SVGS` e, facoltativamente, inserisci sinonimi in `ICON_KEYWORDS` per migliorare i risultati. Ricorda di includere il foglio di stile della libreria in `index.html` se non è già presente.
 - Il file `icon-library.js` carica automaticamente il foglio di stile ufficiale di Font Awesome se non è già incluso nella pagina, così l'utente non deve più occuparsene manualmente.
+- Il selettore icone include ora l'intero catalogo Font Awesome 6.x grazie al dataset locale `data/fontawesome-icons.js`, con fallback automatico al CDN ufficiale quando disponibile.
 - Le singole fonti collegate ai nodi possono utilizzare direttamente le classi Font Awesome: inserisci l'URL completo (https://) e, se serve, scegli l'icona tramite il pulsante dedicato. La pagina continua a funzionare correttamente anche con icone non presenti nella libreria SVG interna, grazie al fallback automatico verso il CDN ufficiale.
 
 ## Keyboard Shortcuts
