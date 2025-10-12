@@ -31,7 +31,10 @@ const CONFIG = {
         "fas fa-recycle","fas fa-calendar","fas fa-pen","fas fa-clipboard",
         "fas fa-project-diagram","fas fa-chalkboard-teacher","fas fa-stethoscope",
         "fas fa-palette","fas fa-dumbbell","fas fa-utensils","fas fa-laptop-code",
-        "fas fa-chart-pie","fas fa-atom","fas fa-futbol","fas fa-paw"
+        "fas fa-chart-pie","fas fa-atom","fas fa-futbol","fas fa-paw",
+        // Icone aggiuntive dalle librerie compatibili
+        "far fa-smile","far fa-calendar-alt",
+        "fab fa-github","fab fa-youtube","fab fa-figma"
     ],
     defaultViewBox: "0 0 1200 800",
     localStorageKey: "mindMapAdvancedData",
@@ -103,6 +106,17 @@ const ICON_SVGS = {
   ,"fas fa-atom": `<svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="40" fill="currentColor"/><ellipse cx="256" cy="256" rx="200" ry="96" fill="none" stroke="currentColor" stroke-width="24"/><ellipse cx="256" cy="256" rx="96" ry="200" fill="none" stroke="currentColor" stroke-width="24"/><path fill="none" stroke="currentColor" stroke-width="24" stroke-linecap="round" d="M96 96c80 80 240 80 320 0M96 416c80-80 240-80 320 0"/></svg>`
   ,"fas fa-futbol": `<svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="200" fill="none" stroke="currentColor" stroke-width="28"/><polygon fill="currentColor" points="256 168 200 216 224 296 288 296 312 216"/><path fill="currentColor" d="M144 344 88 272l72-24 32 88-48 8zm224 0-56-8 32-88 72 24-48 72z"/></svg>`
   ,"fas fa-paw": `<svg viewBox="0 0 512 512"><ellipse cx="160" cy="192" rx="48" ry="64" fill="currentColor"/><ellipse cx="352" cy="192" rx="48" ry="64" fill="currentColor"/><ellipse cx="128" cy="320" rx="40" ry="52" fill="currentColor"/><ellipse cx="384" cy="320" rx="40" ry="52" fill="currentColor"/><circle cx="256" cy="320" r="88" fill="currentColor"/></svg>`
+  ,"far fa-smile": `<svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="208" fill="none" stroke="currentColor" stroke-width="28"/><circle cx="192" cy="216" r="24" fill="currentColor"/><circle cx="320" cy="216" r="24" fill="currentColor"/><path d="M176 304c24 32 56 48 80 48s56-16 80-48" fill="none" stroke="currentColor" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+  ,"far fa-calendar-alt": `<svg viewBox="0 0 512 512"><rect x="80" y="96" width="352" height="320" rx="32" ry="32" fill="none" stroke="currentColor" stroke-width="28"/><rect x="80" y="136" width="352" height="64" fill="currentColor" opacity="0.85"/><rect x="144" y="232" width="80" height="72" rx="12" ry="12" fill="currentColor" opacity="0.85"/><rect x="288" y="232" width="80" height="72" rx="12" ry="12" fill="currentColor" opacity="0.65"/><rect x="144" y="328" width="80" height="72" rx="12" ry="12" fill="currentColor" opacity="0.65"/><rect x="288" y="328" width="80" height="72" rx="12" ry="12" fill="currentColor" opacity="0.85"/></svg>`
+  ,"fab fa-github": `<svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="208" fill="currentColor" opacity="0.15"/><path d="M320 408c-16 8-32 12-64 12s-48-4-64-12v-56c0-24 16-48 40-48-56-4-104-28-104-112 0-24 8-44 20-60-2-8-6-36 2-52 0 0 26 0 56 24 14-4 30-6 46-6s32 2 46 6c30-24 56-24 56-24 8 16 4 44 2 52 12 16 20 36 20 60 0 84-48 108-104 112 24 0 40 24 40 48v56z" fill="currentColor"/></svg>`
+  ,"fab fa-youtube": `<svg viewBox="0 0 576 512"><rect x="64" y="128" width="448" height="256" rx="72" ry="72" fill="currentColor" opacity="0.85"/><polygon points="260 192 260 320 360 256" fill="#fff" opacity="0.95"/></svg>`
+  ,"fab fa-figma": `<svg viewBox="0 0 512 512"><circle cx="192" cy="160" r="88" fill="currentColor" opacity="0.85"/><circle cx="320" cy="160" r="88" fill="currentColor" opacity="0.55"/><circle cx="192" cy="288" r="88" fill="currentColor" opacity="0.55"/><circle cx="320" cy="288" r="88" fill="currentColor" opacity="0.35"/><rect x="224" y="288" width="96" height="160" rx="48" ry="48" fill="currentColor" opacity="0.85"/></svg>`
+};
+
+const ICON_LIBRARY_ALIASES = {
+    fas: ["solid", "pieno", "riempita"],
+    far: ["regular", "outline", "contorno"],
+    fab: ["brand", "logo", "social"]
 };
 
 // Parole chiave aggiuntive per facilitare la ricerca delle icone nel modal
@@ -154,8 +168,27 @@ const ICON_KEYWORDS = {
     "fas fa-chart-pie": ["grafico", "torta", "percentuale", "analisi", "statistiche"],
     "fas fa-atom": ["atomo", "scienza", "fisica", "molecola", "energia"],
     "fas fa-futbol": ["calcio", "sport", "pallone", "partita", "squadra"],
-    "fas fa-paw": ["zampa", "animale", "pet", "mascotte", "fauna"]
+    "fas fa-paw": ["zampa", "animale", "pet", "mascotte", "fauna"],
+    "far fa-smile": ["sorriso", "felice", "emoji", "umore", "positivo"],
+    "far fa-calendar-alt": ["calendario", "evento", "agenda", "pianifica", "scadenza"],
+    "fab fa-github": ["github", "repository", "sviluppo", "versionamento", "git"],
+    "fab fa-youtube": ["youtube", "video", "tutorial", "lezione", "streaming"],
+    "fab fa-figma": ["figma", "design", "ux", "ui", "prototipo"]
 };
+
+function getIconLibraries(iconClass) {
+    if (!iconClass) return [];
+    return iconClass.split(/\s+/).filter(cls => cls.startsWith("fa") && !cls.startsWith("fa-"));
+}
+
+function getIconLabel(iconClass) {
+    if (!iconClass) return "";
+    const parts = iconClass.split(/\s+/);
+    const baseClass = [...parts].reverse().find(cls => cls.startsWith("fa-"));
+    const label = baseClass ? baseClass.replace(/^fa-/, "") : parts[parts.length - 1] || iconClass;
+    return label.replace(/[-_]/g, " ");
+}
+
 function getIconSVG(iconClass, size, color) {
     const svgData = ICON_SVGS[iconClass];
     if (!svgData) return "";
@@ -1272,13 +1305,19 @@ function renderIconModalList() {
     const tutteLeIcone = Object.keys(ICON_SVGS).filter(icon => {
         if (tokens.length === 0) return true;
         const iconLower = icon.toLowerCase();
-        const normalized = iconLower.replace(/-/g, " ");
-        const label = icon.replace(/^fas fa-/, "").replace(/-/g, " ").toLowerCase();
+        const parts = iconLower.split(/\s+/);
+        const baseClass = parts.find(cls => cls.startsWith("fa-"));
+        const normalized = baseClass ? baseClass.replace(/^fa-/, "").replace(/-/g, " ") : iconLower.replace(/-/g, " ");
+        const label = getIconLabel(icon).toLowerCase();
         const keywords = (ICON_KEYWORDS[icon] || []).map(keyword => keyword.toLowerCase());
+        const libraryClasses = getIconLibraries(icon).map(cls => cls.toLowerCase());
+        const libraryAliases = libraryClasses.flatMap(cls => (ICON_LIBRARY_ALIASES[cls] || [])).map(alias => alias.toLowerCase());
         return tokens.every(token =>
             iconLower.includes(token) ||
             normalized.includes(token) ||
             label.includes(token) ||
+            libraryClasses.some(library => library.includes(token)) ||
+            libraryAliases.some(alias => alias.includes(token)) ||
             keywords.some(keyword => keyword.includes(token))
         );
     }).sort();
@@ -1299,7 +1338,9 @@ function renderIconModalList() {
         option.title = icon;
         option.innerHTML = getIconSVG(icon, 32, previewColor);
         const label = document.createElement("span");
-        label.textContent = icon.replace("fas fa-", "").replace(/-/g, " ");
+        const libraries = getIconLibraries(icon);
+        const librarySuffix = libraries.length > 0 ? ` (${libraries.join('/')})` : "";
+        label.textContent = `${getIconLabel(icon)}${librarySuffix}`;
         option.appendChild(label);
         if (icon === iconModalCurrentIcon) option.classList.add("selected");
         option.onclick = () => {
