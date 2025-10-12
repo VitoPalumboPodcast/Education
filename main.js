@@ -190,10 +190,8 @@ function getIconLabel(iconClass) {
 }
 
 function getIconSVG(iconClass, size, color) {
-    const svgData = ICON_SVGS[iconClass];
-    if (!svgData) return "";
-    let svgHtml = svgData.replace(/currentColor/g, color);
-    svgHtml = svgHtml.replace(/<svg /, `<svg width="${size}" height="${size}" `);
+    const svgHtml = getIconSVGInline(iconClass, size, color);
+    if (!svgHtml) return "";
     return `<div style="width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;">${svgHtml}</div>`;
 }
 
@@ -248,6 +246,54 @@ const iconModalCloseBtn = document.getElementById("icon-modal-close");
 // === UTILITY FUNCTIONS ===
 function uniqueId(prefix = "n") {
     return prefix + "_" + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+}
+
+function escapeHtml(str) {
+    if (str === null || str === undefined) return "";
+    return String(str).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[char] || char));
+}
+
+function sanitizeIconClass(value) {
+    if (!value) return "";
+    return value
+        .split(/\s+/)
+        .map(cls => cls.replace(/[^a-z0-9-]/gi, ""))
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+}
+
+function isSafeExternalUrl(url) {
+    if (!url) return false;
+    try {
+        const parsed = new URL(url.trim());
+        return parsed.protocol === "http:" || parsed.protocol === "https:";
+    } catch (e) {
+        return false;
+    }
+}
+
+function getIconSVGInline(iconClass, size, color) {
+    const svgData = ICON_SVGS[iconClass];
+    if (!svgData) return "";
+    let svgHtml = svgData.replace(/currentColor/g, color);
+    svgHtml = svgHtml.replace(/<svg /, `<svg width="${size}" height="${size}" `);
+    return svgHtml;
+}
+
+function getIconMarkupForSource(iconClass, size, color) {
+    const sanitized = sanitizeIconClass(iconClass);
+    if (sanitized && ICON_SVGS[sanitized]) {
+        return getIconSVGInline(sanitized, size, color);
+    }
+    const fallbackClass = sanitized || "fas fa-link";
+    return `<i class="${fallbackClass}" style="font-size:${size}px;color:${color};"></i>`;
 }
 
 function showToast(message, type = 'success', duration = 3000) {
@@ -395,6 +441,7 @@ function creaNodo(x, y, testo = "Nuovo nodo", descr = "", parentId = null) {
         iconSize: 26, // Default icon size from old code
         shape: "rect",
         priority: "medium",
+        sources: [],
         parentId,
         createdAt: now,
         updatedAt: now
@@ -1154,6 +1201,7 @@ function aggiornaEditorNodo() {
     popolaColorPicker("node-text-colors", CONFIG.colors.text, n.textColor, (c) => { n.textColor = c; aggiornaNodo(n); saveToHistory(); });
     popolaIconPicker("node-icon-picker", CONFIG.icons, n.icon, (icon) => { n.icon = icon; aggiornaNodo(n); saveToHistory(); });
     popolaColorPicker("node-icon-colors", CONFIG.colors.icons, n.iconColor || n.textColor, (c) => { n.iconColor = c; aggiornaNodo(n); saveToHistory(); });
+    renderNodeSourcesList(n);
 }
 
 function aggiornaEditorConn() {
@@ -1200,6 +1248,15 @@ handleSidebarInput("node-icon-size", "iconSize", true, false, aggiornaNodo);
 document.getElementById("node-category").onchange = e => { if(appState.selectedNode) { appState.selectedNode.category = e.target.value; aggiornaNodo(appState.selectedNode); saveToHistory(); }};
 document.getElementById("node-priority").onchange = e => { if(appState.selectedNode) { appState.selectedNode.priority = e.target.value; aggiornaNodo(appState.selectedNode); saveToHistory(); }};
 document.getElementById("node-shape").onchange = e => { if(appState.selectedNode) { appState.selectedNode.shape = e.target.value; aggiornaNodo(appState.selectedNode); saveToHistory(); }};
+document.getElementById("add-node-source").onclick = () => {
+    if (!appState.selectedNode) return;
+    const nodo = appState.selectedNode;
+    if (!Array.isArray(nodo.sources)) nodo.sources = [];
+    nodo.sources.push({ id: uniqueId("source"), label: "", url: "", icon: "" });
+    nodo.updatedAt = new Date().toISOString();
+    renderNodeSourcesList(nodo);
+    saveToHistory();
+};
 
 // Connection editor inputs
 handleSidebarInput("connection-label", "label", false, false, aggiornaConnessioni);
@@ -1271,6 +1328,126 @@ function popolaIconPicker(containerId, icons, selectedIcon, callback) {
         });
     };
     container.appendChild(moreOption);
+}
+
+function renderNodeSourcesList(nodo) {
+    const container = document.getElementById("node-sources-list");
+    if (!container || !nodo) return;
+
+    if (!Array.isArray(nodo.sources)) nodo.sources = [];
+    container.innerHTML = "";
+
+    if (nodo.sources.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "source-empty";
+        empty.textContent = "Nessuna fonte aggiunta.";
+        container.appendChild(empty);
+        return;
+    }
+
+    const commitChanges = () => {
+        nodo.updatedAt = new Date().toISOString();
+        saveToHistory();
+    };
+
+    const previewColor = appState.isDarkTheme ? "#dfe6f0" : "#3498db";
+
+    nodo.sources.forEach(source => {
+        if (!source.id) source.id = uniqueId("source");
+        source.icon = sanitizeIconClass(source.icon);
+
+        const item = document.createElement("div");
+        item.className = "source-item";
+        item.dataset.id = source.id;
+
+        const preview = document.createElement("div");
+        preview.className = "source-icon-preview";
+        preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
+        item.appendChild(preview);
+
+        const fields = document.createElement("div");
+        fields.className = "source-fields";
+
+        const labelInput = document.createElement("input");
+        labelInput.type = "text";
+        labelInput.placeholder = "Titolo o descrizione";
+        labelInput.value = source.label || "";
+        labelInput.addEventListener("input", () => {
+            source.label = labelInput.value;
+        });
+        labelInput.addEventListener("change", () => {
+            source.label = labelInput.value.trim();
+            labelInput.value = source.label;
+            commitChanges();
+        });
+        fields.appendChild(labelInput);
+
+        const urlInput = document.createElement("input");
+        urlInput.type = "text";
+        urlInput.placeholder = "URL completo (https://...)";
+        urlInput.value = source.url || "";
+        urlInput.addEventListener("input", () => {
+            source.url = urlInput.value.trim();
+        });
+        urlInput.addEventListener("change", () => {
+            source.url = urlInput.value.trim();
+            urlInput.value = source.url;
+            commitChanges();
+        });
+        fields.appendChild(urlInput);
+
+        const iconInput = document.createElement("input");
+        iconInput.type = "text";
+        iconInput.placeholder = "Classe Font Awesome (es. fas fa-book)";
+        iconInput.value = source.icon || "";
+        iconInput.addEventListener("input", () => {
+            source.icon = sanitizeIconClass(iconInput.value);
+            iconInput.value = source.icon;
+            preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
+        });
+        iconInput.addEventListener("change", () => {
+            source.icon = sanitizeIconClass(iconInput.value);
+            iconInput.value = source.icon;
+            preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
+            commitChanges();
+        });
+        fields.appendChild(iconInput);
+
+        item.appendChild(fields);
+
+        const actions = document.createElement("div");
+        actions.className = "source-actions";
+
+        const iconBtn = document.createElement("button");
+        iconBtn.type = "button";
+        iconBtn.className = "btn secondary small";
+        iconBtn.title = "Scegli icona";
+        iconBtn.innerHTML = "<i class=\"fas fa-icons\"></i>";
+        iconBtn.onclick = () => {
+            apriIconModal(source.icon, (iconSelezionata) => {
+                source.icon = sanitizeIconClass(iconSelezionata);
+                iconInput.value = source.icon;
+                preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
+                commitChanges();
+            });
+        };
+        actions.appendChild(iconBtn);
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "btn danger small";
+        removeBtn.title = "Rimuovi fonte";
+        removeBtn.innerHTML = "<i class=\"fas fa-trash\"></i>";
+        removeBtn.onclick = () => {
+            nodo.sources = nodo.sources.filter(s => s.id !== source.id);
+            commitChanges();
+            renderNodeSourcesList(nodo);
+        };
+        actions.appendChild(removeBtn);
+
+        item.appendChild(actions);
+        container.appendChild(item);
+    });
 }
 
 function apriIconModal(selectedIcon, callback) {
@@ -1366,10 +1543,23 @@ if (iconModalSearch) {
 function apriDescrizioneNodo(nodo) {
     const overlay = document.getElementById("overlay-desc");
     const box = document.getElementById("overlay-desc-box");
+    const iconColor = appState.isDarkTheme ? "#dfe6f0" : "#3498db";
+    let sourcesHtml = "";
+    if (Array.isArray(nodo.sources) && nodo.sources.length > 0) {
+        const items = nodo.sources.map(src => {
+            const iconMarkup = getIconMarkupForSource(src.icon, 18, iconColor);
+            const label = escapeHtml(src.label || src.url || "Fonte");
+            const url = src.url && isSafeExternalUrl(src.url) ? src.url.trim() : "";
+            const link = url ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${label}</a>` : `<span>${label}</span>`;
+            return `<li><span class="overlay-source-icon">${iconMarkup}</span><span class="overlay-source-text">${link}</span></li>`;
+        }).join("");
+        sourcesHtml = `<div class="overlay-sources"><h4>Fonti</h4><ul class="overlay-source-list">${items}</ul></div>`;
+    }
     box.innerHTML = `<h3>${nodo.text || "Nodo"}</h3>
                      <div style="font-size:1.0em;white-space:pre-line;color:${appState.isDarkTheme ? '#ddd' : '#333'};margin-top:10px;">
                          ${nodo.description || "<i>Nessuna descrizione.</i>"}
                      </div>
+                     ${sourcesHtml}
                      <hr style="border:0; border-top:1px solid ${appState.isDarkTheme ? '#555' : '#ddd'}; margin: 15px 0;">
                      <small style="color:${appState.isDarkTheme ? '#aaa' : '#777'};">
                         Tags: ${nodo.tags && nodo.tags.length > 0 ? nodo.tags.join(', ') : 'N/A'}<br>
@@ -1568,6 +1758,12 @@ function caricaMappa(data) {
         newNode.iconColor = newNode.iconColor || newNode.textColor || CONFIG.colors.icons[0];
         newNode.createdAt = newNode.createdAt || new Date().toISOString();
         newNode.updatedAt = newNode.updatedAt || new Date().toISOString();
+        newNode.sources = Array.isArray(newNode.sources) ? newNode.sources.map(src => ({
+            id: src.id || uniqueId("source"),
+            label: src.label ? String(src.label) : "",
+            url: src.url ? String(src.url).trim() : "",
+            icon: sanitizeIconClass(src.icon)
+        })) : [];
         appState.nodes.push(newNode);
     });
 
@@ -1862,6 +2058,7 @@ function toggleTheme() {
     if (appState.selectedNode) { // If sidebar is open and showing icons
         popolaIconPicker("node-icon-picker", CONFIG.icons, appState.selectedNode.icon, (icon) => { appState.selectedNode.icon = icon; aggiornaNodo(appState.selectedNode); saveToHistory(); });
         popolaColorPicker("node-icon-colors", CONFIG.colors.icons, appState.selectedNode.iconColor || appState.selectedNode.textColor, (c) => { appState.selectedNode.iconColor = c; aggiornaNodo(appState.selectedNode); saveToHistory(); });
+        renderNodeSourcesList(appState.selectedNode);
     }
     if (iconModal && iconModal.style.display === "flex") {
         renderIconModalList();
@@ -2176,6 +2373,10 @@ function initDefaultMap(){
     const nodoA = creaNodo(nodoC.x + 200, nodoC.y, "Concetto A", "Spiegazione nodo A", nodoC.id);
     const nodoB = creaNodo(nodoC.x, nodoC.y + 150, "Concetto B", "Secondo nodo", nodoC.id);
     const nodoA1 = creaNodo(nodoA.x + 150, nodoA.y - 50, "Dettaglio A1", "", nodoA.id);
+    nodoC.sources.push({ id: uniqueId("source"), label: "Wikipedia - Mappe mentali", url: "https://it.wikipedia.org/wiki/Mappa_mentale", icon: "fas fa-book" });
+    nodoB.sources.push({ id: uniqueId("source"), label: "Video introduttivo", url: "https://www.youtube.com/watch?v=KcQ5CH1yXRA", icon: "fab fa-youtube" });
+    nodoC.updatedAt = new Date().toISOString();
+    nodoB.updatedAt = new Date().toISOString();
     creaConnessione(nodoC, nodoA, "Relazione 1");
     creaConnessione(nodoC, nodoB, "Relazione 2");
     creaConnessione(nodoA, nodoA1, "Approfondisce");
