@@ -299,6 +299,8 @@ const iconModalList = document.getElementById("icon-modal-list");
 const iconModalSearch = document.getElementById("icon-modal-search");
 const iconModalAutocomplete = document.getElementById("icon-modal-autocomplete");
 const iconModalCloseBtn = document.getElementById("icon-modal-close");
+const sidebarIconSearchInput = document.getElementById("sidebar-icon-search");
+const sidebarIconSearchButton = document.getElementById("sidebar-icon-search-btn");
 
 
 // === UTILITY FUNCTIONS ===
@@ -2200,6 +2202,45 @@ if (iconModalAutocomplete) {
         setIconAutocompleteActiveIndex(-1, false);
         if (!iconModalSearch || document.activeElement === iconModalSearch) return;
         hideIconAutocomplete();
+    });
+}
+
+function openSidebarIconSearch(initialTerm = "") {
+    if (!appState.selectedNode) {
+        showToast("Seleziona un nodo per applicare un'icona.", "error");
+        return;
+    }
+
+    const currentSelection = getNodeIconSelection(appState.selectedNode);
+    apriIconModal(currentSelection, (selection) => {
+        const targetNode = appState.selectedNode;
+        if (!targetNode) return;
+        applyNodeIconSelection(targetNode, selection);
+        aggiornaNodo(targetNode);
+        saveToHistory();
+        aggiornaEditorNodo();
+    });
+
+    const searchTerm = (initialTerm || "").trim();
+    if (iconModalSearch && searchTerm) {
+        iconModalSearch.value = searchTerm;
+        iconModalSearch.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+}
+
+if (sidebarIconSearchButton) {
+    sidebarIconSearchButton.addEventListener("click", () => {
+        const term = sidebarIconSearchInput ? sidebarIconSearchInput.value : "";
+        openSidebarIconSearch(term);
+    });
+}
+
+if (sidebarIconSearchInput) {
+    sidebarIconSearchInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            openSidebarIconSearch(sidebarIconSearchInput.value);
+        }
     });
 }
 
