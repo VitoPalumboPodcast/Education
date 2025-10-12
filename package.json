@@ -5,14 +5,84 @@
   "description": "Single-page mind map editor for organizing and visualizing ideas.",
   "scripts": {
     "start": "echo \"Open index.html directly in your browser.\"",
-    "test": "echo \"No automated tests configured for this project.\""
+    "test": "echo \"No automated tests configured for this project.\"",
+    "icons:list": "node -e \"console.log(JSON.stringify(require('./package.json').mindMapIconSet, null, 2))\""
   },
   "keywords": [
     "mindmap",
     "education",
     "visualization",
-    "frontend"
+    "frontend",
+    "fontawesome",
+    "icons"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://example.com/education-mind-map.git"
+  },
+  "bugs": {
+    "url": "https://example.com/education-mind-map/issues"
+  },
+  "homepage": "https://example.com/education-mind-map",
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.1"
+  },
+  "mindMapIconSet": [
+    "fas fa-atom",
+    "fas fa-bolt",
+    "fas fa-book",
+    "fas fa-brain",
+    "fas fa-briefcase",
+    "fas fa-calendar",
+    "fas fa-camera",
+    "fas fa-car",
+    "fas fa-chalkboard-teacher",
+    "fas fa-chart-line",
+    "fas fa-chart-pie",
+    "fas fa-clipboard",
+    "fas fa-cloud",
+    "fas fa-cog",
+    "fas fa-comments",
+    "fas fa-cube",
+    "fas fa-database",
+    "fas fa-dumbbell",
+    "fas fa-ellipsis-h",
+    "fas fa-envelope",
+    "fas fa-flag",
+    "fas fa-flask",
+    "fas fa-futbol",
+    "fas fa-gamepad",
+    "fas fa-gift",
+    "fas fa-globe",
+    "fas fa-graduation-cap",
+    "fas fa-heart",
+    "fas fa-home",
+    "fas fa-key",
+    "fas fa-laptop-code",
+    "fas fa-leaf",
+    "fas fa-lightbulb",
+    "fas fa-lock",
+    "fas fa-magic",
+    "fas fa-microchip",
+    "fas fa-music",
+    "fas fa-palette",
+    "fas fa-paw",
+    "fas fa-pen",
+    "fas fa-phone",
+    "fas fa-project-diagram",
+    "fas fa-recycle",
+    "fas fa-rocket",
+    "fas fa-star",
+    "fas fa-stethoscope",
+    "fas fa-tree",
+    "fas fa-users",
+    "fas fa-utensils",
+    "fab fa-figma",
+    "fab fa-github",
+    "fab fa-youtube",
+    "far fa-calendar-alt",
+    "far fa-smile"
+  ]
 }
