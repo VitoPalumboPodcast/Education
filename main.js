@@ -104,6 +104,58 @@ const ICON_SVGS = {
   ,"fas fa-futbol": `<svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="200" fill="none" stroke="currentColor" stroke-width="28"/><polygon fill="currentColor" points="256 168 200 216 224 296 288 296 312 216"/><path fill="currentColor" d="M144 344 88 272l72-24 32 88-48 8zm224 0-56-8 32-88 72 24-48 72z"/></svg>`
   ,"fas fa-paw": `<svg viewBox="0 0 512 512"><ellipse cx="160" cy="192" rx="48" ry="64" fill="currentColor"/><ellipse cx="352" cy="192" rx="48" ry="64" fill="currentColor"/><ellipse cx="128" cy="320" rx="40" ry="52" fill="currentColor"/><ellipse cx="384" cy="320" rx="40" ry="52" fill="currentColor"/><circle cx="256" cy="320" r="88" fill="currentColor"/></svg>`
 };
+
+// Parole chiave aggiuntive per facilitare la ricerca delle icone nel modal
+const ICON_KEYWORDS = {
+    "fas fa-lightbulb": ["idea", "lampadina", "ispirazione", "intuizione", "creatività"],
+    "fas fa-star": ["stella", "preferito", "valutazione", "qualità", "premio"],
+    "fas fa-brain": ["cervello", "pensiero", "mente", "apprendimento", "conoscenza"],
+    "fas fa-book": ["libro", "lettura", "studio", "manuale", "testo"],
+    "fas fa-users": ["utenti", "gruppo", "team", "persone", "community"],
+    "fas fa-heart": ["cuore", "amore", "passione", "preferito", "salute"],
+    "fas fa-globe": ["mondo", "globale", "pianeta", "internazionale", "terra"],
+    "fas fa-comments": ["chat", "messaggi", "conversazione", "comunicazione", "discussione"],
+    "fas fa-graduation-cap": ["laurea", "diploma", "formazione", "università", "scuola"],
+    "fas fa-cube": ["cubo", "blocco", "3d", "struttura", "modulo"],
+    "fas fa-leaf": ["foglia", "natura", "ecologia", "verde", "ambiente"],
+    "fas fa-music": ["musica", "nota", "suono", "canzone", "melodia"],
+    "fas fa-flask": ["laboratorio", "chimica", "scienza", "esperimento", "ricerca"],
+    "fas fa-rocket": ["razzo", "lancio", "startup", "crescita", "innovazione"],
+    "fas fa-home": ["casa", "abitazione", "domestico", "base", "residenza"],
+    "fas fa-car": ["auto", "macchina", "veicolo", "trasporto", "mobilità"],
+    "fas fa-phone": ["telefono", "cellulare", "contatto", "chiamata", "smartphone"],
+    "fas fa-envelope": ["lettera", "email", "messaggio", "posta", "comunicazione"],
+    "fas fa-camera": ["fotocamera", "foto", "immagine", "scatto", "ripresa"],
+    "fas fa-gamepad": ["videogiochi", "controller", "gioco", "gaming", "console"],
+    "fas fa-gift": ["regalo", "dono", "sorpresa", "premio", "festività"],
+    "fas fa-key": ["chiave", "accesso", "sicurezza", "password", "sblocco"],
+    "fas fa-lock": ["lucchetto", "sicurezza", "protezione", "blocco", "privacy"],
+    "fas fa-magic": ["magia", "bacchetta", "speciale", "trucco", "fantasia"],
+    "fas fa-flag": ["bandiera", "obiettivo", "traguardo", "segnalibro", "paese"],
+    "fas fa-cog": ["ingranaggio", "impostazioni", "configurazione", "meccanismo", "sistema"],
+    "fas fa-briefcase": ["valigetta", "lavoro", "business", "professione", "carriera"],
+    "fas fa-chart-line": ["grafico", "andamento", "crescita", "statistiche", "performance"],
+    "fas fa-bolt": ["fulmine", "energia", "potenza", "elettrico", "velocità"],
+    "fas fa-cloud": ["nuvola", "online", "cloud", "meteo", "internet"],
+    "fas fa-database": ["database", "dati", "archivio", "tabella", "records"],
+    "fas fa-microchip": ["chip", "tecnologia", "hardware", "circuito", "processore"],
+    "fas fa-tree": ["albero", "natura", "crescita", "bosco", "ambiente"],
+    "fas fa-recycle": ["riciclo", "sostenibilità", "riuso", "ambiente", "ecologia"],
+    "fas fa-calendar": ["calendario", "data", "agenda", "pianificazione", "evento"],
+    "fas fa-pen": ["penna", "scrittura", "modifica", "firma", "editor"],
+    "fas fa-clipboard": ["appunti", "note", "checklist", "elenco", "task"],
+    "fas fa-project-diagram": ["diagramma", "progetto", "flusso", "processo", "workflow"],
+    "fas fa-chalkboard-teacher": ["insegnante", "lezione", "classe", "docente", "formazione"],
+    "fas fa-stethoscope": ["stetoscopio", "medico", "salute", "dottore", "sanità"],
+    "fas fa-palette": ["tavolozza", "arte", "colori", "design", "creatività"],
+    "fas fa-dumbbell": ["manubrio", "fitness", "palestra", "allenamento", "sport"],
+    "fas fa-utensils": ["posate", "cucina", "cibo", "ristorante", "pasto"],
+    "fas fa-laptop-code": ["laptop", "codice", "programmazione", "computer", "sviluppo"],
+    "fas fa-chart-pie": ["grafico", "torta", "percentuale", "analisi", "statistiche"],
+    "fas fa-atom": ["atomo", "scienza", "fisica", "molecola", "energia"],
+    "fas fa-futbol": ["calcio", "sport", "pallone", "partita", "squadra"],
+    "fas fa-paw": ["zampa", "animale", "pet", "mascotte", "fauna"]
+};
 function getIconSVG(iconClass, size, color) {
     const svgData = ICON_SVGS[iconClass];
     if (!svgData) return "";
@@ -1216,7 +1268,20 @@ function renderIconModalList() {
     if (!iconModalList) return;
     iconModalList.innerHTML = "";
     const filtro = (iconModalSearch && iconModalSearch.value ? iconModalSearch.value : "").toLowerCase().trim();
-    const tutteLeIcone = Object.keys(ICON_SVGS).filter(icon => icon.toLowerCase().includes(filtro)).sort();
+    const tokens = filtro.split(/\s+/).filter(Boolean);
+    const tutteLeIcone = Object.keys(ICON_SVGS).filter(icon => {
+        if (tokens.length === 0) return true;
+        const iconLower = icon.toLowerCase();
+        const normalized = iconLower.replace(/-/g, " ");
+        const label = icon.replace(/^fas fa-/, "").replace(/-/g, " ").toLowerCase();
+        const keywords = (ICON_KEYWORDS[icon] || []).map(keyword => keyword.toLowerCase());
+        return tokens.every(token =>
+            iconLower.includes(token) ||
+            normalized.includes(token) ||
+            label.includes(token) ||
+            keywords.some(keyword => keyword.includes(token))
+        );
+    }).sort();
 
     if (tutteLeIcone.length === 0) {
         const empty = document.createElement("div");
