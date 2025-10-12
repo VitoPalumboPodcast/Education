@@ -122,6 +122,11 @@ const ICON_LIBRARY_ALIASES = (ICON_LIBRARY.aliases && Object.keys(ICON_LIBRARY.a
 });
 
 const CURATED_ICON_SET = new Set(Object.keys(ICON_SVGS));
+function getBundledIconMetadata() {
+    if (typeof window === "undefined") return null;
+    const metadata = window.FONT_AWESOME_ICON_METADATA;
+    return (metadata && typeof metadata === "object") ? metadata : null;
+}
 const FONT_AWESOME_STYLE_PREFIXES = {
     solid: "fas",
     regular: "far",
@@ -130,7 +135,7 @@ const FONT_AWESOME_STYLE_PREFIXES = {
     thin: "fat",
     duotone: "fad"
 };
-const FULL_ICON_CATALOG_URLS = [
+const REMOTE_ICON_CATALOG_URLS = [
     "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/metadata/icons.json",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/metadata/icons.json"
 ];
@@ -157,7 +162,9 @@ const OFFLINE_ICON_CATALOG = [
     createOfflineCatalogEntry("fas fa-chart-bar", "Grafico a barre", ["analytics", "statistiche", "report"]),
     createOfflineCatalogEntry("fas fa-comments", "Commenti", ["chat", "messaggi", "comunicazione"]),
     createOfflineCatalogEntry("fas fa-bell", "Campanella", ["notifiche", "avviso", "alert"]),
-    createOfflineCatalogEntry("fas fa-share-alt", "Condividi", ["share", "social", "diffondi"])
+    createOfflineCatalogEntry("fas fa-share-alt", "Condividi", ["share", "social", "diffondi"]),
+    createOfflineCatalogEntry("fas fa-plane", "Aereo", ["volo", "viaggio", "trasporto", "aeroporto"]),
+    createOfflineCatalogEntry("fas fa-child", "Bambino", ["persona", "infanzia", "giovane", "famiglia"])
 ].filter(Boolean);
 
 let fullIconCatalog = [];
@@ -509,7 +516,27 @@ async function loadFullIconCatalog() {
     if (fullIconCatalog.length > 0) return fullIconCatalog;
     if (fullIconCatalogPromise) return fullIconCatalogPromise;
     fullIconCatalogPromise = (async () => {
-        for (const url of FULL_ICON_CATALOG_URLS) {
+        const bundledMetadata = getBundledIconMetadata();
+        if (bundledMetadata && Object.keys(bundledMetadata).length) {
+            try {
+                fullIconCatalog = buildFullIconCatalogEntries(bundledMetadata);
+                if (fullIconCatalog.length > 0) {
+                    fullIconCatalogError = null;
+                    if (typeof window !== "undefined") {
+                        try {
+                            delete window.FONT_AWESOME_ICON_METADATA;
+                        } catch (cleanupError) {
+                            // Ignora eventuali errori di cleanup, l'oggetto è già stato letto.
+                        }
+                    }
+                    return fullIconCatalog;
+                }
+            } catch (err) {
+                console.warn("Impossibile utilizzare il catalogo icone locale precompilato:", err);
+            }
+        }
+
+        for (const url of REMOTE_ICON_CATALOG_URLS) {
             try {
                 const response = await fetch(url, { cache: "force-cache" });
                 if (!response.ok) continue;
