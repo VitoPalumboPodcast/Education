@@ -25,6 +25,7 @@ This single page application runs entirely in the browser and lets you create no
 - L'editor include ora un set ampliato di icone tematiche (tecnologia, educazione, salute, creatività, sport, ecc.) selezionabili dal pannello laterale.
 - Se hai bisogno di ulteriori icone, apri `main.js` e aggiungi la classe Font Awesome desiderata all'array `CONFIG.icons`, quindi definisci l'SVG corrispondente all'interno dell'oggetto `ICON_SVGS` per garantirne il corretto rendering ed export.
 - I nuovi esempi nel file mostrano come creare icone personalizzate combinando forme SVG di base (`path`, `rect`, `circle`, `ellipse`).
+- La ricerca del selettore icone utilizza le stesse sorgenti: per estenderla ad altre librerie supportate dalla pagina (ad esempio le varianti **`far`** o **`fab`** di Font Awesome, oppure set SVG personalizzati) aggiungi i relativi identificativi a `ICON_SVGS` e, facoltativamente, inserisci sinonimi in `ICON_KEYWORDS` per migliorare i risultati. Ricorda di includere il foglio di stile della libreria in `index.html` se non è già presente.
 
 ## Keyboard Shortcuts
 
