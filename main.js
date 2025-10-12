@@ -266,6 +266,9 @@ let iconModalOnSelect = null;
 let iconModalCurrentIcon = null;
 let iconModalCurrentRenderMode = "svg";
 let iconModalRenderToken = 0;
+let iconAutocompleteEntries = [];
+let iconAutocompleteIndex = -1;
+let iconAutocompleteRequestToken = 0;
 
 // === ELEMENTI DOM ===
 const svgElem = document.getElementById("mindmap-svg");
@@ -287,6 +290,7 @@ const redoButton = document.getElementById("redo");
 const iconModal = document.getElementById("icon-modal");
 const iconModalList = document.getElementById("icon-modal-list");
 const iconModalSearch = document.getElementById("icon-modal-search");
+const iconModalAutocomplete = document.getElementById("icon-modal-autocomplete");
 const iconModalCloseBtn = document.getElementById("icon-modal-close");
 
 
@@ -533,6 +537,30 @@ async function loadFullIconCatalog() {
     }
 }
 
+function iconMatchesTokens(icon, tokens) {
+    if (!tokens || tokens.length === 0) return true;
+    const iconLower = icon.toLowerCase();
+    const parts = iconLower.split(/\s+/);
+    const baseClass = parts.find(cls => cls.startsWith("fa-"));
+    const normalized = baseClass ? baseClass.replace(/^fa-/, "").replace(/-/g, " ") : iconLower.replace(/-/g, " ");
+    const label = getIconLabel(icon).toLowerCase();
+    const keywords = (ICON_KEYWORDS[icon] || []).map(keyword => keyword.toLowerCase());
+    const libraryClasses = getIconLibraries(icon).map(cls => cls.toLowerCase());
+    const libraryAliases = libraryClasses.flatMap(cls => (ICON_LIBRARY_ALIASES[cls] || [])).map(alias => alias.toLowerCase());
+    return tokens.every(token =>
+        iconLower.includes(token) ||
+        normalized.includes(token) ||
+        label.includes(token) ||
+        libraryClasses.some(library => library.includes(token)) ||
+        libraryAliases.some(alias => alias.includes(token)) ||
+        keywords.some(keyword => keyword.includes(token))
+    );
+}
+
+function getCuratedIconMatches(tokens) {
+    return Object.keys(ICON_SVGS).filter(icon => iconMatchesTokens(icon, tokens)).sort();
+}
+
 function filterFullCatalogMatches(tokens) {
     if (!Array.isArray(tokens) || tokens.length === 0) return fullIconCatalog;
     return fullIconCatalog.filter(entry => tokens.every(token =>
@@ -540,6 +568,203 @@ function filterFullCatalogMatches(tokens) {
         entry.classNameLower.includes(token) ||
         entry.terms.some(term => term.includes(token))
     ));
+}
+
+function createCuratedAutocompleteEntry(icon) {
+    const className = normalizeIconClass(icon);
+    const label = getIconLabel(icon);
+    const libraries = getIconLibraries(icon);
+    const subtitleParts = [];
+    if (libraries.length > 0) subtitleParts.push(libraries.join('/'));
+    subtitleParts.push(className);
+    return {
+        className,
+        label,
+        subtitle: subtitleParts.join(' • '),
+        renderMode: "svg"
+    };
+}
+
+function createFullCatalogAutocompleteEntry(entry) {
+    const className = normalizeIconClass(entry.className);
+    return {
+        className,
+        label: entry.label,
+        subtitle: className,
+        renderMode: "webfont"
+    };
+}
+
+function renderIconAutocompleteEntries(entries, { pending = false, emptyMessage = "" } = {}) {
+    if (!iconModalAutocomplete) return;
+    iconModalAutocomplete.innerHTML = "";
+    iconAutocompleteEntries = entries;
+    iconAutocompleteIndex = -1;
+    if (!entries.length) {
+        if (pending) {
+            const loading = document.createElement("div");
+            loading.className = "icon-autocomplete-empty";
+            loading.textContent = "Ricerca icone...";
+            iconModalAutocomplete.appendChild(loading);
+            iconModalAutocomplete.classList.add("show");
+        } else if (emptyMessage) {
+            const empty = document.createElement("div");
+            empty.className = "icon-autocomplete-empty";
+            empty.textContent = emptyMessage;
+            iconModalAutocomplete.appendChild(empty);
+            iconModalAutocomplete.classList.add("show");
+        } else {
+            iconModalAutocomplete.classList.remove("show");
+        }
+        return;
+    }
+
+    const previewColor = appState.isDarkTheme ? "#dfe6f0" : "#4a5b6b";
+    iconModalAutocomplete.classList.add("show");
+    entries.forEach((entry, index) => {
+        const option = document.createElement("div");
+        option.className = "icon-autocomplete-option" + (index === iconAutocompleteIndex ? " active" : "");
+        option.dataset.index = String(index);
+
+        const preview = document.createElement("div");
+        preview.className = "icon-autocomplete-preview";
+        preview.innerHTML = getIconPreviewMarkup(entry.className, 28, previewColor, entry.renderMode);
+
+        const text = document.createElement("div");
+        text.className = "icon-autocomplete-text";
+        const label = document.createElement("span");
+        label.textContent = entry.label;
+        const subtitle = document.createElement("small");
+        subtitle.textContent = entry.subtitle;
+        text.appendChild(label);
+        text.appendChild(subtitle);
+
+        option.appendChild(preview);
+        option.appendChild(text);
+        option.addEventListener("mouseenter", () => setIconAutocompleteActiveIndex(index, false));
+        option.addEventListener("mousedown", event => event.preventDefault());
+        option.addEventListener("click", () => selectIconFromAutocomplete(index));
+        iconModalAutocomplete.appendChild(option);
+    });
+}
+
+function hideIconAutocomplete() {
+    if (!iconModalAutocomplete) return;
+    iconModalAutocomplete.innerHTML = "";
+    iconModalAutocomplete.classList.remove("show");
+    iconAutocompleteEntries = [];
+    iconAutocompleteIndex = -1;
+    iconAutocompleteRequestToken++;
+}
+
+function ensureAutocompleteOptionVisible(index) {
+    if (!iconModalAutocomplete) return;
+    const option = iconModalAutocomplete.querySelector(`.icon-autocomplete-option[data-index="${index}"]`);
+    if (!option) return;
+    const optionTop = option.offsetTop;
+    const optionBottom = optionTop + option.offsetHeight;
+    const visibleTop = iconModalAutocomplete.scrollTop;
+    const visibleBottom = visibleTop + iconModalAutocomplete.clientHeight;
+    if (optionTop < visibleTop) {
+        iconModalAutocomplete.scrollTop = optionTop;
+    } else if (optionBottom > visibleBottom) {
+        iconModalAutocomplete.scrollTop = optionBottom - iconModalAutocomplete.clientHeight;
+    }
+}
+
+function setIconAutocompleteActiveIndex(index, ensureVisible = true) {
+    if (!iconModalAutocomplete) return;
+    const options = iconModalAutocomplete.querySelectorAll(".icon-autocomplete-option");
+    if (!options.length) {
+        iconAutocompleteIndex = -1;
+        return;
+    }
+    if (index < 0 || index >= iconAutocompleteEntries.length) {
+        options.forEach(option => option.classList.remove("active"));
+        iconAutocompleteIndex = -1;
+        return;
+    }
+    iconAutocompleteIndex = index;
+    options.forEach((option, idx) => {
+        if (idx === index) option.classList.add("active");
+        else option.classList.remove("active");
+    });
+    if (ensureVisible) ensureAutocompleteOptionVisible(index);
+}
+
+function selectIconFromAutocomplete(selection) {
+    const entry = typeof selection === "number" ? iconAutocompleteEntries[selection] : selection;
+    if (!entry) return;
+    iconModalCurrentIcon = entry.className;
+    iconModalCurrentRenderMode = entry.renderMode;
+    if (iconModalOnSelect) iconModalOnSelect({ className: entry.className, renderMode: entry.renderMode });
+    chiudiIconModal();
+}
+
+async function updateIconAutocomplete() {
+    if (!iconModalSearch || !iconModalAutocomplete) return;
+    const filtro = (iconModalSearch.value || "").toLowerCase();
+    const tokens = filtro.trim().split(/\s+/).filter(Boolean);
+    if (tokens.length === 0) {
+        hideIconAutocomplete();
+        return;
+    }
+
+    const requestToken = ++iconAutocompleteRequestToken;
+    const curatedMatches = getCuratedIconMatches(tokens);
+    const curatedEntries = curatedMatches.slice(0, 8).map(createCuratedAutocompleteEntry);
+    renderIconAutocompleteEntries(curatedEntries, {
+        pending: true,
+        emptyMessage: "Nessuna icona corrispondente."
+    });
+
+    try {
+        await loadFullIconCatalog();
+        if (requestToken !== iconAutocompleteRequestToken) return;
+        const curatedSet = new Set(curatedMatches.map(icon => normalizeIconClass(icon)));
+        const extraEntries = filterFullCatalogMatches(tokens)
+            .filter(entry => !curatedSet.has(entry.className))
+            .slice(0, 20)
+            .map(createFullCatalogAutocompleteEntry);
+        const combined = [...curatedEntries, ...extraEntries].slice(0, 20);
+        renderIconAutocompleteEntries(combined, {
+            pending: false,
+            emptyMessage: "Nessuna icona corrispondente."
+        });
+    } catch (error) {
+        if (requestToken !== iconAutocompleteRequestToken) return;
+        console.warn("Impossibile aggiornare l'autocompletamento icone:", error);
+        renderIconAutocompleteEntries(curatedEntries, {
+            pending: false,
+            emptyMessage: "Nessuna icona corrispondente."
+        });
+    }
+}
+
+function handleIconAutocompleteKeydown(event) {
+    if (!iconModalAutocomplete || !iconModalAutocomplete.classList.contains("show") || iconAutocompleteEntries.length === 0) {
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            updateIconAutocomplete();
+        }
+        return;
+    }
+
+    if (event.key === "ArrowDown") {
+        event.preventDefault();
+        const nextIndex = (iconAutocompleteIndex + 1) % iconAutocompleteEntries.length;
+        setIconAutocompleteActiveIndex(nextIndex);
+    } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        const nextIndex = iconAutocompleteIndex <= 0 ? iconAutocompleteEntries.length - 1 : iconAutocompleteIndex - 1;
+        setIconAutocompleteActiveIndex(nextIndex);
+    } else if (event.key === "Enter") {
+        if (iconAutocompleteIndex >= 0) {
+            event.preventDefault();
+            selectIconFromAutocomplete(iconAutocompleteIndex);
+        }
+    } else if (event.key === "Escape") {
+        hideIconAutocomplete();
+    }
 }
 
 function showToast(message, type = 'success', duration = 3000) {
@@ -1798,6 +2023,7 @@ function apriIconModal(selectedIcon, callback) {
     }
     iconModal.style.display = "flex";
     iconModalList.scrollTop = 0;
+    hideIconAutocomplete();
     renderIconModalList();
     if (iconModalSearch) {
         setTimeout(() => iconModalSearch.focus(), 50);
@@ -1812,6 +2038,7 @@ function chiudiIconModal() {
     iconModalCurrentRenderMode = "svg";
     if (iconModalSearch) iconModalSearch.value = "";
     if (iconModalList) iconModalList.scrollTop = 0;
+    hideIconAutocomplete();
     iconModalRenderToken++;
 }
 
@@ -1823,25 +2050,7 @@ async function renderIconModalList() {
     const filtroTrimmed = filtro.trim();
     const tokens = filtroTrimmed.split(/\s+/).filter(Boolean);
 
-    const curatedMatches = Object.keys(ICON_SVGS).filter(icon => {
-        if (tokens.length === 0) return true;
-        const iconLower = icon.toLowerCase();
-        const parts = iconLower.split(/\s+/);
-        const baseClass = parts.find(cls => cls.startsWith("fa-"));
-        const normalized = baseClass ? baseClass.replace(/^fa-/, "").replace(/-/g, " ") : iconLower.replace(/-/g, " ");
-        const label = getIconLabel(icon).toLowerCase();
-        const keywords = (ICON_KEYWORDS[icon] || []).map(keyword => keyword.toLowerCase());
-        const libraryClasses = getIconLibraries(icon).map(cls => cls.toLowerCase());
-        const libraryAliases = libraryClasses.flatMap(cls => (ICON_LIBRARY_ALIASES[cls] || [])).map(alias => alias.toLowerCase());
-        return tokens.every(token =>
-            iconLower.includes(token) ||
-            normalized.includes(token) ||
-            label.includes(token) ||
-            libraryClasses.some(library => library.includes(token)) ||
-            libraryAliases.some(alias => alias.includes(token)) ||
-            keywords.some(keyword => keyword.includes(token))
-        );
-    }).sort();
+    const curatedMatches = getCuratedIconMatches(tokens);
 
     const previewColor = appState.isDarkTheme ? "#dfe6f0" : "#4a5b6b";
     const curatedFragment = document.createDocumentFragment();
@@ -1942,7 +2151,29 @@ if (iconModal) {
     });
 }
 if (iconModalSearch) {
-    iconModalSearch.addEventListener("input", () => renderIconModalList());
+    const handleIconModalInput = () => {
+        renderIconModalList();
+        updateIconAutocomplete();
+    };
+    iconModalSearch.addEventListener("input", handleIconModalInput);
+    iconModalSearch.addEventListener("focus", () => updateIconAutocomplete());
+    iconModalSearch.addEventListener("keydown", handleIconAutocompleteKeydown);
+    iconModalSearch.addEventListener("blur", () => {
+        setTimeout(() => {
+            if (!iconModalAutocomplete) return;
+            if (!iconModalAutocomplete.classList.contains("show")) return;
+            if (iconModalAutocomplete.matches(":hover")) return;
+            hideIconAutocomplete();
+        }, 120);
+    });
+}
+
+if (iconModalAutocomplete) {
+    iconModalAutocomplete.addEventListener("mouseleave", () => {
+        setIconAutocompleteActiveIndex(-1, false);
+        if (!iconModalSearch || document.activeElement === iconModalSearch) return;
+        hideIconAutocomplete();
+    });
 }
 
 // === DESCRIZIONE NODO (overlay) ===
