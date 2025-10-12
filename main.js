@@ -1640,6 +1640,33 @@ function renderNodeSourcesList(nodo) {
         };
         actions.appendChild(iconBtn);
 
+        const applyNodeIconBtn = document.createElement("button");
+        applyNodeIconBtn.type = "button";
+        applyNodeIconBtn.className = "btn success small";
+        applyNodeIconBtn.title = "Usa come icona del nodo";
+        applyNodeIconBtn.innerHTML = "<i class=\"fas fa-check-circle\"></i>";
+        applyNodeIconBtn.onclick = () => {
+            const iconClass = sanitizeIconClass(iconInput.value || source.icon);
+            if (!iconClass) {
+                showToast("Inserisci una classe icona valida prima di assegnarla.", "error");
+                return;
+            }
+
+            source.icon = iconClass;
+            iconInput.value = source.icon;
+            preview.innerHTML = getIconMarkupForSource(source.icon, 24, previewColor);
+
+            applyNodeIconSelection(nodo, {
+                className: iconClass,
+                renderMode: isCuratedIconClass(iconClass) ? "svg" : "webfont"
+            });
+            aggiornaNodo(nodo);
+            saveToHistory();
+            aggiornaEditorNodo();
+            showToast("Icona del nodo aggiornata dalla fonte.");
+        };
+        actions.appendChild(applyNodeIconBtn);
+
         const removeBtn = document.createElement("button");
         removeBtn.type = "button";
         removeBtn.className = "btn danger small";
