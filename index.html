@@ -56,6 +56,14 @@
     </div>
 </div>
 
+<div class="classification-panel" id="classification-panel">
+    <div class="classification-header">
+        <i class="fas fa-layer-group"></i>
+        <span>Classificazioni</span>
+    </div>
+    <div class="classification-list" id="classification-list"></div>
+</div>
+
 <div id="mindmap-container">
     <svg id="mindmap-svg" tabindex="0">
         <defs>
@@ -103,13 +111,14 @@
         <div class="form-group">
             <label>Categoria:</label>
             <select id="node-category">
-                <option value="idea">💡 Idea</option>
-                <option value="task">✅ Task</option>
-                <option value="person">👤 Persona</option>
-                <option value="resource">📚 Risorsa</option>
-                <option value="location">📍 Luogo</option>
-                <option value="date">📅 Data</option>
-                <option value="default">⚪ Default</option>
+                <option value="foundation">🧒 Formazione di base</option>
+                <option value="lower_secondary">📘 Secondaria di I grado</option>
+                <option value="upper_secondary">🏫 Secondaria di II grado</option>
+                <option value="vocational">🛠️ Percorsi professionalizzanti</option>
+                <option value="higher">🎓 Istruzione terziaria</option>
+                <option value="adult">🔄 Formazione adulti</option>
+                <option value="support">🤝 Servizi di supporto</option>
+                <option value="default">⚪ Generico</option>
             </select>
         </div>
         <div class="form-group">
@@ -289,6 +298,7 @@
 <script defer src="fontawesome-compat.js"></script>
 <script defer src="icon-library.js"></script>
 <script defer src="data/fontawesome-icons.js"></script>
+<script defer src="data/education-map.js"></script>
 <script defer src="main.js"></script>
 </body>
 </html>
