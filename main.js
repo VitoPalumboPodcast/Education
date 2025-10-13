@@ -8,14 +8,13 @@ const CONFIG = {
         icons: ["#ffffff","#2c3e50","#34495e","#f1c40f","#e74c3c","#3498db"],
         connections: ["#34495e","#9b59b6","#e67e22","#2ecc71","#e74c3c","#c0392b","#3498db","#f39c12"],
         categories: {
-            foundation: "#f6b93b",
-            lower_secondary: "#6ab04c",
-            upper_secondary: "#4c6ef5",
-            vocational: "#ff6b6b",
-            higher: "#6c5ce7",
-            adult: "#1dd1a1",
-            support: "#74b9ff",
-            default: "#bdc3c7"
+            idea: "#f1c40f", // Giallo
+            task: "#2ecc71", // Verde
+            person: "#9b59b6", // Viola
+            resource: "#3498db", // Blu
+            location: "#e74c3c", // Rosso
+            date: "#1abc9c", // Turchese
+            default: "#bdc3c7" // Grigio
         },
         priority: {
             low: "#27ae60", // Verde
@@ -40,40 +39,6 @@ const CONFIG = {
         "fab fa-github","fab fa-youtube","fab fa-figma"
     ]),
     defaultViewBox: "0 0 1200 800",
-    categoryDefinitions: {
-        foundation: {
-            label: "Formazione di base",
-            description: "Infanzia e primaria"
-        },
-        lower_secondary: {
-            label: "Secondaria di I grado",
-            description: "Primo ciclo secondario"
-        },
-        upper_secondary: {
-            label: "Secondaria di II grado",
-            description: "Percorsi liceali"
-        },
-        vocational: {
-            label: "Percorsi professionalizzanti",
-            description: "Tecnici, professionali, IeFP"
-        },
-        higher: {
-            label: "Istruzione terziaria",
-            description: "Università, ITS, AFAM"
-        },
-        adult: {
-            label: "Formazione adulti",
-            description: "Aggiornamento continuo"
-        },
-        support: {
-            label: "Servizi di supporto",
-            description: "Diritto allo studio e orientamento"
-        },
-        default: {
-            label: "Generico",
-            description: "Nodi senza classificazione"
-        }
-    },
     localStorageKey: "mindMapAdvancedData",
     shortcuts: {
         'KeyN': () => document.getElementById("add-node").click(),
@@ -299,9 +264,7 @@ let appState = {
     history: [],
     historyIndex: -1,
     autoSave: true, // Potentially use this for periodic auto-save
-    currentViewBox: CONFIG.defaultViewBox.split(" ").map(Number),
-    categoryVisibility: {},
-    categoryControls: {}
+    currentViewBox: CONFIG.defaultViewBox.split(" ").map(Number)
 };
 
 let addChildArrow = null;
@@ -329,8 +292,6 @@ const minimapNodesGroup = minimapSvg.select("#minimap-nodes-group");
 const minimapConnectionsGroup = minimapSvg.select("#minimap-connections-group");
 const minimapViewportRect = minimapSvg.select("#minimap-viewport-rect");
 const loadingIndicator = document.getElementById("loading");
-const classificationPanel = document.getElementById("classification-panel");
-const classificationList = document.getElementById("classification-list");
 const undoButton = document.getElementById("undo");
 const redoButton = document.getElementById("redo");
 const iconModal = document.getElementById("icon-modal");
@@ -356,95 +317,6 @@ function escapeHtml(str) {
         '"': '&quot;',
         "'": '&#39;'
     }[char] || char));
-}
-
-function getCategoryKey(category) {
-    if (category && CONFIG.categoryDefinitions[category]) {
-        return category;
-    }
-    return "default";
-}
-
-function isCategoryActive(category) {
-    if (!appState.categoryVisibility) return true;
-    const key = getCategoryKey(category);
-    if (!(key in appState.categoryVisibility)) return true;
-    return !!appState.categoryVisibility[key];
-}
-
-function initializeCategoryVisibility() {
-    appState.categoryVisibility = {};
-    Object.keys(CONFIG.categoryDefinitions).forEach(key => {
-        appState.categoryVisibility[key] = true;
-    });
-}
-
-function renderCategoryPanel() {
-    if (!classificationList) {
-        if (classificationPanel) classificationPanel.style.display = "none";
-        return;
-    }
-    if (classificationPanel) classificationPanel.style.display = "flex";
-    classificationList.innerHTML = "";
-    appState.categoryControls = {};
-    Object.entries(CONFIG.categoryDefinitions).forEach(([key, meta]) => {
-        const item = document.createElement("label");
-        item.className = "classification-item";
-        const color = CONFIG.colors.categories[key] || CONFIG.colors.categories.default;
-        const label = escapeHtml(meta.label || key);
-        const description = meta.description ? `<span class="classification-description">${escapeHtml(meta.description)}</span>` : "";
-        item.innerHTML = `
-            <div class="classification-label">
-                <span class="classification-color" style="background:${color}"></span>
-                <span class="classification-text"><strong>${label}</strong>${description}</span>
-            </div>
-            <div class="classification-switch"><input type="checkbox" data-category="${key}"><span></span></div>
-        `;
-        const checkbox = item.querySelector("input");
-        const isActive = isCategoryActive(key);
-        checkbox.checked = isActive;
-        item.classList.toggle("inactive", !isActive);
-        checkbox.addEventListener("change", (event) => {
-            setCategoryVisibility(key, event.target.checked);
-        });
-        classificationList.appendChild(item);
-        appState.categoryControls[key] = { container: item, checkbox };
-    });
-}
-
-function setCategoryVisibility(category, isVisible) {
-    const key = getCategoryKey(category);
-    if (!appState.categoryVisibility) appState.categoryVisibility = {};
-    appState.categoryVisibility[key] = !!isVisible;
-    const control = appState.categoryControls[key];
-    if (control) {
-        control.container.classList.toggle("inactive", !isVisible);
-        if (control.checkbox.checked !== !!isVisible) {
-            control.checkbox.checked = !!isVisible;
-        }
-    }
-    applyCategoryFilters();
-    updateMinimap();
-}
-
-function applyCategoryFilters() {
-    nodesGroup.selectAll(".node").each(function() {
-        const nodeSelection = d3.select(this);
-        const data = nodeSelection.datum();
-        const active = isCategoryActive(data && data.category);
-        nodeSelection.classed("category-muted", !active);
-    });
-    connectionsGroup.selectAll(".connection-group").each(function() {
-        const connSelection = d3.select(this);
-        const data = connSelection.datum();
-        let active = true;
-        if (data) {
-            const sourceCategory = data.source && data.source.category;
-            const targetCategory = data.target && data.target.category;
-            active = isCategoryActive(sourceCategory) || isCategoryActive(targetCategory);
-        }
-        connSelection.classed("category-muted", !active);
-    });
 }
 
 function sanitizeIconClass(value) {
@@ -1125,7 +997,6 @@ function disegnaNodo(nodo) {
         .attr("class", "node")
         .attr("id", nodo.id)
         .attr("transform", `translate(${nodo.x},${nodo.y})`)
-        .datum(nodo)
         .style("cursor", "pointer")
         .on("dblclick", (event) => {
             event.stopPropagation();
@@ -1154,8 +1025,6 @@ function disegnaNodo(nodo) {
     } else {
         g.classed("dimmed", false);
     }
-
-    g.classed("category-muted", !isCategoryActive(nodo.category));
     
     // Drag behavior
     g.call(d3.drag()
@@ -1337,7 +1206,6 @@ function showAddChildArrow(nodo) {
 function aggiornaNodo(nodo) {
     nodo.updatedAt = new Date().toISOString();
     disegnaNodo(nodo);
-    applyCategoryFilters();
     aggiornaConnessioni(); // Connections might need to adjust if node size/shape changes
     updateMinimap();
     if (appState.selectedNode && appState.selectedNode.id === nodo.id) {
@@ -1439,7 +1307,6 @@ function disegnaConnessione(conn) {
     g = connectionsGroup.append("g")
         .attr("class", "connection-group")
         .attr("id", conn.id)
-        .datum(conn)
         .style("cursor", "pointer")
         .on("click", event => {
             event.stopPropagation();
@@ -1504,9 +1371,6 @@ function disegnaConnessione(conn) {
     if (appState.selectedConnection && appState.selectedConnection.id === conn.id) {
         line.classed("selected", true);
     }
-
-    const isActive = isCategoryActive(conn.source && conn.source.category) || isCategoryActive(conn.target && conn.target.category);
-    g.classed("category-muted", !isActive);
 }
 
 function aggiornaConnessioni() {
@@ -2638,7 +2502,6 @@ function caricaMappa(data) {
     }
 
     redrawAll();
-    applyCategoryFilters();
     appState.history = []; // Clear history for new map
     appState.historyIndex = -1;
     saveToHistory(); // Save initial state of loaded map
@@ -2650,13 +2513,11 @@ function redrawAll() {
     appState.nodes.forEach(disegnaNodo);
     appState.connections.forEach(disegnaConnessione);
     updateMinimap();
-    applyCategoryFilters();
 }
 function redrawAllNodes() {
     nodesGroup.selectAll("*").remove();
     appState.nodes.forEach(disegnaNodo);
     updateMinimapNodes(); // Only update nodes in minimap
-    applyCategoryFilters();
 }
 
 
@@ -2689,21 +2550,8 @@ function caricaMappaLocale() {
             localStorage.removeItem(CONFIG.localStorageKey); // Remove corrupted data
             initDefaultMap(); // Load default if corrupted
         }
-    } else if (typeof window !== "undefined" && window.DEFAULT_EDUCATION_MAP) {
-        try {
-            showLoading("Caricamento sistema educativo nazionale...");
-            const dataset = JSON.parse(JSON.stringify(window.DEFAULT_EDUCATION_MAP));
-            caricaMappa(dataset);
-            showToast("Mappa nazionale aggiornata caricata.", "success");
-        } catch (e) {
-            console.error("Impossibile caricare il dataset predefinito:", e);
-            showToast("Caricamento dataset predefinito non riuscito.", "error");
-            initDefaultMap();
-        } finally {
-            hideLoading();
-        }
     } else {
-        initDefaultMap(); // Load default if no saved data or dataset
+        initDefaultMap(); // Load default if no saved data
     }
 }
 
@@ -3051,10 +2899,7 @@ function updateMinimap() {
             shapeMini = minimapNodesGroup.append("rect").attr("x", n.x - miniSize * 0.7 / 2).attr("y", n.y - miniSize / 2)
                 .attr("width", miniSize * 0.7).attr("height", miniSize);
         }
-        const categoryActive = isCategoryActive(n.category);
-        shapeMini.attr("fill", n.backgroundColor)
-            .attr("class", "node-shape-mini")
-            .attr("fill-opacity", categoryActive ? 0.9 : 0.25);
+        shapeMini.attr("fill", n.backgroundColor).attr("class", "node-shape-mini");
         if (appState.selectedNode && n.id === appState.selectedNode.id) {
             shapeMini.attr("stroke", CONFIG.colors.priority.high).attr("stroke-width", 3 / minimapScale); // Thicker border for selected
         }
@@ -3066,8 +2911,7 @@ function updateMinimap() {
                 .attr("x1", c.source.x).attr("y1", c.source.y)
                 .attr("x2", c.target.x).attr("y2", c.target.y)
                 .attr("class", "connection-mini")
-                .attr("stroke", c.color)
-                .attr("stroke-opacity", (isCategoryActive(c.source && c.source.category) || isCategoryActive(c.target && c.target.category)) ? 0.85 : 0.2);
+                .attr("stroke", c.color);
         }
     });
     updateMinimapViewport();
@@ -3112,10 +2956,7 @@ function updateMinimapNodes() { // Lighter update, only for nodes
             shapeMini = minimapNodesGroup.append("rect").attr("x", n.x - miniSize * 0.7 / 2).attr("y", n.y - miniSize / 2)
                 .attr("width", miniSize * 0.7).attr("height", miniSize);
         }
-        const categoryActive = isCategoryActive(n.category);
-        shapeMini.attr("fill", n.backgroundColor)
-            .attr("class", "node-shape-mini")
-            .attr("fill-opacity", categoryActive ? 0.9 : 0.25);
+        shapeMini.attr("fill", n.backgroundColor).attr("class", "node-shape-mini");
          if (appState.selectedNode && n.id === appState.selectedNode.id) {
             shapeMini.attr("stroke", CONFIG.colors.priority.high).attr("stroke-width", 3 / minimapScale);
         }
@@ -3257,8 +3098,6 @@ function initDefaultMap(){
 (function init() {
     updateViewBox(CONFIG.defaultViewBox.split(" ").map(Number));
     applySavedTheme(); // Apply theme before loading map, as map loading might toggle theme
-    initializeCategoryVisibility();
-    renderCategoryPanel();
     caricaMappaLocale(); // This will call initDefaultMap if nothing is saved
     updateMinimap();
     updateUndoRedoButtons();
