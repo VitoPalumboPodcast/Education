@@ -2071,6 +2071,26 @@ function chiudiIconModal() {
     iconModalRenderToken++;
 }
 
+function isIconModalVisible() {
+    if (!iconModal) return false;
+    if (iconModal.style.display) {
+        return iconModal.style.display !== "none";
+    }
+    if (typeof window !== "undefined" && window.getComputedStyle) {
+        return window.getComputedStyle(iconModal).display !== "none";
+    }
+    return false;
+}
+
+function syncIconModalSearchValue(value) {
+    if (!iconModalSearch) return;
+    if (iconModalSearch.value === value) {
+        return;
+    }
+    iconModalSearch.value = value;
+    iconModalSearch.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
 async function renderIconModalList() {
     if (!iconModalList) return;
     const requestToken = ++iconModalRenderToken;
@@ -2240,6 +2260,28 @@ if (sidebarIconSearchInput) {
         if (event.key === "Enter") {
             event.preventDefault();
             openSidebarIconSearch(sidebarIconSearchInput.value);
+        }
+    });
+
+    sidebarIconSearchInput.addEventListener("input", () => {
+        const rawValue = sidebarIconSearchInput.value || "";
+        const hasSearchTerm = rawValue.trim().length > 0;
+
+        if (!hasSearchTerm) {
+            if (isIconModalVisible()) {
+                syncIconModalSearchValue("");
+            }
+            return;
+        }
+
+        if (!appState.selectedNode) {
+            return;
+        }
+
+        if (isIconModalVisible()) {
+            syncIconModalSearchValue(rawValue);
+        } else {
+            openSidebarIconSearch(rawValue);
         }
     });
 }
