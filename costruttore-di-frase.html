@@ -148,7 +148,14 @@
 
     const subjectObjectBlocks = {
       'il gatto': {
-        'mangia': new Set(['la mela'])
+        'mangia': new Set(['la mela']),
+        'beve': new Set(['il succo']),
+        'legge': new Set(['il libro'])
+      },
+      'il cane': {
+        'mangia': new Set(['la mela']),
+        'beve': new Set(['il succo']),
+        'legge': new Set(['il libro'])
       }
     };
 
@@ -251,6 +258,8 @@
     }
 
     function isAllowedTypeNow(type){
+      if (!trainingBox.checked) return true;
+      if (type === 'subject') return true;
       if (isPhraseValid()) return true;
       if (state.step==='done') return false;
       return state.step === type;
