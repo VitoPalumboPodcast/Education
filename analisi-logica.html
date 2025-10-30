@@ -91,6 +91,17 @@
       text-align: center;
     }
 
+    .mode-hint {
+      margin: 0;
+      text-align: center;
+      font-size: 0.95em;
+      color: #475569;
+    }
+
+    body.high-contrast .mode-hint {
+      color: #cbd5f5;
+    }
+
     .step-indicator {
       display: flex;
       justify-content: space-between;
@@ -335,6 +346,8 @@
 
     <section class="sentence" id="sentenceText" aria-live="polite"></section>
 
+    <p class="mode-hint" id="modeHint" role="status" aria-live="polite"></p>
+
     <div class="step-indicator" aria-hidden="true">
       <div class="step" data-role="fa">1. Trova FA (verbo)</div>
       <div class="step" data-role="chi">2. Trova CHI</div>
@@ -367,6 +380,14 @@
   </div>
 
   <div class="settings-panel hidden" id="settingsPanel">
+    <label class="toggle">
+      <input type="checkbox" id="guidedToggle" checked />
+      Percorso guidato (Chi → Fa → Cosa)
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="speechToggle" />
+      Suggerimenti vocali
+    </label>
     <label>
       Dimensione testo
       <input type="range" id="fontSlider" min="18" max="28" value="20" />
@@ -415,6 +436,7 @@
 
     const wordBank = document.getElementById("wordBank");
     const sentenceText = document.getElementById("sentenceText");
+    const modeHint = document.getElementById("modeHint");
     const feedback = document.getElementById("feedback");
     const steps = Array.from(document.querySelectorAll(".step"));
     const baskets = Array.from(document.querySelectorAll(".basket"));
@@ -424,10 +446,40 @@
     const settingsPanel = document.getElementById("settingsPanel");
     const fontSlider = document.getElementById("fontSlider");
     const contrastToggle = document.getElementById("contrastToggle");
+    const guidedToggle = document.getElementById("guidedToggle");
+    const speechToggle = document.getElementById("speechToggle");
 
     let currentSentenceIndex = 0;
     let currentSentence = null;
     let currentStep = 0;
+    let guidedMode = true;
+    let speechEnabled = false;
+
+    const ROLE_MESSAGES = {
+      fa: "Bravo! Hai trovato il FA (verbo).",
+      chi: "Ottimo! Hai individuato il CHI.",
+      cosa: "Ben fatto! Questo pezzo completa la frase."
+    };
+
+    const ERROR_MESSAGES = {
+      fa: "Per prima cosa scegli un verbo (FA).",
+      chi: "Adesso trova chi compie l'azione.",
+      cosa: "Ora trascina gli altri pezzi della frase."
+    };
+
+    const NEXT_STEP_HINTS = {
+      chi: "Ora cerca chi compie l'azione.",
+      cosa: "Completa con gli altri pezzi della frase."
+    };
+
+    const STEP_HINTS = {
+      fa: "Cerca nella frase il FA: il verbo dell'azione.",
+      chi: "Trova chi compie l'azione descritta.",
+      cosa: "Sposta tutti gli altri pezzi nel cesto COSA / ALTRO."
+    };
+
+    guidedMode = guidedToggle.checked;
+    speechEnabled = speechToggle.checked;
 
     function shuffle(array) {
       const copy = [...array];
@@ -440,6 +492,16 @@
 
     function setStep(stepIndex) {
       currentStep = stepIndex;
+      if (!guidedMode) {
+        steps.forEach((step) => {
+          step.classList.remove("active", "done");
+        });
+        baskets.forEach((basket) => {
+          basket.classList.remove("active");
+        });
+        updateModeHint();
+        return;
+      }
       steps.forEach((step) => {
         const role = step.dataset.role;
         const roleIndex = role === "fa" ? 0 : role === "chi" ? 1 : 2;
@@ -450,6 +512,7 @@
         const basketStep = Number(basket.dataset.step);
         basket.classList.toggle("active", basketStep === stepIndex);
       });
+      updateModeHint();
     }
 
     function populateSentence(index) {
@@ -457,6 +520,7 @@
       sentenceText.textContent = currentSentence.text;
       feedback.textContent = "";
       feedback.className = "feedback";
+      feedback.removeAttribute("role");
       wordBank.innerHTML = "";
       baskets.forEach((basket) => {
         basket.querySelector(".basket-words").innerHTML = "";
@@ -476,15 +540,23 @@
         wordBank.appendChild(token);
       });
       setStep(0);
+      synchronizeMode();
     }
 
     function handleTokenPlacement(token) {
-      const targetRole = getRoleByStep(currentStep);
-      if (token.dataset.role !== targetRole) {
-        showFeedback(false);
+      if (!token || token.classList.contains("locked")) return;
+      const tokenRole = token.dataset.role;
+      if (guidedMode) {
+        const targetRole = getRoleByStep(currentStep);
+        if (tokenRole !== targetRole) {
+          showFeedback(false, ERROR_MESSAGES[targetRole] || "Prova con un'altra parola.");
+          return;
+        }
+        dropTokenIntoBasket(token, targetRole);
+        checkProgress();
         return;
       }
-      dropTokenIntoBasket(token, targetRole);
+      dropTokenIntoBasket(token, tokenRole);
       checkProgress();
     }
 
@@ -498,32 +570,127 @@
       basket.querySelector(".basket-words").appendChild(token);
       token.classList.add("locked");
       token.setAttribute("aria-disabled", "true");
-      showFeedback(true);
+      showFeedback(true, ROLE_MESSAGES[role] || "Bravo!");
+      updateModeHint();
     }
 
     function checkProgress() {
+      if (!currentSentence) return;
+      if (!guidedMode) {
+        if (isSentenceComplete()) {
+          showCompletion();
+        }
+        return;
+      }
       const role = getRoleByStep(currentStep);
-      const allTokens = Array.from(document.querySelectorAll(`.token[data-role="${role}"]`));
-      const placed = allTokens.filter((token) => token.classList.contains("locked"));
-      const totalNeeded = currentSentence.tokens.filter((token) => token.role === role).length;
-      if (placed.length >= totalNeeded) {
+      const totalNeeded = totalTokensForRole(role);
+      if (totalNeeded === 0) {
         if (currentStep < 2) {
           setStep(currentStep + 1);
         } else {
-          feedback.textContent = "Bravo! Tutto completo";
-          feedback.classList.add("ok");
-          feedback.classList.remove("ko");
+          showCompletion();
+        }
+        return;
+      }
+      const placed = countLockedTokens(role);
+      if (placed >= totalNeeded) {
+        if (currentStep < 2) {
+          const nextStep = currentStep + 1;
+          setStep(nextStep);
+          const nextRole = getRoleByStep(nextStep);
+          const hint = NEXT_STEP_HINTS[nextRole];
+          if (hint) {
+            showFeedback(true, hint);
+          }
+        } else {
+          showCompletion();
         }
       }
     }
 
-    function showFeedback(isOk) {
-      feedback.textContent = isOk ? "Bravo!" : "Oops!";
+    function showFeedback(isOk, message) {
+      const text = message || (isOk ? "Bravo!" : "Oops!");
+      feedback.textContent = text;
       feedback.classList.toggle("ok", isOk);
       feedback.classList.toggle("ko", !isOk);
       if (!isOk) {
         feedback.setAttribute("role", "alert");
         setTimeout(() => feedback.removeAttribute("role"), 500);
+      } else {
+        feedback.removeAttribute("role");
+      }
+      speakMessage(text);
+    }
+
+    function showCompletion() {
+      showFeedback(true, "Bravo! Tutto completo");
+      updateModeHint();
+    }
+
+    function countLockedTokens(role) {
+      const basket = baskets.find((b) => b.dataset.role === role);
+      if (!basket) return 0;
+      return basket.querySelectorAll(`.token.locked[data-role="${role}"]`).length;
+    }
+
+    function totalTokensForRole(role) {
+      if (!currentSentence) return 0;
+      return currentSentence.tokens.filter((token) => token.role === role).length;
+    }
+
+    function isSentenceComplete() {
+      if (!currentSentence) return false;
+      return document.querySelectorAll(".token:not(.locked)").length === 0;
+    }
+
+    function updateModeHint() {
+      if (!modeHint) return;
+      if (isSentenceComplete()) {
+        modeHint.textContent = "Frase completata! Ottimo lavoro.";
+        return;
+      }
+      if (!guidedMode) {
+        const remaining = document.querySelectorAll(".token:not(.locked)").length;
+        modeHint.textContent = remaining > 0
+          ? `Modalità libera: abbina le parole ai cestini corretti (${remaining} da sistemare).`
+          : "Modalità libera: tutti i pezzi sono al posto giusto!";
+        return;
+      }
+      const role = getRoleByStep(currentStep);
+      modeHint.textContent = STEP_HINTS[role] || "Completa l'attività seguendo l'ordine.";
+    }
+
+    function speakMessage(text) {
+      if (!speechEnabled || !text) return;
+      if (typeof speechSynthesis === "undefined") return;
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "it-IT";
+      utterance.rate = 1;
+      speechSynthesis.speak(utterance);
+    }
+
+    function synchronizeMode() {
+      if (guidedMode) {
+        synchronizeStepWithProgress();
+      } else {
+        setStep(currentStep);
+      }
+    }
+
+    function synchronizeStepWithProgress() {
+      if (!guidedMode) return;
+      const roles = ["fa", "chi", "cosa"];
+      for (let index = 0; index < roles.length; index++) {
+        const role = roles[index];
+        if (countLockedTokens(role) < totalTokensForRole(role)) {
+          setStep(index);
+          return;
+        }
+      }
+      setStep(2);
+      if (isSentenceComplete()) {
+        showCompletion();
       }
     }
 
@@ -544,15 +711,38 @@
       });
       basket.addEventListener("drop", (event) => {
         event.preventDefault();
-        if (!draggedToken) return;
-        const role = getRoleByStep(currentStep);
-        if (basket.dataset.role !== role || draggedToken.dataset.role !== role) {
-          showFeedback(false);
+        if (!draggedToken || draggedToken.classList.contains("locked")) return;
+        const tokenRole = draggedToken.dataset.role;
+        const basketRole = basket.dataset.role;
+        if (guidedMode) {
+          const expectedRole = getRoleByStep(currentStep);
+          if (basketRole !== expectedRole || tokenRole !== expectedRole) {
+            showFeedback(false, ERROR_MESSAGES[expectedRole] || "Segui l'ordine guidato.");
+            return;
+          }
+          dropTokenIntoBasket(draggedToken, expectedRole);
+          checkProgress();
           return;
         }
-        dropTokenIntoBasket(draggedToken, role);
+        if (tokenRole !== basketRole) {
+          showFeedback(false, `In questo cesto vanno parole di tipo ${basketRole.toUpperCase()}.`);
+          return;
+        }
+        dropTokenIntoBasket(draggedToken, basketRole);
         checkProgress();
       });
+    });
+
+    guidedToggle.addEventListener("change", (event) => {
+      guidedMode = event.target.checked;
+      synchronizeMode();
+    });
+
+    speechToggle.addEventListener("change", (event) => {
+      speechEnabled = event.target.checked;
+      if (!speechEnabled && typeof speechSynthesis !== "undefined") {
+        speechSynthesis.cancel();
+      }
     });
 
     resetButton.addEventListener("click", () => populateSentence(currentSentenceIndex));
