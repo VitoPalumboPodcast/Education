@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scheda Interattiva di Analisi Logica</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --ink: #1f2933;
+      --muted: #eef2f7;
+      --border: #d0d7e2;
+      --primary: #2563eb;
+      --secondary: #f97316;
+      --accent: #0ea5e9;
+      --success: #16a34a;
+      --error: #dc2626;
+      --subject: #facc15;
+      --predicate: #fb7185;
+      --object: #34d399;
+      --termine: #a855f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Atkinson Hyperlegible", Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    body.high-contrast {
+      background: #111827;
+      color: #f9fafb;
+    }
+
+    body.high-contrast .container {
+      background: #1f2937;
+      border-color: #374151;
+    }
+
+    body.high-contrast .area-title {
+      color: #facc15;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: auto;
+      background: var(--card);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      padding: 32px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .page-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      font-size: 1rem;
+      color: #475569;
+    }
+
+    body.high-contrast .subtitle {
+      color: #cbd5f5;
+    }
+
+    .layout {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .area {
+      background: var(--muted);
+      border-radius: 16px;
+      padding: 18px;
+      border: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .area-title {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .settings-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .settings-group label,
+    .settings-group button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 8px 12px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .settings-group button {
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .settings-group button:hover {
+      filter: brightness(0.95);
+    }
+
+    .sentence-panel {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      border: 2px solid var(--border);
+      box-shadow: inset 0 2px 6px rgba(15, 23, 42, 0.05);
+    }
+
+    .sentence-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sentence-text {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+      justify-content: center;
+    }
+
+    .word-chip {
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 16px;
+      border: 2px solid transparent;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+      position: relative;
+    }
+
+    .word-chip:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .word-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(37, 99, 235, 0.18);
+    }
+
+    .word-chip.selected {
+      border-color: var(--accent);
+      background: #e0f2fe;
+    }
+
+    .word-chip.locked {
+      opacity: 0.75;
+      pointer-events: none;
+      background: rgba(15, 118, 110, 0.08);
+    }
+
+    .word-chip.role-soggetto {
+      border-color: var(--subject);
+      background: rgba(250, 204, 21, 0.25);
+    }
+
+    .word-chip.role-predicato {
+      border-color: var(--predicate);
+      background: rgba(251, 113, 133, 0.25);
+    }
+
+    .word-chip.role-oggetto {
+      border-color: var(--object);
+      background: rgba(52, 211, 153, 0.25);
+    }
+
+    .word-chip.role-termine {
+      border-color: var(--termine);
+      background: rgba(168, 85, 247, 0.25);
+    }
+
+    .word-chip.role-luogo {
+      border-color: var(--accent);
+      background: rgba(14, 165, 233, 0.25);
+    }
+
+    .instruction {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .steps-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .step-card {
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .step-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
+    }
+
+    .step-card.completed {
+      border-color: var(--success);
+    }
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+    }
+
+    .support-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px;
+      border: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      text-align: center;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .support-card:hover,
+    .support-card:focus-visible {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .support-icon {
+      font-size: 2rem;
+    }
+
+    .feedback-area {
+      min-height: 48px;
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(37, 99, 235, 0.08);
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .feedback-area.positive {
+      background: rgba(22, 163, 74, 0.15);
+      color: #065f46;
+    }
+
+    .feedback-area.negative {
+      background: rgba(220, 38, 38, 0.15);
+      color: #7f1d1d;
+    }
+
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .actions-row button {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.15s;
+      color: #fff;
+    }
+
+    .actions-row button:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-check {
+      background: var(--primary);
+    }
+
+    .btn-next {
+      background: var(--secondary);
+    }
+
+    .btn-reset {
+      background: #475569;
+    }
+
+    .analysis-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .analysis-table th,
+    .analysis-table td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .analysis-table th {
+      background: #e2e8f0;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    body.high-contrast .analysis-table th {
+      background: #374151;
+    }
+
+    .analysis-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .prompt-output {
+      background: rgba(14, 165, 233, 0.15);
+      border: 2px solid rgba(14, 165, 233, 0.35);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.95rem;
+    }
+
+    .select-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .select-wrap select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      font-size: 1rem;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="application" aria-describedby="pageDescription">
+    <header>
+      <h1 class="page-title">Analisi Logica Guidata</h1>
+      <p id="pageDescription" class="subtitle">
+        Segui i passi e ricevi aiuto immediato per analizzare la frase. Impostazioni inclusive e scheda stampabile.
+      </p>
+    </header>
+
+    <section class="layout">
+      <section class="area" aria-labelledby="area-a-title">
+        <h2 id="area-a-title" class="area-title">Area A · Impostazioni e Contesto</h2>
+        <p>
+          Personalizza l'aspetto della scheda per favorire la lettura. Le impostazioni scelte si applicano anche alla stampa.
+        </p>
+        <div class="settings-group">
+          <label for="fontRange">
+            <span aria-hidden="true">🔍</span>
+            Dimensione testo
+            <input type="range" id="fontRange" min="90" max="130" value="100" />
+          </label>
+          <button type="button" id="toggleContrast" aria-pressed="false">🎨 Contrasto alto</button>
+          <button type="button" id="printButton">🖨️ Stampa</button>
+        </div>
+        <div class="sentence-select select-wrap">
+          <label for="sentencePicker">Frase da analizzare</label>
+          <select id="sentencePicker" aria-describedby="sentenceHelp"></select>
+          <span id="sentenceHelp">Puoi scegliere tra frasi graduate per difficoltà crescente.</span>
+        </div>
+      </section>
+
+      <section class="area" aria-labelledby="area-b-title">
+        <h2 id="area-b-title" class="area-title">Area B · Frase e Workspace</h2>
+        <div class="sentence-panel" aria-live="polite">
+          <div class="sentence-header">
+            <strong>Frase corrente</strong>
+            <span id="stepIndicator">Passo 1 di 4</span>
+          </div>
+          <div id="sentenceText" class="sentence-text" role="group" aria-label="Parole della frase"></div>
+        </div>
+      </section>
+
+      <section class="area" aria-labelledby="area-c-title">
+        <h2 id="area-c-title" class="area-title">Area C · Istruzioni passo passo</h2>
+        <p id="instructionText" class="instruction"></p>
+        <div class="steps-timeline" id="stepsTimeline" aria-live="polite"></div>
+      </section>
+
+      <section class="area" aria-labelledby="area-d-title">
+        <h2 id="area-d-title" class="area-title">Area D · Supporti e Pittogrammi</h2>
+        <p>Serve un aiuto? Clicca un simbolo per ricevere la domanda guida o ascoltare un suggerimento.</p>
+        <div class="support-grid" id="supportGrid"></div>
+        <div id="promptOutput" class="prompt-output" aria-live="assertive"></div>
+      </section>
+
+      <section class="area" aria-labelledby="area-e-title">
+        <h2 id="area-e-title" class="area-title">Area E · Analisi costruita</h2>
+        <p>
+          Ogni elemento corretto viene registrato nella tabella. Per i complementi seleziona anche il tipo corretto.
+        </p>
+        <div class="select-wrap" id="complementSelector" hidden>
+          <label for="complementChoice">Che tipo di complemento hai trovato?</label>
+          <select id="complementChoice"></select>
+        </div>
+        <table class="analysis-table" aria-describedby="analysisHelp">
+          <thead>
+            <tr>
+              <th>Ruolo</th>
+              <th>Elemento della frase</th>
+              <th>Domanda chiave</th>
+            </tr>
+          </thead>
+          <tbody id="analysisBody"></tbody>
+        </table>
+        <p id="analysisHelp" class="sr-only">
+          Tabella con i risultati dell'analisi logica svolta durante l'attività.
+        </p>
+      </section>
+
+      <section class="area" aria-labelledby="area-f-title">
+        <h2 id="area-f-title" class="area-title">Area F · Navigazione e Feedback</h2>
+        <div id="feedback" class="feedback-area" role="status" aria-live="polite"></div>
+        <div class="actions-row">
+          <button type="button" class="btn-check" id="checkButton">✔️ Verifica</button>
+          <button type="button" class="btn-next" id="nextButton" disabled>➡️ Passo successivo</button>
+          <button type="button" class="btn-reset" id="resetButton">🔄 Ricomincia</button>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script>
+    const sentences = [
+      {
+        id: 's1',
+        label: 'Livello 1 · Predicato semplice',
+        text: [
+          { id: 'la-nonna', label: 'La nonna', role: 'soggetto', question: 'Chi compie l\'azione?' },
+          { id: 'ha-preparato', label: 'ha preparato', role: 'predicato', question: 'Che cosa fa?' },
+          { id: 'il-dolce', label: 'il dolce', role: 'oggetto', question: 'Che cosa?' },
+          { id: 'per-luca', label: 'per Luca', role: 'termine', question: 'Per chi?/A chi?' }
+        ],
+        steps: [
+          {
+            id: 'predicato',
+            title: 'Passo 1: Individua il Predicato Verbale',
+            description: 'Clicca sull\'azione principale. Puoi usare il simbolo azione per farti aiutare.',
+            targets: ['ha-preparato'],
+            support: 'predicato'
+          },
+          {
+            id: 'soggetto',
+            title: 'Passo 2: Individua il Soggetto',
+            description: 'Chi compie l\'azione? Cerca chi fa ciò che hai appena trovato.',
+            targets: ['la-nonna'],
+            support: 'soggetto'
+          },
+          {
+            id: 'oggetto',
+            title: 'Passo 3: Trova il Complemento Oggetto',
+            description: 'Seleziona ciò che riceve l\'azione. Risponde a "Chi? Che cosa?".',
+            targets: ['il-dolce'],
+            support: 'oggetto'
+          },
+          {
+            id: 'termine',
+            title: 'Passo 4: Trova il Complemento di Termine',
+            description: 'Individua il destinatario. Dopo la selezione scegli il tipo di complemento corretto.',
+            targets: ['per-luca'],
+            support: 'termine',
+            requiresChoice: true,
+            choices: [
+              { value: 'termine', label: 'Complemento di termine (A chi? A che cosa?)', correct: true },
+              { value: 'luogo', label: 'Complemento di luogo (Dove?)' },
+              { value: 'tempo', label: 'Complemento di tempo (Quando?)' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 's2',
+        label: 'Livello 2 · Due complementi',
+        text: [
+          { id: 'gli-amici', label: 'Gli amici', role: 'soggetto', question: 'Chi compie l\'azione?' },
+          { id: 'hanno-organizzato', label: 'hanno organizzato', role: 'predicato', question: 'Che cosa fanno?' },
+          { id: 'una-festa', label: 'una festa', role: 'oggetto', question: 'Che cosa?' },
+          { id: 'in-giardino', label: 'in giardino', role: 'luogo', question: 'Dove?' },
+          { id: 'per-marta', label: 'per Marta', role: 'termine', question: 'Per chi?' }
+        ],
+        steps: [
+          {
+            id: 'predicato',
+            title: 'Passo 1: Individua il Predicato Verbale',
+            description: 'Cerca l\'azione principale del verbo.',
+            targets: ['hanno-organizzato'],
+            support: 'predicato'
+          },
+          {
+            id: 'soggetto',
+            title: 'Passo 2: Individua il Soggetto',
+            description: 'Chi compie l\'azione? Guarda prima della forma verbale.',
+            targets: ['gli-amici'],
+            support: 'soggetto'
+          },
+          {
+            id: 'oggetto',
+            title: 'Passo 3: Trova il Complemento Oggetto',
+            description: 'Seleziona ciò che viene organizzato.',
+            targets: ['una-festa'],
+            support: 'oggetto'
+          },
+          {
+            id: 'luogo',
+            title: 'Passo 4: Riconosci il Complemento di Luogo',
+            description: 'Dove avviene l\'azione? Scegli il sintagma che risponde a "Dove?".',
+            targets: ['in-giardino'],
+            support: 'luogo',
+            requiresChoice: true,
+            choices: [
+              { value: 'luogo', label: 'Complemento di luogo (Dove?)', correct: true },
+              { value: 'tempo', label: 'Complemento di tempo (Quando?)' },
+              { value: 'modo', label: 'Complemento di modo (Come?)' }
+            ]
+          },
+          {
+            id: 'termine',
+            title: 'Passo 5: Completa con il Complemento di Termine',
+            description: 'Individua a chi è destinata l\'azione e conferma il tipo di complemento.',
+            targets: ['per-marta'],
+            support: 'termine',
+            requiresChoice: true,
+            choices: [
+              { value: 'termine', label: 'Complemento di termine (A chi? A che cosa?)', correct: true },
+              { value: 'mezzo', label: 'Complemento di mezzo (Con che cosa?)' },
+              { value: 'compagnia', label: 'Complemento di compagnia (Con chi?)' }
+            ]
+          }
+        ]
+      }
+    ];
+
+    const supports = {
+      predicato: {
+        icon: '⚙️',
+        title: 'Predicato verbale',
+        prompt: 'Qual è l\'azione? Cerca il verbo che dice cosa succede.'
+      },
+      soggetto: {
+        icon: '🙂',
+        title: 'Soggetto',
+        prompt: 'Chi compie l\'azione? Chi fa ciò che il verbo indica?'
+      },
+      oggetto: {
+        icon: '🎯',
+        title: 'Complemento oggetto',
+        prompt: 'Chi o che cosa riceve l\'azione?'
+      },
+      termine: {
+        icon: '🎁',
+        title: 'Complemento di termine',
+        prompt: 'A chi o per chi viene fatta l\'azione?'
+      },
+      luogo: {
+        icon: '📍',
+        title: 'Complemento di luogo',
+        prompt: 'Dove avviene l\'azione?'
+      }
+    };
+
+    const sentencePicker = document.getElementById('sentencePicker');
+    const sentenceText = document.getElementById('sentenceText');
+    const instructionText = document.getElementById('instructionText');
+    const stepsTimeline = document.getElementById('stepsTimeline');
+    const supportGrid = document.getElementById('supportGrid');
+    const promptOutput = document.getElementById('promptOutput');
+    const feedback = document.getElementById('feedback');
+    const analysisBody = document.getElementById('analysisBody');
+    const complementSelector = document.getElementById('complementSelector');
+    const complementChoice = document.getElementById('complementChoice');
+    const checkButton = document.getElementById('checkButton');
+    const nextButton = document.getElementById('nextButton');
+    const resetButton = document.getElementById('resetButton');
+    const stepIndicator = document.getElementById('stepIndicator');
+    const fontRange = document.getElementById('fontRange');
+    const toggleContrast = document.getElementById('toggleContrast');
+    const printButton = document.getElementById('printButton');
+
+    let currentSentence = sentences[0];
+    let currentStepIndex = 0;
+    let selectedTokens = new Set();
+    let storedAnalysis = [];
+
+    function populateSentencePicker() {
+      sentences.forEach(sentence => {
+        const option = document.createElement('option');
+        option.value = sentence.id;
+        option.textContent = sentence.label;
+        sentencePicker.appendChild(option);
+      });
+    }
+
+    function renderSentence() {
+      sentenceText.innerHTML = '';
+      currentSentence.text.forEach(token => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = token.label;
+        button.className = 'word-chip';
+        button.dataset.id = token.id;
+        button.setAttribute('aria-pressed', 'false');
+        button.addEventListener('click', () => toggleToken(token.id));
+        button.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleToken(token.id);
+          }
+        });
+        sentenceText.appendChild(button);
+      });
+    }
+
+    function renderSupports() {
+      supportGrid.innerHTML = '';
+      Object.entries(supports).forEach(([id, support]) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'support-card';
+        card.dataset.id = id;
+        card.innerHTML = `
+          <span class="support-icon" aria-hidden="true">${support.icon}</span>
+          <strong>${support.title}</strong>
+          <span>${support.prompt}</span>
+        `;
+        card.addEventListener('click', () => showPrompt(id));
+        supportGrid.appendChild(card);
+      });
+    }
+
+    function renderStepsTimeline() {
+      stepsTimeline.innerHTML = '';
+      currentSentence.steps.forEach((step, index) => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.id = `step-${step.id}`;
+        const title = document.createElement('strong');
+        title.textContent = step.title;
+        const text = document.createElement('span');
+        text.textContent = step.description;
+        card.append(title, text);
+        stepsTimeline.appendChild(card);
+        if (index < currentStepIndex) {
+          card.classList.add('completed');
+        } else if (index === currentStepIndex) {
+          card.classList.add('active');
+        }
+      });
+    }
+
+    function updateInstruction() {
+      const step = currentSentence.steps[currentStepIndex];
+      instructionText.textContent = step.description;
+      stepIndicator.textContent = `Passo ${currentStepIndex + 1} di ${currentSentence.steps.length}`;
+      complementSelector.hidden = !step.requiresChoice;
+      if (step.requiresChoice) {
+        complementChoice.innerHTML = '';
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = 'Scegli il tipo di complemento';
+        complementChoice.appendChild(placeholder);
+        step.choices.forEach(choice => {
+          const option = document.createElement('option');
+          option.value = choice.value;
+          option.textContent = choice.label;
+          if (choice.correct) {
+            option.dataset.correct = 'true';
+          }
+          complementChoice.appendChild(option);
+        });
+      }
+    }
+
+    function toggleToken(tokenId) {
+      const step = currentSentence.steps[currentStepIndex];
+      const button = sentenceText.querySelector(`[data-id="${tokenId}"]`);
+      if (!button || button.classList.contains('locked')) return;
+      if (selectedTokens.has(tokenId)) {
+        selectedTokens.delete(tokenId);
+        button.classList.remove('selected');
+        button.setAttribute('aria-pressed', 'false');
+      } else {
+        selectedTokens.clear();
+        sentenceText.querySelectorAll('.word-chip.selected').forEach(chip => {
+          chip.classList.remove('selected');
+          chip.setAttribute('aria-pressed', 'false');
+        });
+        selectedTokens.add(tokenId);
+        button.classList.add('selected');
+        button.setAttribute('aria-pressed', 'true');
+        const supportInfo = supports[step.support];
+        if (supportInfo) {
+          promptOutput.textContent = supportInfo.prompt;
+        }
+      }
+    }
+
+    function showPrompt(supportId) {
+      const supportInfo = supports[supportId];
+      if (!supportInfo) return;
+      promptOutput.textContent = supportInfo.prompt;
+    }
+
+    function giveFeedback(message, type = '') {
+      feedback.textContent = message;
+      feedback.classList.remove('positive', 'negative');
+      if (type === 'positive') {
+        feedback.classList.add('positive');
+      } else if (type === 'negative') {
+        feedback.classList.add('negative');
+      }
+    }
+
+    function checkAnswer() {
+      const step = currentSentence.steps[currentStepIndex];
+      if (!step) return;
+
+      if (selectedTokens.size === 0) {
+        giveFeedback('Seleziona prima un elemento della frase.', 'negative');
+        return;
+      }
+
+      const selectedId = Array.from(selectedTokens)[0];
+      const isTokenCorrect = step.targets.includes(selectedId);
+
+      if (!isTokenCorrect) {
+        giveFeedback('Riprova. Controlla la domanda guida: cosa ti viene chiesto?', 'negative');
+        return;
+      }
+
+      if (step.requiresChoice) {
+        const selectedOption = complementChoice.value;
+        if (!selectedOption) {
+          giveFeedback('Scegli il tipo di complemento dalla lista.', 'negative');
+          return;
+        }
+        const optionElement = complementChoice.querySelector(`option[value="${selectedOption}"]`);
+        const isChoiceCorrect = optionElement?.dataset.correct === 'true';
+        if (!isChoiceCorrect) {
+          giveFeedback('Questo tipo di complemento non è corretto. Ripensa alla domanda chiave.', 'negative');
+          return;
+        }
+      }
+
+      confirmStep(step, selectedId);
+      giveFeedback('Ottimo lavoro! Passa al passo successivo.', 'positive');
+      nextButton.disabled = currentStepIndex >= currentSentence.steps.length - 1;
+      if (nextButton.disabled) {
+        giveFeedback('Hai completato l\'analisi della frase! Puoi stampare o scegliere una nuova frase.', 'positive');
+      }
+    }
+
+    function confirmStep(step, selectedId) {
+      const chip = sentenceText.querySelector(`[data-id="${selectedId}"]`);
+      chip.classList.add('locked', `role-${step.id}`);
+      chip.setAttribute('aria-pressed', 'true');
+      selectedTokens.clear();
+      updateAnalysis(step, selectedId);
+      stepsTimeline.children[currentStepIndex]?.classList.add('completed');
+    }
+
+    function updateAnalysis(step, tokenId) {
+      const token = currentSentence.text.find(item => item.id === tokenId);
+      if (!token) return;
+      const question = token.question || '';
+      storedAnalysis.push({ role: step.title.replace(/Passo \d+: /, ''), text: token.label, question });
+      renderAnalysis();
+    }
+
+    function renderAnalysis() {
+      analysisBody.innerHTML = '';
+      storedAnalysis.forEach(row => {
+        const tr = document.createElement('tr');
+        const roleTd = document.createElement('td');
+        roleTd.textContent = row.role;
+        const textTd = document.createElement('td');
+        textTd.textContent = row.text;
+        const questionTd = document.createElement('td');
+        questionTd.textContent = row.question;
+        tr.append(roleTd, textTd, questionTd);
+        analysisBody.appendChild(tr);
+      });
+    }
+
+    function goToNextStep() {
+      if (currentStepIndex < currentSentence.steps.length - 1) {
+        currentStepIndex += 1;
+        stepsTimeline.children[currentStepIndex]?.classList.add('active');
+        stepsTimeline.children[currentStepIndex - 1]?.classList.remove('active');
+        selectedTokens.clear();
+        sentenceText.querySelectorAll('.word-chip.selected').forEach(chip => {
+          chip.classList.remove('selected');
+          chip.setAttribute('aria-pressed', 'false');
+        });
+        promptOutput.textContent = '';
+        complementChoice.value = '';
+        nextButton.disabled = true;
+        giveFeedback('Nuovo passo: leggi le istruzioni e prova.', '');
+        updateInstruction();
+      }
+    }
+
+    function resetActivity() {
+      currentStepIndex = 0;
+      selectedTokens.clear();
+      storedAnalysis = [];
+      complementChoice.value = '';
+      complementSelector.hidden = true;
+      sentenceText.querySelectorAll('.word-chip').forEach(chip => {
+        chip.className = 'word-chip';
+        chip.setAttribute('aria-pressed', 'false');
+      });
+      Array.from(stepsTimeline.children).forEach((card, index) => {
+        card.className = 'step-card';
+        if (index === 0) card.classList.add('active');
+      });
+      renderAnalysis();
+      updateInstruction();
+      giveFeedback('Scegli un elemento e segui il primo passo.', '');
+      nextButton.disabled = true;
+    }
+
+    function loadSentence(sentenceId) {
+      const sentence = sentences.find(item => item.id === sentenceId);
+      if (!sentence) return;
+      currentSentence = sentence;
+      currentStepIndex = 0;
+      storedAnalysis = [];
+      renderSentence();
+      renderStepsTimeline();
+      updateInstruction();
+      renderAnalysis();
+      promptOutput.textContent = '';
+      giveFeedback('Analisi pronta. Inizia dal Passo 1.', '');
+      nextButton.disabled = true;
+    }
+
+    function applyFontSize() {
+      const value = fontRange.value;
+      document.documentElement.style.setProperty('--font-scale', value / 100);
+      document.body.style.fontSize = value + '%';
+    }
+
+    function toggleHighContrast() {
+      const isActive = document.body.classList.toggle('high-contrast');
+      toggleContrast.setAttribute('aria-pressed', String(isActive));
+      toggleContrast.textContent = isActive ? '🎨 Contrasto standard' : '🎨 Contrasto alto';
+    }
+
+    function printPage() {
+      window.print();
+    }
+
+    checkButton.addEventListener('click', () => {
+      checkAnswer();
+    });
+
+    nextButton.addEventListener('click', () => {
+      goToNextStep();
+    });
+
+    resetButton.addEventListener('click', () => {
+      resetActivity();
+    });
+
+    sentencePicker.addEventListener('change', event => {
+      loadSentence(event.target.value);
+    });
+
+    fontRange.addEventListener('input', applyFontSize);
+    toggleContrast.addEventListener('click', toggleHighContrast);
+    printButton.addEventListener('click', printPage);
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Enter' && event.target.classList.contains('support-card')) {
+        event.preventDefault();
+        event.target.click();
+      }
+    });
+
+    populateSentencePicker();
+    renderSupports();
+    loadSentence(sentences[0].id);
+    applyFontSize();
+    giveFeedback('Scegli un elemento e segui il primo passo.', '');
+  </script>
+</body>
+</html>
