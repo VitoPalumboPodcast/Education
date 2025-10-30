@@ -374,21 +374,21 @@
     <p class="mode-hint" id="modeHint" role="status" aria-live="polite"></p>
 
     <div class="step-indicator" aria-hidden="true">
-      <div class="step" data-role="fa">1. ⚡ Trova FA (verbo)</div>
-      <div class="step" data-role="chi">2. 🧑‍🤝‍🧑 Trova CHI</div>
+      <div class="step" data-role="chi">1. 🧑‍🤝‍🧑 Trova CHI</div>
+      <div class="step" data-role="fa">2. ⚡ Trova FA (verbo)</div>
       <div class="step" data-role="cosa">3. 🧩 Tutto il resto</div>
     </div>
 
     <section class="word-bank" id="wordBank" aria-label="Parole da inserire"></section>
 
     <section class="baskets" aria-live="polite">
-      <div class="basket" data-role="fa" data-step="0" tabindex="0">
-        <h2><span class="basket-icon" aria-hidden="true">⚡</span> FA (verbo)</h2>
-        <div class="basket-words" aria-label="Parole del verbo"></div>
-      </div>
-      <div class="basket" data-role="chi" data-step="1" tabindex="0">
+      <div class="basket" data-role="chi" data-step="0" tabindex="0">
         <h2><span class="basket-icon" aria-hidden="true">🧑‍🤝‍🧑</span> CHI</h2>
         <div class="basket-words" aria-label="Parole del soggetto"></div>
+      </div>
+      <div class="basket" data-role="fa" data-step="1" tabindex="0">
+        <h2><span class="basket-icon" aria-hidden="true">⚡</span> FA (verbo)</h2>
+        <div class="basket-words" aria-label="Parole del verbo"></div>
       </div>
       <div class="basket" data-role="cosa" data-step="2" tabindex="0">
         <h2><span class="basket-icon" aria-hidden="true">🧩</span> COSA / ALTRO</h2>
@@ -487,25 +487,25 @@
     let speechEnabled = false;
 
     const ROLE_MESSAGES = {
-      fa: "Bravo! Hai trovato il FA (verbo).",
       chi: "Ottimo! Hai individuato il CHI.",
+      fa: "Bravo! Hai trovato il FA (verbo).",
       cosa: "Ben fatto! Questo pezzo completa la frase."
     };
 
     const ERROR_MESSAGES = {
-      fa: "Per prima cosa scegli un verbo (FA).",
-      chi: "Adesso trova chi compie l'azione.",
+      chi: "Per prima cosa trova chi compie l'azione.",
+      fa: "Adesso individua il verbo (FA).",
       cosa: "Ora trascina gli altri pezzi della frase."
     };
 
     const NEXT_STEP_HINTS = {
-      chi: "Ora cerca chi compie l'azione.",
+      fa: "Ora trova il verbo dell'azione.",
       cosa: "Completa con gli altri pezzi della frase."
     };
 
     const STEP_HINTS = {
-      fa: "Cerca nella frase il FA: il verbo dell'azione.",
       chi: "Trova chi compie l'azione descritta.",
+      fa: "Cerca nella frase il FA: il verbo dell'azione.",
       cosa: "Sposta tutti gli altri pezzi nel cesto COSA / ALTRO."
     };
 
@@ -535,7 +535,7 @@
       }
       steps.forEach((step) => {
         const role = step.dataset.role;
-        const roleIndex = role === "fa" ? 0 : role === "chi" ? 1 : 2;
+        const roleIndex = role === "chi" ? 0 : role === "fa" ? 1 : 2;
         step.classList.toggle("active", roleIndex === stepIndex);
         step.classList.toggle("done", roleIndex < stepIndex);
       });
@@ -606,7 +606,7 @@
     }
 
     function getRoleByStep(stepIndex) {
-      return stepIndex === 0 ? "fa" : stepIndex === 1 ? "chi" : "cosa";
+      return stepIndex === 0 ? "chi" : stepIndex === 1 ? "fa" : "cosa";
     }
 
     function dropTokenIntoBasket(token, role) {
@@ -725,7 +725,7 @@
 
     function synchronizeStepWithProgress() {
       if (!guidedMode) return;
-      const roles = ["fa", "chi", "cosa"];
+      const roles = ["chi", "fa", "cosa"];
       for (let index = 0; index < roles.length; index++) {
         const role = roles[index];
         if (countLockedTokens(role) < totalTokensForRole(role)) {
