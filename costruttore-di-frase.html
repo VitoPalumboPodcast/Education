@@ -34,8 +34,9 @@
     .next-step{outline:3px dashed #2c5aa0;outline-offset:6px}
     .phrase-area{margin-top:26px;padding:18px;background:#e8f4fd;border-radius:14px;border:2px solid var(--blue);text-align:center}
     .phrase-area h3{margin:0 0 10px 0}
-    .phrase-display{font-size:28px;font-weight:800;min-height:38px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+    .phrase-display{font-size:28px;font-weight:800;min-height:38px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;position:relative}
     .ok-badge{font-size:22px}
+    .success-message{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:12px;background:#27ae60;color:#fff;font-size:20px;font-weight:700;box-shadow:0 4px 10px rgba(39,174,96,.35)}
     .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
     .btn{padding:10px 16px;border:none;border-radius:10px;font-size:16px;cursor:pointer;color:#fff;display:flex;align-items:center;gap:8px}
     .btn-clear{background:#e74c3c}.btn-clear:hover{filter:brightness(.9)}
@@ -250,6 +251,7 @@
     }
 
     function isAllowedTypeNow(type){
+      if (isPhraseValid()) return true;
       if (state.step==='done') return false;
       return state.step === type;
     }
@@ -331,12 +333,17 @@
 
     function renderOkBadge(valid){
       phraseDisplay.querySelector('.ok-badge')?.remove();
+      phraseDisplay.querySelector('.success-message')?.remove();
       if (valid){
-        const span = document.createElement('span');
-        span.className = 'ok-badge';
-        span.setAttribute('aria-hidden','true');
-        span.textContent = '✅';
-        phraseDisplay.appendChild(span);
+        const badge = document.createElement('span');
+        badge.className = 'ok-badge';
+        badge.setAttribute('aria-hidden','true');
+        badge.textContent = '✅';
+        const message = document.createElement('span');
+        message.className = 'success-message';
+        message.textContent = 'Ben fatto!';
+        phraseDisplay.appendChild(badge);
+        phraseDisplay.appendChild(message);
       }
     }
 
