@@ -1,777 +1,349 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Analisi Logica - Versione Semplificata</title>
-  <style>
-    :root {
-      --base-font-size: 20px;
-      --bg: #f5f5f5;
-      --panel: #ffffff;
-      --ink: #222222;
-      --muted: #d7e3ff;
-      --chi: #4f46e5;
-      --fa: #f97316;
-      --cosa: #22c55e;
-      --feedback-ok: #0f766e;
-      --feedback-ko: #b91c1c;
-      --shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
-      --border-radius: 24px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Analisi logica – CAA (minimale)</title>
+<style>
+  :root{
+    --bg:#f0f8ff; --panel:#f7fbff; --card:#fff; --ink:#0f172a; --muted:#f2f6fc; --border:#d6e3f3;
+    --blue:#2c5aa0; --chi:#fbbf24; --fa:#fb7185; --cosa:#34d399;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  .wrap{max-width:960px;margin:auto;padding:16px}
 
-    body {
-      margin: 0;
-      font-family: "Atkinson Hyperlegible", Arial, sans-serif;
-      font-size: var(--base-font-size);
-      background: var(--bg);
-      color: var(--ink);
-      display: flex;
-      justify-content: center;
-      padding: 24px;
-    }
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  h1{margin:0;color:var(--blue);font-size:clamp(18px,3.5vw,26px)}
+  .gear{border:none;background:var(--blue);color:#fff;border-radius:999px;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.12)}
 
-    body.high-contrast {
-      --bg: #0f172a;
-      --panel: #111827;
-      --ink: #f8fafc;
-      --muted: #1f2937;
-      --shadow: none;
-    }
+  /* Pannello docente (nascosto di default) */
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px;margin-top:10px}
+  .panel.hidden{display:none}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .toggle{display:flex;gap:8px;align-items:center;background:var(--muted);border:1px solid var(--border);border-radius:12px;padding:8px 12px}
+  select,input[type="range"],button{font-size:16px}
 
-    .app {
-      width: min(900px, 100%);
-      background: var(--panel);
-      border-radius: var(--border-radius);
-      padding: 24px;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
+  /* Area studente – super minimale */
+  .board{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:14px;margin-top:12px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  .sentence{font-size:clamp(20px,4.2vw,36px);font-weight:900;text-align:center;margin:6px 8px 10px}
+  .question{font-size:clamp(22px,5vw,40px);font-weight:900;text-align:center;margin:6px 8px 14px}
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
+  .tokens{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:6px}
+  .card{background:#fff;border:3px solid #e3e7ef;border-radius:14px;min-height:120px;padding:12px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;cursor:pointer;user-select:none;transition:transform .15s, box-shadow .15s, border-color .15s}
+  .card:focus-visible{outline:3px solid #2c5aa055}
+  .card:hover{transform:scale(1.02)}
+  .card[aria-disabled="true"]{opacity:.35;pointer-events:none;filter:grayscale(80%)}
+  .ico{font-size:54px}
+  .lbl{font-size:20px;font-weight:900;text-align:center}
 
-    h1 {
-      margin: 0;
-      font-size: 1.6em;
-      line-height: 1.1;
-    }
+  .bins{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  .bin{background:#fff;border:3px solid var(--border);border-radius:16px;min-height:140px;padding:10px;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .bin h3{margin:0;font-size:22px}
+  .bin .drop{min-height:74px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+  .bin[data-type="fa"]{border-color:var(--fa)}
+  .bin[data-type="chi"]{border-color:var(--chi)}
+  .bin[data-type="cosa"]{border-color:var(--cosa)}
+  .role-badge{font-size:14px;font-weight:900;color:#0f172a;background:#eaf0ff;border:2px solid #cbd5ff;border-radius:999px;padding:2px 8px}
+  .chip{background:#fff;border:2px solid #dbe3ef;border-radius:999px;padding:8px 12px;font-weight:900}
 
-    .settings-button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-      color: inherit;
-      font-size: 1em;
-    }
+  .feedback{min-height:40px;border-radius:12px;padding:8px;font-weight:900;text-align:center}
+  .ok{background:color-mix(in srgb, #16a34a 18%, white);color:#064e3b}
+  .bad{background:color-mix(in srgb, #dc2626 18%, white);color:#7f1d1d}
 
-    .settings-button:hover,
-    .settings-button:focus-visible {
-      background: rgba(79, 70, 229, 0.15);
-      outline: none;
-    }
-
-    .sentence {
-      background: var(--muted);
-      padding: 16px;
-      border-radius: 18px;
-      font-weight: 700;
-      text-align: center;
-    }
-
-    .mode-hint {
-      margin: 0;
-      text-align: center;
-      font-size: 0.95em;
-      color: #475569;
-    }
-
-    body.high-contrast .mode-hint {
-      color: #cbd5f5;
-    }
-
-    .step-indicator {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .step {
-      flex: 1;
-      padding: 12px;
-      border-radius: 16px;
-      background: #e2e8f0;
-      text-align: center;
-      font-weight: 700;
-      opacity: 0.6;
-      transition: transform 0.2s, opacity 0.2s;
-    }
-
-    .step.active {
-      opacity: 1;
-      transform: scale(1.02);
-    }
-
-    .step.done {
-      background: #bfdbfe;
-    }
-
-    .baskets {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-    }
-
-    .basket {
-      border-radius: 24px;
-      padding: 16px;
-      min-height: 180px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      border: 6px solid transparent;
-      background: rgba(15, 23, 42, 0.04);
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .basket h2 {
-      margin: 0;
-      font-size: 1.4em;
-    }
-
-    .basket[data-role="fa"] {
-      background: rgba(249, 115, 22, 0.12);
-    }
-
-    .basket[data-role="chi"] {
-      background: rgba(79, 70, 229, 0.12);
-    }
-
-    .basket[data-role="cosa"] {
-      background: rgba(34, 197, 94, 0.12);
-    }
-
-    .basket.active {
-      border-color: currentColor;
-      transform: scale(1.01);
-    }
-
-    .basket[data-role="fa"].active {
-      color: var(--fa);
-    }
-
-    .basket[data-role="chi"].active {
-      color: var(--chi);
-    }
-
-    .basket[data-role="cosa"].active {
-      color: var(--cosa);
-    }
-
-    .basket-words {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      min-height: 90px;
-    }
-
-    .word-bank {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .token {
-      padding: 10px 14px;
-      border-radius: 16px;
-      background: #ffffff;
-      border: 3px solid transparent;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.2s, border-color 0.2s, background 0.2s;
-    }
-
-    body.high-contrast .token {
-      background: #1f2937;
-      border-color: #475569;
-    }
-
-    .token:active {
-      transform: scale(0.96);
-    }
-
-    .token[data-role="chi"] { border-color: rgba(79, 70, 229, 0.4); }
-    .token[data-role="fa"] { border-color: rgba(249, 115, 22, 0.4); }
-    .token[data-role="cosa"] { border-color: rgba(34, 197, 94, 0.4); }
-
-    .token.locked {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    .feedback {
-      text-align: center;
-      min-height: 32px;
-      font-weight: 800;
-    }
-
-    .feedback.ok {
-      color: var(--feedback-ok);
-    }
-
-    .feedback.ko {
-      color: var(--feedback-ko);
-    }
-
-    .controls {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .controls button {
-      border: none;
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-size: 1em;
-      font-weight: 700;
-      cursor: pointer;
-      background: #1f2937;
-      color: #ffffff;
-    }
-
-    .controls button.secondary {
-      background: #4f46e5;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .settings-panel {
-      position: absolute;
-      right: 24px;
-      top: 70px;
-      background: var(--panel);
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      padding: 16px;
-      width: 220px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      border: 2px solid rgba(15, 23, 42, 0.1);
-      z-index: 10;
-    }
-
-    .settings-panel label {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-weight: 600;
-    }
-
-    .settings-panel input[type="range"] {
-      width: 100%;
-    }
-
-    .toggle {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 600;
-    }
-
-    .toggle input {
-      width: 20px;
-      height: 20px;
-    }
-
-    @media (max-width: 680px) {
-      body {
-        padding: 16px;
-      }
-
-      .app {
-        padding: 16px;
-      }
-
-      h1 {
-        font-size: 1.3em;
-      }
-    }
-
-    @media print {
-      body {
-        background: #ffffff;
-        padding: 0;
-      }
-
-      .app {
-        box-shadow: none;
-        border-radius: 0;
-      }
-
-      .settings-button,
-      .controls,
-      .feedback {
-        display: none !important;
-      }
-    }
-  </style>
+  @media print{ .gear,.panel{display:none !important} .board{box-shadow:none} }
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
 </head>
 <body>
-  <div class="app">
+  <div class="wrap" role="application" aria-describedby="help">
     <header>
-      <h1>Analisi logica: Chi – Fa – Cosa</h1>
-      <button class="settings-button" id="settingsToggle" aria-label="Impostazioni">
-        ⚙️
-      </button>
+      <h1>Analisi logica</h1>
+      <button class="gear" id="gear" aria-expanded="false" title="Impostazioni">⚙️</button>
     </header>
 
-    <section class="sentence" id="sentenceText" aria-live="polite"></section>
-
-    <p class="mode-hint" id="modeHint" role="status" aria-live="polite"></p>
-
-    <div class="step-indicator" aria-hidden="true">
-      <div class="step" data-role="fa">1. Trova FA (verbo)</div>
-      <div class="step" data-role="chi">2. Trova CHI</div>
-      <div class="step" data-role="cosa">3. Tutto il resto</div>
-    </div>
-
-    <section class="word-bank" id="wordBank" aria-label="Parole da inserire"></section>
-
-    <section class="baskets" aria-live="polite">
-      <div class="basket" data-role="fa" data-step="0" tabindex="0">
-        <h2>FA (verbo)</h2>
-        <div class="basket-words" aria-label="Parole del verbo"></div>
+    <!-- Pannello docente: tutto ciò che non serve allo studente -->
+    <section id="settings" class="panel hidden" aria-label="Impostazioni docente">
+      <div class="toolbar" role="group" aria-label="Impostazioni base">
+        <label class="toggle"><input type="checkbox" id="training" checked /> <strong>Ordine guidato (CHI → FA → COSA)</strong></label>
+        <label class="toggle"><input type="checkbox" id="speakOnClick" checked /> <strong>Leggi a ogni click</strong></label>
+        <label class="toggle"><input type="checkbox" id="speakQuestions" checked /> <strong>Leggi le domande</strong></label>
+        <label class="toggle" for="voiceMode"><span><strong>Voce</strong></span>
+          <select id="voiceMode"><option value="browser">Browser</option><option value="off">Spento</option></select>
+        </label>
+        <label class="toggle" for="fontsize">🔎 Testo</label>
+        <input type="range" id="fontsize" min="90" max="140" value="110" />
       </div>
-      <div class="basket" data-role="chi" data-step="1" tabindex="0">
-        <h2>CHI</h2>
-        <div class="basket-words" aria-label="Parole del soggetto"></div>
-      </div>
-      <div class="basket" data-role="cosa" data-step="2" tabindex="0">
-        <h2>COSA / ALTRO</h2>
-        <div class="basket-words" aria-label="Parole degli altri pezzi"></div>
+
+      <div class="toolbar" role="group" aria-label="Controlli frase">
+        <label class="toggle" for="picker"><strong>Frase</strong></label>
+        <select id="picker" aria-label="Scegli frase"></select>
+        <button class="toggle" id="nextSentence" type="button">➡️ Nuova frase</button>
+        <button class="toggle" id="reset" type="button">🔄 Ricomincia</button>
+        <button class="toggle" id="speakSentence" type="button">🔊 Leggi frase</button>
+        <button class="toggle" id="print" type="button">🖨️ Stampa</button>
       </div>
     </section>
 
-    <div class="feedback" id="feedback" aria-live="assertive"></div>
+    <!-- Area STUDENTE: solo frase, domanda, carte e 3 box -->
+    <section class="board" aria-live="polite">
+      <div id="sentenceText" class="sentence">La nonna ha preparato il dolce per Luca.</div>
+      <div id="question" class="question">Chi ha preparato il dolce?</div>
 
-    <div class="controls">
-      <button id="resetSentence">↺ Ricomincia</button>
-      <button class="secondary" id="nextSentence">→ Frase nuova</button>
-    </div>
+      <section aria-label="Parole della frase">
+        <div class="tokens" id="tokens"></div>
+      </section>
+
+      <section class="bins" aria-label="Box di analisi">
+        <div class="bin" data-type="chi" aria-label="Soggetto">
+          <h3>SOGGETTO <span class="role-badge">(CHI)</span></h3>
+          <div class="drop" data-drop="chi"></div>
+        </div>
+        <div class="bin" data-type="fa" aria-label="Predicato">
+          <h3>PREDICATO <span class="role-badge">(FA)</span></h3>
+          <div class="drop" data-drop="fa"></div>
+        </div>
+        <div class="bin" data-type="cosa" aria-label="Complementi">
+          <h3 id="compTitle">COMPLEMENTO <span class="role-badge">(COSA)</span></h3>
+          <div class="drop" data-drop="cosa"></div>
+        </div>
+      </section>
+
+      <div id="feedback" class="feedback" role="status"></div>
+    </section>
   </div>
 
-  <div class="settings-panel hidden" id="settingsPanel">
-    <label class="toggle">
-      <input type="checkbox" id="guidedToggle" checked />
-      Percorso guidato (Chi → Fa → Cosa)
-    </label>
-    <label class="toggle">
-      <input type="checkbox" id="speechToggle" />
-      Suggerimenti vocali
-    </label>
-    <label>
-      Dimensione testo
-      <input type="range" id="fontSlider" min="18" max="28" value="20" />
-    </label>
-    <label class="toggle">
-      <input type="checkbox" id="contrastToggle" />
-      Contrasto alto
-    </label>
-  </div>
-
-  <script>
-    const SENTENCES = [
-      {
-        text: "Marco mangia la mela rossa.",
-        tokens: [
-          { word: "Marco", role: "chi" },
-          { word: "mangia", role: "fa" },
-          { word: "la", role: "cosa" },
-          { word: "mela", role: "cosa" },
-          { word: "rossa", role: "cosa" }
-        ]
-      },
-      {
-        text: "La maestra legge una storia divertente.",
-        tokens: [
-          { word: "La", role: "chi" },
-          { word: "maestra", role: "chi" },
-          { word: "legge", role: "fa" },
-          { word: "una", role: "cosa" },
-          { word: "storia", role: "cosa" },
-          { word: "divertente", role: "cosa" }
-        ]
-      },
-      {
-        text: "Il cane corre nel parco verde.",
-        tokens: [
-          { word: "Il", role: "chi" },
-          { word: "cane", role: "chi" },
-          { word: "corre", role: "fa" },
-          { word: "nel", role: "cosa" },
-          { word: "parco", role: "cosa" },
-          { word: "verde", role: "cosa" }
-        ]
-      }
-    ];
-
-    const wordBank = document.getElementById("wordBank");
-    const sentenceText = document.getElementById("sentenceText");
-    const modeHint = document.getElementById("modeHint");
-    const feedback = document.getElementById("feedback");
-    const steps = Array.from(document.querySelectorAll(".step"));
-    const baskets = Array.from(document.querySelectorAll(".basket"));
-    const resetButton = document.getElementById("resetSentence");
-    const nextButton = document.getElementById("nextSentence");
-    const settingsToggle = document.getElementById("settingsToggle");
-    const settingsPanel = document.getElementById("settingsPanel");
-    const fontSlider = document.getElementById("fontSlider");
-    const contrastToggle = document.getElementById("contrastToggle");
-    const guidedToggle = document.getElementById("guidedToggle");
-    const speechToggle = document.getElementById("speechToggle");
-
-    let currentSentenceIndex = 0;
-    let currentSentence = null;
-    let currentStep = 0;
-    let guidedMode = true;
-    let speechEnabled = false;
-
-    const ROLE_MESSAGES = {
-      fa: "Bravo! Hai trovato il FA (verbo).",
-      chi: "Ottimo! Hai individuato il CHI.",
-      cosa: "Ben fatto! Questo pezzo completa la frase."
-    };
-
-    const ERROR_MESSAGES = {
-      fa: "Per prima cosa scegli un verbo (FA).",
-      chi: "Adesso trova chi compie l'azione.",
-      cosa: "Ora trascina gli altri pezzi della frase."
-    };
-
-    const NEXT_STEP_HINTS = {
-      chi: "Ora cerca chi compie l'azione.",
-      cosa: "Completa con gli altri pezzi della frase."
-    };
-
-    const STEP_HINTS = {
-      fa: "Cerca nella frase il FA: il verbo dell'azione.",
-      chi: "Trova chi compie l'azione descritta.",
-      cosa: "Sposta tutti gli altri pezzi nel cesto COSA / ALTRO."
-    };
-
-    guidedMode = guidedToggle.checked;
-    speechEnabled = speechToggle.checked;
-
-    function shuffle(array) {
-      const copy = [...array];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
+<script>
+  // ===== Dati (aggiunta informazione grammaticale) =====
+  const SENTENCES = [
+    { id:'s1',
+      label:'La nonna ha preparato il dolce per Luca.',
+      grammar:{ subjectNumber:'sing', qChiVerb:'ha preparato', qCompVerb:'ha preparato' },
+      tokens:[
+        {id:'la-nonna',     label:'La nonna',    role:'chi',  icon:'👵'},
+        {id:'ha-preparato', label:'ha preparato',role:'fa',   icon:'🍳'},
+        {id:'il-dolce',     label:'il dolce',    role:'cosa', icon:'🍰', type:'oggetto'},
+        {id:'per-luca',     label:'per Luca',    role:'cosa', icon:'🎁', type:'termine'}
+      ]
+    },
+    { id:'s2',
+      label:'Gli amici organizzano una festa in giardino per Marta.',
+      grammar:{ subjectNumber:'plur', qChiVerb:'organizza', qCompVerb:'organizzano' },
+      tokens:[
+        {id:'gli-amici',    label:'Gli amici',   role:'chi',  icon:'🧒👧'},
+        {id:'organizzano',  label:'organizzano', role:'fa',   icon:'🛠️'},
+        {id:'una-festa',    label:'una festa',   role:'cosa', icon:'🎉', type:'oggetto'},
+        {id:'in-giardino',  label:'in giardino', role:'cosa', icon:'🌳', type:'luogo'},
+        {id:'per-marta',    label:'per Marta',   role:'cosa', icon:'🎁', type:'termine'}
+      ]
     }
+  ];
 
-    function setStep(stepIndex) {
-      currentStep = stepIndex;
-      if (!guidedMode) {
-        steps.forEach((step) => {
-          step.classList.remove("active", "done");
-        });
-        baskets.forEach((basket) => {
-          basket.classList.remove("active");
-        });
-        updateModeHint();
-        return;
-      }
-      steps.forEach((step) => {
-        const role = step.dataset.role;
-        const roleIndex = role === "fa" ? 0 : role === "chi" ? 1 : 2;
-        step.classList.toggle("active", roleIndex === stepIndex);
-        step.classList.toggle("done", roleIndex < stepIndex);
-      });
-      baskets.forEach((basket) => {
-        const basketStep = Number(basket.dataset.step);
-        basket.classList.toggle("active", basketStep === stepIndex);
-      });
-      updateModeHint();
+  // flusso: CHI → FA → COSA (più complementi nello stesso step)
+  const ORDER = ['chi','fa','cosa'];
+
+  // ===== Stato =====
+  let current = SENTENCES[0];
+  let stepIndex = 0; // 0=CHI
+  const placedIds = new Set();
+
+  // ===== Elementi =====
+  const gear = document.getElementById('gear');
+  const settings = document.getElementById('settings');
+  const training = document.getElementById('training');
+  const speakOnClick = document.getElementById('speakOnClick');
+  const speakQuestions = document.getElementById('speakQuestions');
+  const voiceMode = document.getElementById('voiceMode');
+  const fontsize = document.getElementById('fontsize');
+  const picker = document.getElementById('picker');
+  const sentenceText = document.getElementById('sentenceText');
+  const questionEl = document.getElementById('question');
+  const tokensEl = document.getElementById('tokens');
+  const drops = {
+    chi:  document.querySelector('[data-drop="chi"]'),
+    fa:   document.querySelector('[data-drop="fa"]'),
+    cosa: document.querySelector('[data-drop="cosa"]')
+  };
+  const feedback = document.getElementById('feedback');
+
+  // ===== UI base =====
+  gear.addEventListener('click',()=>{ const hidden=settings.classList.toggle('hidden'); gear.setAttribute('aria-expanded', String(!hidden)); });
+  document.getElementById('print').addEventListener('click', ()=>window.print());
+  document.getElementById('reset').addEventListener('click', ()=>loadSentence(current.id));
+  document.getElementById('speakSentence').addEventListener('click', ()=>tts(current.label));
+  fontsize.addEventListener('input', ()=>{ document.body.style.fontSize = fontsize.value+'%'; });
+  document.getElementById('nextSentence').addEventListener('click',()=>{ const i=(SENTENCES.findIndex(s=>s.id===current.id)+1)%SENTENCES.length; loadSentence(SENTENCES[i].id); });
+  picker.addEventListener('change', e=>loadSentence(e.target.value));
+
+  // ===== Render =====
+  function renderPicker(){
+    picker.innerHTML='';
+    for(const s of SENTENCES){ const o=document.createElement('option'); o.value=s.id; o.textContent=s.label; picker.appendChild(o); }
+  }
+
+  function renderTokens(){
+    tokensEl.innerHTML='';
+    for(const tok of current.tokens){
+      const c=document.createElement('button');
+      c.type='button'; c.className='card'; c.dataset.id=tok.id; c.dataset.role=tok.role;
+      c.innerHTML=`<span class="ico" aria-hidden="true">${tok.icon||'🔷'}</span><span class="lbl">${tok.label}</span>`;
+      c.addEventListener('click',()=>onTokenClick(tok, c));
+      c.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); c.click(); } });
+      c.draggable=true; c.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', JSON.stringify({id:tok.id})); });
+      tokensEl.appendChild(c);
     }
+  }
 
-    function populateSentence(index) {
-      currentSentence = SENTENCES[index % SENTENCES.length];
-      sentenceText.textContent = currentSentence.text;
-      feedback.textContent = "";
-      feedback.className = "feedback";
-      feedback.removeAttribute("role");
-      wordBank.innerHTML = "";
-      baskets.forEach((basket) => {
-        basket.querySelector(".basket-words").innerHTML = "";
-      });
-      const shuffledTokens = shuffle(currentSentence.tokens);
-      shuffledTokens.forEach((tokenData, idx) => {
-        const token = document.createElement("button");
-        token.type = "button";
-        token.textContent = tokenData.word;
-        token.className = "token";
-        token.dataset.role = tokenData.role;
-        token.dataset.index = idx;
-        token.draggable = true;
-        token.addEventListener("click", () => handleTokenPlacement(token));
-        token.addEventListener("dragstart", handleDragStart);
-        token.addEventListener("dragend", handleDragEnd);
-        wordBank.appendChild(token);
-      });
-      setStep(0);
-      synchronizeMode();
+  // Drop zone handlers (supporto anche al drag)
+  Object.entries(drops).forEach(([role,el])=>{
+    el.addEventListener('dragover', e=>e.preventDefault());
+    el.addEventListener('drop', e=>{ e.preventDefault(); try{ const data=JSON.parse(e.dataTransfer.getData('text/plain')); const tok=current.tokens.find(t=>t.id===data.id); if(tok) placeToken(tok, el); }catch(_){ } });
+  });
+
+  // ===== Helpers =====
+  const subjToken = () => current.tokens.find(t=>t.role==='chi');
+  const verbToken = () => current.tokens.find(t=>t.role==='fa');
+  const objectToken = () => current.tokens.find(t=>t.type==='oggetto');
+  const luogoToken  = () => current.tokens.find(t=>t.type==='luogo');
+  const termineToken= () => current.tokens.find(t=>t.type==='termine');
+
+  const isPlaced = (id)=> placedIds.has(id);
+
+  function nextUnplacedComplementType(){
+    const order=['oggetto','luogo','termine'];
+    for(const tp of order){
+      const tok = current.tokens.find(t=>t.type===tp);
+      if(tok && !isPlaced(tok.id)) return tp;
     }
+    return null;
+  }
 
-    function handleTokenPlacement(token) {
-      if (!token || token.classList.contains("locked")) return;
-      const tokenRole = token.dataset.role;
-      if (guidedMode) {
-        const targetRole = getRoleByStep(currentStep);
-        if (tokenRole !== targetRole) {
-          showFeedback(false, ERROR_MESSAGES[targetRole] || "Prova con un'altra parola.");
-          return;
-        }
-        dropTokenIntoBasket(token, targetRole);
-        checkProgress();
-        return;
-      }
-      dropTokenIntoBasket(token, tokenRole);
-      checkProgress();
+  function auxFa(){ return current.grammar.subjectNumber==='plur' ? 'fanno' : 'fa'; }
+
+  // ===== Domanda mirata dinamica (corretta) =====
+  function buildQuestion(){
+    const sub = getPlaced('chi') || subjToken()?.label; // per "fa" usiamo il soggetto se già noto
+    const vChi = current.grammar.qChiVerb;   // per la domanda "Chi ...?" (es. "Chi organizza ...?", "Chi ha preparato ...?")
+    const vComp = current.grammar.qCompVerb; // per domande su oggetto/luogo/termine (es. "dove organizzano...", "per chi ha preparato...")
+    const obj = objectToken()?.label;
+
+    const step = ORDER[stepIndex];
+    if(step==='chi'){
+      // es.: "Chi ha preparato il dolce?" / "Chi organizza la festa?"
+      const piece = obj ? ` ${obj}` : '';
+      return `Chi ${vChi}${piece}?`;
     }
-
-    function getRoleByStep(stepIndex) {
-      return stepIndex === 0 ? "fa" : stepIndex === 1 ? "chi" : "cosa";
+    if(step==='fa'){
+      // es.: "Che cosa fa la nonna?" / "Che cosa fanno gli amici?"
+      return sub ? `Che cosa ${auxFa()} ${lowerFirst(sub)}?` : 'Che cosa fa?';
     }
-
-    function dropTokenIntoBasket(token, role) {
-      const basket = baskets.find((b) => b.dataset.role === role);
-      if (!basket) return;
-      basket.querySelector(".basket-words").appendChild(token);
-      token.classList.add("locked");
-      token.setAttribute("aria-disabled", "true");
-      showFeedback(true, ROLE_MESSAGES[role] || "Bravo!");
-      updateModeHint();
+    // step = 'cosa' → domande specifiche per ciascun complemento non ancora scelto
+    const nextType = nextUnplacedComplementType();
+    if(nextType==='oggetto'){
+      // es.: "Che cosa ha preparato la nonna?" / "Che cosa organizzano gli amici?"
+      return sub ? `Che cosa ${vComp} ${lowerFirst(sub)}?` : `Che cosa ${vComp}?`;
     }
+    if(nextType==='luogo'){
+      // es.: "Dove organizzano la festa?" (preferisci usare l'oggetto se presente)
+      if(obj) return `Dove ${vComp} ${obj}?`;
+      return sub ? `Dove ${vComp} ${lowerFirst(sub)}?` : `Dove ${vComp}?`;
+    }
+    if(nextType==='termine'){
+      // es.: "Per chi ha preparato il dolce?" / "Per chi organizzano la festa?"
+      if(obj) return `Per chi ${vComp} ${obj}?`;
+      return sub ? `Per chi ${vComp} ${lowerFirst(sub)}?` : `Per chi ${vComp}?`;
+    }
+    // Tutti i complementi selezionati → domanda finale neutra (opzionale)
+    return 'Hai completato la frase!';
+  }
 
-    function checkProgress() {
-      if (!currentSentence) return;
-      if (!guidedMode) {
-        if (isSentenceComplete()) {
-          showCompletion();
-        }
-        return;
-      }
-      const role = getRoleByStep(currentStep);
-      const totalNeeded = totalTokensForRole(role);
-      if (totalNeeded === 0) {
-        if (currentStep < 2) {
-          setStep(currentStep + 1);
-        } else {
-          showCompletion();
-        }
-        return;
-      }
-      const placed = countLockedTokens(role);
-      if (placed >= totalNeeded) {
-        if (currentStep < 2) {
-          const nextStep = currentStep + 1;
-          setStep(nextStep);
-          const nextRole = getRoleByStep(nextStep);
-          const hint = NEXT_STEP_HINTS[nextRole];
-          if (hint) {
-            showFeedback(true, hint);
-          }
-        } else {
-          showCompletion();
-        }
+  function lowerFirst(str){ return str ? str.charAt(0).toLowerCase()+str.slice(1) : str; }
+  function updateQuestion(){
+    const q = buildQuestion();
+    questionEl.textContent = q;
+    updateComplementTitle();
+    if(speakQuestions && speakQuestions.checked) tts(q);
+  }
+  function getPlaced(role){ const el=drops[role]; const chip=el.querySelector('.chip'); return chip? chip.textContent : ''; }
+
+  // ===== Logica click =====
+  function onTokenClick(tok, card){
+    const expected = ORDER[stepIndex];
+    if(training.checked && tok.role!==expected){
+      // Durante i complementi, restiamo sempre su 'cosa' finché non sono finiti
+      if(!(expected==='cosa' && tok.role==='cosa')){
+        vibrate(30); flash(card); setFeedback('Rispondi alla domanda grande al centro.', 'bad'); return;
       }
     }
+    placeToken(tok, drops[tok.role]);
+  }
 
-    function showFeedback(isOk, message) {
-      const text = message || (isOk ? "Bravo!" : "Oops!");
-      feedback.textContent = text;
-      feedback.classList.toggle("ok", isOk);
-      feedback.classList.toggle("ko", !isOk);
-      if (!isOk) {
-        feedback.setAttribute("role", "alert");
-        setTimeout(() => feedback.removeAttribute("role"), 500);
-      } else {
-        feedback.removeAttribute("role");
-      }
-      speakMessage(text);
-    }
+  function placeToken(tok, targetDrop){
+    if(targetDrop.getAttribute('data-drop')!==tok.role){ setFeedback('Non qui.', 'bad'); vibrate(20); return; }
+    const btn = tokensEl.querySelector(`[data-id="${tok.id}"]`); if(!btn) return;
+    btn.setAttribute('aria-disabled','true'); btn.draggable=false; placedIds.add(tok.id);
+    const chip=document.createElement('span'); chip.className='chip'; chip.textContent=tok.label; targetDrop.appendChild(chip);
+    if(speakOnClick.checked) tts(tok.label);
 
-    function showCompletion() {
-      showFeedback(true, "Bravo! Tutto completo");
-      updateModeHint();
-    }
-
-    function countLockedTokens(role) {
-      const basket = baskets.find((b) => b.dataset.role === role);
-      if (!basket) return 0;
-      return basket.querySelectorAll(`.token.locked[data-role="${role}"]`).length;
-    }
-
-    function totalTokensForRole(role) {
-      if (!currentSentence) return 0;
-      return currentSentence.tokens.filter((token) => token.role === role).length;
-    }
-
-    function isSentenceComplete() {
-      if (!currentSentence) return false;
-      return document.querySelectorAll(".token:not(.locked)").length === 0;
-    }
-
-    function updateModeHint() {
-      if (!modeHint) return;
-      if (isSentenceComplete()) {
-        modeHint.textContent = "Frase completata! Ottimo lavoro.";
-        return;
-      }
-      if (!guidedMode) {
-        const remaining = document.querySelectorAll(".token:not(.locked)").length;
-        modeHint.textContent = remaining > 0
-          ? `Modalità libera: abbina le parole ai cestini corretti (${remaining} da sistemare).`
-          : "Modalità libera: tutti i pezzi sono al posto giusto!";
-        return;
-      }
-      const role = getRoleByStep(currentStep);
-      modeHint.textContent = STEP_HINTS[role] || "Completa l'attività seguendo l'ordine.";
-    }
-
-    function speakMessage(text) {
-      if (!speechEnabled || !text) return;
-      if (typeof speechSynthesis === "undefined") return;
-      speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "it-IT";
-      utterance.rate = 1;
-      speechSynthesis.speak(utterance);
-    }
-
-    function synchronizeMode() {
-      if (guidedMode) {
-        synchronizeStepWithProgress();
-      } else {
-        setStep(currentStep);
+    // Avanza step: chi → fa → cosa; per i complementi restiamo su 'cosa' finché non terminano
+    if(tok.role!=='cosa' && stepIndex < ORDER.length-1){ stepIndex++; }
+    else if(tok.role==='cosa'){
+      if(!nextUnplacedComplementType()){
+        setFeedback('Bravo! Analisi completata.', 'ok');
       }
     }
+    updateComplementTitle();
+    updateQuestion();
+    if(tok.role!=='cosa') setFeedback('Bravo!', 'ok');
+  }
 
-    function synchronizeStepWithProgress() {
-      if (!guidedMode) return;
-      const roles = ["fa", "chi", "cosa"];
-      for (let index = 0; index < roles.length; index++) {
-        const role = roles[index];
-        if (countLockedTokens(role) < totalTokensForRole(role)) {
-          setStep(index);
-          return;
-        }
-      }
-      setStep(2);
-      if (isSentenceComplete()) {
-        showCompletion();
-      }
+  function setFeedback(msg, type){ feedback.textContent=msg||''; feedback.className='feedback '+(type||''); }
+  function flash(el){ el.animate([{transform:'scale(1)'},{transform:'scale(1.03)'},{transform:'scale(1)'}], {duration:220}); }
+  function vibrate(ms){ if(navigator.vibrate) navigator.vibrate(ms); }
+
+  // ===== TTS =====
+  function tts(text){ if(!text||voiceMode.value==='off') return; try{ speechSynthesis.cancel(); }catch(_){ }
+    const u=new SpeechSynthesisUtterance(text); u.lang='it-IT'; u.rate=0.95; try{ speechSynthesis.speak(u); }catch(_){ }
+  }
+
+  // ===== Caricamento frase =====
+  function clearBins(){ Object.values(drops).forEach(d=>d.innerHTML=''); placedIds.clear(); }
+
+  function loadSentence(id){
+    const s = SENTENCES.find(x=>x.id===id) || SENTENCES[0];
+    current=s; if(picker) picker.value=s.id; stepIndex=0; setFeedback('', '');
+    sentenceText.textContent = s.label; clearBins(); renderTokens(); updateQuestion(); updateComplementTitle();
+  }
+
+  // ===== Avvio =====
+  renderPicker();
+  loadSentence(SENTENCES[0].id);
+
+  // Titolo dinamico del box complementi
+  function updateComplementTitle(){
+    const h = document.getElementById('compTitle');
+    if(!h) return;
+    if(ORDER[stepIndex] !== 'cosa'){
+      h.innerHTML = 'COMPLEMENTO <span class="role-badge">(COSA)</span>';
+      return;
     }
+    const tp = nextUnplacedComplementType();
+    if(tp==='oggetto')      h.innerHTML = 'COMPLEMENTO <span class="role-badge">(COSA)</span>';
+    else if(tp==='luogo')   h.innerHTML = 'COMPLEMENTO <span class="role-badge">(LUOGO)</span>';
+    else if(tp==='termine') h.innerHTML = 'COMPLEMENTO <span class="role-badge">(TERMINE)</span>';
+    else                    h.innerHTML = 'COMPLEMENTI <span class="role-badge">(COMPLETATO)</span>';
+  }
 
-    let draggedToken = null;
-
-    function handleDragStart(event) {
-      draggedToken = event.target;
-      event.dataTransfer.effectAllowed = "move";
-    }
-
-    function handleDragEnd() {
-      draggedToken = null;
-    }
-
-    baskets.forEach((basket) => {
-      basket.addEventListener("dragover", (event) => {
-        event.preventDefault();
-      });
-      basket.addEventListener("drop", (event) => {
-        event.preventDefault();
-        if (!draggedToken || draggedToken.classList.contains("locked")) return;
-        const tokenRole = draggedToken.dataset.role;
-        const basketRole = basket.dataset.role;
-        if (guidedMode) {
-          const expectedRole = getRoleByStep(currentStep);
-          if (basketRole !== expectedRole || tokenRole !== expectedRole) {
-            showFeedback(false, ERROR_MESSAGES[expectedRole] || "Segui l'ordine guidato.");
-            return;
-          }
-          dropTokenIntoBasket(draggedToken, expectedRole);
-          checkProgress();
-          return;
-        }
-        if (tokenRole !== basketRole) {
-          showFeedback(false, `In questo cesto vanno parole di tipo ${basketRole.toUpperCase()}.`);
-          return;
-        }
-        dropTokenIntoBasket(draggedToken, basketRole);
-        checkProgress();
-      });
-    });
-
-    guidedToggle.addEventListener("change", (event) => {
-      guidedMode = event.target.checked;
-      synchronizeMode();
-    });
-
-    speechToggle.addEventListener("change", (event) => {
-      speechEnabled = event.target.checked;
-      if (!speechEnabled && typeof speechSynthesis !== "undefined") {
-        speechSynthesis.cancel();
-      }
-    });
-
-    resetButton.addEventListener("click", () => populateSentence(currentSentenceIndex));
-
-    nextButton.addEventListener("click", () => {
-      currentSentenceIndex = (currentSentenceIndex + 1) % SENTENCES.length;
-      populateSentence(currentSentenceIndex);
-    });
-
-    settingsToggle.addEventListener("click", () => {
-      settingsPanel.classList.toggle("hidden");
-    });
-
-    fontSlider.addEventListener("input", (event) => {
-      const value = event.target.value;
-      document.documentElement.style.setProperty("--base-font-size", `${value}px`);
-    });
-
-    contrastToggle.addEventListener("change", (event) => {
-      document.body.classList.toggle("high-contrast", event.target.checked);
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!settingsPanel.contains(event.target) && event.target !== settingsToggle) {
-        settingsPanel.classList.add("hidden");
-      }
-    });
-
-    populateSentence(currentSentenceIndex);
-  </script>
+  // ===== Sanity tests (non invasivi, solo console) =====
+  try {
+    console.assert(Array.isArray(SENTENCES) && SENTENCES.length >= 2, 'SENTENCES non valido');
+    console.assert(ORDER.join(',') === 'chi,fa,cosa', 'ORDER non valido');
+    console.assert(typeof buildQuestion === 'function', 'buildQuestion mancante');
+    console.assert(nextUnplacedComplementType() === 'oggetto', 'Atteso oggetto come primo complemento');
+    console.log('[OK] Sanity checks passed');
+  } catch (e) {
+    console.error('[ERR] Sanity checks failed', e);
+  }
+</script>
 </body>
 </html>
