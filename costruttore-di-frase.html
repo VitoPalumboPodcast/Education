@@ -146,6 +146,11 @@
 
     const firstPerson = { 'mangia':'mangio','beve':'bevo','gioca':'gioco','legge':'leggo' };
 
+    const subjectActionBlocks = {
+      'il gatto': new Set(['legge']),
+      'il cane': new Set(['legge'])
+    };
+
     const subjectObjectBlocks = {
       'il gatto': {
         'mangia': new Set(['la mela']),
@@ -266,6 +271,31 @@
     }
 
     function enforceFilters(){
+      enforceActionFilters();
+      enforceObjectFilters();
+    }
+
+    function enforceActionFilters(){
+      const actions = document.querySelectorAll('.card[data-type="action"]');
+      const blocked = subjectActionBlocks[state.subject] || null;
+      actions.forEach(actionCard => {
+        const actionWord = actionCard.dataset.word;
+        const isBlocked = !!blocked && blocked.has(actionWord);
+        if (isBlocked && state.action === actionWord){
+          actionCard.classList.remove('selected');
+          actionCard.setAttribute('aria-pressed','false');
+          state.action = '';
+          deselectObjects();
+          state.object = '';
+          if (trainingBox.checked){
+            state.step = 'action';
+          }
+        }
+        actionCard.setAttribute('aria-disabled', isBlocked ? 'true' : 'false');
+      });
+    }
+
+    function enforceObjectFilters(){
       const objs = document.querySelectorAll('.card[data-type="object"]');
       const spec = actionSpecs[state.action];
       if (!spec){ objs.forEach(o=>o.setAttribute('aria-disabled','true')); return; }
