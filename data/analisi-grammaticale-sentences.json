@@ -1090,5 +1090,3049 @@
         ]
       }
     ]
+  },
+  {
+    "id": "g4",
+    "label": "L'analisi è stata complessa.",
+    "tokens": [
+      {
+        "id": "l_apostrofo",
+        "label": "L'",
+        "icon": "📕",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «L'»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Articolo"
+          },
+          {
+            "question": "Che tipo di articolo è «L'»?",
+            "choices": [
+              "Determinativo",
+              "Indeterminativo",
+              "Partitivo"
+            ],
+            "answer": "Determinativo"
+          },
+          {
+            "question": "Qual è il genere di «L'»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Femminile"
+          },
+          {
+            "question": "Qual è il numero di «L'»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "analisi",
+        "label": "analisi",
+        "icon": "📊",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «analisi»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «analisi»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «analisi»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «analisi»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Femminile"
+          },
+          {
+            "question": "Qual è il numero di «analisi»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          },
+          {
+            "question": "Che caratteristica morfologica ha «analisi»?",
+            "choices": [
+              "Variabile",
+              "Invariabile"
+            ],
+            "answer": "Invariabile"
+          }
+        ]
+      },
+      {
+        "id": "e",
+        "label": "è",
+        "icon": "⚖️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «è»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «è»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Indicativo"
+          },
+          {
+            "question": "Qual è il tempo verbale di «è»?",
+            "choices": [
+              "Presente",
+              "Imperfetto",
+              "Passato remoto",
+              "Futuro semplice"
+            ],
+            "answer": "Presente"
+          },
+          {
+            "question": "Che persona e numero esprime «è»?",
+            "choices": [
+              "1ª singolare",
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "3ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "stata",
+        "label": "stata",
+        "icon": "🧱",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «stata»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Che modo verbale è «stata»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Participio",
+              "Gerundio"
+            ],
+            "answer": "Participio"
+          },
+          {
+            "question": "Che tipo di participio è «stata»?",
+            "choices": [
+              "Presente",
+              "Passato"
+            ],
+            "answer": "Passato"
+          },
+          {
+            "question": "Quale genere e numero concorda con «stata»?",
+            "choices": [
+              "Maschile singolare",
+              "Femminile singolare",
+              "Maschile plurale",
+              "Femminile plurale",
+              "Invariabile"
+            ],
+            "answer": "Femminile singolare"
+          }
+        ]
+      },
+      {
+        "id": "complessa",
+        "label": "complessa",
+        "icon": "🧩",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «complessa»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Aggettivo"
+          },
+          {
+            "question": "Che tipo di aggettivo è «complessa»?",
+            "choices": [
+              "Qualificativo",
+              "Possessivo",
+              "Dimostrativo",
+              "Numerale",
+              "Indefinito"
+            ],
+            "answer": "Qualificativo"
+          },
+          {
+            "question": "Qual è il genere di «complessa»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Femminile"
+          },
+          {
+            "question": "Qual è il numero di «complessa»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g5",
+    "label": "Gli zeri sono importanti.",
+    "tokens": [
+      {
+        "id": "gli",
+        "label": "Gli",
+        "icon": "📙",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «Gli»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Articolo"
+          },
+          {
+            "question": "Che tipo di articolo è «Gli»?",
+            "choices": [
+              "Determinativo",
+              "Indeterminativo",
+              "Partitivo"
+            ],
+            "answer": "Determinativo"
+          },
+          {
+            "question": "Qual è il genere di «Gli»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «Gli»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Plurale"
+          }
+        ]
+      },
+      {
+        "id": "zeri",
+        "label": "zeri",
+        "icon": "0️⃣",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «zeri»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «zeri»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «zeri»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «zeri»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «zeri»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Plurale"
+          }
+        ]
+      },
+      {
+        "id": "sono",
+        "label": "sono",
+        "icon": "🪑",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «sono»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «sono»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Indicativo"
+          },
+          {
+            "question": "Qual è il tempo verbale di «sono»?",
+            "choices": [
+              "Presente",
+              "Imperfetto",
+              "Passato remoto",
+              "Futuro semplice"
+            ],
+            "answer": "Presente"
+          },
+          {
+            "question": "Che persona e numero esprime «sono»?",
+            "choices": [
+              "1ª singolare",
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "3ª plurale"
+          }
+        ]
+      },
+      {
+        "id": "importanti",
+        "label": "importanti",
+        "icon": "⭐",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «importanti»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Aggettivo"
+          },
+          {
+            "question": "Che tipo di aggettivo è «importanti»?",
+            "choices": [
+              "Qualificativo",
+              "Possessivo",
+              "Dimostrativo",
+              "Numerale",
+              "Indefinito"
+            ],
+            "answer": "Qualificativo"
+          },
+          {
+            "question": "Qual è il genere di «importanti»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Invariabile"
+          },
+          {
+            "question": "Qual è il numero di «importanti»?",
+            "choices": [
+              "Singolare",
+              "Plurale",
+              "Invariabile"
+            ],
+            "answer": "Plurale"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g6",
+    "label": "Ho visto un gatto nero che dormiva sul divano.",
+    "tokens": [
+      {
+        "id": "ho",
+        "label": "Ho",
+        "icon": "🙋",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «Ho»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «Ho»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Indicativo"
+          },
+          {
+            "question": "Qual è il tempo verbale di «Ho»?",
+            "choices": [
+              "Presente",
+              "Imperfetto",
+              "Passato remoto",
+              "Futuro semplice"
+            ],
+            "answer": "Presente"
+          },
+          {
+            "question": "Che persona e numero esprime «Ho»?",
+            "choices": [
+              "1ª singolare",
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "1ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "visto",
+        "label": "visto",
+        "icon": "👀",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «visto»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Che modo verbale è «visto»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Participio",
+              "Gerundio"
+            ],
+            "answer": "Participio"
+          },
+          {
+            "question": "Che tipo di participio è «visto»?",
+            "choices": [
+              "Presente",
+              "Passato"
+            ],
+            "answer": "Passato"
+          }
+        ]
+      },
+      {
+        "id": "un",
+        "label": "un",
+        "icon": "📄",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «un»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Articolo"
+          },
+          {
+            "question": "Che tipo di articolo è «un»?",
+            "choices": [
+              "Determinativo",
+              "Indeterminativo",
+              "Partitivo"
+            ],
+            "answer": "Indeterminativo"
+          },
+          {
+            "question": "Qual è il genere di «un»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «un»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "gatto",
+        "label": "gatto",
+        "icon": "🐈",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «gatto»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «gatto»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «gatto»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di animale"
+          },
+          {
+            "question": "Qual è il genere di «gatto»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «gatto»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "nero",
+        "label": "nero",
+        "icon": "⚫",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «nero»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Aggettivo"
+          },
+          {
+            "question": "Che tipo di aggettivo è «nero»?",
+            "choices": [
+              "Qualificativo",
+              "Possessivo",
+              "Dimostrativo",
+              "Numerale",
+              "Indefinito"
+            ],
+            "answer": "Qualificativo"
+          },
+          {
+            "question": "Qual è il genere di «nero»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «nero»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "che",
+        "label": "che",
+        "icon": "🔗",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «che»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Pronome"
+          },
+          {
+            "question": "Che tipo di pronome è «che»?",
+            "choices": [
+              "Personale tonico",
+              "Personale atono",
+              "Dimostrativo",
+              "Riflessivo",
+              "Relativo",
+              "Indefinito"
+            ],
+            "answer": "Relativo"
+          }
+        ]
+      },
+      {
+        "id": "dormiva",
+        "label": "dormiva",
+        "icon": "😴",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «dormiva»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «dormiva»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Indicativo"
+          },
+          {
+            "question": "Qual è il tempo verbale di «dormiva»?",
+            "choices": [
+              "Presente",
+              "Imperfetto",
+              "Passato remoto",
+              "Futuro semplice"
+            ],
+            "answer": "Imperfetto"
+          },
+          {
+            "question": "Che persona e numero esprime «dormiva»?",
+            "choices": [
+              "1ª singolare",
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "3ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "sul",
+        "label": "sul",
+        "icon": "🪑",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «sul»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Preposizione"
+          },
+          {
+            "question": "Che tipo di preposizione è «sul»?",
+            "choices": [
+              "Semplice",
+              "Articolata",
+              "Impropria",
+              "Locuzione"
+            ],
+            "answer": "Articolata"
+          }
+        ]
+      },
+      {
+        "id": "divano",
+        "label": "divano",
+        "icon": "🛋",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «divano»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «divano»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «divano»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «divano»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «divano»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g7",
+    "label": "Metti dello zucchero bianco sul tavolo adesso.",
+    "tokens": [
+      {
+        "id": "metti",
+        "label": "Metti",
+        "icon": "☝️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «Metti»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «Metti»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Imperativo"
+          },
+          {
+            "question": "Che persona e numero esprime «Metti»?",
+            "choices": [
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "2ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "2ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "dello",
+        "label": "dello",
+        "icon": "🥄",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «dello»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Articolo"
+          },
+          {
+            "question": "Che tipo di articolo è «dello»?",
+            "choices": [
+              "Determinativo",
+              "Indeterminativo",
+              "Partitivo"
+            ],
+            "answer": "Partitivo"
+          },
+          {
+            "question": "Qual è il genere di «dello»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «dello»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "zucchero",
+        "label": "zucchero",
+        "icon": "🍬",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «zucchero»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «zucchero»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «zucchero»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «zucchero»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «zucchero»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "bianco",
+        "label": "bianco",
+        "icon": "⚪",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «bianco»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Aggettivo"
+          },
+          {
+            "question": "Che tipo di aggettivo è «bianco»?",
+            "choices": [
+              "Qualificativo",
+              "Possessivo",
+              "Dimostrativo",
+              "Numerale",
+              "Indefinito"
+            ],
+            "answer": "Qualificativo"
+          },
+          {
+            "question": "Qual è il genere di «bianco»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «bianco»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "sul",
+        "label": "sul",
+        "icon": "🪑",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «sul»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Preposizione"
+          },
+          {
+            "question": "Che tipo di preposizione è «sul»?",
+            "choices": [
+              "Semplice",
+              "Articolata",
+              "Impropria",
+              "Locuzione"
+            ],
+            "answer": "Articolata"
+          }
+        ]
+      },
+      {
+        "id": "tavolo",
+        "label": "tavolo",
+        "icon": "🛋️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «tavolo»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «tavolo»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «tavolo»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «tavolo»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «tavolo»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "adesso",
+        "label": "adesso",
+        "icon": "⏰",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «adesso»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Avverbio"
+          },
+          {
+            "question": "Che tipo di avverbio è «adesso»?",
+            "choices": [
+              "Di modo",
+              "Di tempo",
+              "Di luogo",
+              "Di quantità",
+              "Di negazione"
+            ],
+            "answer": "Di tempo"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g8",
+    "label": "Ogni studente diligente ha consegnato rapidamente il compito.",
+    "tokens": [
+      {
+        "id": "ogni",
+        "label": "Ogni",
+        "icon": "📅",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «Ogni»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Aggettivo"
+          },
+          {
+            "question": "Che tipo di aggettivo è «Ogni»?",
+            "choices": [
+              "Qualificativo",
+              "Possessivo",
+              "Dimostrativo",
+              "Numerale",
+              "Indefinito"
+            ],
+            "answer": "Indefinito"
+          },
+          {
+            "question": "Qual è il genere di «Ogni»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Invariabile"
+          },
+          {
+            "question": "Qual è il numero con cui si usa «Ogni»?",
+            "choices": [
+              "Singolare",
+              "Plurale",
+              "Invariabile"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "studente",
+        "label": "studente",
+        "icon": "🎓",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «studente»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «studente»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «studente»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di persona"
+          },
+          {
+            "question": "Qual è il genere di «studente»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «studente»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "diligente",
+        "label": "diligente",
+        "icon": "📘",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «diligente»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Aggettivo"
+          },
+          {
+            "question": "Che tipo di aggettivo è «diligente»?",
+            "choices": [
+              "Qualificativo",
+              "Possessivo",
+              "Dimostrativo",
+              "Numerale",
+              "Indefinito"
+            ],
+            "answer": "Qualificativo"
+          },
+          {
+            "question": "Qual è il genere di «diligente»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Invariabile"
+          },
+          {
+            "question": "Qual è il numero di «diligente»?",
+            "choices": [
+              "Singolare",
+              "Plurale",
+              "Invariabile"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "ha",
+        "label": "ha",
+        "icon": "✍️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «ha»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «ha»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Indicativo"
+          },
+          {
+            "question": "Qual è il tempo verbale di «ha»?",
+            "choices": [
+              "Presente",
+              "Imperfetto",
+              "Passato remoto",
+              "Futuro semplice"
+            ],
+            "answer": "Presente"
+          },
+          {
+            "question": "Che persona e numero esprime «ha»?",
+            "choices": [
+              "1ª singolare",
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "3ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "consegnato",
+        "label": "consegnato",
+        "icon": "📦",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «consegnato»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Che modo verbale è «consegnato»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Participio",
+              "Gerundio"
+            ],
+            "answer": "Participio"
+          },
+          {
+            "question": "Che tipo di participio è «consegnato»?",
+            "choices": [
+              "Presente",
+              "Passato"
+            ],
+            "answer": "Passato"
+          }
+        ]
+      },
+      {
+        "id": "rapidamente",
+        "label": "rapidamente",
+        "icon": "🏃",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «rapidamente»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Avverbio"
+          },
+          {
+            "question": "Che tipo di avverbio è «rapidamente»?",
+            "choices": [
+              "Di modo",
+              "Di tempo",
+              "Di luogo",
+              "Di quantità",
+              "Di negazione"
+            ],
+            "answer": "Di modo"
+          }
+        ]
+      },
+      {
+        "id": "il",
+        "label": "il",
+        "icon": "📗",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «il»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Articolo"
+          },
+          {
+            "question": "Che tipo di articolo è «il»?",
+            "choices": [
+              "Determinativo",
+              "Indeterminativo",
+              "Partitivo"
+            ],
+            "answer": "Determinativo"
+          },
+          {
+            "question": "Qual è il genere di «il»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «il»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "compito",
+        "label": "compito",
+        "icon": "📝",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «compito»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «compito»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «compito»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «compito»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «compito»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g9",
+    "label": "Costui non rispetta ciò che dici, quindi vai via.",
+    "tokens": [
+      {
+        "id": "costui",
+        "label": "Costui",
+        "icon": "🧍",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «Costui»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Pronome"
+          },
+          {
+            "question": "Che tipo di pronome è «Costui»?",
+            "choices": [
+              "Personale tonico",
+              "Personale atono",
+              "Dimostrativo",
+              "Riflessivo",
+              "Relativo",
+              "Indefinito"
+            ],
+            "answer": "Dimostrativo"
+          }
+        ]
+      },
+      {
+        "id": "non",
+        "label": "non",
+        "icon": "🚫",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «non»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Avverbio"
+          },
+          {
+            "question": "Che tipo di avverbio è «non»?",
+            "choices": [
+              "Di modo",
+              "Di tempo",
+              "Di luogo",
+              "Di quantità",
+              "Di negazione"
+            ],
+            "answer": "Di negazione"
+          }
+        ]
+      },
+      {
+        "id": "rispetta",
+        "label": "rispetta",
+        "icon": "🤝",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «rispetta»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «rispetta»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Indicativo"
+          },
+          {
+            "question": "Qual è il tempo verbale di «rispetta»?",
+            "choices": [
+              "Presente",
+              "Imperfetto",
+              "Passato remoto",
+              "Futuro semplice"
+            ],
+            "answer": "Presente"
+          },
+          {
+            "question": "Che persona e numero esprime «rispetta»?",
+            "choices": [
+              "1ª singolare",
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "3ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "cio",
+        "label": "ciò",
+        "icon": "🎯",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «ciò»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Pronome"
+          },
+          {
+            "question": "Che tipo di pronome è «ciò»?",
+            "choices": [
+              "Personale tonico",
+              "Personale atono",
+              "Dimostrativo",
+              "Riflessivo",
+              "Relativo",
+              "Indefinito"
+            ],
+            "answer": "Dimostrativo"
+          }
+        ]
+      },
+      {
+        "id": "che_relativo",
+        "label": "che",
+        "icon": "🔒",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «che»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Pronome"
+          },
+          {
+            "question": "Che tipo di pronome è «che» in questa frase?",
+            "choices": [
+              "Personale tonico",
+              "Personale atono",
+              "Dimostrativo",
+              "Riflessivo",
+              "Relativo",
+              "Indefinito"
+            ],
+            "answer": "Relativo"
+          }
+        ]
+      },
+      {
+        "id": "dici",
+        "label": "dici",
+        "icon": "🗣️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «dici»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «dici»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Indicativo"
+          },
+          {
+            "question": "Qual è il tempo verbale di «dici»?",
+            "choices": [
+              "Presente",
+              "Imperfetto",
+              "Passato remoto",
+              "Futuro semplice"
+            ],
+            "answer": "Presente"
+          },
+          {
+            "question": "Che persona e numero esprime «dici»?",
+            "choices": [
+              "1ª singolare",
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "2ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "quindi",
+        "label": "quindi",
+        "icon": "➡️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «quindi»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Congiunzione"
+          },
+          {
+            "question": "Che tipo di congiunzione è «quindi»?",
+            "choices": [
+              "Coordinante copulativa",
+              "Coordinante avversativa",
+              "Coordinante conclusiva",
+              "Coordinante disgiuntiva",
+              "Subordinante"
+            ],
+            "answer": "Coordinante conclusiva"
+          }
+        ]
+      },
+      {
+        "id": "vai",
+        "label": "vai",
+        "icon": "🚶",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «vai»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «vai»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Imperativo"
+          },
+          {
+            "question": "Che persona e numero esprime «vai»?",
+            "choices": [
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "2ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "2ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "via",
+        "label": "via",
+        "icon": "🛣️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «via»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Avverbio"
+          },
+          {
+            "question": "Che tipo di avverbio è «via»?",
+            "choices": [
+              "Di modo",
+              "Di tempo",
+              "Di luogo",
+              "Di quantità",
+              "Di negazione"
+            ],
+            "answer": "Di luogo"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g10",
+    "label": "Ahi, mi sono ferito alla mano sinistra.",
+    "tokens": [
+      {
+        "id": "ahi",
+        "label": "Ahi",
+        "icon": "😖",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «Ahi»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Interiezione"
+          }
+        ]
+      },
+      {
+        "id": "mi",
+        "label": "mi",
+        "icon": "🙋‍♂️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «mi»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Pronome"
+          },
+          {
+            "question": "Che tipo di pronome è «mi»?",
+            "choices": [
+              "Personale tonico",
+              "Personale atono",
+              "Dimostrativo",
+              "Riflessivo",
+              "Relativo",
+              "Indefinito"
+            ],
+            "answer": "Personale atono"
+          }
+        ]
+      },
+      {
+        "id": "sono",
+        "label": "sono",
+        "icon": "🪞",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «sono»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «sono»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Indicativo"
+          },
+          {
+            "question": "Qual è il tempo verbale di «sono»?",
+            "choices": [
+              "Presente",
+              "Imperfetto",
+              "Passato remoto",
+              "Futuro semplice"
+            ],
+            "answer": "Presente"
+          },
+          {
+            "question": "Che persona e numero esprime «sono»?",
+            "choices": [
+              "1ª singolare",
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "1ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "ferito",
+        "label": "ferito",
+        "icon": "🩹",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «ferito»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Che modo verbale è «ferito»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Participio",
+              "Gerundio"
+            ],
+            "answer": "Participio"
+          },
+          {
+            "question": "Che tipo di participio è «ferito»?",
+            "choices": [
+              "Presente",
+              "Passato"
+            ],
+            "answer": "Passato"
+          }
+        ]
+      },
+      {
+        "id": "alla",
+        "label": "alla",
+        "icon": "📎",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «alla»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Preposizione"
+          },
+          {
+            "question": "Che tipo di preposizione è «alla»?",
+            "choices": [
+              "Semplice",
+              "Articolata",
+              "Impropria",
+              "Locuzione"
+            ],
+            "answer": "Articolata"
+          }
+        ]
+      },
+      {
+        "id": "mano",
+        "label": "mano",
+        "icon": "✋",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «mano»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «mano»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «mano»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «mano»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Femminile"
+          },
+          {
+            "question": "Qual è il numero di «mano»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "sinistra",
+        "label": "sinistra",
+        "icon": "👈",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «sinistra»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Aggettivo"
+          },
+          {
+            "question": "Che tipo di aggettivo è «sinistra»?",
+            "choices": [
+              "Qualificativo",
+              "Possessivo",
+              "Dimostrativo",
+              "Numerale",
+              "Indefinito"
+            ],
+            "answer": "Qualificativo"
+          },
+          {
+            "question": "Qual è il genere di «sinistra»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Femminile"
+          },
+          {
+            "question": "Qual è il numero di «sinistra»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g11",
+    "label": "Nonostante la pioggia, i corridori hanno continuato la gara.",
+    "tokens": [
+      {
+        "id": "nonostante",
+        "label": "Nonostante",
+        "icon": "🌧️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «Nonostante»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Preposizione"
+          },
+          {
+            "question": "Che tipo di preposizione è «Nonostante»?",
+            "choices": [
+              "Semplice",
+              "Articolata",
+              "Impropria",
+              "Locuzione"
+            ],
+            "answer": "Impropria"
+          }
+        ]
+      },
+      {
+        "id": "la",
+        "label": "la",
+        "icon": "📒",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «la»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Articolo"
+          },
+          {
+            "question": "Che tipo di articolo è «la»?",
+            "choices": [
+              "Determinativo",
+              "Indeterminativo",
+              "Partitivo"
+            ],
+            "answer": "Determinativo"
+          },
+          {
+            "question": "Qual è il genere di «la»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Femminile"
+          },
+          {
+            "question": "Qual è il numero di «la»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "pioggia",
+        "label": "pioggia",
+        "icon": "💧",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «pioggia»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «pioggia»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «pioggia»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «pioggia»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Femminile"
+          },
+          {
+            "question": "Qual è il numero di «pioggia»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "i",
+        "label": "i",
+        "icon": "📗",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «i»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Articolo"
+          },
+          {
+            "question": "Che tipo di articolo è «i»?",
+            "choices": [
+              "Determinativo",
+              "Indeterminativo",
+              "Partitivo"
+            ],
+            "answer": "Determinativo"
+          },
+          {
+            "question": "Qual è il genere di «i»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «i»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Plurale"
+          }
+        ]
+      },
+      {
+        "id": "corridori",
+        "label": "corridori",
+        "icon": "🏃‍♂️",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «corridori»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «corridori»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «corridori»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di persona"
+          },
+          {
+            "question": "Qual è il genere di «corridori»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «corridori»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Plurale"
+          }
+        ]
+      },
+      {
+        "id": "hanno",
+        "label": "hanno",
+        "icon": "👟",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «hanno»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «hanno»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Indicativo"
+          },
+          {
+            "question": "Qual è il tempo verbale di «hanno»?",
+            "choices": [
+              "Presente",
+              "Imperfetto",
+              "Passato remoto",
+              "Futuro semplice"
+            ],
+            "answer": "Presente"
+          },
+          {
+            "question": "Che persona e numero esprime «hanno»?",
+            "choices": [
+              "1ª singolare",
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "3ª plurale"
+          }
+        ]
+      },
+      {
+        "id": "continuato",
+        "label": "continuato",
+        "icon": "🔁",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «continuato»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Che modo verbale è «continuato»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Participio",
+              "Gerundio"
+            ],
+            "answer": "Participio"
+          },
+          {
+            "question": "Che tipo di participio è «continuato»?",
+            "choices": [
+              "Presente",
+              "Passato"
+            ],
+            "answer": "Passato"
+          }
+        ]
+      },
+      {
+        "id": "la_finale",
+        "label": "la",
+        "icon": "📘",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «la»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Articolo"
+          },
+          {
+            "question": "Che tipo di articolo è «la»?",
+            "choices": [
+              "Determinativo",
+              "Indeterminativo",
+              "Partitivo"
+            ],
+            "answer": "Determinativo"
+          },
+          {
+            "question": "Qual è il genere di «la»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Femminile"
+          },
+          {
+            "question": "Qual è il numero di «la»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "gara",
+        "label": "gara",
+        "icon": "🏁",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «gara»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «gara»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «gara»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «gara»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Femminile"
+          },
+          {
+            "question": "Qual è il numero di «gara»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g12",
+    "label": "Studia al fine di superare l'esame finale.",
+    "tokens": [
+      {
+        "id": "studia",
+        "label": "Studia",
+        "icon": "📖",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «Studia»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «Studia»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Imperativo"
+          },
+          {
+            "question": "Che persona e numero esprime «Studia»?",
+            "choices": [
+              "2ª singolare",
+              "3ª singolare",
+              "1ª plurale",
+              "2ª plurale",
+              "3ª plurale"
+            ],
+            "answer": "2ª singolare"
+          }
+        ]
+      },
+      {
+        "id": "al_fine_di",
+        "label": "al fine di",
+        "icon": "🎯",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «al fine di»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Preposizione"
+          },
+          {
+            "question": "Che tipo di preposizione è «al fine di»?",
+            "choices": [
+              "Semplice",
+              "Articolata",
+              "Impropria",
+              "Locuzione"
+            ],
+            "answer": "Locuzione"
+          }
+        ]
+      },
+      {
+        "id": "superare",
+        "label": "superare",
+        "icon": "🧠",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «superare»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Verbo"
+          },
+          {
+            "question": "Qual è il modo verbale di «superare»?",
+            "choices": [
+              "Indicativo",
+              "Congiuntivo",
+              "Condizionale",
+              "Imperativo",
+              "Infinito"
+            ],
+            "answer": "Infinito"
+          },
+          {
+            "question": "Che tipo di infinito è «superare»?",
+            "choices": [
+              "Presente",
+              "Passato"
+            ],
+            "answer": "Presente"
+          }
+        ]
+      },
+      {
+        "id": "l_apostrofo_esame",
+        "label": "l'",
+        "icon": "📔",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «l'»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Articolo"
+          },
+          {
+            "question": "Che tipo di articolo è «l'»?",
+            "choices": [
+              "Determinativo",
+              "Indeterminativo",
+              "Partitivo"
+            ],
+            "answer": "Determinativo"
+          },
+          {
+            "question": "Qual è il genere di «l'»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «l'»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "esame",
+        "label": "esame",
+        "icon": "🧾",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «esame»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Nome"
+          },
+          {
+            "question": "Che tipo di nome è «esame»?",
+            "choices": [
+              "Comune",
+              "Proprio",
+              "Collettivo",
+              "Astratto"
+            ],
+            "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «esame»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
+            "question": "Qual è il genere di «esame»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Maschile"
+          },
+          {
+            "question": "Qual è il numero di «esame»?",
+            "choices": [
+              "Singolare",
+              "Plurale"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      },
+      {
+        "id": "finale",
+        "label": "finale",
+        "icon": "🏁",
+        "steps": [
+          {
+            "question": "Qual è la parte del discorso di «finale»?",
+            "choices": [
+              "Articolo",
+              "Nome",
+              "Aggettivo",
+              "Verbo",
+              "Pronome",
+              "Preposizione",
+              "Avverbio",
+              "Congiunzione",
+              "Interiezione"
+            ],
+            "answer": "Aggettivo"
+          },
+          {
+            "question": "Che tipo di aggettivo è «finale»?",
+            "choices": [
+              "Qualificativo",
+              "Possessivo",
+              "Dimostrativo",
+              "Numerale",
+              "Indefinito"
+            ],
+            "answer": "Qualificativo"
+          },
+          {
+            "question": "Qual è il genere di «finale»?",
+            "choices": [
+              "Maschile",
+              "Femminile",
+              "Invariabile"
+            ],
+            "answer": "Invariabile"
+          },
+          {
+            "question": "Qual è il numero di «finale»?",
+            "choices": [
+              "Singolare",
+              "Plurale",
+              "Invariabile"
+            ],
+            "answer": "Singolare"
+          }
+        ]
+      }
+    ]
   }
 ]
