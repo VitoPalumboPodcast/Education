@@ -82,6 +82,15 @@
             "answer": "Comune"
           },
           {
+            "question": "Quale specificazione ha il nome comune «bambina»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di persona"
+          },
+          {
             "question": "Qual è il genere di «bambina»?",
             "choices": [
               "Maschile",
@@ -282,6 +291,15 @@
             "answer": "Comune"
           },
           {
+            "question": "Quale specificazione ha il nome comune «canzone»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
+          },
+          {
             "question": "Qual è il genere di «canzone»?",
             "choices": [
               "Maschile",
@@ -432,6 +450,15 @@
               "Astratto"
             ],
             "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «ragazzi»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di persona"
           },
           {
             "question": "Qual è il genere di «ragazzi»?",
@@ -598,6 +625,15 @@
               "Astratto"
             ],
             "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «parco»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
           },
           {
             "question": "Qual è il genere di «parco»?",
@@ -800,6 +836,15 @@
               "Astratto"
             ],
             "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «cane»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di animale"
           },
           {
             "question": "Qual è il genere di «cane»?",
@@ -1015,6 +1060,15 @@
               "Astratto"
             ],
             "answer": "Comune"
+          },
+          {
+            "question": "Quale specificazione ha il nome comune «poltrona»?",
+            "choices": [
+              "Di persona",
+              "Di animale",
+              "Di cosa"
+            ],
+            "answer": "Di cosa"
           },
           {
             "question": "Qual è il genere di «poltrona»?",
