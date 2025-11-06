@@ -15,13 +15,18 @@
   .wrap{max-width:980px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:16px}
 
   header{display:flex;flex-direction:column;gap:12px;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px}
-  header p{margin:0;line-height:1.5;font-size:17px}
-  header strong{color:var(--accent)}
 
-  .controls{display:flex;flex-wrap:wrap;gap:10px}
-  .controls button,.controls select{border-radius:12px;border:1px solid var(--border);background:var(--panel);padding:8px 14px;font-size:16px;font-weight:600;color:var(--accent);cursor:pointer}
-  .controls button:focus-visible,.option:focus-visible{outline:3px solid #93c5fd}
-  .controls button:hover{background:var(--accent-soft)}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .toolbar button,.toolbar select{border-radius:12px;border:1px solid var(--border);background:var(--panel);padding:8px 14px;font-size:16px;font-weight:600;color:var(--accent);cursor:pointer}
+  .toolbar button:focus-visible,.option:focus-visible{outline:3px solid #93c5fd}
+  .toolbar button:hover{background:var(--accent-soft)}
+  .toolbar button[data-pressed="true"]{background:var(--accent);color:#fff}
+
+  .info-panel{display:none;flex-direction:column;gap:8px;border-radius:12px;padding:16px;background:var(--muted);color:var(--ink);line-height:1.6}
+  .info-panel[aria-hidden="false"]{display:flex}
+  .info-panel h1{margin:0;font-size:clamp(20px,4vw,32px);color:var(--accent)}
+  .info-panel p{margin:0;font-size:17px}
+  .info-panel strong{color:var(--accent)}
 
   .board{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:18px;box-shadow:0 10px 28px rgba(37,99,235,.08)}
   .sentence{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
@@ -29,7 +34,8 @@
   .token .icon{font-size:34px}
   .token .word{font-size:18px;font-weight:700;text-align:center}
   .token[data-state="done"]{border-color:var(--good)}
-  .token[data-state="active"]{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 24px rgba(37,99,235,.16)}
+  .token[data-state="active"]{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 24px rgba(37,99,235,.16);position:relative;animation:pulseGlow 2s ease-in-out infinite}
+  .token[data-state="active"]::after{content:"";position:absolute;inset:-10px;border-radius:20px;background:radial-gradient(circle at center, rgba(37,99,235,.35), rgba(37,99,235,0));z-index:-1;animation:pulseHalo 2s ease-in-out infinite}
 
   .question{font-size:clamp(20px,4.2vw,34px);font-weight:800;text-align:center;margin:0}
   .step-hint{text-align:center;font-size:18px;margin:0;color:#475569}
@@ -49,6 +55,16 @@
   .next-word button:hover{background:#1d4ed8}
   .next-word[data-visible="true"]{display:flex}
 
+  @keyframes pulseGlow{
+    0%,100%{transform:translateY(-4px) scale(1);box-shadow:0 12px 24px rgba(37,99,235,.16)}
+    50%{transform:translateY(-6px) scale(1.03);box-shadow:0 18px 32px rgba(37,99,235,.28)}
+  }
+
+  @keyframes pulseHalo{
+    0%,100%{opacity:.65;transform:scale(.95)}
+    50%{opacity:0;transform:scale(1.15)}
+  }
+
   @media (max-width:640px){
     .question{font-size:24px}
     .option{font-size:17px}
@@ -60,13 +76,16 @@
 <body>
   <div class="wrap" role="application" aria-describedby="help">
     <header>
-      <h1>Allenatore di analisi grammaticale</h1>
-      <p id="help">Lavora su una <strong>parola alla volta</strong>: scegli la parte del discorso, quindi i tratti morfologici richiesti (genere, numero, tipo...). Ogni risposta viene verificata subito e al termine di ogni parola ricevi un messaggio riepilogativo.</p>
-      <div class="controls" role="group" aria-label="Controlli frase">
+      <div class="toolbar" role="group" aria-label="Controlli frase">
         <label class="sr-only" for="sentencePicker">Scegli frase</label>
-        <select id="sentencePicker"></select>
-        <button type="button" id="shuffle">🎲 Cambia frase</button>
-        <button type="button" id="restart">🔄 Ricomincia parola</button>
+        <select id="sentencePicker" title="Scegli una frase"></select>
+        <button type="button" id="shuffle" title="Cambia frase casualmente" aria-label="Cambia frase casualmente">🎲</button>
+        <button type="button" id="restart" title="Ricomincia la parola corrente" aria-label="Ricomincia la parola corrente">🔄</button>
+        <button type="button" id="infoToggle" aria-expanded="false" aria-controls="infoPanel" title="Mostra informazioni" aria-label="Mostra informazioni">ℹ️</button>
+      </div>
+      <div class="info-panel" id="infoPanel" aria-hidden="true">
+        <h1 tabindex="-1">Allenatore di analisi grammaticale</h1>
+        <p id="help">Lavora su una <strong>parola alla volta</strong>: scegli la parte del discorso, quindi i tratti morfologici richiesti (genere, numero, tipo...). Ogni risposta viene verificata subito e al termine di ogni parola ricevi un messaggio riepilogativo.</p>
       </div>
     </header>
 
@@ -112,6 +131,9 @@ const optionsEl = document.getElementById('options');
 const feedbackEl = document.getElementById('feedback');
 const nextWordContainer = document.getElementById('nextWord');
 const nextWordBtn = document.getElementById('nextWordBtn');
+const infoToggle = document.getElementById('infoToggle');
+const infoPanel = document.getElementById('infoPanel');
+let autoAdvanceTimer = null;
 const progressSentence = document.getElementById('progressSentence');
 const progressWord = document.getElementById('progressWord');
 const shuffleBtn = document.getElementById('shuffle');
@@ -150,6 +172,7 @@ function init(){
     nextWordBtn.addEventListener('click',()=>{
       advanceWord();
     });
+    infoToggle.addEventListener('click',toggleInfoPanel);
     controlsInitialized = true;
   }
 
@@ -171,6 +194,7 @@ function init(){
 }
 
 function loadSentence(index,shuffle=false){
+  clearAutoAdvance();
   if(!SENTENCES.length){
     handleEmptyBank();
     return;
@@ -281,6 +305,7 @@ function handleAnswer(choice){
 }
 
 function finishWord(){
+  clearAutoAdvance();
   const wordLabel = `«${currentWord.label}»`;
   const summary = wrongAttemptsForWord === 0
     ? `${wordLabel} completata senza errori!`
@@ -288,10 +313,11 @@ function finishWord(){
   feedbackEl.textContent = summary;
   feedbackEl.className = wrongAttemptsForWord === 0 ? 'feedback ok' : 'feedback bad';
   nextWordContainer.dataset.visible='true';
-  nextWordBtn.focus();
+  scheduleAutoAdvance();
 }
 
 function advanceWord(){
+  clearAutoAdvance();
   if(wordQueue.length === 0){
     currentWord = null;
     renderSentence();
@@ -314,11 +340,36 @@ function shuffleArray(array){
 }
 
 function setControlsDisabled(disabled){
-  [sentencePicker, shuffleBtn, restartBtn, nextWordBtn].forEach(ctrl=>{
+  [sentencePicker, shuffleBtn, restartBtn, nextWordBtn, infoToggle].forEach(ctrl=>{
     if(ctrl){
       ctrl.disabled = disabled;
     }
   });
+}
+
+function toggleInfoPanel(){
+  const isOpen = infoToggle.getAttribute('aria-expanded') === 'true';
+  const nextState = !isOpen;
+  infoToggle.setAttribute('aria-expanded', String(nextState));
+  infoToggle.dataset.pressed = String(nextState);
+  infoPanel.setAttribute('aria-hidden', String(!nextState));
+  if(nextState){
+    infoPanel.querySelector('h1')?.focus?.();
+  }
+}
+
+function scheduleAutoAdvance(){
+  clearAutoAdvance();
+  autoAdvanceTimer = setTimeout(()=>{
+    advanceWord();
+  }, 1600);
+}
+
+function clearAutoAdvance(){
+  if(autoAdvanceTimer){
+    clearTimeout(autoAdvanceTimer);
+    autoAdvanceTimer = null;
+  }
 }
 
 async function loadSentenceBank(){
@@ -334,6 +385,7 @@ async function loadSentenceBank(){
 }
 
 function handleEmptyBank(){
+  clearAutoAdvance();
   setControlsDisabled(true);
   currentSentence = null;
   currentWord = null;
@@ -354,6 +406,7 @@ function handleEmptyBank(){
 
 function handleBankError(error){
   console.error('Errore durante il caricamento della banca di frasi:', error);
+  clearAutoAdvance();
   setControlsDisabled(true);
   currentSentence = null;
   currentWord = null;
