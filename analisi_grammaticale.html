@@ -94,224 +94,15 @@
   </div>
 
 <script>
-const PARTS = ['Articolo','Nome','Aggettivo','Verbo','Pronome','Preposizione','Avverbio','Congiunzione','Interiezione'];
+const SENTENCE_BANK_URL = 'data/analisi-grammaticale-sentences.json';
+let SENTENCES = [];
 
-const SENTENCES = [
-  {
-    id:'g1',
-    label:'La bambina allegra canta una canzone dolce.',
-    tokens:[
-      {
-        id:'la', label:'La', icon:'📘',
-        steps:[
-          { question:'Qual è la parte del discorso di «La»?', choices:PARTS, answer:'Articolo' },
-          { question:'Che tipo di articolo è «La»?', choices:['Determinativo','Indeterminativo','Partitivo'], answer:'Determinativo' },
-          { question:'Qual è il genere di «La»?', choices:['Maschile','Femminile','Invariabile'], answer:'Femminile' },
-          { question:'Qual è il numero di «La»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      },
-      {
-        id:'bambina', label:'bambina', icon:'🧒',
-        steps:[
-          { question:'Qual è la parte del discorso di «bambina»?', choices:PARTS, answer:'Nome' },
-          { question:'Che tipo di nome è «bambina»?', choices:['Comune','Proprio','Collettivo','Astratto'], answer:'Comune' },
-          { question:'Qual è il genere di «bambina»?', choices:['Maschile','Femminile','Invariabile'], answer:'Femminile' },
-          { question:'Qual è il numero di «bambina»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      },
-      {
-        id:'allegra', label:'allegra', icon:'😊',
-        steps:[
-          { question:'Qual è la parte del discorso di «allegra»?', choices:PARTS, answer:'Aggettivo' },
-          { question:'Che tipo di aggettivo è «allegra»?', choices:['Qualificativo','Possessivo','Dimostrativo','Numerale'], answer:'Qualificativo' },
-          { question:'Qual è il genere di «allegra»?', choices:['Maschile','Femminile','Invariabile'], answer:'Femminile' },
-          { question:'Qual è il numero di «allegra»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      },
-      {
-        id:'canta', label:'canta', icon:'🎤',
-        steps:[
-          { question:'Qual è la parte del discorso di «canta»?', choices:PARTS, answer:'Verbo' },
-          { question:'Qual è il modo verbale di «canta»?', choices:['Indicativo','Congiuntivo','Condizionale','Imperativo','Infinito'], answer:'Indicativo' },
-          { question:'Qual è il tempo verbale di «canta»?', choices:['Presente','Imperfetto','Passato remoto','Futuro semplice'], answer:'Presente' },
-          { question:'Che persona e numero esprime «canta»?', choices:['1ª singolare','2ª singolare','3ª singolare','1ª plurale','3ª plurale'], answer:'3ª singolare' }
-        ]
-      },
-      {
-        id:'una', label:'una', icon:'🧺',
-        steps:[
-          { question:'Qual è la parte del discorso di «una»?', choices:PARTS, answer:'Articolo' },
-          { question:'Che tipo di articolo è «una»?', choices:['Determinativo','Indeterminativo','Partitivo'], answer:'Indeterminativo' },
-          { question:'Qual è il genere di «una»?', choices:['Maschile','Femminile','Invariabile'], answer:'Femminile' },
-          { question:'Qual è il numero di «una»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      },
-      {
-        id:'canzone', label:'canzone', icon:'🎶',
-        steps:[
-          { question:'Qual è la parte del discorso di «canzone»?', choices:PARTS, answer:'Nome' },
-          { question:'Che tipo di nome è «canzone»?', choices:['Comune','Proprio','Collettivo','Astratto'], answer:'Comune' },
-          { question:'Qual è il genere di «canzone»?', choices:['Maschile','Femminile','Invariabile'], answer:'Femminile' },
-          { question:'Qual è il numero di «canzone»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      },
-      {
-        id:'dolce', label:'dolce', icon:'🍰',
-        steps:[
-          { question:'Qual è la parte del discorso di «dolce»?', choices:PARTS, answer:'Aggettivo' },
-          { question:'Che tipo di aggettivo è «dolce»?', choices:['Qualificativo','Possessivo','Dimostrativo','Numerale'], answer:'Qualificativo' },
-          { question:'Qual è il genere di «dolce»?', choices:['Maschile','Femminile','Invariabile'], answer:'Maschile' },
-          { question:'Qual è il numero di «dolce»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      }
-    ]
-  },
-  {
-    id:'g2',
-    label:'I ragazzi corrono velocemente nel parco verde.',
-    tokens:[
-      {
-        id:'i', label:'I', icon:'📗',
-        steps:[
-          { question:'Qual è la parte del discorso di «I»?', choices:PARTS, answer:'Articolo' },
-          { question:'Che tipo di articolo è «I»?', choices:['Determinativo','Indeterminativo','Partitivo'], answer:'Determinativo' },
-          { question:'Qual è il genere di «I»?', choices:['Maschile','Femminile','Invariabile'], answer:'Maschile' },
-          { question:'Qual è il numero di «I»?', choices:['Singolare','Plurale'], answer:'Plurale' }
-        ]
-      },
-      {
-        id:'ragazzi', label:'ragazzi', icon:'🧑‍🤝‍🧑',
-        steps:[
-          { question:'Qual è la parte del discorso di «ragazzi»?', choices:PARTS, answer:'Nome' },
-          { question:'Che tipo di nome è «ragazzi»?', choices:['Comune','Proprio','Collettivo','Astratto'], answer:'Comune' },
-          { question:'Qual è il genere di «ragazzi»?', choices:['Maschile','Femminile','Invariabile'], answer:'Maschile' },
-          { question:'Qual è il numero di «ragazzi»?', choices:['Singolare','Plurale'], answer:'Plurale' }
-        ]
-      },
-      {
-        id:'corrono', label:'corrono', icon:'🏃‍♂️',
-        steps:[
-          { question:'Qual è la parte del discorso di «corrono»?', choices:PARTS, answer:'Verbo' },
-          { question:'Qual è il modo verbale di «corrono»?', choices:['Indicativo','Congiuntivo','Condizionale','Imperativo','Infinito'], answer:'Indicativo' },
-          { question:'Qual è il tempo verbale di «corrono»?', choices:['Presente','Imperfetto','Passato remoto','Futuro semplice'], answer:'Presente' },
-          { question:'Che persona e numero esprime «corrono»?', choices:['1ª singolare','2ª singolare','3ª singolare','1ª plurale','3ª plurale'], answer:'3ª plurale' }
-        ]
-      },
-      {
-        id:'velocemente', label:'velocemente', icon:'⚡',
-        steps:[
-          { question:'Qual è la parte del discorso di «velocemente»?', choices:PARTS, answer:'Avverbio' },
-          { question:'Che tipo di avverbio è «velocemente»?', choices:['Di modo','Di tempo','Di luogo','Di quantità'], answer:'Di modo' }
-        ]
-      },
-      {
-        id:'nel', label:'nel', icon:'🚪',
-        steps:[
-          { question:'Qual è la parte del discorso di «nel»?', choices:PARTS, answer:'Preposizione' },
-          { question:'Che tipo di preposizione è «nel»?', choices:['Semplice','Articolata','Impropria'], answer:'Articolata' }
-        ]
-      },
-      {
-        id:'parco', label:'parco', icon:'🌳',
-        steps:[
-          { question:'Qual è la parte del discorso di «parco»?', choices:PARTS, answer:'Nome' },
-          { question:'Che tipo di nome è «parco»?', choices:['Comune','Proprio','Collettivo','Astratto'], answer:'Comune' },
-          { question:'Qual è il genere di «parco»?', choices:['Maschile','Femminile','Invariabile'], answer:'Maschile' },
-          { question:'Qual è il numero di «parco»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      },
-      {
-        id:'verde', label:'verde', icon:'🍀',
-        steps:[
-          { question:'Qual è la parte del discorso di «verde»?', choices:PARTS, answer:'Aggettivo' },
-          { question:'Che tipo di aggettivo è «verde»?', choices:['Qualificativo','Possessivo','Dimostrativo','Numerale'], answer:'Qualificativo' },
-          { question:'Qual è il genere di «verde»?', choices:['Maschile','Femminile','Invariabile'], answer:'Invariabile' },
-          { question:'Qual è il numero di «verde»?', choices:['Singolare','Plurale'], answer:'Invariabile' }
-        ]
-      }
-    ]
-  },
-  {
-    id:'g3',
-    label:'Questo piccolo cane marrone dorme profondamente sulla poltrona.',
-    tokens:[
-      {
-        id:'questo', label:'Questo', icon:'👉',
-        steps:[
-          { question:'Qual è la parte del discorso di «Questo»?', choices:PARTS, answer:'Aggettivo' },
-          { question:'Che tipo di aggettivo è «Questo»?', choices:['Qualificativo','Possessivo','Dimostrativo','Numerale'], answer:'Dimostrativo' },
-          { question:'Qual è il genere di «Questo»?', choices:['Maschile','Femminile','Invariabile'], answer:'Maschile' },
-          { question:'Qual è il numero di «Questo»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      },
-      {
-        id:'piccolo', label:'piccolo', icon:'🐾',
-        steps:[
-          { question:'Qual è la parte del discorso di «piccolo»?', choices:PARTS, answer:'Aggettivo' },
-          { question:'Che tipo di aggettivo è «piccolo»?', choices:['Qualificativo','Possessivo','Dimostrativo','Numerale'], answer:'Qualificativo' },
-          { question:'Qual è il genere di «piccolo»?', choices:['Maschile','Femminile','Invariabile'], answer:'Maschile' },
-          { question:'Qual è il numero di «piccolo»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      },
-      {
-        id:'cane', label:'cane', icon:'🐕',
-        steps:[
-          { question:'Qual è la parte del discorso di «cane»?', choices:PARTS, answer:'Nome' },
-          { question:'Che tipo di nome è «cane»?', choices:['Comune','Proprio','Collettivo','Astratto'], answer:'Comune' },
-          { question:'Qual è il genere di «cane»?', choices:['Maschile','Femminile','Invariabile'], answer:'Maschile' },
-          { question:'Qual è il numero di «cane»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      },
-      {
-        id:'marrone', label:'marrone', icon:'🟤',
-        steps:[
-          { question:'Qual è la parte del discorso di «marrone»?', choices:PARTS, answer:'Aggettivo' },
-          { question:'Che tipo di aggettivo è «marrone»?', choices:['Qualificativo','Possessivo','Dimostrativo','Numerale'], answer:'Qualificativo' },
-          { question:'Qual è il genere di «marrone»?', choices:['Maschile','Femminile','Invariabile'], answer:'Invariabile' },
-          { question:'Qual è il numero di «marrone»?', choices:['Singolare','Plurale'], answer:'Invariabile' }
-        ]
-      },
-      {
-        id:'dorme', label:'dorme', icon:'💤',
-        steps:[
-          { question:'Qual è la parte del discorso di «dorme»?', choices:PARTS, answer:'Verbo' },
-          { question:'Qual è il modo verbale di «dorme»?', choices:['Indicativo','Congiuntivo','Condizionale','Imperativo','Infinito'], answer:'Indicativo' },
-          { question:'Qual è il tempo verbale di «dorme»?', choices:['Presente','Imperfetto','Passato remoto','Futuro semplice'], answer:'Presente' },
-          { question:'Che persona e numero esprime «dorme»?', choices:['1ª singolare','2ª singolare','3ª singolare','1ª plurale','3ª plurale'], answer:'3ª singolare' }
-        ]
-      },
-      {
-        id:'profondamente', label:'profondamente', icon:'🌙',
-        steps:[
-          { question:'Qual è la parte del discorso di «profondamente»?', choices:PARTS, answer:'Avverbio' },
-          { question:'Che tipo di avverbio è «profondamente»?', choices:['Di modo','Di tempo','Di luogo','Di quantità'], answer:'Di modo' }
-        ]
-      },
-      {
-        id:'sulla', label:'sulla', icon:'🪑',
-        steps:[
-          { question:'Qual è la parte del discorso di «sulla»?', choices:PARTS, answer:'Preposizione' },
-          { question:'Che tipo di preposizione è «sulla»?', choices:['Semplice','Articolata','Impropria'], answer:'Articolata' }
-        ]
-      },
-      {
-        id:'poltrona', label:'poltrona', icon:'🛋️',
-        steps:[
-          { question:'Qual è la parte del discorso di «poltrona»?', choices:PARTS, answer:'Nome' },
-          { question:'Che tipo di nome è «poltrona»?', choices:['Comune','Proprio','Collettivo','Astratto'], answer:'Comune' },
-          { question:'Qual è il genere di «poltrona»?', choices:['Maschile','Femminile','Invariabile'], answer:'Femminile' },
-          { question:'Qual è il numero di «poltrona»?', choices:['Singolare','Plurale'], answer:'Singolare' }
-        ]
-      }
-    ]
-  }
-];
-
-let currentSentence = SENTENCES[0];
+let currentSentence = null;
 let wordQueue = [];
 let currentWord = null;
 let stepIndex = 0;
 let wrongAttemptsForWord = 0;
+let controlsInitialized = false;
 
 const sentencePicker = document.getElementById('sentencePicker');
 const sentenceEl = document.getElementById('sentence');
@@ -327,41 +118,69 @@ const shuffleBtn = document.getElementById('shuffle');
 const restartBtn = document.getElementById('restart');
 
 function init(){
+  if(!controlsInitialized){
+    sentencePicker.addEventListener('change',()=>{
+      const selectedIndex = Number.parseInt(sentencePicker.value, 10);
+      loadSentence(Number.isNaN(selectedIndex) ? 0 : selectedIndex);
+    });
+    shuffleBtn.addEventListener('click',()=>{
+      if(!SENTENCES.length){
+        return;
+      }
+      const randomIndex = Math.floor(Math.random()*SENTENCES.length);
+      sentencePicker.value = String(randomIndex);
+      loadSentence(randomIndex,true);
+    });
+    restartBtn.addEventListener('click',()=>{
+      if(!SENTENCES.length){
+        return;
+      }
+      if(!currentWord){
+        const selectedIndex = Number.parseInt(sentencePicker.value, 10);
+        loadSentence(Number.isNaN(selectedIndex) ? 0 : selectedIndex);
+        return;
+      }
+      stepIndex = 0;
+      wrongAttemptsForWord = 0;
+      feedbackEl.textContent = '';
+      feedbackEl.className = 'feedback';
+      nextWordContainer.dataset.visible = 'false';
+      renderQuestion();
+    });
+    nextWordBtn.addEventListener('click',()=>{
+      advanceWord();
+    });
+    controlsInitialized = true;
+  }
+
+  sentencePicker.innerHTML='';
   SENTENCES.forEach((s,idx)=>{
     const opt = document.createElement('option');
     opt.value = idx;
     opt.textContent = s.label;
     sentencePicker.appendChild(opt);
   });
-  sentencePicker.addEventListener('change',()=>{
-    loadSentence(Number(sentencePicker.value));
-  });
-  shuffleBtn.addEventListener('click',()=>{
-    const randomIndex = Math.floor(Math.random()*SENTENCES.length);
-    sentencePicker.value = randomIndex;
-    loadSentence(randomIndex,true);
-  });
-  restartBtn.addEventListener('click',()=>{
-    if(!currentWord){
-      loadSentence(Number(sentencePicker.value));
-      return;
-    }
-    stepIndex = 0;
-    wrongAttemptsForWord = 0;
-    feedbackEl.textContent = '';
-    feedbackEl.className = 'feedback';
-    nextWordContainer.dataset.visible = 'false';
-    renderQuestion();
-  });
-  nextWordBtn.addEventListener('click',()=>{
-    advanceWord();
-  });
+
+  if(!SENTENCES.length){
+    handleEmptyBank();
+    return;
+  }
+
+  sentencePicker.value = '0';
   loadSentence(0);
 }
 
 function loadSentence(index,shuffle=false){
-  currentSentence = SENTENCES[index];
-  wordQueue = currentSentence.tokens.map(t=>({ ...t }));
+  if(!SENTENCES.length){
+    handleEmptyBank();
+    return;
+  }
+
+  const safeIndex = Number.isInteger(index) && index >= 0 && index < SENTENCES.length ? index : 0;
+  currentSentence = SENTENCES[safeIndex];
+  sentencePicker.value = String(safeIndex);
+  const tokens = Array.isArray(currentSentence?.tokens) ? currentSentence.tokens : [];
+  wordQueue = tokens.map(t=>({ ...t }));
   if(shuffle){
     wordQueue = shuffleArray(wordQueue);
   }
@@ -371,13 +190,17 @@ function loadSentence(index,shuffle=false){
   renderSentence();
   feedbackEl.textContent='Scegli una parola con le risposte proposte.';
   feedbackEl.className='feedback';
-  progressSentence.textContent = `Frase ${index+1} di ${SENTENCES.length}`;
+  progressSentence.textContent = `Frase ${safeIndex+1} di ${SENTENCES.length}`;
   progressWord.textContent = '';
+  nextWordContainer.dataset.visible = 'false';
   advanceWord();
 }
 
 function renderSentence(){
   sentenceEl.innerHTML='';
+  if(!currentSentence || !Array.isArray(currentSentence.tokens)){
+    return;
+  }
   currentSentence.tokens.forEach(token=>{
     const card = document.createElement('div');
     card.className='token';
@@ -399,6 +222,16 @@ function renderSentence(){
 }
 
 function renderQuestion(){
+  if(!currentSentence){
+    questionEl.textContent = 'Nessuna frase disponibile.';
+    stepHint.textContent = '';
+    optionsEl.innerHTML='';
+    feedbackEl.textContent = '';
+    nextWordContainer.dataset.visible='false';
+    progressWord.textContent = '';
+    return;
+  }
+
   if(!currentWord){
     questionEl.textContent = 'Frase completata!';
     stepHint.textContent = 'Hai terminato tutte le parole di questa frase. Cambia frase o ricarica per ripetere.';
@@ -406,6 +239,7 @@ function renderQuestion(){
     feedbackEl.textContent = '';
     nextWordContainer.dataset.visible='false';
     progressWord.textContent = '';
+    renderSentence();
     return;
   }
   const step = currentWord.steps[stepIndex];
@@ -479,7 +313,81 @@ function shuffleArray(array){
   return clone;
 }
 
-document.addEventListener('DOMContentLoaded', init);
+function setControlsDisabled(disabled){
+  [sentencePicker, shuffleBtn, restartBtn, nextWordBtn].forEach(ctrl=>{
+    if(ctrl){
+      ctrl.disabled = disabled;
+    }
+  });
+}
+
+async function loadSentenceBank(){
+  const response = await fetch(SENTENCE_BANK_URL, { cache: 'no-store' });
+  if(!response.ok){
+    throw new Error(`Richiesta non riuscita (${response.status})`);
+  }
+  const data = await response.json();
+  if(!Array.isArray(data)){
+    throw new Error('Formato del file non valido');
+  }
+  SENTENCES = data;
+}
+
+function handleEmptyBank(){
+  setControlsDisabled(true);
+  currentSentence = null;
+  currentWord = null;
+  wordQueue = [];
+  stepIndex = 0;
+  wrongAttemptsForWord = 0;
+  sentencePicker.innerHTML = '';
+  sentenceEl.innerHTML = '';
+  questionEl.textContent = 'Nessuna frase disponibile.';
+  stepHint.textContent = 'Aggiungi frasi al file data/analisi-grammaticale-sentences.json per iniziare.';
+  optionsEl.innerHTML = '';
+  feedbackEl.textContent = 'Carica una banca di frasi valida per allenarti.';
+  feedbackEl.className = 'feedback';
+  progressSentence.textContent = '';
+  progressWord.textContent = '';
+  nextWordContainer.dataset.visible = 'false';
+}
+
+function handleBankError(error){
+  console.error('Errore durante il caricamento della banca di frasi:', error);
+  setControlsDisabled(true);
+  currentSentence = null;
+  currentWord = null;
+  wordQueue = [];
+  stepIndex = 0;
+  wrongAttemptsForWord = 0;
+  sentencePicker.innerHTML = '';
+  sentenceEl.innerHTML = '';
+  questionEl.textContent = 'Impossibile caricare le frasi.';
+  stepHint.textContent = 'Verifica che il file data/analisi-grammaticale-sentences.json esista e sia formattato correttamente.';
+  optionsEl.innerHTML = '';
+  feedbackEl.textContent = 'Errore durante il caricamento della banca di frasi.';
+  feedbackEl.className = 'feedback bad';
+  progressSentence.textContent = '';
+  progressWord.textContent = '';
+  nextWordContainer.dataset.visible = 'false';
+}
+
+async function bootstrap(){
+  setControlsDisabled(true);
+  feedbackEl.textContent = 'Caricamento frasi in corso...';
+  feedbackEl.className = 'feedback';
+  try{
+    await loadSentenceBank();
+    init();
+    if(SENTENCES.length){
+      setControlsDisabled(false);
+    }
+  }catch(error){
+    handleBankError(error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', bootstrap);
 </script>
 </body>
 </html>
