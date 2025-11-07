@@ -287,14 +287,13 @@
 
     // Avanza step: chi → fa → cosa; per i complementi restiamo su 'cosa' finché non terminano
     if(tok.role!=='cosa' && stepIndex < ORDER.length-1){ stepIndex++; }
-    else if(tok.role==='cosa'){
-      if(!nextUnplacedComplementType()){
-        setFeedback('Bravo! Analisi completata.', 'ok');
-      }
-    }
+    const completed = tok.role==='cosa' && !nextUnplacedComplementType();
     updateComplementTitle();
     updateQuestion();
-    if(tok.role!=='cosa') setFeedback('Bravo!', 'ok');
+    const successMessage = completed
+      ? `Bravo! Analisi completata. Ultima risposta: "${tok.label}".`
+      : `Bravo! Hai scelto: "${tok.label}".`;
+    setFeedback(successMessage, 'ok');
   }
 
   function setFeedback(msg, type){ feedback.textContent=msg||''; feedback.className='feedback '+(type||''); }
