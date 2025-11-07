@@ -5,7 +5,7 @@
   "description": "Single-page mind map editor for organizing and visualizing ideas.",
   "scripts": {
     "start": "echo \"Open index.html directly in your browser.\"",
-    "test": "echo \"No automated tests configured for this project.\"",
+    "test": "node scripts/validate-analisi-grammaticale.js",
     "icons:list": "node -e \"console.log(JSON.stringify(require('./package.json').mindMapIconSet, null, 2))\""
   },
   "keywords": [

@@ -694,12 +694,20 @@
             "answer": "Invariabile"
           },
           {
-            "question": "Qual è il numero di «verde»?",
+            "question": "Qual è il numero di «verde» in questa frase?",
             "choices": [
               "Singolare",
               "Plurale"
             ],
-            "answer": "Invariabile"
+            "answer": "Singolare"
+          },
+          {
+            "question": "Che caratteristica di numero ha «verde»?",
+            "choices": [
+              "Variabile",
+              "Invariabile"
+            ],
+            "answer": "Variabile"
           }
         ]
       }
@@ -905,12 +913,20 @@
             "answer": "Invariabile"
           },
           {
-            "question": "Qual è il numero di «marrone»?",
+            "question": "Qual è il numero di «marrone» in questa frase?",
             "choices": [
               "Singolare",
               "Plurale"
             ],
-            "answer": "Invariabile"
+            "answer": "Singolare"
+          },
+          {
+            "question": "Che caratteristica di numero ha «marrone»?",
+            "choices": [
+              "Variabile",
+              "Invariabile"
+            ],
+            "answer": "Variabile"
           }
         ]
       },
