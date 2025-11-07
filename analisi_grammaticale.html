@@ -47,6 +47,7 @@
   .feedback{min-height:46px;border-radius:14px;padding:12px;font-weight:700;text-align:center;font-size:18px}
   .feedback.ok{background:color-mix(in srgb, var(--good) 12%, white);color:#065f46}
   .feedback.bad{background:color-mix(in srgb, var(--bad) 12%, white);color:#7f1d1d}
+  .feedback .error-count{display:block;margin-top:6px;font-size:14px;font-weight:600;color:#ca8a04}
 
   .progress{display:flex;justify-content:space-between;align-items:center;font-size:16px;color:#475569}
   .progress strong{color:var(--accent)}
@@ -307,11 +308,16 @@ function handleAnswer(choice){
 function finishWord(){
   clearAutoAdvance();
   const wordLabel = `«${currentWord.label}»`;
-  const summary = wrongAttemptsForWord === 0
-    ? `${wordLabel} completata senza errori!`
-    : `${wordLabel} completata con ${wrongAttemptsForWord} errore${wrongAttemptsForWord>1?'i':''}.`;
-  feedbackEl.textContent = summary;
-  feedbackEl.className = wrongAttemptsForWord === 0 ? 'feedback ok' : 'feedback bad';
+  let summary = '';
+  if(wrongAttemptsForWord === 0){
+    summary = `${wordLabel} completata senza errori!`;
+    feedbackEl.textContent = summary;
+  }else{
+    const errorLabel = `Errori commessi: ${wrongAttemptsForWord}`;
+    summary = `${wordLabel} completata!`;
+    feedbackEl.innerHTML = `${summary}<span class="error-count">${errorLabel}</span>`;
+  }
+  feedbackEl.className = 'feedback ok';
   nextWordContainer.dataset.visible='true';
   scheduleAutoAdvance();
 }
