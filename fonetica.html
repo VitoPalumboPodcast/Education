@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fonetica Inglese – 10 Carte (consenso microfono una tantum)</title>
+<style>
+  /* ====== STILI BASE (grafica tua) ====== */
+  body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100%;
+    overflow-x: hidden;
+    color: #333;
+  }
+  * { box-sizing: border-box; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  .header h1 {
+    font-size: 48px;
+    margin: 0 0 15px 0;
+    color: #667eea;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+  .header p { font-size: 28px; margin: 0; color: #764ba2; }
+
+  .instructions {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-radius: 20px; padding: 25px; margin-bottom: 30px; text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  .instructions p { font-size: 26px; margin: 0; color: #333; font-weight: bold; }
+  .emoji { font-size: 40px; margin: 0 8px; }
+
+  .section {
+    background: white; border-radius: 25px; padding: 30px; margin-bottom: 30px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  .section-title {
+    font-size: 36px; color: #667eea; margin: 0 0 25px 0; text-align: center;
+    padding-bottom: 15px; border-bottom: 4px solid #764ba2;
+  }
+
+  .phonetic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+  }
+  .phonetic-card {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border: 4px solid transparent;
+    min-height: 280px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+  }
+  .phonetic-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    border-color: #fff;
+  }
+  .phonetic-card:active { transform: translateY(-4px) scale(1.02); }
+
+  .artwrap { width: 140px; height: 140px; margin-bottom: 10px; }
+  svg.icon { width: 140px; height: 140px; display: block; margin: 0 auto;
+             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); }
+
+  .label-big { font-size: 32px; color: #fff; font-weight: bold; margin-bottom: 6px;
+               text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+  .label-small { font-size: 18px; color: rgba(255,255,255,0.95); margin-bottom: 8px; }
+
+  .play-icon { font-size: 40px; margin-top: 6px; color: #fff; }
+
+  .mic-button {
+    background: rgba(255, 255, 255, 0.3);
+    border: 3px solid white;
+    border-radius: 50%;
+    width: 60px; height: 60px; font-size: 30px; cursor: pointer;
+    margin-top: 12px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease; color: #fff;
+  }
+  .mic-button:hover { background: rgba(255, 255, 255, 0.5); transform: scale(1.1); }
+  .mic-button:active { transform: scale(0.95); }
+  .mic-button.recording { background: #ff4444; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+  .feedback {
+    margin-top: 10px; font-size: 20px; font-weight: bold; color: white; min-height: 30px;
+    text-shadow: 0 0 10px rgba(0,0,0,0.15);
+  }
+  .feedback.ok  { color: #00ff88; text-shadow: 0 0 10px #00ff88; }
+  .feedback.mid { color: #ffff66; text-shadow: 0 0 10px #ffff66; }
+  .feedback.no  { color: #ff9966; text-shadow: 0 0 10px #ff9966; }
+
+  .toast {
+    position: fixed; bottom: 30px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #4CAF50; color: white; padding: 20px 40px; border-radius: 15px;
+    font-size: 24px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    opacity: 0; transition: all 0.3s ease; z-index: 1000;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 36px; }
+    .header p  { font-size: 22px; }
+    .section-title { font-size: 28px; }
+    .phonetic-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+  }
+
+  /* ====== OVERLAY consenso microfono una tantum ====== */
+  #mic-consent {
+    position: fixed; inset: 0; display: none;
+    align-items: center; justify-content: center; z-index: 2000;
+    background: rgba(0,0,0,.45);
+  }
+  #mic-consent .box {
+    background:#fff; border-radius:20px; max-width:560px; width:92%;
+    padding:22px; box-shadow:0 10px 24px rgba(0,0,0,.25); text-align:center;
+  }
+  #mic-consent h3 { margin:0 0 10px; color:#667eea; font-size:24px; }
+  #mic-consent p  { margin:0 0 16px; color:#444; font-size:16px; }
+  #btn-grant-mic {
+    border:none; border-radius:12px; padding:12px 18px; background:#28a745;
+    color:#fff; font-weight:bold; cursor:pointer;
+    box-shadow:0 4px 8px rgba(0,0,0,.18);
+  }
+  #mic-consent-msg { margin-top:10px; font-size:14px; color:#666; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎵 Fonetica Inglese 🎵</h1>
+      <p>Impara i suoni con immagini, ascolto e pronuncia</p>
+    </div>
+
+    <div class="instructions">
+      <p><span class="emoji">👆</span> Tocca una carta per ascoltare. <span class="emoji">🎤</span> Premi il microfono per pronunciare e ricevere un punteggio.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">📚 Carte interattive (10)</h2>
+      <div class="phonetic-grid" id="cards-grid"></div>
+    </div>
+  </div>
+
+  <!-- Overlay consenso microfono una tantum -->
+  <div id="mic-consent" role="dialog" aria-modal="true" aria-labelledby="mic-consent-title">
+    <div class="box">
+      <h3 id="mic-consent-title">Attiva il microfono</h3>
+      <p>Per evitare richieste ripetute, concedi ora l’accesso al microfono per questo sito.<br>
+      Consigliato: <strong>Chrome/Edge</strong> e pagina in <strong>HTTPS</strong>.</p>
+      <button id="btn-grant-mic">Concedi microfono</button>
+      <div id="mic-consent-msg"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+/* ====== SVG “sticker” su disco bianco ====== */
+function stickerBase(inner){
+  return `
+  <svg viewBox="0 0 200 200" class="icon" aria-hidden="true">
+    <defs>
+      <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.18)"/>
+      </filter>
+    </defs>
+    <g filter="url(#softShadow)">
+      <circle cx="100" cy="100" r="86" fill="#ffffff" stroke="#eaeaea" stroke-width="3"/>
+      ${inner}
+    </g>
+  </svg>`;
+}
+const ICONS = {
+  apple: stickerBase(`<circle cx="100" cy="110" r="48" fill="#e74c3c"/><ellipse cx="85" cy="98" rx="8" ry="6" fill="#ffffff" opacity="0.45"/><rect x="96" y="50" width="8" height="20" rx="3" fill="#27ae60"/><path d="M106 56c18 6 21 22 0 28c6-15 3-21 0-28z" fill="#27ae60"/>`),
+  dog: stickerBase(`<circle cx="100" cy="105" r="44" fill="#a67c52"/><circle cx="70" cy="78" r="16" fill="#8b5e34"/><circle cx="130" cy="78" r="16" fill="#8b5e34"/><circle cx="84" cy="98" r="9" fill="#fff"/><circle cx="116" cy="98" r="9" fill="#fff"/><circle cx="84" cy="98" r="4" fill="#000"/><circle cx="116" cy="98" r="4" fill="#000"/><rect x="92" y="124" width="16" height="8" rx="4" fill="#000"/>`),
+  sun: stickerBase(`<circle cx="100" cy="100" r="34" fill="#f1c40f"/><g stroke="#f39c12" stroke-width="8" stroke-linecap="round"><line x1="100" y1="52" x2="100" y2="28"/><line x1="100" y1="148" x2="100" y2="172"/><line x1="52" y1="100" x2="28" y2="100"/><line x1="148" y1="100" x2="172" y2="100"/><line x1="65" y1="65" x2="48" y2="48"/><line x1="135" y1="135" x2="152" y2="152"/><line x1="135" y1="65" x2="152" y2="48"/><line x1="65" y1="135" x2="48" y2="152"/></g>`),
+  fish: stickerBase(`<path d="M40 100c30-26 76-26 106 0c-30 26-76 26-106 0z" fill="#3498db"/><circle cx="152" cy="100" r="16" fill="#2980b9"/><circle cx="158" cy="94" r="4" fill="#fff"/>`),
+  tree: stickerBase(`<rect x="94" y="110" width="12" height="40" rx="3" fill="#8b4513"/><circle cx="100" cy="90" r="30" fill="#27ae60"/><circle cx="85" cy="100" r="22" fill="#2ecc71" opacity=".9"/><circle cx="115" cy="100" r="22" fill="#2ecc71" opacity=".9"/>`),
+  applesTwo: stickerBase(`<circle cx="70" cy="120" r="28" fill="#e74c3c"/><rect x="64" y="86" width="6" height="14" rx="3" fill="#27ae60"/><circle cx="130" cy="80" r="24" fill="#e74c3c"/><rect x="127" y="58" width="6" height="12" rx="3" fill="#27ae60"/>`),
+  dogRun: stickerBase(`<rect x="54" y="110" width="92" height="28" rx="14" fill="#a67c52"/><circle cx="78" cy="98" r="14" fill="#a67c52"/><circle cx="122" cy="98" r="14" fill="#a67c52"/>`),
+  brightSun: stickerBase(`<circle cx="100" cy="100" r="34" fill="#f1c40f"/><g stroke="#f39c12" stroke-width="8" stroke-linecap="round"><line x1="100" y1="52" x2="100" y2="28"/><line x1="100" y1="148" x2="100" y2="172"/><line x1="52" y1="100" x2="28" y2="100"/><line x1="148" y1="100" x2="172" y2="100"/></g>`),
+  fishSwim: stickerBase(`<path d="M40 100c30-26 76-26 106 0c-30 26-76 26-106 0z" fill="#3498db"/><circle cx="152" cy="100" r="16" fill="#2980b9"/><circle cx="158" cy="94" r="4" fill="#fff"/><path d="M40 100c30-26 76-26 106 0" stroke="#85c1e9" stroke-width="6" fill="none" opacity=".6"/>`),
+  greenTree: stickerBase(`<rect x="94" y="110" width="12" height="40" rx="3" fill="#8b4513"/><circle cx="100" cy="90" r="30" fill="#2ecc71"/><circle cx="80" cy="100" r="20" fill="#27ae60" opacity=".9"/><circle cx="120" cy="100" r="20" fill="#27ae60" opacity=".9"/>`)
+};
+
+/* ====== Dati: 10 carte (5 parole + 5 frasi) ====== */
+const cards = [
+  { kind:'word',     text:'Apple',              icon:'apple'     },
+  { kind:'word',     text:'Dog',                icon:'dog'       },
+  { kind:'word',     text:'Sun',                icon:'sun'       },
+  { kind:'word',     text:'Fish',               icon:'fish'      },
+  { kind:'word',     text:'Tree',               icon:'tree'      },
+  { kind:'sentence', text:'I like apples',      icon:'applesTwo' },
+  { kind:'sentence', text:'The dog is running', icon:'dogRun'    },
+  { kind:'sentence', text:'The sun is bright',  icon:'brightSun' },
+  { kind:'sentence', text:'The fish can swim',  icon:'fishSwim'  },
+  { kind:'sentence', text:'The tree is green',  icon:'greenTree' }
+];
+
+/* ====== Toast ====== */
+function showToast(message, ok=true){
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.style.background = ok ? '#4CAF50' : '#E53935';
+  toast.classList.add('show');
+  setTimeout(()=> toast.classList.remove('show'), 2000);
+}
+
+/* ====== Similarità (Levenshtein) ====== */
+function levenshtein(a,b){
+  const la=a.length, lb=b.length;
+  if(!la) return lb; if(!lb) return la;
+  const m=Array.from({length:lb+1},(_,i)=>Array(la+1).fill(0));
+  for(let i=0;i<=lb;i++) m[i][0]=i;
+  for(let j=0;j<=la;j++) m[0][j]=j;
+  for(let i=1;i<=lb;i++){
+    for(let j=1;j<=la;j++){
+      const cost = (b[i-1]===a[j-1])?0:1;
+      m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+cost);
+    }
+  }
+  return m[lb][la];
+}
+function normalizeText(s){
+  return (s||'')
+    .toLowerCase()
+    .replace(/[.,!?;:'"()\-_/]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim()
+    .replace(/\b(the|a|an)\b/g,'')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function similarity(s1,s2){
+  s1 = normalizeText(s1); s2 = normalizeText(s2);
+  const maxLen = Math.max(s1.length, s2.length) || 1;
+  const dist = levenshtein(s1, s2);
+  return Math.round((1 - dist / maxLen) * 100);
+}
+
+/* ====== TTS ====== */
+function pickEnglishVoice(){
+  if(!('speechSynthesis' in window)) return null;
+  const vs = speechSynthesis.getVoices() || [];
+  return vs.find(v=>/en-GB/i.test(v.lang)) || vs.find(v=>/en-US/i.test(v.lang)) || vs[0] || null;
+}
+function speak(text){
+  if(!('speechSynthesis' in window)){ showToast('Sintesi non disponibile', false); return; }
+  const u = new SpeechSynthesisUtterance(text);
+  const v = pickEnglishVoice();
+  if(v) u.voice = v;
+  u.lang = (v && v.lang) || 'en-US';
+  u.rate = 0.9; u.pitch = 1.0;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+/* ====== Riconoscimento vocale ====== */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+function recognizeOnce(target, onDone, onErr){
+  if(!SR){ onErr && onErr('Non supportato su questo browser'); return; }
+  const rec = new SR();
+  rec.lang = 'en-US';
+  rec.interimResults = false;
+  rec.maxAlternatives = 3;
+  rec.onresult = (ev)=>{
+    const alts = [];
+    for(let i=0;i<ev.results[0].length;i++){ alts.push(ev.results[0][i].transcript); }
+    onDone && onDone(alts);
+  };
+  rec.onerror = (e)=> onErr && onErr(e.error || 'Errore microfono');
+  rec.onnomatch = ()=> onErr && onErr('Nessuna corrispondenza');
+  try{ rec.start(); }catch(e){ onErr && onErr('Impossibile avviare il microfono'); }
+}
+
+/* ====== Consenso microfono una tantum (overlay + getUserMedia) ====== */
+const MicPerm = {
+  overlay:null, btn:null, msg:null,
+  async check() {
+    this.overlay = document.getElementById('mic-consent');
+    this.btn = document.getElementById('btn-grant-mic');
+    this.msg = document.getElementById('mic-consent-msg');
+    if (this.btn && !this.btn._bound){
+      this.btn.addEventListener('click', ()=> this.request());
+      this.btn._bound = true;
+    }
+    try {
+      if (!navigator.permissions){ this.show(); return; }
+      const st = await navigator.permissions.query({ name: 'microphone' });
+      if (st.state === 'granted') return;     // già ok
+      this.show();
+      st.onchange = ()=>{ if (st.state === 'granted') this.hide(); };
+    } catch {
+      this.show();
+    }
+  },
+  show(){ if(this.overlay) this.overlay.style.display='flex'; },
+  hide(){ if(this.overlay) this.overlay.style.display='none'; },
+  async request(){
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      this.msg.textContent = 'API non disponibile. Usa Chrome/Edge in HTTPS.';
+      return;
+    }
+    this.msg.textContent = 'Richiesta in corso…';
+    try{
+      const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+      stream.getTracks().forEach(t=>t.stop());
+      this.msg.textContent = 'Microfono attivato per questo sito.';
+      this.hide();
+      showToast('🎤 Microfono attivato');
+    }catch(err){
+      this.msg.textContent = 'Accesso negato o errore. Abilita il microfono dal lucchetto del sito.';
+      showToast('❌ Accesso microfono negato', false);
+    }
+  }
+};
+async function ensureMicOrExplain(){
+  try{
+    if(!navigator.permissions) return true;
+    const st = await navigator.permissions.query({ name:'microphone' });
+    if(st.state==='granted') return true;
+    MicPerm.show();
+    return false;
+  }catch{ return true; }
+}
+
+/* ====== UI Carte ====== */
+function createCard(item){
+  const card = document.createElement('div');
+  card.className = 'phonetic-card';
+  const id = 'c_' + item.text.toLowerCase().replace(/\s+/g,'_');
+  card.innerHTML = `
+    <div class="artwrap">${ICONS[item.icon]}</div>
+    <div class="label-big">${item.text}</div>
+    <div class="label-small">${item.kind === 'word' ? 'Parola' : 'Frase'}</div>
+    <div class="play-icon">🔊</div>
+    <button class="mic-button" id="mic-${id}" title="Pronuncia">🎤</button>
+    <div class="feedback" id="fb-${id}"></div>
+  `;
+
+  // Ascolto (tap/click sulla card, escluso bottone mic)
+  card.addEventListener('click', (e)=>{
+    if(!(e.target && e.target.classList.contains('mic-button'))){
+      speak(item.text);
+      showToast('🔊 ' + item.text.toUpperCase());
+    }
+  });
+
+  // Pronuncia
+  const micBtn = card.querySelector('#mic-'+id);
+  const fb = card.querySelector('#fb-'+id);
+  micBtn.addEventListener('click', async (e)=>{
+    e.stopPropagation();
+    const ok = await ensureMicOrExplain();
+    if(!ok) return;
+    if(!SR){
+      fb.textContent = 'Riconoscimento non supportato (usa Chrome/Edge).';
+      fb.className = 'feedback no';
+      showToast('❌ Riconoscimento non supportato', false);
+      return;
+    }
+    micBtn.classList.add('recording');
+    fb.textContent = '🎤 Parla ora...';
+    fb.className = 'feedback';
+
+    recognizeOnce(item.text, (alts)=>{
+      micBtn.classList.remove('recording');
+      let bestScore = -1, heard = '';
+      alts.forEach(t=>{
+        const sc = similarity(item.text, t);
+        if(sc > bestScore){ bestScore = sc; heard = t; }
+      });
+      if(bestScore >= 80){
+        fb.textContent = `🎉 Bravo! (${bestScore}%) — “${heard}”`;
+        fb.className = 'feedback ok';
+        showToast('🎉 Pronuncia ottima!');
+      }else if(bestScore >= 50){
+        fb.textContent = `🟡 Quasi corretto (${bestScore}%) — “${heard}”`;
+        fb.className = 'feedback mid';
+        showToast('🟡 Quasi! Riprova ancora');
+      }else{
+        fb.textContent = `🔁 Riprova (${bestScore}%) — “${heard}”`;
+        fb.className = 'feedback no';
+        showToast('🔁 Ascolta e riprova', false);
+      }
+    }, (err)=>{
+      micBtn.classList.remove('recording');
+      fb.textContent = 'Errore microfono: ' + err;
+      fb.className = 'feedback no';
+      showToast('❌ Errore microfono', false);
+    });
+  });
+
+  return card;
+}
+function renderCards(){
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = '';
+  cards.forEach(item => grid.appendChild(createCard(item)));
+}
+
+/* ====== Avvio ====== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  // Carica voci TTS dove necessario
+  if('speechSynthesis' in window){
+    const waitVoices = ()=>{ const v = speechSynthesis.getVoices(); if(!v.length){ setTimeout(waitVoices, 120); } };
+    waitVoices();
+  }
+  renderCards();
+  // Mostra overlay consenso (se necessario)
+  MicPerm.check();
+});
+</script>
+</body>
+</html>
