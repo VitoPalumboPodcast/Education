@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sentence Builder AAC – v3.1</title>
+  <style>
+    :root{ --blue:#4a90e2; --orange:#f39c12; --green:#27ae60;
+           --bg:#f0f8ff; --ink:#333; --muted:#fafafa; --card:#fff; --border:#e0e0e0; --panel:#f7fbff; }
+    *{box-sizing:border-box}
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:20px;background:var(--bg);color:var(--ink)}
+    .container{max-width:1400px;width:100%;margin:auto;background:#fff;border-radius:16px;padding:28px;box-shadow:0 6px 18px rgba(0,0,0,.08);position:relative}
+    .top-panel-toggle{position:absolute;top:16px;right:16px;background:var(--blue);color:#fff;border:none;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 8px rgba(0,0,0,.12);transition:transform .2s;}
+    .top-panel-toggle:hover{transform:scale(1.05)}
+    .top-panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:18px;display:none;position:relative;top:48px}
+    .top-panel.visible{display:block}
+    .main-title{text-align:center;font-size:32px;font-weight:800;color:#2c5aa0;margin:0}
+    .subtitle{text-align:center;margin:6px 0 0 0;font-size:14px;color:#555}
+    .toolbar{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:14px}
+    .toggle{background:var(--muted);border:2px solid var(--border);padding:8px 12px;border-radius:10px;font-size:14px;display:flex;align-items:center;gap:6px}
+    .toggle select{margin-left:6px}
+    .columns-wrapper{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;margin-top:70px;padding-bottom:6px}
+    .column{background:var(--muted);border-radius:14px;padding:16px;border:2px solid var(--border);display:flex;flex-direction:column;min-height:100%}
+    .column-title{text-align:center;font-size:18px;font-weight:800;color:#fff;padding:10px;border-radius:10px;margin-bottom:12px}
+    .column1 .column-title{background:var(--blue)} .column2 .column-title{background:var(--orange)} .column3 .column-title{background:var(--green)}
+    .cards-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;flex:1}
+    .card{background:var(--card);border:3px solid #ddd;border-radius:14px;padding:18px;text-align:center;cursor:pointer;user-select:none;transition:transform .15s, box-shadow .15s, border-color .15s; outline:none;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:150px}
+    .card:hover{transform:scale(1.02);box-shadow:0 4px 10px rgba(0,0,0,.08)}
+    .card.selected{background:#e8f4fd;border-color:var(--blue)}
+    .card:focus-visible{box-shadow:0 0 0 3px #2c5aa055}
+    .card[aria-disabled="true"]{opacity:.35;pointer-events:none;filter:grayscale(80%)}
+    .card-icon{font-size:68px;display:block;margin-bottom:12px}
+    .card-label{font-size:20px;font-weight:700;text-transform:lowercase;line-height:1.2}
+    .next-step{outline:3px dashed #2c5aa0;outline-offset:6px}
+    .phrase-area{margin-top:26px;padding:18px;background:#e8f4fd;border-radius:14px;border:2px solid var(--blue);text-align:center}
+    .phrase-area h3{margin:0 0 10px 0}
+    .phrase-display{font-size:28px;font-weight:800;min-height:38px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;position:relative}
+    .ok-badge{font-size:22px}
+    .success-message{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:12px;background:#27ae60;color:#fff;font-size:20px;font-weight:700;box-shadow:0 4px 10px rgba(39,174,96,.35)}
+    .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+    .btn{padding:10px 16px;border:none;border-radius:10px;font-size:16px;cursor:pointer;color:#fff;display:flex;align-items:center;gap:8px}
+    .btn-clear{background:#e74c3c}.btn-clear:hover{filter:brightness(.9)}
+    .btn-speak{background:var(--green)} .btn-speak:hover{filter:brightness(.9)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .panel-close{position:absolute;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;color:#2c5aa0}
+    @media (max-width:768px){
+      body{padding:10px}
+      .container{padding:24px 18px}
+      .columns-wrapper{display:flex;flex-direction:column;margin-top:80px}
+      .cards-list{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="top-panel-toggle" id="panelToggle" type="button" aria-expanded="false" aria-controls="top-panel" title="Open teacher settings">
+      ⚙️
+    </button>
+    <div class="top-panel" id="top-panel" aria-hidden="true">
+      <button class="panel-close" type="button" aria-label="Close settings">✕</button>
+      <h1 class="main-title">Sentence Builder AAC</h1>
+      <p class="subtitle">Sentence updates with every click. No nonsense combinations.</p>
+
+      <div class="toolbar" role="group" aria-label="Settings">
+        <label class="toggle">
+          <input type="checkbox" id="trainingMode" checked aria-describedby="trainingHelp" />
+          <strong>Training</strong>
+        </label>
+        <span id="trainingHelp" class="sr-only">When active, selection follows the order Who, Action, What.</span>
+        <label class="toggle">
+          <input type="checkbox" id="speakOnClick" checked aria-describedby="speakHelp" />
+          <strong>Speak on click</strong>
+        </label>
+        <span id="speakHelp" class="sr-only">When active, the system reads the partial sentence aloud.</span>
+        <label class="toggle" for="tts-mode">
+          <span><strong>Voice</strong></span>
+          <select id="tts-mode">
+            <option value="browser">Browser (fast)</option>
+            <option value="online">Realistic online voice</option>
+          </select>
+        </label>
+        <label class="toggle" id="voiceSelectWrap" style="display:none">
+          <span><strong>Select voice</strong></span>
+          <select id="voice-select"></select>
+        </label>
+      </div>
+    </div>
+
+    <div class="columns-wrapper">
+      <section class="column column1" role="region" aria-labelledby="tit-subjects">
+        <div id="tit-subjects" class="column-title">WHO</div>
+        <div class="cards-list" id="subjects">
+          <div class="card" data-type="subject" data-word="the boy" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">👦</span><span class="card-label">boy</span></div>
+          <div class="card" data-type="subject" data-word="the girl" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">👧</span><span class="card-label">girl</span></div>
+          <div class="card" data-type="subject" data-word="mom" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">👩</span><span class="card-label">mom</span></div>
+          <div class="card" data-type="subject" data-word="dad" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">👨</span><span class="card-label">dad</span></div>
+          <div class="card" data-type="subject" data-word="the cat" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🐱</span><span class="card-label">cat</span></div>
+          <div class="card" data-type="subject" data-word="the dog" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🐶</span><span class="card-label">dog</span></div>
+          <div class="card" data-type="subject" data-word="I" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🙋</span><span class="card-label">I</span></div>
+        </div>
+      </section>
+
+      <section class="column column2" role="region" aria-labelledby="tit-actions">
+        <div id="tit-actions" class="column-title">DOES</div>
+        <div class="cards-list" id="actions">
+          <div class="card" data-type="action" data-word="eats" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🍽️</span><span class="card-label">eats</span></div>
+          <div class="card" data-type="action" data-word="drinks" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🥤</span><span class="card-label">drinks</span></div>
+          <div class="card" data-type="action" data-word="plays" data-prep="with" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🎮</span><span class="card-label">plays</span></div>
+          <div class="card" data-type="action" data-word="reads" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">📖</span><span class="card-label">reads</span></div>
+        </div>
+      </section>
+
+      <section class="column column3" role="region" aria-labelledby="tit-objects">
+        <div id="tit-objects" class="column-title">WHAT</div>
+        <div class="cards-list" id="objects">
+          <div class="card" data-type="object" data-word="the apple" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🍎</span><span class="card-label">apple</span></div>
+          <div class="card" data-type="object" data-word="the pizza" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🍕</span><span class="card-label">pizza</span></div>
+          <div class="card" data-type="object" data-word="the book" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">📚</span><span class="card-label">book</span></div>
+          <div class="card" data-type="object" data-word="the ball" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">⚽</span><span class="card-label">ball</span></div>
+          <div class="card" data-type="object" data-word="the water" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">💧</span><span class="card-label">water</span></div>
+          <div class="card" data-type="object" data-word="the milk" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🥛</span><span class="card-label">milk</span></div>
+          <div class="card" data-type="object" data-word="the juice" aria-pressed="false" tabindex="0" role="button"><span class="card-icon">🧃</span><span class="card-label">juice</span></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="phrase-area" aria-live="polite">
+      <h3>My sentence:</h3>
+      <div class="phrase-display" id="phrase-display"><span id="phrase-text">Click the cards to build a sentence</span></div>
+      <div class="controls">
+        <button class="btn btn-speak" id="btn-speak" type="button">🔊 Read the sentence</button>
+        <button class="btn btn-clear" id="btn-clear" type="button">🧹 Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state = { step:'subject', subject:'', action:'', object:'' };
+
+    const actionSpecs = {
+      'eats': { requiresObject:true, objects:['the apple','the pizza'] },
+      'drinks': { requiresObject:true, objects:['the water','the milk','the juice'] },
+      'reads': { requiresObject:true, objects:['the book'] },
+      'plays': { requiresObject:true, objects:['the ball'], preposition:'with' }
+    };
+
+    const firstPerson = { 'eats':'eat','drinks':'drink','plays':'play','reads':'read' };
+
+    const subjectActionBlocks = {
+      'the cat': new Set(['reads']),
+      'the dog': new Set(['reads'])
+    };
+
+    const subjectObjectBlocks = {
+      'the cat': {
+        'eats': new Set(['the apple']),
+        'drinks': new Set(['the juice']),
+        'reads': new Set(['the book'])
+      },
+      'the dog': {
+        'eats': new Set(['the apple']),
+        'drinks': new Set(['the juice']),
+        'reads': new Set(['the book'])
+      }
+    };
+
+    const trainingBox = document.getElementById('trainingMode');
+    const speakOnClickBox = document.getElementById('speakOnClick');
+    const phraseDisplay = document.getElementById('phrase-display');
+    const phraseText = document.getElementById('phrase-text');
+    const ttsModeSelect = document.getElementById('tts-mode');
+    const voiceSelectWrap = document.getElementById('voiceSelectWrap');
+    const voiceSelect = document.getElementById('voice-select');
+    const topPanel = document.getElementById('top-panel');
+    const panelToggle = document.getElementById('panelToggle');
+    const panelClose = topPanel.querySelector('.panel-close');
+    let availableVoices = [];
+    let currentAudio = null;
+
+    panelToggle.addEventListener('click', () => {
+      const isVisible = topPanel.classList.toggle('visible');
+      panelToggle.setAttribute('aria-expanded', String(isVisible));
+      topPanel.setAttribute('aria-hidden', String(!isVisible));
+    });
+
+    panelClose.addEventListener('click', () => {
+      topPanel.classList.remove('visible');
+      panelToggle.setAttribute('aria-expanded', 'false');
+      topPanel.setAttribute('aria-hidden', 'true');
+    });
+
+    document.querySelectorAll('.card').forEach(c => {
+      c.addEventListener('click', () => onCardClick(c));
+      c.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' '){ e.preventDefault(); c.click(); }});
+    });
+
+    document.getElementById('btn-clear').addEventListener('click', clearPhrase);
+    document.getElementById('btn-speak').addEventListener('click', speakFullPhrase);
+    trainingBox.addEventListener('change', () => highlightStep());
+    ttsModeSelect.addEventListener('change', () => {
+      const useBrowser = ttsModeSelect.value === 'browser';
+      voiceSelectWrap.style.display = useBrowser ? 'flex' : 'none';
+      if (!useBrowser && typeof speechSynthesis !== 'undefined') {
+        speechSynthesis.cancel();
+      }
+    });
+
+    initVoices();
+    highlightStep();
+    enforceFilters();
+    updatePhrase();
+
+    function onCardClick(card){
+      if (card.getAttribute('aria-disabled') === 'true') return;
+      const type = card.dataset.type;
+      const word = card.dataset.word;
+
+      if (trainingBox.checked && !isAllowedTypeNow(type)) {
+        if (window.navigator.vibrate) navigator.vibrate(30);
+        announce('Please choose ' + (state.step === 'subject' ? 'WHO' : state.step === 'action' ? 'DOES' : 'WHAT') + ' first');
+        return;
+      }
+
+      document.querySelectorAll(`.card[data-type="${type}"]`).forEach(c=>{
+        c.classList.remove('selected'); c.setAttribute('aria-pressed','false');
+      });
+      card.classList.add('selected'); card.setAttribute('aria-pressed','true');
+      state[type] = word;
+
+      if (type === 'action'){
+        const spec = actionSpecs[state.action];
+        if (spec){
+          if (!spec.requiresObject){
+            if (state.object){ deselectObjects(); state.object=''; }
+          } else {
+            if (state.object && !spec.objects.includes(state.object)){
+              deselectObjects(); state.object='';
+            }
+          }
+        }
+        if (trainingBox.checked){
+          state.step = spec && !spec.requiresObject ? 'done' : 'object';
+        }
+      } else if (type === 'subject' && trainingBox.checked){
+        state.step = 'action';
+      }
+
+      enforceFilters();
+      ensureValidObjectSelection();
+      highlightStep();
+      updatePhrase();
+
+      if (speakOnClickBox.checked){
+        const partial = currentPhrase(false);
+        if (partial) speak(partial);
+      }
+    }
+
+    function deselectObjects(){
+      document.querySelectorAll('.card[data-type="object"]').forEach(o=>{
+        o.classList.remove('selected'); o.setAttribute('aria-pressed','false');
+      });
+    }
+
+    function isAllowedTypeNow(type){
+      if (!trainingBox.checked) return true;
+      if (type === 'subject') return true;
+      if (isPhraseValid()) return true;
+      if (state.step==='done') return false;
+      return state.step === type;
+    }
+
+    function enforceFilters(){
+      enforceActionFilters();
+      enforceObjectFilters();
+    }
+
+    function enforceActionFilters(){
+      const actions = document.querySelectorAll('.card[data-type="action"]');
+      const blocked = subjectActionBlocks[state.subject] || null;
+      actions.forEach(actionCard => {
+        const actionWord = actionCard.dataset.word;
+        const isBlocked = !!blocked && blocked.has(actionWord);
+        if (isBlocked && state.action === actionWord){
+          actionCard.classList.remove('selected');
+          actionCard.setAttribute('aria-pressed','false');
+          state.action = '';
+          deselectObjects();
+          state.object = '';
+          if (trainingBox.checked){
+            state.step = 'action';
+          }
+        }
+        actionCard.setAttribute('aria-disabled', isBlocked ? 'true' : 'false');
+      });
+    }
+
+    function enforceObjectFilters(){
+      const objs = document.querySelectorAll('.card[data-type="object"]');
+      const spec = actionSpecs[state.action];
+      if (!spec){ objs.forEach(o=>o.setAttribute('aria-disabled','true')); return; }
+      if (!spec.requiresObject){
+        objs.forEach(o=>o.setAttribute('aria-disabled','true'));
+        return;
+      }
+      objs.forEach(o => {
+        const allow = spec.objects.includes(o.dataset.word) && isObjectAllowedForSubject(o.dataset.word);
+        o.setAttribute('aria-disabled', allow ? 'false' : 'true');
+      });
+    }
+
+    function ensureValidObjectSelection(){
+      if (!state.object) return;
+      if (!isObjectAllowedForSubject(state.object)){
+        deselectObjects();
+        state.object = '';
+      }
+    }
+
+    function isObjectAllowedForSubject(objectWord){
+      const subject = state.subject;
+      const action = state.action;
+      if (!subject || !action) return true;
+      const blocked = subjectObjectBlocks[subject]?.[action];
+      if (!blocked) return true;
+      return !blocked.has(objectWord);
+    }
+
+    function highlightStep(){
+      document.querySelectorAll('.column').forEach(col => col.classList.remove('next-step'));
+      if (!trainingBox.checked) return;
+      const map = { subject: '.column1', action: '.column2', object: '.column3' };
+      const sel = map[state.step] || null;
+      if (sel) document.querySelector(sel)?.classList.add('next-step');
+    }
+
+    function currentPhrase(includeDot=true){
+      const subj = state.subject;
+      let verb = state.action;
+      const obj  = state.object;
+      const spec = actionSpecs[verb] || {};
+
+      if (subj === 'I' && verb){ verb = firstPerson[verb] || verb; }
+
+      if (spec.preposition && obj){
+        verb = `${verb} ${spec.preposition}`;
+      }
+
+      const parts = [];
+      if (subj) parts.push(cap(subj));
+      if (verb) parts.push(verb);
+      if (spec.requiresObject && obj) parts.push(obj);
+
+      const txt = parts.join(' ');
+      if (!txt) return '';
+      return includeDot && isPhraseValid() ? `${txt}.` : txt;
+    }
+
+    function updatePhrase(){
+      const txt = currentPhrase(true) || 'Click the cards to build a sentence';
+      phraseText.textContent = txt;
+      renderOkBadge(isPhraseValid());
+    }
+
+    function isPhraseValid(){
+      const action = state.action;
+      const spec = actionSpecs[action];
+      if (!state.subject || !action || !spec) return false;
+      if (!spec.requiresObject) return true;
+      return !!state.object && spec.objects.includes(state.object) && isObjectAllowedForSubject(state.object);
+    }
+
+    function renderOkBadge(valid){
+      phraseDisplay.querySelector('.ok-badge')?.remove();
+      phraseDisplay.querySelector('.success-message')?.remove();
+      if (valid){
+        const badge = document.createElement('span');
+        badge.className = 'ok-badge';
+        badge.setAttribute('aria-hidden','true');
+        badge.textContent = '✅';
+        const message = document.createElement('span');
+        message.className = 'success-message';
+        message.textContent = 'Great job!';
+        phraseDisplay.appendChild(badge);
+        phraseDisplay.appendChild(message);
+      }
+    }
+
+    function clearPhrase(){
+      Object.assign(state, {step:'subject', subject:'', action:'', object:''});
+      document.querySelectorAll('.card').forEach(c=>{
+        c.classList.remove('selected'); c.setAttribute('aria-pressed','false'); c.setAttribute('aria-disabled','false');
+      });
+      enforceFilters();
+      highlightStep();
+      updatePhrase();
+      if (window.navigator.vibrate) navigator.vibrate(10);
+    }
+
+    function speakFullPhrase(){
+      const txt = currentPhrase(false);
+      if (!txt) return;
+      speak(txt);
+    }
+
+    async function speak(text){
+      if (!text) return;
+      if (ttsModeSelect.value === 'online'){
+        await speakOnline(text);
+        return;
+      }
+      speakLocal(text);
+    }
+
+    function speakLocal(text){
+      try { speechSynthesis.cancel(); } catch(e){}
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-US';
+      utter.rate = 0.95;
+      const selectedVoice = voiceSelect.value;
+      if (selectedVoice){
+        const voice = availableVoices.find(v => v.name === selectedVoice);
+        if (voice) utter.voice = voice;
+      }
+      speechSynthesis.speak(utter);
+    }
+
+    async function speakOnline(text){
+      try {
+        if (currentAudio){
+          currentAudio.pause();
+          currentAudio = null;
+        }
+        const response = await fetch(`https://api.streamelements.com/kappa/v2/speech?voice=Brian&text=${encodeURIComponent(text)}`);
+        if (!response.ok) throw new Error('TTS request failed');
+        const arrayBuffer = await response.arrayBuffer();
+        const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
+        const objectUrl = URL.createObjectURL(blob);
+        const audio = new Audio(objectUrl);
+        currentAudio = audio;
+        audio.play();
+        audio.onended = () => {
+          URL.revokeObjectURL(objectUrl);
+          currentAudio = null;
+        };
+      } catch (error) {
+        console.error('Online TTS error', error);
+        speakLocal(text);
+      }
+    }
+
+    function announce(text){
+      if (ttsModeSelect.value === 'online'){
+        speakOnline(text);
+        return;
+      }
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang='en-US'; u.rate=1.05;
+      try{ speechSynthesis.speak(u);}catch(e){}
+    }
+
+    function cap(s){ return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+
+    function initVoices(){
+      if (typeof speechSynthesis === 'undefined'){
+        voiceSelectWrap.style.display = 'none';
+        return;
+      }
+      const populate = () => {
+        availableVoices = speechSynthesis.getVoices().filter(v=>v.lang && v.lang.toLowerCase().startsWith('en'));
+        voiceSelect.innerHTML = '';
+        availableVoices.forEach(voice => {
+          const option = document.createElement('option');
+          option.value = voice.name;
+          option.textContent = voice.name;
+          voiceSelect.appendChild(option);
+        });
+        if (!availableVoices.length){
+          const option = document.createElement('option');
+          option.value = '';
+          option.textContent = 'No English voice available';
+          voiceSelect.appendChild(option);
+        }
+        voiceSelectWrap.style.display = ttsModeSelect.value === 'browser' ? 'flex' : 'none';
+      };
+      populate();
+      speechSynthesis.onvoiceschanged = populate;
+    }
+
+    window.addEventListener('beforeunload', () => {
+      if (currentAudio){ currentAudio.pause(); }
+      if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel();
+    });
+  </script>
+</body>
+</html>
