@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="it">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Un Grande Viaggio - Dalla Legge del Re alla Legge di Tutti</title>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Comic Sans MS', 'Arial', sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #2d3748;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    /* Skip link per accessibilità */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #2c5282;
+      color: #fff;
+      padding: 12px 20px;
+      text-decoration: none;
+      z-index: 100;
+      border-radius: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .skip-link:focus {
+      top: 0;
+      outline: 4px solid #ffd700;
+      outline-offset: 2px;
+    }
+
+    /* Header */
+    header {
+      background: #ffffff;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 36px;
+      font-weight: bold;
+      color: #2c5282;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 20px;
+      color: #4a5568;
+      font-weight: normal;
+    }
+
+    /* Container principale */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      background: #ffffff;
+      min-height: calc(100% - 200px);
+      border-radius: 16px 16px 0 0;
+      margin-top: 24px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Sezione introduttiva */
+    .intro-section {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+      padding: 32px;
+      border-radius: 16px;
+      margin-bottom: 40px;
+      text-align: center;
+      border: 4px solid #fdcb6e;
+    }
+
+    .intro-section h2 {
+      margin: 0 0 16px 0;
+      font-size: 28px;
+      color: #2d3748;
+      font-weight: bold;
+    }
+
+    .intro-text {
+      font-size: 20px;
+      color: #2d3748;
+      margin: 0;
+      line-height: 1.8;
+    }
+
+    /* Timeline semplificata */
+    .timeline {
+      margin-bottom: 48px;
+    }
+
+    .timeline-step {
+      background: #ffffff;
+      border-radius: 16px;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border: 4px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+
+    .timeline-step:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    }
+
+    .step-header {
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      color: #ffffff;
+      padding: 24px 32px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 80px;
+    }
+
+    .step-header:hover {
+      background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+    }
+
+    .step-header:focus {
+      outline: 4px solid #ffd700;
+      outline-offset: -4px;
+    }
+
+    .step-number {
+      background: #ffffff;
+      color: #0984e3;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 20px;
+    }
+
+    .step-title-container {
+      flex: 1;
+    }
+
+    .step-title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .step-date {
+      font-size: 16px;
+      margin-top: 4px;
+      opacity: 0.9;
+    }
+
+    .expand-icon {
+      font-size: 32px;
+      transition: transform 0.3s;
+    }
+
+    .step-header[aria-expanded="true"] .expand-icon {
+      transform: rotate(180deg);
+    }
+
+    .step-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .step-content.expanded {
+      max-height: 3000px;
+    }
+
+    .step-inner {
+      padding: 32px;
+    }
+
+    /* SVG più grandi */
+    .historical-illustration {
+      width: 100%;
+      height: 300px;
+      margin: 0 auto 24px auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+
+    /* Contenuto semplificato */
+    .simple-explanation {
+      background: #f7fafc;
+      padding: 24px;
+      border-radius: 12px;
+      border-left: 6px solid #4299e1;
+      margin-bottom: 24px;
+    }
+
+    .simple-explanation h4 {
+      margin: 0 0 12px 0;
+      font-size: 22px;
+      color: #2c5282;
+      font-weight: bold;
+    }
+
+    .simple-explanation p {
+      margin: 0 0 16px 0;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .simple-explanation p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Definizioni importanti */
+    .definition-box {
+      background: #e6fffa;
+      padding: 20px;
+      border-radius: 12px;
+      border-left: 6px solid #38b2ac;
+      margin-bottom: 20px;
+    }
+
+    .definition-box h5 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+      color: #2c7a7b;
+      font-weight: bold;
+    }
+
+    .definition-box p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Punti chiave */
+    .key-points {
+      background: #fff5f5;
+      padding: 24px;
+      border-radius: 12px;
+      border-left: 6px solid #e53e3e;
+    }
+
+    .key-points h4 {
+      margin: 0 0 16px 0;
+      font-size: 22px;
+      color: #c53030;
+      font-weight: bold;
+    }
+
+    .key-points ul {
+      margin: 0;
+      padding-left: 24px;
+    }
+
+    .key-points li {
+      margin-bottom: 12px;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    /* Controlli semplici */
+    .simple-controls {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .simple-btn {
+      padding: 16px 24px;
+      background: #4299e1;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      transition: all 0.3s;
+      min-width: 160px;
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+    }
+
+    .simple-btn:hover {
+      background: #3182ce;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
+    }
+
+    .simple-btn:focus {
+      outline: 4px solid #ffd700;
+      outline-offset: 2px;
+    }
+
+    .simple-btn.active {
+      background: #2c5282;
+      box-shadow: 0 4px 12px rgba(44, 82, 130, 0.4);
+    }
+
+    /* Quiz semplificato */
+    .quiz-section {
+      background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%);
+      padding: 32px;
+      border-radius: 16px;
+      margin-top: 48px;
+      border: 4px solid #68d391;
+    }
+
+    .quiz-section h2 {
+      margin: 0 0 24px 0;
+      font-size: 28px;
+      color: #2d3748;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .quiz-question {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .question-text {
+      margin: 0 0 20px 0;
+      font-size: 20px;
+      font-weight: bold;
+      color: #2d3748;
+      line-height: 1.6;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      background: #f7fafc;
+      border: 3px solid #e2e8f0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      min-height: 60px;
+      font-size: 18px;
+    }
+
+    .quiz-option:hover {
+      background: #edf2f7;
+      border-color: #cbd5e1;
+      transform: translateX(4px);
+    }
+
+    .quiz-option:focus-within {
+      outline: 4px solid #4299e1;
+      outline-offset: 2px;
+    }
+
+    .quiz-option input[type="radio"] {
+      margin-right: 16px;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+
+    .quiz-option span {
+      flex: 1;
+      color: #2d3748;
+      line-height: 1.5;
+    }
+
+    .quiz-option.correct {
+      background: #c6f6d5;
+      border-color: #38a169;
+      color: #22543d;
+    }
+
+    .quiz-option.incorrect {
+      background: #fed7d7;
+      border-color: #e53e3e;
+      color: #742a2a;
+    }
+
+    .quiz-feedback {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      display: none;
+      text-align: center;
+    }
+
+    .quiz-feedback.show {
+      display: block;
+    }
+
+    .quiz-feedback.correct {
+      background: #c6f6d5;
+      color: #22543d;
+      border: 2px solid #38a169;
+    }
+
+    .quiz-feedback.incorrect {
+      background: #fed7d7;
+      color: #742a2a;
+      border: 2px solid #e53e3e;
+    }
+
+    .quiz-submit-btn {
+      width: 100%;
+      max-width: 300px;
+      margin: 24px auto 0 auto;
+      display: block;
+      padding: 20px 32px;
+      background: #38a169;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      min-height: 64px;
+      box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+    }
+
+    .quiz-submit-btn:hover {
+      background: #2f855a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(56, 161, 105, 0.4);
+    }
+
+    .quiz-submit-btn:focus {
+      outline: 4px solid #ffd700;
+      outline-offset: 2px;
+    }
+
+    .quiz-submit-btn:disabled {
+      background: #a0aec0;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .quiz-results {
+      margin-top: 24px;
+      padding: 24px;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 3px solid #e2e8f0;
+      display: none;
+      text-align: center;
+    }
+
+    .quiz-results.show {
+      display: block;
+    }
+
+    .quiz-results h3 {
+      margin: 0 0 16px 0;
+      font-size: 24px;
+      color: #2d3748;
+    }
+
+    .quiz-score {
+      font-size: 48px;
+      font-weight: bold;
+      margin: 16px 0;
+    }
+
+    .quiz-score.excellent {
+      color: #38a169;
+    }
+
+    .quiz-score.good {
+      color: #d69e2e;
+    }
+
+    .quiz-score.needs-improvement {
+      color: #e53e3e;
+    }
+
+    .quiz-results.excellent {
+      background: #c6f6d5;
+      border-color: #38a169;
+    }
+
+    .quiz-results.good {
+      background: #faf089;
+      border-color: #d69e2e;
+    }
+
+    .quiz-results.needs-improvement {
+      background: #fed7d7;
+      border-color: #e53e3e;
+    }
+
+    /* Footer semplice */
+    footer {
+      background: #2d3748;
+      color: #e2e8f0;
+      padding: 32px 24px;
+      text-align: center;
+      margin-top: 48px;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 28px;
+      }
+
+      .step-header {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+      }
+
+      .step-number {
+        margin-right: 0;
+      }
+
+      .simple-controls {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .simple-btn {
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .historical-illustration {
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-container {
+        padding: 20px 16px;
+        margin-top: 16px;
+      }
+
+      .intro-section {
+        padding: 24px 20px;
+      }
+
+      .step-inner {
+        padding: 24px 20px;
+      }
+
+      .quiz-section {
+        padding: 24px 20px;
+      }
+
+      .historical-illustration {
+        height: 200px;
+      }
+    }
+
+    /* Animazioni */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .timeline-step {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .timeline-step:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .timeline-step:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    .timeline-step:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+
+    .timeline-step:nth-child(5) {
+      animation-delay: 0.8s;
+    }
+
+    /* Print styles */
+    @media print {
+      .skip-link,
+      .simple-controls,
+      footer {
+        display: none !important;
+      }
+
+      .main-container {
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        border-radius: 0;
+      }
+
+      .timeline-step {
+        page-break-inside: avoid;
+        box-shadow: none;
+      }
+
+      .step-content {
+        max-height: none !important;
+      }
+
+      body {
+        background: #ffffff;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body><a href="#main-content" class="skip-link">Vai al contenuto principale</a>
+  <header role="banner">
+   <h1 id="page-title">🏛️ Un Grande Viaggio</h1>
+   <p class="subtitle" id="page-subtitle">Dalla Legge del Re alla Legge di Tutti</p>
+  </header>
+  <div class="main-container">
+   <main id="main-content" role="main">
+    <section class="intro-section">
+     <h2>🌟 Iniziamo il nostro viaggio</h2>
+     <p class="intro-text" id="intro-text">Facciamo un viaggio per capire come l'Italia si è data la sua legge fondamentale, la <strong>Costituzione</strong>, che è una risposta forte e chiara a tutti gli eventi drammatici che l'hanno preceduta.</p>
+    </section>
+    <div class="simple-controls" role="toolbar" aria-label="Controlli pagina"><button class="simple-btn" id="btn-show-all" aria-pressed="true"> 👁️ Mostra tutto </button> <button class="simple-btn" id="btn-expand-all"> ⬇️ Apri tutte le storie </button> <button class="simple-btn" id="btn-collapse-all"> ⬆️ Chiudi tutte le storie </button>
+    </div>
+    <div class="timeline">
+     <article class="timeline-step" id="step-1">
+      <div class="step-header" tabindex="0" role="button" aria-expanded="false" aria-controls="step-1-content">
+       <div class="step-number">
+        1
+       </div>
+       <div class="step-title-container">
+        <h3 class="step-title" id="step1-title">👑 La Legge del Re</h3>
+        <p class="step-date">Prima del 1848 - Monarchia Assoluta</p>
+       </div><span class="expand-icon" aria-hidden="true">⬇️</span>
+      </div>
+      <div class="step-content" id="step-1-content">
+       <div class="step-inner">
+        <svg width="100%" height="300" viewbox="0 0 600 300" class="historical-illustration"><!-- Sfondo palazzo reale --> <rect x="0" y="0" width="600" height="300" fill="#f0f8ff" /> <!-- Palazzo del re --> <rect x="200" y="100" width="200" height="120" fill="#8B4513" stroke="#654321" stroke-width="3" /> <polygon points="200,100 300,50 400,100" fill="#DC143C" stroke="#8B0000" stroke-width="2" /> <!-- Finestre del palazzo --> <rect x="220" y="120" width="20" height="30" fill="#4A4A4A" /> <rect x="250" y="120" width="20" height="30" fill="#4A4A4A" /> <rect x="280" y="120" width="20" height="30" fill="#4A4A4A" /> <rect x="310" y="120" width="20" height="30" fill="#4A4A4A" /> <rect x="340" y="120" width="20" height="30" fill="#4A4A4A" /> <rect x="370" y="120" width="20" height="30" fill="#4A4A4A" /> <!-- Porta del palazzo --> <rect x="285" y="170" width="30" height="50" fill="#654321" /> <!-- Corona sopra il palazzo --> <circle cx="300" cy="30" r="15" fill="#FFD700" stroke="#B8860B" stroke-width="2" /> <polygon points="290,25 295,15 300,20 305,15 310,25" fill="#FFD700" /> <!-- Re sul trono --> <rect x="280" y="180" width="40" height="30" fill="#8B4513" /> <circle cx="300" cy="175" r="12" fill="#FDBCB4" /> <rect x="295" y="165" width="10" height="8" fill="#FFD700" /> <text x="300" y="240" text-anchor="middle" font-size="14" font-weight="bold" fill="#8B0000">
+          IL RE
+         </text> <!-- Frecce che indicano il potere del re --> <path d="M150 150 L190 150" stroke="#DC143C" stroke-width="4" marker-end="url(#arrowhead1)" /> <path d="M410 150 L450 150" stroke="#DC143C" stroke-width="4" marker-end="url(#arrowhead1)" /> <path d="M300 250 L300 280" stroke="#DC143C" stroke-width="4" marker-end="url(#arrowhead1)" /> <!-- Persone che subiscono --> <circle cx="100" cy="150" r="8" fill="#FDBCB4" /> <rect x="95" y="158" width="10" height="20" fill="#4169E1" /> <text x="100" y="190" text-anchor="middle" font-size="10" fill="#333">
+          Popolo
+         </text> <circle cx="500" cy="150" r="8" fill="#FDBCB4" /> <rect x="495" y="158" width="10" height="20" fill="#4169E1" /> <text x="500" y="190" text-anchor="middle" font-size="10" fill="#333">
+          Popolo
+         </text> <!-- Testo esplicativo --> <text x="300" y="20" text-anchor="middle" font-size="16" font-weight="bold" fill="#8B0000">
+          MONARCHIA ASSOLUTA
+         </text> <text x="300" y="295" text-anchor="middle" font-size="12" fill="#333">
+          Il Re decide tutto da solo
+         </text> <defs>
+          <marker id="arrowhead1" markerwidth="10" markerheight="7" refx="9" refy="3.5" orient="auto">
+           <polygon points="0 0, 10 3.5, 0 7" fill="#DC143C" />
+          </marker>
+         </defs>
+        </svg>
+        <div class="definition-box">
+         <h5>📖 Cos'è la Monarchia Assoluta?</h5>
+         <p>È quando il <strong>Re</strong> ha tutto il potere e decide da solo le leggi, le tasse e le punizioni. Le persone normali non possono dire la loro opinione.</p>
+        </div>
+        <div class="simple-explanation">
+         <h4>🏰 Come vivevano le persone</h4>
+         <p>Tanto tempo fa, quasi ovunque, c'era la <strong>Monarchia Assoluta</strong>.</p>
+         <p>Questo significa che il <strong>Re decideva quasi tutto da solo</strong>.</p>
+         <p>Le persone lottavano per avere <strong>diritti e libertà</strong>, come la libertà di fare le proprie scelte.</p>
+         <p>Non era giusto che una sola persona decidesse per tutti!</p>
+        </div>
+       </div>
+      </div>
+     </article>
+     <article class="timeline-step" id="step-2">
+      <div class="step-header" tabindex="0" role="button" aria-expanded="false" aria-controls="step-2-content">
+       <div class="step-number">
+        2
+       </div>
+       <div class="step-title-container">
+        <h3 class="step-title" id="step2-title">📜 Il Primo Passo: Lo Statuto Albertino</h3>
+        <p class="step-date">1848 - Un piccolo cambiamento</p>
+       </div><span class="expand-icon" aria-hidden="true">⬇️</span>
+      </div>
+      <div class="step-content" id="step-2-content">
+       <div class="step-inner">
+        <svg width="100%" height="300" viewbox="0 0 600 300" class="historical-illustration"><!-- Sfondo --> <rect x="0" y="0" width="600" height="300" fill="#f5f5dc" /> <!-- Re Carlo Alberto --> <circle cx="150" cy="120" r="25" fill="#FDBCB4" /> <rect x="140" y="100" width="20" height="8" fill="#FFD700" /> <rect x="130" y="145" width="40" height="60" fill="#000080" /> <text x="150" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#000080">
+          Re Carlo Alberto
+         </text> <!-- Statuto (documento) --> <rect x="250" y="80" width="120" height="140" fill="#ffffff" stroke="#8B4513" stroke-width="3" /> <text x="310" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#8B4513">
+          STATUTO
+         </text> <text x="310" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="#8B4513">
+          ALBERTINO
+         </text> <text x="310" y="135" text-anchor="middle" font-size="10" fill="#333">
+          4 marzo 1848
+         </text> <!-- Contenuto dello Statuto --> <text x="310" y="155" text-anchor="middle" font-size="9" fill="#333">
+          • Parlamento
+         </text> <text x="310" y="170" text-anchor="middle" font-size="9" fill="#333">
+          • Libertà di parola
+         </text> <text x="310" y="185" text-anchor="middle" font-size="9" fill="#333">
+          • Uguaglianza legale
+         </text> <text x="310" y="200" text-anchor="middle" font-size="9" fill="#333">
+          Ma il Re comanda ancora!
+         </text> <!-- Parlamento --> <rect x="420" y="100" width="100" height="80" fill="#e6e6fa" stroke="#4B0082" stroke-width="2" /> <text x="470" y="120" text-anchor="middle" font-size="12" font-weight="bold" fill="#4B0082">
+          PARLAMENTO
+         </text> <text x="470" y="135" text-anchor="middle" font-size="10" fill="#333">
+          Solo ricchi
+         </text> <text x="470" y="150" text-anchor="middle" font-size="10" fill="#333">
+          possono votare
+         </text> <text x="470" y="165" text-anchor="middle" font-size="9" fill="#666">
+          (suffragio censitario)
+         </text> <!-- Frecce --> <path d="M180 120 L240 120" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowhead2)" /> <path d="M380 140 L410 140" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowhead2)" /> <!-- Persone escluse --> <circle cx="80" cy="250" r="8" fill="#FDBCB4" /> <rect x="75" y="258" width="10" height="20" fill="#8B4513" /> <text x="80" y="285" text-anchor="middle" font-size="8" fill="#666">
+          Poveri
+         </text> <text x="80" y="295" text-anchor="middle" font-size="8" fill="#666">
+          esclusi
+         </text> <circle cx="120" cy="250" r="8" fill="#FDBCB4" /> <rect x="115" y="258" width="10" height="20" fill="#FF69B4" /> <text x="120" y="285" text-anchor="middle" font-size="8" fill="#666">
+          Donne
+         </text> <text x="120" y="295" text-anchor="middle" font-size="8" fill="#666">
+          escluse
+         </text> <!-- Testo principale --> <text x="300" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#8B4513">
+          COSTITUZIONE FLESSIBILE
+         </text> <text x="300" y="280" text-anchor="middle" font-size="12" fill="#666">
+          "Tutto cambia affinché nulla cambi"
+         </text> <defs>
+          <marker id="arrowhead2" markerwidth="10" markerheight="7" refx="9" refy="3.5" orient="auto">
+           <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb" />
+          </marker>
+         </defs>
+        </svg>
+        <div class="definition-box">
+         <h5>📖 Cos'è il Voto Censitario?</h5>
+         <p>È la forma di voto in cui si poteva votare <strong>in base al censo</strong>, cioè in base alla ricchezza posseduta. Solo gli uomini ricchi che pagavano molte tasse potevano votare.</p>
+        </div>
+        <div class="definition-box">
+         <h5>📖 Cos'è una Costituzione Flessibile?</h5>
+         <p>Si dice <strong>flessibile</strong> perché era molto facile modificarla; bastava una normale legge del Parlamento. Questa caratteristica fu <strong>"funzionale a Mussolini"</strong> che la modificò durante il fascismo.</p>
+        </div>
+        <div class="definition-box">
+         <h5>📖 Cos'è una Costituzione "Octroyée" (Ottriata)?</h5>
+         <p>Significa <strong>"concessa dal sovrano dall'alto"</strong>. Lo Statuto Albertino fu "ottriato" da Carlo Alberto, cioè fu un regalo del Re al popolo, non una scelta del popolo.</p>
+        </div>
+        <div class="definition-box">
+         <h5>📖 Cos'è l'"Operazione Gattopardesca"?</h5>
+         <p>Espressione che significa <strong>"tutto cambia affinché nulla cambi"</strong>. Nello Statuto, l'introduzione di un Parlamento dava l'impressione di grandi cambiamenti, mentre in realtà il potere restava al Sovrano.</p>
+        </div>
+        <div class="simple-explanation">
+         <h4>👑 Una legge "di facciata"</h4>
+         <p>Dopo le <strong>rivoluzioni del 1848</strong>, il Re Carlo Alberto diede lo <strong>Statuto Albertino</strong>, la prima costituzione italiana.</p>
+         <p>Sebbene accogliesse i principi della <strong>separazione dei poteri</strong> (legislativo, esecutivo, giudiziario) e l'ideale di uguaglianza della Rivoluzione Francese, era una legge solo <strong>"di facciata" (o "formale")</strong>.</p>
+         <p>Lo Stato liberale era <strong>"elitario"</strong>, ovvero un governo in cui i diritti erano riservati per pochi privilegiati.</p>
+         <p>Il Re manteneva il <strong>"diritto di sanzione"</strong>, cioè il potere di bloccare le leggi approvate dal Parlamento che non gli piacevano.</p>
+        </div>
+        <div class="key-points">
+         <h4>⚠️ I problemi dello Statuto</h4>
+         <ul>
+          <li><strong>Solo i ricchi potevano votare</strong> - All'inizio, potevano votare solo gli uomini molto ricchi (alta borghesia)</li>
+          <li><strong>Le donne non potevano votare</strong> - Il voto fu esteso a tutti i maschi istruiti solo in un secondo momento</li>
+          <li><strong>Era una legge "flessibile"</strong> - Cioè facile da cambiare, e questo era un grande problema</li>
+          <li><strong>Il Re comandava ancora</strong> - Aveva ancora molto potere sulle decisioni importanti</li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </article>
+     <article class="timeline-step" id="step-3">
+      <div class="step-header" tabindex="0" role="button" aria-expanded="false" aria-controls="step-3-content">
+       <div class="step-number">
+        3
+       </div>
+       <div class="step-title-container">
+        <h3 class="step-title" id="step3-title">⚫ La Curva Pericolosa: La Dittatura Fascista</h3>
+        <p class="step-date">1922-1943 - Il buio dell'Italia</p>
+       </div><span class="expand-icon" aria-hidden="true">⬇️</span>
+      </div>
+      <div class="step-content" id="step-3-content">
+       <div class="step-inner">
+        <svg width="100%" height="300" viewbox="0 0 600 300" class="historical-illustration"><!-- Sfondo scuro --> <rect x="0" y="0" width="600" height="300" fill="#2c2c2c" /> <!-- Marcia su Roma --> <rect x="50" y="150" width="150" height="100" fill="#8B0000" stroke="#FF0000" stroke-width="2" /> <text x="125" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">
+          MARCIA SU ROMA
+         </text> <text x="125" y="190" text-anchor="middle" font-size="10" fill="#ffffff">
+          28 ottobre 1922
+         </text> <text x="125" y="205" text-anchor="middle" font-size="9" fill="#ffffff">
+          Squadristi fascisti
+         </text> <text x="125" y="220" text-anchor="middle" font-size="9" fill="#ffffff">
+          chiedono il potere
+         </text> <!-- Mussolini --> <circle cx="300" cy="120" r="20" fill="#FDBCB4" /> <rect x="290" y="140" width="20" height="40" fill="#000000" /> <text x="300" y="195" text-anchor="middle" font-size="12" font-weight="bold" fill="#FF0000">
+          MUSSOLINI
+         </text> <text x="300" y="210" text-anchor="middle" font-size="10" fill="#ffffff">
+          Dittatore
+         </text> <!-- Re che accetta --> <circle cx="450" cy="120" r="15" fill="#FDBCB4" /> <rect x="445" y="110" width="10" height="6" fill="#FFD700" /> <rect x="440" y="135" width="20" height="30" fill="#000080" /> <text x="450" y="180" text-anchor="middle" font-size="10" fill="#ffffff">
+          Re accetta
+         </text> <text x="450" y="195" text-anchor="middle" font-size="9" fill="#ffffff">
+          per paura
+         </text> <!-- Frecce del potere --> <path d="M210 200 L280 150" stroke="#FF0000" stroke-width="4" marker-end="url(#arrowhead3)" /> <path d="M320 130 L430 130" stroke="#FF0000" stroke-width="4" marker-end="url(#arrowhead3)" /> <!-- Leggi fasciste --> <rect x="250" y="220" width="100" height="60" fill="#8B0000" stroke="#FF0000" stroke-width="2" /> <text x="300" y="240" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+          LEGGI FASCISTE
+         </text> <text x="300" y="255" text-anchor="middle" font-size="8" fill="#ffffff">
+          Legge Acerbo 1923
+         </text> <text x="300" y="270" text-anchor="middle" font-size="8" fill="#ffffff">
+          Controllo totale
+         </text> <!-- Matteotti --> <circle cx="100" cy="80" r="12" fill="#FDBCB4" /> <rect x="95" y="92" width="10" height="25" fill="#4169E1" /> <text x="100" y="130" text-anchor="middle" font-size="9" fill="#ffffff">
+          Matteotti
+         </text> <text x="100" y="142" text-anchor="middle" font-size="8" fill="#FF6B6B">
+          Ucciso per aver
+         </text> <text x="100" y="152" text-anchor="middle" font-size="8" fill="#FF6B6B">
+          denunciato brogli
+         </text> <!-- X rossa su Matteotti --> <path d="M90 70 L110 90" stroke="#FF0000" stroke-width="4" /> <path d="M110 70 L90 90" stroke="#FF0000" stroke-width="4" /> <!-- Testo principale --> <text x="300" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#FF0000">
+          DITTATURA FASCISTA
+         </text> <text x="300" y="45" text-anchor="middle" font-size="12" fill="#ffffff">
+          La flessibilità dello Statuto permise la dittatura
+         </text> <defs>
+          <marker id="arrowhead3" markerwidth="10" markerheight="7" refx="9" refy="3.5" orient="auto">
+           <polygon points="0 0, 10 3.5, 0 7" fill="#FF0000" />
+          </marker>
+         </defs>
+        </svg>
+        <div class="definition-box">
+         <h5>📖 Cos'è una Dittatura?</h5>
+         <p>È quando <strong>una sola persona comanda tutto</strong> con la forza, non lascia votare liberamente e punisce chi non è d'accordo.</p>
+        </div>
+        <div class="simple-explanation">
+         <h4>⚫ Il periodo buio</h4>
+         <p>La <strong>flessibilità dello Statuto</strong> permise all'Italia di cadere in una dittatura.</p>
+         <p><strong>L'Ascesa del Fascismo:</strong> Il 28 ottobre 1922 avvenne la <strong>Marcia su Roma</strong>. Gli squadristi fascisti chiesero al Re la nomina di <strong>Benito Mussolini</strong> a capo del governo.</p>
+         <p>Il Re accettò perché preferiva avere l'ordine sociale, piuttosto che lasciare che andassero al potere gli esponenti socialisti che avevano vinto le elezioni.</p>
+        </div>
+        <div class="key-points">
+         <h4>⚠️ Come Mussolini prese tutto il potere</h4>
+         <ul>
+          <li><strong>Legge Acerbo (1923)</strong> - Mussolini usò le leggi per concentrare il potere</li>
+          <li><strong>Omicidio Matteotti</strong> - Quando Giacomo Matteotti denunciò che il voto era stato controllato e truccato dagli squadristi, fu ucciso</li>
+          <li><strong>La sua morte scatenò domande nella gente</strong> - Ma ormai era troppo tardi</li>
+          <li><strong>Fine della Monarchia</strong> - Dopo la caduta del fascismo, il Re e Badoglio fuggirono da Roma</li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </article>
+     <article class="timeline-step" id="step-4">
+      <div class="step-header" tabindex="0" role="button" aria-expanded="false" aria-controls="step-4-content">
+       <div class="step-number">
+        4
+       </div>
+       <div class="step-title-container">
+        <h3 class="step-title" id="step4-title">🏛️ La Nuova Legge di Tutti: La Costituzione</h3>
+        <p class="step-date">1946-1948 - Nasce la Repubblica</p>
+       </div><span class="expand-icon" aria-hidden="true">⬇️</span>
+      </div>
+      <div class="step-content" id="step-4-content">
+       <div class="step-inner">
+        <svg width="100%" height="300" viewbox="0 0 600 300" class="historical-illustration"><!-- Sfondo luminoso --> <rect x="0" y="0" width="600" height="300" fill="#e6f3ff" /> <!-- Referendum 2 giugno 1946 --> <rect x="50" y="80" width="120" height="100" fill="#ffffff" stroke="#2563eb" stroke-width="3" /> <text x="110" y="105" text-anchor="middle" font-size="12" font-weight="bold" fill="#2563eb">
+          REFERENDUM
+         </text> <text x="110" y="120" text-anchor="middle" font-size="10" fill="#333">
+          2 giugno 1946
+         </text> <text x="110" y="140" text-anchor="middle" font-size="9" fill="#22c55e">
+          Repubblica: 54%
+         </text> <text x="110" y="155" text-anchor="middle" font-size="9" fill="#ef4444">
+          Monarchia: 46%
+         </text> <text x="110" y="170" text-anchor="middle" font-size="8" fill="#7c3aed">
+          Votano anche
+         </text> <text x="110" y="180" text-anchor="middle" font-size="8" fill="#7c3aed">
+          le DONNE!
+         </text> <!-- Freccia --> <path d="M180 130 L220 130" stroke="#2563eb" stroke-width="4" marker-end="url(#arrowhead4)" /> <!-- Assemblea Costituente --> <rect x="240" y="60" width="140" height="120" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="3" /> <text x="310" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#0ea5e9">
+          ASSEMBLEA
+         </text> <text x="310" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#0ea5e9">
+          COSTITUENTE
+         </text> <text x="310" y="120" text-anchor="middle" font-size="10" fill="#333">
+          Il popolo sceglie
+         </text> <text x="310" y="135" text-anchor="middle" font-size="10" fill="#333">
+          i rappresentanti
+         </text> <text x="310" y="150" text-anchor="middle" font-size="9" fill="#666">
+          Scrivono insieme
+         </text> <text x="310" y="165" text-anchor="middle" font-size="9" fill="#666">
+          la Costituzione
+         </text> <!-- Freccia --> <path d="M390 130 L430 130" stroke="#2563eb" stroke-width="4" marker-end="url(#arrowhead4)" /> <!-- Costituzione --> <rect x="450" y="70" width="120" height="110" fill="#dcfce7" stroke="#22c55e" stroke-width="4" /> <text x="510" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#22c55e">
+          COSTITUZIONE
+         </text> <text x="510" y="110" text-anchor="middle" font-size="10" fill="#333">
+          1° gennaio 1948
+         </text> <text x="510" y="130" text-anchor="middle" font-size="9" fill="#16a34a">
+          • Rigida
+         </text> <text x="510" y="145" text-anchor="middle" font-size="9" fill="#16a34a">
+          • Democratica
+         </text> <text x="510" y="160" text-anchor="middle" font-size="9" fill="#16a34a">
+          • Per tutti
+         </text> <!-- Persone che votano --> <circle cx="80" cy="220" r="8" fill="#FDBCB4" /> <rect x="75" y="228" width="10" height="20" fill="#4169E1" /> <text x="80" y="255" text-anchor="middle" font-size="8" fill="#333">
+          Uomo
+         </text> <circle cx="120" cy="220" r="8" fill="#FDBCB4" /> <rect x="115" y="228" width="10" height="20" fill="#FF69B4" /> <text x="120" y="255" text-anchor="middle" font-size="8" fill="#333">
+          Donna
+         </text> <circle cx="160" cy="220" r="8" fill="#FDBCB4" /> <rect x="155" y="228" width="10" height="20" fill="#8B4513" /> <text x="160" y="255" text-anchor="middle" font-size="8" fill="#333">
+          Operaio
+         </text> <circle cx="200" cy="220" r="8" fill="#FDBCB4" /> <rect x="195" y="228" width="10" height="20" fill="#32CD32" /> <text x="200" y="255" text-anchor="middle" font-size="8" fill="#333">
+          Contadino
+         </text> <!-- Muro di protezione --> <rect x="450" y="200" width="120" height="40" fill="#94a3b8" stroke="#475569" stroke-width="2" /> <text x="510" y="220" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">
+          MURO DI PROTEZIONE
+         </text> <text x="510" y="235" text-anchor="middle" font-size="8" fill="#ffffff">
+          Costituzione Rigida
+         </text> <!-- Testo principale --> <text x="300" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#22c55e">
+          REPUBBLICA DEMOCRATICA
+         </text> <text x="300" y="45" text-anchor="middle" font-size="12" fill="#333">
+          Il potere appartiene al popolo
+         </text> <text x="300" y="285" text-anchor="middle" font-size="10" fill="#666">
+          La Costituzione è come un muro solido che protegge la libertà
+         </text> <defs>
+          <marker id="arrowhead4" markerwidth="10" markerheight="7" refx="9" refy="3.5" orient="auto">
+           <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb" />
+          </marker>
+         </defs>
+        </svg>
+        <div class="definition-box">
+         <h5>📖 Cos'è una Costituzione Rigida?</h5>
+         <p>Si dice <strong>rigida</strong> perché è difficile da cambiare. Per modificarla occorre una <strong>legge di revisione costituzionale</strong> approvata con un procedimento aggravato: due letture in ciascuna Camera, con un intervallo di almeno tre mesi, e nella seconda votazione serve una <strong>maggioranza qualificata dei due terzi</strong>.</p>
+        </div>
+        <div class="definition-box">
+         <h5>📖 Cos'è una Repubblica Democratica?</h5>
+         <p>L'Italia è una <strong>Repubblica democratica, fondata sul lavoro</strong>. La sovranità appartiene al popolo, che la esercita nelle forme e nei limiti della Costituzione stessa. È composta da <strong>139 articoli</strong>.</p>
+        </div>
+        <div class="definition-box">
+         <h5>📖 Cos'è la Democrazia?</h5>
+         <p>È un sistema in cui <strong>il popolo esercita il potere</strong> e i poteri dello Stato (legislativo, esecutivo e giudiziario) sono <strong>distribuiti e separati</strong>, non concentrati nelle mani di una sola persona come nelle Monarchie Assolute.</p>
+        </div>
+        <div class="simple-explanation">
+         <h4>🗳️ Il popolo sceglie</h4>
+         <p>Alla fine della guerra, il popolo fu chiamato a scegliere:</p>
+         <p><strong>Il 2 Giugno 1946:</strong> Data fondamentale in cui si tenne il <strong>referendum istituzionale</strong> (scelta tra Monarchia e Repubblica) e vennero eletti i membri dell'<strong>Assemblea Costituente</strong>.</p>
+         <p><strong>Per la prima volta, le donne ebbero la possibilità di votare.</strong> Vinse la Repubblica!</p>
+         <p><strong>La Costituzione (1° gennaio 1948):</strong> È la <strong>legge fondamentale della Repubblica Italiana</strong>. Entrata in vigore il <strong>1° gennaio 1948</strong>, essa è stata concepita come una <strong>risposta a tutti gli eventi drammatici che l'hanno preceduta</strong>.</p>
+        </div>
+        <div class="key-points">
+         <h4>⭐ I diritti garantiti dalla Costituzione</h4>
+         <ul>
+          <li><strong>Pari Dignità e Uguaglianza</strong> - La Costituzione garantisce: pari dignità sociale e uguaglianza davanti alla legge anche in ambito lavorativo; uguaglianza morale e giuridica dei coniugi all'interno della famiglia; parità di accesso agli uffici pubblici e alle cariche elettive</li>
+          <li><strong>Separazione dei Poteri</strong> - I poteri dello Stato (legislativo, esecutivo e giudiziario) sono distribuiti e separati, non concentrati in una sola persona</li>
+          <li><strong>Protezione dalla dittatura</strong> - La rigidità costituzionale impedisce a un solo uomo di prendere tutto il potere come fece Mussolini</li>
+          <li><strong>I diritti non sono per sempre</strong> - Monito ai giovani: l'impegno per conservare la democrazia deve essere quotidiano e i diritti vanno protetti</li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </article>
+    </div>
+    <section class="quiz-section" id="quiz">
+     <h2 id="quiz-title">🎯 Verifica quello che hai imparato</h2>
+     <div class="quiz-question" data-question="1">
+      <p class="question-text">👑 <strong>Cos'era la Monarchia Assoluta?</strong></p>
+      <div class="quiz-options"><label class="quiz-option"> <input type="radio" name="q1" value="a"> <span>Il Re divideva il potere con il popolo</span> </label> <label class="quiz-option"> <input type="radio" name="q1" value="b" data-correct="true"> <span>Il Re decideva tutto da solo senza chiedere il parere del popolo</span> </label> <label class="quiz-option"> <input type="radio" name="q1" value="c"> <span>Il Re non aveva nessun potere</span> </label>
+      </div>
+      <div class="quiz-feedback"></div>
+     </div>
+     <div class="quiz-question" data-question="2">
+      <p class="question-text">📜 <strong>Qual era il problema principale dello Statuto Albertino?</strong></p>
+      <div class="quiz-options"><label class="quiz-option"> <input type="radio" name="q2" value="a"> <span>Era troppo lungo da leggere</span> </label> <label class="quiz-option"> <input type="radio" name="q2" value="b" data-correct="true"> <span>Era "flessibile", cioè troppo facile da cambiare</span> </label> <label class="quiz-option"> <input type="radio" name="q2" value="c"> <span>Non parlava dei diritti delle persone</span> </label>
+      </div>
+      <div class="quiz-feedback"></div>
+     </div>
+     <div class="quiz-question" data-question="3">
+      <p class="question-text">⚫ <strong>Come riuscì Mussolini a diventare dittatore?</strong></p>
+      <div class="quiz-options"><label class="quiz-option"> <input type="radio" name="q3" value="a" data-correct="true"> <span>Sfruttò la flessibilità dello Statuto per cambiare le leggi</span> </label> <label class="quiz-option"> <input type="radio" name="q3" value="b"> <span>Vinse le elezioni democraticamente</span> </label> <label class="quiz-option"> <input type="radio" name="q3" value="c"> <span>Il popolo lo scelse liberamente</span> </label>
+      </div>
+      <div class="quiz-feedback"></div>
+     </div>
+     <div class="quiz-question" data-question="4">
+      <p class="question-text">🏛️ <strong>Perché la Costituzione del 1948 è più sicura dello Statuto Albertino?</strong></p>
+      <div class="quiz-options"><label class="quiz-option"> <input type="radio" name="q4" value="a"> <span>È scritta meglio</span> </label> <label class="quiz-option"> <input type="radio" name="q4" value="b" data-correct="true"> <span>È "rigida", cioè molto difficile da cambiare</span> </label> <label class="quiz-option"> <input type="radio" name="q4" value="c"> <span>È più corta</span> </label>
+      </div>
+      <div class="quiz-feedback"></div>
+     </div><button class="quiz-submit-btn" id="quiz-submit">🎉 Controlla le risposte</button>
+     <div class="quiz-results" id="quiz-results"></div>
+    </section>
+   </main>
+  </div>
+  <footer role="contentinfo">
+   <p>📖 Hai completato il viaggio dalla Legge del Re alla Legge di Tutti! Bravo! 🌟</p>
+  </footer>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script>
+    const defaultConfig = {
+      page_title: "🏛️ Un Grande Viaggio",
+      page_subtitle: "Dalla Legge del Re alla Legge di Tutti",
+      intro_text: "Facciamo un viaggio per capire come l'Italia si è data la sua legge fondamentale, la Costituzione, che è una risposta forte e chiara a tutti gli eventi drammatici che l'hanno preceduta.",
+      step1_title: "👑 La Legge del Re",
+      step2_title: "📜 Il Primo Passo: Lo Statuto Albertino", 
+      step3_title: "⚫ La Curva Pericolosa: La Dittatura Fascista",
+      step4_title: "🏛️ La Nuova Legge di Tutti: La Costituzione",
+      quiz_title: "🎯 Verifica quello che hai imparato",
+      primary_color: "#4299e1",
+      background_color: "#667eea",
+      text_color: "#2d3748",
+      accent_color: "#74b9ff",
+      surface_color: "#ffffff",
+      font_family: "Comic Sans MS",
+      font_size: 18
+    };
+
+    let config = { ...defaultConfig };
+
+    async function onConfigChange(newConfig) {
+      const customFont = newConfig.font_family || defaultConfig.font_family;
+      const baseSize = newConfig.font_size || defaultConfig.font_size;
+      const baseFontStack = 'Arial, sans-serif';
+
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.body.style.fontSize = `${baseSize}px`;
+      document.body.style.color = newConfig.text_color || defaultConfig.text_color;
+
+      const h1Elements = document.querySelectorAll('h1');
+      h1Elements.forEach(el => {
+        el.style.fontSize = `${baseSize * 2}px`;
+        el.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      });
+
+      const h2Elements = document.querySelectorAll('h2');
+      h2Elements.forEach(el => {
+        el.style.fontSize = `${baseSize * 1.55}px`;
+        el.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      });
+
+      const h3Elements = document.querySelectorAll('h3');
+      h3Elements.forEach(el => {
+        el.style.fontSize = `${baseSize * 1.33}px`;
+        el.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      });
+
+      const primaryColor = newConfig.primary_color || defaultConfig.primary_color;
+      const accentColor = newConfig.accent_color || defaultConfig.accent_color;
+      const surfaceColor = newConfig.surface_color || defaultConfig.surface_color;
+      const backgroundColor = newConfig.background_color || defaultConfig.background_color;
+
+      document.body.style.background = `linear-gradient(135deg, ${backgroundColor} 0%, #764ba2 100%)`;
+
+      document.querySelectorAll('.simple-btn').forEach(el => {
+        el.style.background = primaryColor;
+      });
+
+      document.querySelectorAll('.step-header').forEach(el => {
+        el.style.background = `linear-gradient(135deg, ${accentColor} 0%, ${primaryColor} 100%)`;
+      });
+
+      document.querySelectorAll('.timeline-step, .quiz-section, .intro-section').forEach(el => {
+        el.style.background = surfaceColor;
+      });
+
+      document.getElementById('page-title').textContent = newConfig.page_title || defaultConfig.page_title;
+      document.getElementById('page-subtitle').textContent = newConfig.page_subtitle || defaultConfig.page_subtitle;
+      document.getElementById('intro-text').textContent = newConfig.intro_text || defaultConfig.intro_text;
+      document.getElementById('step1-title').textContent = newConfig.step1_title || defaultConfig.step1_title;
+      document.getElementById('step2-title').textContent = newConfig.step2_title || defaultConfig.step2_title;
+      document.getElementById('step3-title').textContent = newConfig.step3_title || defaultConfig.step3_title;
+      document.getElementById('step4-title').textContent = newConfig.step4_title || defaultConfig.step4_title;
+      document.getElementById('quiz-title').textContent = newConfig.quiz_title || defaultConfig.quiz_title;
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (cfg) => ({
+          recolorables: [
+            {
+              get: () => cfg.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                cfg.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            },
+            {
+              get: () => cfg.background_color || defaultConfig.background_color,
+              set: (value) => {
+                cfg.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => cfg.text_color || defaultConfig.text_color,
+              set: (value) => {
+                cfg.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => cfg.accent_color || defaultConfig.accent_color,
+              set: (value) => {
+                cfg.accent_color = value;
+                window.elementSdk.setConfig({ accent_color: value });
+              }
+            },
+            {
+              get: () => cfg.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                cfg.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => cfg.font_family || defaultConfig.font_family,
+            set: (value) => {
+              cfg.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => cfg.font_size || defaultConfig.font_size,
+            set: (value) => {
+              cfg.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ["page_title", cfg.page_title || defaultConfig.page_title],
+          ["page_subtitle", cfg.page_subtitle || defaultConfig.page_subtitle],
+          ["intro_text", cfg.intro_text || defaultConfig.intro_text],
+          ["step1_title", cfg.step1_title || defaultConfig.step1_title],
+          ["step2_title", cfg.step2_title || defaultConfig.step2_title],
+          ["step3_title", cfg.step3_title || defaultConfig.step3_title],
+          ["step4_title", cfg.step4_title || defaultConfig.step4_title],
+          ["quiz_title", cfg.quiz_title || defaultConfig.quiz_title]
+        ])
+      });
+
+      config = window.elementSdk.config;
+    }
+
+    // Accordion functionality
+    document.querySelectorAll('.step-header').forEach(header => {
+      header.addEventListener('click', function() {
+        const content = this.nextElementSibling;
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        
+        this.setAttribute('aria-expanded', !isExpanded);
+        content.classList.toggle('expanded');
+      });
+
+      header.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
+      });
+    });
+
+    // Simple controls
+    document.getElementById('btn-expand-all').addEventListener('click', function() {
+      document.querySelectorAll('.step-header').forEach(header => {
+        header.setAttribute('aria-expanded', 'true');
+        header.nextElementSibling.classList.add('expanded');
+      });
+    });
+
+    document.getElementById('btn-collapse-all').addEventListener('click', function() {
+      document.querySelectorAll('.step-header').forEach(header => {
+        header.setAttribute('aria-expanded', 'false');
+        header.nextElementSibling.classList.remove('expanded');
+      });
+    });
+
+    // Quiz functionality
+    const quizSubmitBtn = document.getElementById('quiz-submit');
+    const quizResults = document.getElementById('quiz-results');
+
+    quizSubmitBtn.addEventListener('click', function() {
+      let correctAnswers = 0;
+      let totalQuestions = 0;
+
+      document.querySelectorAll('.quiz-question').forEach(question => {
+        totalQuestions++;
+        const selectedOption = question.querySelector('input[type="radio"]:checked');
+        const correctOption = question.querySelector('input[data-correct="true"]');
+        const feedback = question.querySelector('.quiz-feedback');
+        const allOptions = question.querySelectorAll('.quiz-option');
+
+        // Disable all options after submission
+        allOptions.forEach(opt => {
+          opt.querySelector('input').disabled = true;
+        });
+
+        if (selectedOption) {
+          const selectedLabel = selectedOption.closest('.quiz-option');
+          
+          if (selectedOption.hasAttribute('data-correct')) {
+            // Correct answer
+            correctAnswers++;
+            selectedLabel.classList.add('correct');
+            feedback.textContent = '🎉 Bravo! Risposta giusta!';
+            feedback.classList.add('show', 'correct');
+          } else {
+            // Incorrect answer
+            selectedLabel.classList.add('incorrect');
+            const correctLabel = correctOption.closest('.quiz-option');
+            correctLabel.classList.add('correct');
+            feedback.textContent = '❌ Ops! La risposta giusta è quella in verde.';
+            feedback.classList.add('show', 'incorrect');
+          }
+        } else {
+          // No answer selected
+          const correctLabel = correctOption.closest('.quiz-option');
+          correctLabel.classList.add('correct');
+          feedback.textContent = '⚠️ Non hai scelto nessuna risposta. Quella giusta è in verde.';
+          feedback.classList.add('show', 'incorrect');
+        }
+      });
+
+      // Calculate percentage
+      const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+      
+      // Display results with encouraging messages
+      let resultMessage = '';
+      let resultClass = '';
+      
+      if (percentage === 100) {
+        resultMessage = '🌟 Fantastico! Hai capito perfettamente il viaggio dalla Legge del Re alla Legge di Tutti!';
+        resultClass = 'excellent';
+      } else if (percentage >= 75) {
+        resultMessage = '👏 Molto bene! Hai capito quasi tutto il percorso storico. Continua così!';
+        resultClass = 'good';
+      } else {
+        resultMessage = '💪 Hai fatto del tuo meglio! Rileggi le storie e diventerai ancora più bravo!';
+        resultClass = 'needs-improvement';
+      }
+
+      quizResults.innerHTML = `
+        <h3>🎯 Ecco come è andata</h3>
+        <div class="quiz-score ${resultClass}">
+          ${correctAnswers}/${totalQuestions}
+        </div>
+        <p><strong>${percentage}% di risposte giuste</strong></p>
+        <p>${resultMessage}</p>
+      `;
+      
+      quizResults.classList.add('show', resultClass);
+
+      // Disable submit button
+      quizSubmitBtn.disabled = true;
+      quizSubmitBtn.textContent = '✅ Quiz completato';
+
+      // Scroll to results
+      quizResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // Smooth scroll for better UX
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99dd30391432bb1f',t:'MTc2MzAyNTU3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
