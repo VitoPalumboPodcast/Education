@@ -41,7 +41,7 @@
         return await response.text();
     }
 
-    async function inlineStyles(tempDoc) {
+    async function inlineStyles(tempDoc, warnings) {
         const links = Array.from(tempDoc.querySelectorAll('link[rel="stylesheet"][href]'));
         for (const link of links) {
             const href = link.getAttribute('href');
@@ -53,13 +53,14 @@
                 styleEl.textContent = cssText;
                 link.replaceWith(styleEl);
             } catch (err) {
-                console.error('Impossibile incorporare lo stylesheet:', href, err);
-                throw err;
+                const message = `Impossibile incorporare lo stylesheet ${href}: ${err.message}`;
+                console.error(message, err);
+                warnings.push(message);
             }
         }
     }
 
-    async function inlineScripts(tempDoc) {
+    async function inlineScripts(tempDoc, warnings) {
         const scripts = Array.from(tempDoc.querySelectorAll('script[src]'));
         for (const script of scripts) {
             const src = script.getAttribute('src');
@@ -74,8 +75,9 @@
                 inlineScript.textContent = jsText;
                 script.replaceWith(inlineScript);
             } catch (err) {
-                console.error('Impossibile incorporare lo script:', src, err);
-                throw err;
+                const message = `Impossibile incorporare lo script ${src}: ${err.message}`;
+                console.error(message, err);
+                warnings.push(message);
             }
         }
     }
@@ -109,9 +111,13 @@
     }
 
     async function serializeDocumentWithAssets(tempDoc) {
-        await inlineStyles(tempDoc);
-        await inlineScripts(tempDoc);
-        return '<!DOCTYPE html>\n' + tempDoc.documentElement.outerHTML;
+        const warnings = [];
+        await inlineStyles(tempDoc, warnings);
+        await inlineScripts(tempDoc, warnings);
+        return {
+            html: '<!DOCTYPE html>\n' + tempDoc.documentElement.outerHTML,
+            warnings
+        };
     }
 
     function fallbackDownload(content, filename, mimeType = 'text/plain') {
@@ -154,9 +160,13 @@
         try {
             const mapData = salvaMappaFormat();
             const tempDoc = await buildSnapshotDocument(mapData);
-            const htmlSnapshot = await serializeDocumentWithAssets(tempDoc);
-            runDownload(htmlSnapshot, generateFilename(), 'text/html;charset=utf-8');
-            notify('Pagina completa scaricata!', 'success');
+            const { html, warnings } = await serializeDocumentWithAssets(tempDoc);
+            runDownload(html, generateFilename(), 'text/html;charset=utf-8');
+            if (warnings.length) {
+                notify('Pagina scaricata ma alcune risorse non sono state incorporate. Controlla la console per i dettagli.', 'warning');
+            } else {
+                notify('Pagina completa scaricata!', 'success');
+            }
         } catch (err) {
             console.error('Errore durante il salvataggio della pagina completa:', err);
             notify('Errore durante il salvataggio della pagina completa. Controlla la console per i dettagli.', 'error');
