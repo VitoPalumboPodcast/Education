@@ -3,6 +3,21 @@
         return JSON.stringify(data).replace(/<\/script/gi, '<\\/script');
     }
 
+    function notify(message, type = 'info') {
+        if (typeof window !== 'undefined' && typeof window.showToast === 'function') {
+            window.showToast(message, type);
+            return;
+        }
+        if (type === 'error') {
+            console.error(message);
+        } else {
+            console.log(message);
+        }
+        if (type === 'error' && typeof window !== 'undefined' && typeof window.alert === 'function') {
+            window.alert(message);
+        }
+    }
+
     function generateFilename() {
         const date = new Date();
         const stamp = date.toISOString().replace(/[:]/g, '-');
@@ -65,14 +80,31 @@
         }
     }
 
+    function ensureEmbeddedDataSlot(tempDoc) {
+        let placeholder = tempDoc.getElementById('embedded-map-data');
+        if (placeholder) {
+            return placeholder;
+        }
+        placeholder = tempDoc.createElement('script');
+        placeholder.id = 'embedded-map-data';
+        placeholder.type = 'application/json';
+        const firstScript = tempDoc.querySelector('script');
+        if (firstScript && firstScript.parentNode) {
+            firstScript.parentNode.insertBefore(placeholder, firstScript);
+        } else if (tempDoc.body) {
+            tempDoc.body.appendChild(placeholder);
+        } else {
+            tempDoc.documentElement.appendChild(placeholder);
+        }
+        return placeholder;
+    }
+
     async function buildSnapshotDocument(mapData) {
         const tempDoc = document.implementation.createHTMLDocument(document.title || 'Mappa Mentale');
         const clonedHtml = document.documentElement.cloneNode(true);
         tempDoc.replaceChild(clonedHtml, tempDoc.documentElement);
-        const placeholder = tempDoc.getElementById('embedded-map-data');
-        if (placeholder) {
-            placeholder.textContent = safeStringify(mapData);
-        }
+        const placeholder = ensureEmbeddedDataSlot(tempDoc);
+        placeholder.textContent = safeStringify(mapData);
         return tempDoc;
     }
 
@@ -80,6 +112,38 @@
         await inlineStyles(tempDoc);
         await inlineScripts(tempDoc);
         return '<!DOCTYPE html>\n' + tempDoc.documentElement.outerHTML;
+    }
+
+    function fallbackDownload(content, filename, mimeType = 'text/plain') {
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 0);
+    }
+
+    function runDownload(content, filename, mime) {
+        if (typeof window !== 'undefined' && typeof window.downloadFile === 'function') {
+            window.downloadFile(content, filename, mime);
+        } else {
+            fallbackDownload(content, filename, mime);
+        }
+    }
+
+    function setButtonBusy(btn, busy) {
+        if (!btn) return;
+        btn.disabled = busy;
+        if (busy) {
+            btn.setAttribute('aria-busy', 'true');
+        } else {
+            btn.removeAttribute('aria-busy');
+        }
     }
 
     async function saveFullPageSnapshot() {
@@ -91,11 +155,11 @@
             const mapData = salvaMappaFormat();
             const tempDoc = await buildSnapshotDocument(mapData);
             const htmlSnapshot = await serializeDocumentWithAssets(tempDoc);
-            downloadFile(htmlSnapshot, generateFilename(), 'text/html;charset=utf-8');
-            showToast('Pagina completa scaricata!', 'success');
+            runDownload(htmlSnapshot, generateFilename(), 'text/html;charset=utf-8');
+            notify('Pagina completa scaricata!', 'success');
         } catch (err) {
             console.error('Errore durante il salvataggio della pagina completa:', err);
-            showToast('Errore durante il salvataggio della pagina completa. Controlla la console per i dettagli.', 'error');
+            notify('Errore durante il salvataggio della pagina completa. Controlla la console per i dettagli.', 'error');
         }
     }
 
@@ -103,9 +167,9 @@
         const btn = document.getElementById('save-full-page');
         if (!btn) return;
         btn.addEventListener('click', () => {
-            btn.disabled = true;
+            setButtonBusy(btn, true);
             saveFullPageSnapshot().finally(() => {
-                btn.disabled = false;
+                setButtonBusy(btn, false);
             });
         });
     }
