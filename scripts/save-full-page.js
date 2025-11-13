@@ -18,6 +18,10 @@
         }
     }
 
+    const EMBED_MAX_ATTEMPTS = 60;
+    const EMBED_RETRY_DELAY = 75;
+    let embeddedMapApplied = false;
+
     function generateFilename() {
         const date = new Date();
         const stamp = date.toISOString().replace(/[:]/g, '-');
@@ -152,6 +156,44 @@
         }
     }
 
+    function getEmbeddedMapData() {
+        if (typeof window === 'undefined') return null;
+        return window.__EMBEDDED_MAP_DATA__ || null;
+    }
+
+    function tryApplyEmbeddedMap(data, attempt = 0) {
+        if (embeddedMapApplied || !data) return;
+        if (typeof window === 'undefined') return;
+        if (typeof window.caricaMappa !== 'function') {
+            if (attempt >= EMBED_MAX_ATTEMPTS) {
+                console.error('Impossibile applicare la mappa incorporata: funzione caricaMappa assente.');
+                notify('Impossibile caricare la mappa incorporata.', 'error');
+                return;
+            }
+            window.setTimeout(() => tryApplyEmbeddedMap(data, attempt + 1), EMBED_RETRY_DELAY);
+            return;
+        }
+        try {
+            window.caricaMappa(data);
+            embeddedMapApplied = true;
+            notify('Mappa caricata dal file salvato.', 'success');
+        } catch (err) {
+            console.error('Errore durante il caricamento della mappa incorporata:', err);
+            notify('Errore durante il caricamento della mappa incorporata.', 'error');
+        }
+    }
+
+    function bootstrapEmbeddedMap() {
+        const data = getEmbeddedMapData();
+        if (!data) return;
+        const start = () => tryApplyEmbeddedMap(data);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', start, { once: true });
+        } else {
+            start();
+        }
+    }
+
     async function saveFullPageSnapshot() {
         if (typeof salvaMappaFormat !== 'function') {
             console.error('salvaMappaFormat non disponibile.');
@@ -175,13 +217,15 @@
 
     function init() {
         const btn = document.getElementById('save-full-page');
-        if (!btn) return;
-        btn.addEventListener('click', () => {
-            setButtonBusy(btn, true);
-            saveFullPageSnapshot().finally(() => {
-                setButtonBusy(btn, false);
+        if (btn) {
+            btn.addEventListener('click', () => {
+                setButtonBusy(btn, true);
+                saveFullPageSnapshot().finally(() => {
+                    setButtonBusy(btn, false);
+                });
             });
-        });
+        }
+        bootstrapEmbeddedMap();
     }
 
     if (document.readyState === 'loading') {
