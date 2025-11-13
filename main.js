@@ -3140,7 +3140,18 @@ function initDefaultMap(){
 (function init() {
     updateViewBox(CONFIG.defaultViewBox.split(" ").map(Number));
     applySavedTheme(); // Apply theme before loading map, as map loading might toggle theme
-    caricaMappaLocale(); // This will call initDefaultMap if nothing is saved
+    const embeddedData = (typeof window !== 'undefined') ? window.__EMBEDDED_MAP_DATA__ : null;
+    if (embeddedData) {
+        try {
+            caricaMappa(embeddedData);
+            showToast("Mappa caricata dal file salvato.", "success");
+        } catch (err) {
+            console.error("Impossibile caricare la mappa incorporata:", err);
+            caricaMappaLocale();
+        }
+    } else {
+        caricaMappaLocale(); // This will call initDefaultMap if nothing is saved
+    }
     updateMinimap();
     updateUndoRedoButtons();
 
