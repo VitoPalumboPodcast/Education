@@ -105,6 +105,40 @@
         return placeholder;
     }
 
+    function ensureLiveEmbeddedSlot() {
+        if (typeof document === 'undefined') return null;
+        let placeholder = document.getElementById('embedded-map-data');
+        if (placeholder) return placeholder;
+        placeholder = document.createElement('script');
+        placeholder.id = 'embedded-map-data';
+        placeholder.type = 'application/json';
+        document.body.appendChild(placeholder);
+        return placeholder;
+    }
+
+    function withTemporaryEmbeddedData(mapData, task) {
+        const placeholder = ensureLiveEmbeddedSlot();
+        if (!placeholder) {
+            return task();
+        }
+        const previous = placeholder.textContent;
+        const cleanup = () => {
+            placeholder.textContent = previous;
+        };
+        placeholder.textContent = safeStringify(mapData);
+        try {
+            const result = task();
+            if (result && typeof result.then === 'function') {
+                return result.finally(cleanup);
+            }
+            cleanup();
+            return result;
+        } catch (err) {
+            cleanup();
+            throw err;
+        }
+    }
+
     async function buildSnapshotDocument(mapData) {
         const tempDoc = document.implementation.createHTMLDocument(document.title || 'Mappa Mentale');
         const clonedHtml = document.documentElement.cloneNode(true);
@@ -201,8 +235,10 @@
         }
         try {
             const mapData = salvaMappaFormat();
-            const tempDoc = await buildSnapshotDocument(mapData);
-            const { html, warnings } = await serializeDocumentWithAssets(tempDoc);
+            const { html, warnings } = await withTemporaryEmbeddedData(mapData, async () => {
+                const tempDoc = await buildSnapshotDocument(mapData);
+                return serializeDocumentWithAssets(tempDoc);
+            });
             runDownload(html, generateFilename(), 'text/html;charset=utf-8');
             if (warnings.length) {
                 notify('Pagina scaricata ma alcune risorse non sono state incorporate. Controlla la console per i dettagli.', 'warning');
