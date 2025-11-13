@@ -1,35 +1,11 @@
 (function() {
-    const STORAGE_KEY = 'mindMapAdvancedData';
-    const MAX_ATTEMPTS = 40;
-    const RETRY_DELAY = 50;
+    const MAX_ATTEMPTS = 60;
+    const RETRY_DELAY = 75;
+    let hasApplied = false;
 
     function getEmbeddedMapData() {
         if (typeof window === 'undefined') return null;
         return window.__EMBEDDED_MAP_DATA__ || null;
-    }
-
-    function stringifyData(data) {
-        try {
-            return JSON.stringify(data);
-        } catch (err) {
-            console.error('Impossibile serializzare la mappa incorporata:', err);
-            return null;
-        }
-    }
-
-    function tryPersistToLocalStorage(data) {
-        if (!window || !window.localStorage) {
-            return false;
-        }
-        const serialized = stringifyData(data);
-        if (!serialized) return false;
-        try {
-            window.localStorage.setItem(STORAGE_KEY, serialized);
-            return true;
-        } catch (err) {
-            console.warn('LocalStorage non disponibile per la mappa incorporata:', err);
-            return false;
-        }
     }
 
     function showLoaderToast(message, type = 'info') {
@@ -39,6 +15,7 @@
     }
 
     function applyMapDirectly(data, attempt = 0) {
+        if (hasApplied) return;
         if (typeof window.caricaMappa !== 'function') {
             if (attempt >= MAX_ATTEMPTS) {
                 console.error('Impossibile applicare la mappa incorporata: funzione caricaMappa assente.');
@@ -50,6 +27,7 @@
         }
         try {
             window.caricaMappa(data);
+            hasApplied = true;
             showLoaderToast('Mappa caricata dal file salvato.', 'success');
         } catch (err) {
             console.error('Errore durante il caricamento della mappa incorporata:', err);
@@ -60,19 +38,10 @@
     function init() {
         const data = getEmbeddedMapData();
         if (!data) return;
-        const stored = tryPersistToLocalStorage(data);
-        if (stored) {
-            if (document.readyState === 'complete') {
-                showLoaderToast('Mappa caricata dal file salvato.', 'success');
-            } else {
-                window.addEventListener('load', () => showLoaderToast('Mappa caricata dal file salvato.', 'success'), { once: true });
-            }
-            return;
-        }
-        if (document.readyState === 'complete') {
-            applyMapDirectly(data);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => applyMapDirectly(data), { once: true });
         } else {
-            window.addEventListener('load', () => applyMapDirectly(data), { once: true });
+            applyMapDirectly(data);
         }
     }
 
