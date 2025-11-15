@@ -2484,6 +2484,45 @@ function downloadFile(data, filename, mime) {
     URL.revokeObjectURL(link.href);
 }
 
+function esportaPaginaHtmlConMappa() {
+    try {
+        const mapData = salvaMappaFormat();
+        const htmlContent = generaPaginaHtmlConMappa(mapData);
+        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+        downloadFile(htmlContent, `MAP-GENERATOR-${timestamp}.html`, "text/html");
+        showToast("Pagina HTML esportata con successo!", "success");
+    } catch (error) {
+        console.error("Errore durante l'esportazione della pagina HTML:", error);
+        showToast("Errore durante l'esportazione della pagina HTML.", "error");
+    }
+}
+
+function generaPaginaHtmlConMappa(mapData) {
+    if (!mapData) throw new Error("Dati mappa non disponibili");
+    const parser = new DOMParser();
+    const serializedDom = document.documentElement.outerHTML;
+    const tempDoc = parser.parseFromString(serializedDom, "text/html");
+    if (!tempDoc || !tempDoc.documentElement || !tempDoc.body) {
+        throw new Error("Impossibile creare un documento HTML temporaneo");
+    }
+
+    const existingScript = tempDoc.getElementById("embedded-map-data");
+    if (existingScript && existingScript.parentNode) {
+        existingScript.parentNode.removeChild(existingScript);
+    }
+
+    const scriptEl = tempDoc.createElement("script");
+    scriptEl.id = "embedded-map-data";
+    scriptEl.setAttribute("data-embedded-map", "true");
+    const safeData = JSON.stringify(mapData).replace(/</g, "\\u003C");
+    const timestamp = new Date().toISOString();
+    scriptEl.textContent = `window.__EMBEDDED_MAP_DATA__ = ${safeData};\nwindow.__EMBEDDED_MAP_EXPORT_TIME__ = "${timestamp}";`;
+    tempDoc.body.appendChild(scriptEl);
+
+    const serializer = new XMLSerializer();
+    return "<!DOCTYPE html>\n" + serializer.serializeToString(tempDoc.documentElement);
+}
+
 function caricaMappa(data) {
     // Clear existing map
     appState.nodes = [];
@@ -2564,10 +2603,20 @@ function redrawAllNodes() {
 
 
 // === LOCAL STORAGE ===
-document.getElementById("save-map").onclick = () => {
-    salvaMappaLocale();
-    showToast("Mappa salvata localmente!", "success");
-};
+const saveMapBtn = document.getElementById("save-map");
+if (saveMapBtn) {
+    saveMapBtn.onclick = () => {
+        salvaMappaLocale();
+        showToast("Mappa salvata localmente!", "success");
+    };
+}
+
+const saveHtmlBtn = document.getElementById("save-html");
+if (saveHtmlBtn) {
+    saveHtmlBtn.onclick = () => {
+        esportaPaginaHtmlConMappa();
+    };
+}
 
 function salvaMappaLocale() {
     try {
