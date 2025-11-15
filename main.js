@@ -2474,7 +2474,7 @@ function salvaMappaFormat() {
 }
 
 function downloadFile(data, filename, mime) {
-    const blob = new Blob([data], { type: mime });
+    const blob = data instanceof Blob ? data : new Blob([data], { type: mime || "application/octet-stream" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = filename;
@@ -2484,26 +2484,53 @@ function downloadFile(data, filename, mime) {
     URL.revokeObjectURL(link.href);
 }
 
-function esportaPaginaHtmlConMappa() {
+async function esportaPaginaHtmlConMappa() {
     try {
         const mapData = salvaMappaFormat();
-        const htmlContent = generaPaginaHtmlConMappa(mapData);
-        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-        downloadFile(htmlContent, `MAP-GENERATOR-${timestamp}.html`, "text/html");
-        showToast("Pagina HTML esportata con successo!", "success");
+        const nomeRichiesto = prompt(
+            "Come vuoi chiamare la cartella della mappa salvata? Usa un nome descrittivo (es. mappa-costituzione)",
+            "mappa-costituzione"
+        );
+        const dettagli = preparaDettagliEsportazione(nomeRichiesto);
+        const htmlContent = generaPaginaHtmlConMappa(mapData, {
+            scriptName: `./${dettagli.jsFileName}`,
+            pageTitle: dettagli.pageTitle
+        });
+
+        downloadFile(htmlContent, dettagli.htmlFileName, "text/html");
+
+        const mainSource = await tentaRecuperoSorgenteMain();
+        if (mainSource) {
+            downloadFile(mainSource, dettagli.jsFileName, "text/javascript");
+        }
+
+        downloadFile(JSON.stringify(mapData, null, 2), dettagli.jsonFileName, "application/json");
+
+        if (mainSource) {
+            showToast(`Pagina, script e JSON esportati con il prefisso "${dettagli.folderName}".`, "success");
+        } else {
+            showToast(
+                `Pagina e JSON esportati. Copia manualmente il file main.js come "${dettagli.jsFileName}" nella stessa cartella per completare il set.`,
+                "warning"
+            );
+        }
     } catch (error) {
         console.error("Errore durante l'esportazione della pagina HTML:", error);
         showToast("Errore durante l'esportazione della pagina HTML.", "error");
     }
 }
 
-function generaPaginaHtmlConMappa(mapData) {
+function generaPaginaHtmlConMappa(mapData, options = {}) {
     if (!mapData) throw new Error("Dati mappa non disponibili");
     const parser = new DOMParser();
     const serializedDom = document.documentElement.outerHTML;
     const tempDoc = parser.parseFromString(serializedDom, "text/html");
     if (!tempDoc || !tempDoc.documentElement || !tempDoc.body) {
         throw new Error("Impossibile creare un documento HTML temporaneo");
+    }
+
+    if (options.pageTitle && tempDoc.title !== options.pageTitle) {
+        tempDoc.title = options.pageTitle;
     }
 
     const existingScript = tempDoc.getElementById("embedded-map-data");
@@ -2525,6 +2552,9 @@ function generaPaginaHtmlConMappa(mapData) {
     });
 
     if (mainScriptTag && mainScriptTag.parentNode) {
+        if (options.scriptName) {
+            mainScriptTag.setAttribute("src", options.scriptName);
+        }
         mainScriptTag.parentNode.insertBefore(scriptEl, mainScriptTag);
     } else {
         tempDoc.body.appendChild(scriptEl);
@@ -2532,6 +2562,72 @@ function generaPaginaHtmlConMappa(mapData) {
 
     const serializer = new XMLSerializer();
     return "<!DOCTYPE html>\n" + serializer.serializeToString(tempDoc.documentElement);
+}
+
+function normalizzaTestoSlug(value) {
+    if (!value) return "";
+    return value
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .toLowerCase();
+}
+
+function preparaDettagliEsportazione(nomeRichiesto) {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const slug = normalizzaTestoSlug(nomeRichiesto && nomeRichiesto.trim()) || `mappa-${timestamp}`;
+    const pageTitle = nomeRichiesto && nomeRichiesto.trim() ? nomeRichiesto.trim() : `Mappa ${timestamp}`;
+    return {
+        folderName: slug,
+        htmlFileName: `${slug}.html`,
+        jsFileName: `${slug}.js`,
+        jsonFileName: `${slug}.json`,
+        pageTitle
+    };
+}
+
+let mainScriptSourcePromise = null;
+
+function trovaScriptPrincipale() {
+    const scripts = Array.from(document.getElementsByTagName("script"));
+    return scripts.find(scr => {
+        const src = scr.getAttribute("src") || "";
+        return /(^|\/)main\.js(\?|$)/.test(src);
+    });
+}
+
+function ottieniUrlAssolutoScript(scriptEl) {
+    const src = scriptEl ? scriptEl.getAttribute("src") || scriptEl.src : "main.js";
+    try {
+        return new URL(src, window.location.href).href;
+    } catch (err) {
+        return src;
+    }
+}
+
+async function ottieniSorgenteMain() {
+    if (!mainScriptSourcePromise) {
+        const scriptEl = trovaScriptPrincipale();
+        const scriptUrl = ottieniUrlAssolutoScript(scriptEl);
+        mainScriptSourcePromise = fetch(scriptUrl).then(response => {
+            if (!response.ok) {
+                throw new Error(`Impossibile recuperare ${scriptUrl}: ${response.status}`);
+            }
+            return response.text();
+        });
+    }
+    return mainScriptSourcePromise;
+}
+
+async function tentaRecuperoSorgenteMain() {
+    try {
+        return await ottieniSorgenteMain();
+    } catch (error) {
+        console.warn("Non è stato possibile clonare main.js durante l'esportazione:", error);
+        return null;
+    }
 }
 
 function caricaMappa(data) {
