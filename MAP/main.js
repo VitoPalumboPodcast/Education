@@ -174,6 +174,9 @@ let fullIconCatalogPromise = null;
 let fullIconCatalogError = null;
 let preferredItalianVoice = null;
 let availableSpeechVoices = [];
+let currentSpeechUtterance = null;
+const speechOverlay = document.getElementById("speech-overlay");
+const speechOverlayText = document.getElementById("speech-overlay-text");
 
 // Parole chiave aggiuntive per facilitare la ricerca delle icone nel modal
 const ICON_KEYWORDS = (ICON_LIBRARY.keywords && Object.keys(ICON_LIBRARY.keywords).length ? ICON_LIBRARY.keywords : {
@@ -1774,15 +1777,47 @@ if (typeof window !== "undefined" && window.speechSynthesis) {
     }
 }
 
+function showSpeechOverlay(text) {
+    if (!speechOverlay || !speechOverlayText) return;
+    if (!text) {
+        hideSpeechOverlay();
+        return;
+    }
+    speechOverlayText.textContent = text;
+    speechOverlay.classList.add("visible");
+}
+
+function hideSpeechOverlay() {
+    if (!speechOverlay) return;
+    speechOverlay.classList.remove("visible");
+    if (speechOverlayText) speechOverlayText.textContent = "";
+}
+
+function cancelSpeechPlayback() {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+        try {
+            window.speechSynthesis.cancel();
+        } catch (err) {
+            console.warn("speechSynthesis cancel error", err);
+        }
+    }
+    currentSpeechUtterance = null;
+    hideSpeechOverlay();
+}
+
 function speakNode(nodo) {
     if (!window.speechSynthesis) return;
     if (!availableSpeechVoices.length || !preferredItalianVoice) {
         refreshSpeechVoices();
     }
-    const pieces = [nodo.text];
+    const pieces = [];
+    if (nodo.text) pieces.push(nodo.text);
     if (nodo.description) pieces.push(nodo.description);
     const textToSpeak = pieces.join(". ").trim();
-    if (!textToSpeak) return;
+    if (!textToSpeak) {
+        hideSpeechOverlay();
+        return;
+    }
     const utter = new SpeechSynthesisUtterance(textToSpeak);
     utter.lang = (preferredItalianVoice && preferredItalianVoice.lang) || "it-IT";
     if (preferredItalianVoice) {
@@ -1790,7 +1825,21 @@ function speakNode(nodo) {
     }
     utter.rate = 0.95;
     utter.pitch = 1;
-    window.speechSynthesis.cancel();
+    cancelSpeechPlayback();
+    const descriptionText = (nodo.description || "").trim();
+    if (descriptionText) {
+        showSpeechOverlay(descriptionText);
+    } else {
+        hideSpeechOverlay();
+    }
+    currentSpeechUtterance = utter;
+    utter.onend = () => {
+        if (currentSpeechUtterance === utter) {
+            currentSpeechUtterance = null;
+            hideSpeechOverlay();
+        }
+    };
+    utter.onerror = utter.onend;
     window.speechSynthesis.speak(utter);
 }
 
@@ -2430,16 +2479,16 @@ function apriDescrizioneNodo(nodo) {
     //     window.speechSynthesis.speak(utter);
     // }
 }
-document.getElementById("overlay-desc").onclick = function(e) { 
+document.getElementById("overlay-desc").onclick = function(e) {
     if (e.target === this) { // Only close if background is clicked
-        this.style.display = "none"; 
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        this.style.display = "none";
+        cancelSpeechPlayback();
     }
 };
-document.getElementById("overlay-desc").onkeydown = function(e) { 
+document.getElementById("overlay-desc").onkeydown = function(e) {
     if (e.key === "Escape") {
-        this.style.display = "none"; 
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        this.style.display = "none";
+        cancelSpeechPlayback();
     }
 };
 
@@ -2560,7 +2609,7 @@ document.getElementById("btn-close-json").onclick = () => {
 };
 document.getElementById("close-preview").onclick = () => {
     document.getElementById("print-preview").style.display = "none";
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    cancelSpeechPlayback();
 };
 
 function salvaMappaFormat() {
