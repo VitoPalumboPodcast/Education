@@ -58,6 +58,8 @@ const CONFIG = {
     }
 };
 
+const CONNECTION_LABEL_DEFAULT_SIZE = 14;
+
 const ICON_SVGS = (ICON_LIBRARY.svgMap && Object.keys(ICON_LIBRARY.svgMap).length ? ICON_LIBRARY.svgMap : {
   "fas fa-lightbulb": `<svg viewBox="0 0 384 512"><path fill="currentColor" d="M96 464a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-16H96zm96-464C112.9 0 48 64.6 48 144c0 61.9 37.2 114.6 89.7 135.2C149.6 297.8 176 336 176 384v8a24 24 0 0 0 24 24h16a24 24 0 0 0 24-24v-8c0-48 26.4-86.2 56.3-104.8C314.8 258.6 352 205.9 352 144c0-79.4-64.9-144-144-144z"/></svg>`,
   "fas fa-star": `<svg viewBox="0 0 576 512"><path fill="currentColor" d="M287.9 17.8L354 150.2 490.5 171.5c26.2 3.8 36.7 36 17.7 54.6L402.3 312l23.7 138.4c4.5 26.3-23.2 46-46.4 33.7L288 439.6l-91.6 48.1c-23.2 12.2-50.9-7.4-46.4-33.7L173.7 312 67.8 226.1c-19-18.6-8.5-50.8 17.7-54.6L222 150.2 288.1 17.8c11.7-23.6 45.6-23.9 57.8 0z"/></svg>`,
@@ -170,6 +172,8 @@ const OFFLINE_ICON_CATALOG = [
 let fullIconCatalog = [];
 let fullIconCatalogPromise = null;
 let fullIconCatalogError = null;
+let preferredItalianVoice = null;
+let availableSpeechVoices = [];
 
 // Parole chiave aggiuntive per facilitare la ricerca delle icone nel modal
 const ICON_KEYWORDS = (ICON_LIBRARY.keywords && Object.keys(ICON_LIBRARY.keywords).length ? ICON_LIBRARY.keywords : {
@@ -252,6 +256,7 @@ function getIconSVG(iconClass, size, color) {
 let appState = {
     nodes: [],
     connections: [],
+    connectionLabelCounts: {},
     selectedNode: null,
     selectedConnection: null,
     isConnecting: false,
@@ -870,6 +875,7 @@ function saveToHistory() {
 function loadStateFromHistory(state) {
     appState.nodes = [];
     appState.connections = [];
+    appState.connectionLabelCounts = {};
     nodesGroup.selectAll("*").remove();
     connectionsGroup.selectAll("*").remove();
 
@@ -886,6 +892,7 @@ function loadStateFromHistory(state) {
         const targetNode = appState.nodes.find(n => n.id === connData.target);
         if (sourceNode && targetNode) {
             const conn = { ...connData, source: sourceNode, target: targetNode };
+            conn.labelSize = conn.labelSize || CONNECTION_LABEL_DEFAULT_SIZE;
             appState.connections.push(conn);
         }
     });
@@ -975,6 +982,7 @@ function rimuoviNodo(nodo) {
     });
 
     appState.connections = appState.connections.filter(c => c.source.id !== nodo.id && c.target.id !== nodo.id);
+    updateConnectionLabelCounts();
     appState.nodes = appState.nodes.filter(n => n.id !== nodo.id);
 
     d3.select("#" + nodo.id).remove();
@@ -1015,6 +1023,7 @@ function disegnaNodo(nodo) {
                 showToast("Connessione creata!", "success");
             } else {
                 selezionaNodo(nodo);
+                speakNode(nodo);
             }
         });
 
@@ -1223,6 +1232,31 @@ function selezionaNodo(nodo) {
 
 
 // === GESTIONE CONNESSIONI ===
+function normalizeConnectionLabel(label) {
+    return (label || "").trim().toLowerCase();
+}
+
+function updateConnectionLabelCounts() {
+    const counts = {};
+    appState.connections.forEach(conn => {
+        if (!conn.label) return;
+        const key = normalizeConnectionLabel(conn.label);
+        if (!key) return;
+        counts[key] = (counts[key] || 0) + 1;
+    });
+    appState.connectionLabelCounts = counts;
+}
+
+function formatConnectionLabel(conn) {
+    if (!conn.label) return "";
+    const key = normalizeConnectionLabel(conn.label);
+    const duplicates = appState.connectionLabelCounts[key] || 0;
+    if (duplicates <= 1) return conn.label;
+    const source = conn.source && conn.source.text ? conn.source.text : "Nodo";
+    const target = conn.target && conn.target.text ? conn.target.text : "Nodo";
+    return `${conn.label} (tra ${source} e ${target})`;
+}
+
 function creaConnessione(sourceNode, targetNode, label = "") {
     if (!sourceNode || !targetNode || sourceNode.id === targetNode.id) {
       showToast("Impossibile connettere il nodo a se stesso o a un nodo non valido.", "error");
@@ -1243,12 +1277,13 @@ function creaConnessione(sourceNode, targetNode, label = "") {
         source: sourceNode,
         target: targetNode,
         label,
-        labelSize: 12,
+        labelSize: CONNECTION_LABEL_DEFAULT_SIZE,
         color: CONFIG.colors.connections[Math.floor(Math.random() * CONFIG.colors.connections.length)],
         arrow: "forward",
         style: "solid" // solid, dashed, dotted
     };
     appState.connections.push(conn);
+    updateConnectionLabelCounts();
     disegnaConnessione(conn);
     saveToHistory();
     updateMinimap();
@@ -1265,6 +1300,7 @@ function rimuoviConnessione(conn) {
         appState.selectedConnection = null;
         chiudiSidebar();
     }
+    updateConnectionLabelCounts();
     saveToHistory();
     updateMinimap();
     showToast("Connessione eliminata", "success");
@@ -1360,14 +1396,17 @@ function disegnaConnessione(conn) {
     else if (conn.style === "dotted") line.attr("stroke-dasharray", "2,3");
 
     if (conn.label) {
-        const mx = (p1x + p2x) / 2, my = (p1y + p2y) / 2;
-        g.append("text")
-            .attr("class", "connection-label")
-            .attr("x", mx)
-            .attr("y", my - 7)
-            .attr("text-anchor", "middle")
-            .style("font-size", (conn.labelSize || 12) + "px")
-            .text(conn.label);
+        const labelText = formatConnectionLabel(conn);
+        if (labelText) {
+            const mx = (p1x + p2x) / 2, my = (p1y + p2y) / 2;
+            g.append("text")
+                .attr("class", "connection-label")
+                .attr("x", mx)
+                .attr("y", my - 7)
+                .attr("text-anchor", "middle")
+                .style("font-size", (conn.labelSize || CONNECTION_LABEL_DEFAULT_SIZE) + "px")
+                .text(labelText);
+        }
     }
     if (appState.selectedConnection && appState.selectedConnection.id === conn.id) {
         line.classed("selected", true);
@@ -1375,6 +1414,7 @@ function disegnaConnessione(conn) {
 }
 
 function aggiornaConnessioni() {
+    updateConnectionLabelCounts();
     appState.connections.forEach(disegnaConnessione);
 }
 
@@ -1707,10 +1747,49 @@ function chiudiSidebar(clearSelection = false) {
     }
 }
 
+function pickPreferredItalianVoice(voices) {
+    if (!voices || !voices.length) return null;
+    const italianVoices = voices.filter(v => (v.lang || "").toLowerCase().startsWith("it"));
+    if (!italianVoices.length) return null;
+    const onlineVoice = italianVoices.find(v => v.localService === false || /google|online|natural/i.test(`${v.name} ${v.voiceURI}`));
+    return onlineVoice || italianVoices[0];
+}
+
+function refreshSpeechVoices() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices();
+    if (voices && voices.length) {
+        availableSpeechVoices = voices;
+        preferredItalianVoice = pickPreferredItalianVoice(voices);
+    }
+}
+
+if (typeof window !== "undefined" && window.speechSynthesis) {
+    refreshSpeechVoices();
+    const synth = window.speechSynthesis;
+    if (typeof synth.addEventListener === "function") {
+        synth.addEventListener("voiceschanged", refreshSpeechVoices);
+    } else {
+        synth.onvoiceschanged = refreshSpeechVoices;
+    }
+}
+
 function speakNode(nodo) {
     if (!window.speechSynthesis) return;
-    const utter = new SpeechSynthesisUtterance(`${nodo.text}. ${nodo.description || ""}`);
-    utter.lang = "it-IT";
+    if (!availableSpeechVoices.length || !preferredItalianVoice) {
+        refreshSpeechVoices();
+    }
+    const pieces = [nodo.text];
+    if (nodo.description) pieces.push(nodo.description);
+    const textToSpeak = pieces.join(". ").trim();
+    if (!textToSpeak) return;
+    const utter = new SpeechSynthesisUtterance(textToSpeak);
+    utter.lang = (preferredItalianVoice && preferredItalianVoice.lang) || "it-IT";
+    if (preferredItalianVoice) {
+        utter.voice = preferredItalianVoice;
+    }
+    utter.rate = 0.95;
+    utter.pitch = 1;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utter);
 }
@@ -1746,8 +1825,8 @@ function aggiornaEditorConn() {
     document.getElementById("connection-label").value = c.label || "";
     document.getElementById("connection-arrow").value = c.arrow || "forward";
     document.getElementById("connection-style").value = c.style || "solid";
-    document.getElementById("connection-label-size").value = c.labelSize || 12;
-    document.getElementById("connection-label-size-value").textContent = (c.labelSize || 12) + "px";
+    document.getElementById("connection-label-size").value = c.labelSize || CONNECTION_LABEL_DEFAULT_SIZE;
+    document.getElementById("connection-label-size-value").textContent = (c.labelSize || CONNECTION_LABEL_DEFAULT_SIZE) + "px";
     popolaColorPicker("connection-colors", CONFIG.colors.connections, c.color, (col) => { c.color = col; aggiornaConnessioni(); saveToHistory(); });
 }
 
@@ -2598,6 +2677,7 @@ function caricaMappa(data) {
     // Clear existing map
     appState.nodes = [];
     appState.connections = [];
+    appState.connectionLabelCounts = {};
     nodesGroup.selectAll("*").remove();
     connectionsGroup.selectAll("*").remove();
     appState.selectedNode = null;
@@ -2633,13 +2713,15 @@ function caricaMappa(data) {
             if (sourceNode && targetNode) {
                 const newConn = { ...connData, source: sourceNode, target: targetNode };
                 newConn.style = newConn.style || "solid";
-                newConn.labelSize = newConn.labelSize || 12;
+                newConn.labelSize = newConn.labelSize || CONNECTION_LABEL_DEFAULT_SIZE;
                 appState.connections.push(newConn);
             } else {
                 console.warn("Impossibile trovare nodi per la connessione:", connData);
             }
         });
     }
+
+    updateConnectionLabelCounts();
     
     if (data.viewBox) {
         updateViewBox(data.viewBox.split(" ").map(Number));
@@ -2663,6 +2745,7 @@ function redrawAll() {
     nodesGroup.selectAll("*").remove();
     connectionsGroup.selectAll("*").remove();
     appState.nodes.forEach(disegnaNodo);
+    updateConnectionLabelCounts();
     appState.connections.forEach(disegnaConnessione);
     updateMinimap();
 }
