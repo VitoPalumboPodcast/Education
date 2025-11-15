@@ -284,6 +284,7 @@ const nodesGroup = svg.select("#nodes-group");
 const connectionsGroup = svg.select("#connections-group");
 const defs = svg.select('defs');
 const sidebar = document.getElementById("sidebar");
+const closeSidebarButton = document.getElementById("close-sidebar");
 const nodeEditor = document.getElementById("node-editor");
 const connEditor = document.getElementById("connection-editor");
 const minimapContainer = document.getElementById("minimap");
@@ -1656,8 +1657,31 @@ document.getElementById("open-sidebar").onclick = () => {
     else if (appState.selectedConnection) apriSidebarConnessione();
     else showToast("Seleziona un nodo o una connessione per modificarla.", "error");
 };
-// Ensure the close button reliably triggers the handler
-document.getElementById("close-sidebar").addEventListener("click", () => chiudiSidebar(true));
+
+const handleSidebarClose = (event) => {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    chiudiSidebar(true);
+};
+
+if (closeSidebarButton) {
+    closeSidebarButton.addEventListener("click", handleSidebarClose);
+    closeSidebarButton.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            handleSidebarClose(event);
+        }
+    });
+}
+
+if (sidebar) {
+    sidebar.addEventListener("click", (event) => {
+        if (event.target.closest('[data-close-sidebar]')) {
+            handleSidebarClose(event);
+        }
+    });
+}
 
 function apriSidebarNodo() {
     sidebar.classList.add("open");
