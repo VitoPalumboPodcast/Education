@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Generatore Mappe Mentali Avanzato</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="toolbar" id="toolbar">
+    <div class="btn-group">
+        <button class="btn" id="add-node" title="Aggiungi Nodo (N)"><i class="fas fa-plus"></i> Nodo</button>
+        <button class="btn danger" id="remove-node" title="Elimina Nodo (Delete)"><i class="fas fa-minus"></i> Elimina</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn" id="add-connection" title="Connetti Nodi (C)"><i class="fas fa-link"></i> Connetti</button>
+        <button class="btn danger" id="remove-connection" title="Elimina Connessione"><i class="fas fa-unlink"></i> Scollega</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn secondary" id="layout-radial" title="Layout Radiale"><i class="fas fa-sun"></i> Radiale</button>
+        <button class="btn secondary" id="layout-grid" title="Layout Griglia"><i class="fas fa-th"></i> Griglia</button>
+        <button class="btn secondary" id="layout-physics" title="Simulazione Fisica (P)"><i class="fas fa-globe"></i> Fisica</button>
+        <button class="btn secondary" id="layout-hierarchy" title="Layout Gerarchico (H)"><i class="fas fa-sitemap"></i> Gerarchia</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn" id="zoom-in" title="Zoom In (+)"><i class="fas fa-search-plus"></i></button>
+        <button class="btn" id="zoom-out" title="Zoom Out (-)"><i class="fas fa-search-minus"></i></button>
+        <button class="btn" id="fit-screen" title="Adatta Schermo (F)"><i class="fas fa-expand-arrows-alt"></i></button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn success" id="save-map" title="Salva Mappa Locale (Ctrl+S)"><i class="fas fa-save"></i> Salva</button>
+        <button class="btn" id="open-json-modal" title="Import/Export"><i class="fas fa-code"></i> Import/Export</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn" id="export-png" title="Esporta PNG"><i class="fas fa-image"></i> PNG</button>
+        <button class="btn" id="export-pdf" title="Esporta PDF"><i class="fas fa-file-pdf"></i> PDF</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn" id="undo" title="Annulla (Ctrl+Z)"><i class="fas fa-undo"></i></button>
+        <button class="btn" id="redo" title="Ripristina (Ctrl+Y)"><i class="fas fa-redo"></i></button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn secondary theme-toggle" id="theme-toggle" title="Cambia Tema (T)">
+            <span class="theme-toggle-icon"><i class="fas fa-sun"></i><i class="fas fa-moon"></i></span> Tema
+        </button>
+        <button class="btn secondary" id="open-sidebar" title="Editor Proprietà (E)"><i class="fas fa-edit"></i> Editor</button>
+        <button class="btn secondary" id="toggle-toolbar" title="Nascondi/Mostra Toolbar"><i class="fas fa-chevron-up"></i></button>
+    </div>
+</div>
+
+<div id="mindmap-container">
+    <svg id="mindmap-svg" tabindex="0">
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" /> <!-- Fill is set by connection color -->
+            </marker>
+            <marker id="arrowhead-reverse" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+                <polygon points="10 0, 0 3.5, 10 7" /> <!-- Fill is set by connection color -->
+            </marker>
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge> 
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <g id="connections-group"></g>
+        <g id="nodes-group"></g>
+    </svg>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <button class="btn danger" id="close-sidebar" style="float:right;margin-bottom:15px;"><i class="fas fa-times"></i></button>
+    
+    <div class="search-container">
+        <input type="text" class="search-input" id="node-search" placeholder="Cerca nodi...">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+    
+    <div id="node-editor" style="display:none;">
+        <h3><i class="fas fa-edit"></i> Modifica Nodo</h3>
+        <div class="form-group">
+            <label for="node-text">Testo:</label>
+            <input type="text" id="node-text" maxlength="50">
+        </div>
+        <div class="form-group">
+            <label for="node-description">Descrizione:</label>
+            <textarea id="node-description" rows="3" maxlength="500"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="node-tags">Tag (separati da virgola):</label>
+            <input type="text" id="node-tags" placeholder="importante, idea, priorità">
+        </div>
+        <div class="form-group">
+            <label>Categoria:</label>
+            <select id="node-category">
+                <option value="idea">💡 Idea</option>
+                <option value="task">✅ Task</option>
+                <option value="person">👤 Persona</option>
+                <option value="resource">📚 Risorsa</option>
+                <option value="location">📍 Luogo</option>
+                <option value="date">📅 Data</option>
+                <option value="default">⚪ Default</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Colore Nodo:</label>
+            <div class="color-picker" id="node-bg-colors"></div>
+        </div>
+        <div class="form-group">
+            <label>Colore Testo:</label>
+            <div class="color-picker" id="node-text-colors"></div>
+        </div>
+        <div class="form-group">
+            <label>Icona:</label>
+            <div class="icon-picker" id="node-icon-picker"></div>
+        </div>
+        <div class="icon-search-section">
+            <div class="icon-search-inline">
+                <input type="text" id="sidebar-icon-search" placeholder="Cerca icone per parola chiave..." aria-label="Cerca icone per parola chiave">
+                <button type="button" class="btn secondary small" id="sidebar-icon-search-btn"><i class="fas fa-search"></i> Cerca</button>
+            </div>
+            <p class="icon-search-hint">Suggerimento: prova termini come "scuola", "salute" o "tecnologia".</p>
+        </div>
+        <div class="form-group">
+            <label>Colore Icona:</label>
+            <div class="color-picker" id="node-icon-colors"></div>
+        </div>
+        <div class="form-group">
+            <label>Fonti:</label>
+            <div class="sources-list" id="node-sources-list"></div>
+            <button type="button" class="btn secondary small" id="add-node-source" title="Aggiungi una nuova fonte">
+                <i class="fas fa-plus"></i> Aggiungi fonte
+            </button>
+            <p class="source-hint">Suggerimento: usa URL completi (https://) e, se vuoi, aggiungi la classe Font Awesome per mostrare un'icona.</p>
+        </div>
+        <div class="form-group">
+            <label>Dimensione Nodo:</label>
+            <input type="range" id="node-size" min="40" max="500" value="90" step="10">
+            <span id="node-size-value">90px</span>
+        </div>
+        <div class="form-group">
+            <label>Dimensione Testo:</label>
+            <input type="range" id="node-text-size" min="8" max="48" value="16" step="1">
+            <span id="node-text-size-value">16px</span>
+        </div>
+        <div class="form-group">
+             <label>Dimensione Icona:</label>
+             <input type="range" id="node-icon-size" min="12" max="80" value="26" step="2">
+             <span id="node-icon-size-value">26px</span>
+        </div>
+        <div class="form-group">
+            <label>Forma:</label>
+            <select id="node-shape">
+                <option value="rect">Rettangolo</option>
+                <option value="circle">Cerchio</option>
+                <option value="ellipse">Ellisse</option>
+                <option value="hex">Esagono</option>
+                <option value="diamond">Diamante</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Priorità:</label>
+            <select id="node-priority">
+                <option value="low">🟢 Bassa</option>
+                <option value="medium">🟡 Media</option>
+                <option value="high">🔴 Alta</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="connection-editor" style="display:none;">
+        <h3><i class="fas fa-link"></i> Modifica Connessione</h3>
+        <div class="form-group">
+            <label for="connection-label">Etichetta:</label>
+            <input type="text" id="connection-label" maxlength="30">
+        </div>
+        <div class="form-group">
+            <label>Colore:</label>
+            <div class="color-picker" id="connection-colors"></div>
+        </div>
+        <div class="form-group">
+            <label for="connection-arrow">Direzione:</label>
+            <select id="connection-arrow">
+                <option value="forward">→ Avanti</option>
+                <option value="backward">← Indietro</option>
+                <option value="both">↔ Bidirezionale</option>
+                <option value="none">— Nessuna</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="connection-style">Stile:</label>
+            <select id="connection-style">
+                <option value="solid">Linea continua</option>
+                <option value="dashed">Linea tratteggiata</option>                
+                <option value="dotted">Linea punteggiata</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Dimensione testo:</label>
+            <input type="range" id="connection-label-size" min="8" max="36" value="12">
+            <span id="connection-label-size-value">12px</span>
+        </div>
+    </div>
+</div>
+
+<div class="minimap" id="minimap">
+    <svg id="minimap-svg">
+        <g id="minimap-nodes-group"></g>
+        <g id="minimap-connections-group"></g>
+        <rect class="minimap-viewport" id="minimap-viewport-rect"></rect>
+    </svg>
+</div>
+
+<div class="shortcut-help" id="shortcut-help">
+    <strong>Scorciatoie:</strong><br>
+    N - Nuovo nodo<br>
+    C - Connetti<br>
+    Delete/Backspace - Elimina<br>
+    F - Adatta schermo<br>
+    E - Editor<br>
+    P - Fisica On/Off<br>
+    H - Layout Gerarchico<br>
+    T - Cambia Tema<br>
+    Ctrl+S - Salva Locale<br>
+    Ctrl+Z - Annulla<br>
+    Ctrl+Y - Ripristina<br>
+    +/- = Zoom In/Out
+</div>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>Elaborazione...</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="overlay-desc" id="overlay-desc" tabindex="0">
+    <div class="overlay-desc-box" id="overlay-desc-box">
+        <!-- Content injected by JS -->
+    </div>
+</div>
+
+<div id="icon-modal">
+    <div id="icon-modal-box">
+        <div class="icon-modal-header">
+            <h3><i class="fas fa-icons"></i> Tutte le icone</h3>
+            <button class="btn secondary" id="icon-modal-close" title="Chiudi"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="icon-modal-search">
+            <input type="text" id="icon-modal-search" placeholder="Cerca icone...">
+            <div class="icon-modal-autocomplete" id="icon-modal-autocomplete"></div>
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="icon-modal-hint">Suggerimento: clicca un'icona per applicarla al nodo.</div>
+        <div class="icon-picker icon-modal-grid" id="icon-modal-list"></div>
+    </div>
+</div>
+
+<div id="print-preview" style="display:none;">
+    <img id="preview-img" />
+    <button id="close-preview" class="btn" style="margin-top:15px;">Chiudi</button>
+</div>
+
+<div id="json-modal">
+    <div id="json-modal-box">
+        <h3><i class="fas fa-code"></i> Import/Export JSON</h3>
+        <textarea id="json-area" placeholder="Incolla qui il codice JSON della mappa o modifica quello esistente..."></textarea>
+        <div style="margin-top:15px;text-align:right;display:flex;gap:10px;justify-content:flex-end;">
+            <button class="btn success" id="btn-export-json"><i class="fas fa-download"></i> Esporta</button>
+            <button class="btn" id="btn-import-json"><i class="fas fa-upload"></i> Importa</button>
+            <button class="btn secondary" id="btn-close-json"><i class="fas fa-times"></i> Chiudi</button>
+        </div>
+    </div>
+</div>
+
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script defer src="fontawesome-compat.js"></script>
+<script defer src="icon-library.js"></script>
+<script defer src="data/fontawesome-icons.js"></script>
+<script defer src="main.js"></script>
+</body>
+</html>
