@@ -34,6 +34,7 @@
     <div class="divider"></div>
     <div class="btn-group">
         <button class="btn success" id="save-map" title="Salva Mappa Locale (Ctrl+S)"><i class="fas fa-save"></i> Salva</button>
+        <button class="btn" id="save-html" title="Esporta questa pagina HTML con la mappa corrente"><i class="fas fa-file-code"></i> Salva Pagina</button>
         <button class="btn" id="open-json-modal" title="Import/Export"><i class="fas fa-code"></i> Import/Export</button>
     </div>
     <div class="divider"></div>
@@ -243,6 +244,13 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="speech-overlay" id="speech-overlay" aria-live="polite" aria-atomic="true">
+    <div class="speech-overlay-content">
+        <i class="fas fa-volume-up speech-overlay-icon" aria-hidden="true"></i>
+        <div class="speech-overlay-text" id="speech-overlay-text"></div>
+    </div>
+</div>
 
 <div class="overlay-desc" id="overlay-desc" tabindex="0">
     <div class="overlay-desc-box" id="overlay-desc-box">
