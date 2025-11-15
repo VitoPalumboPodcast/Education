@@ -119,7 +119,9 @@
     function withTemporaryEmbeddedData(mapData, task) {
         const placeholder = ensureLiveEmbeddedSlot();
         if (!placeholder) {
-            return task();
+            const error = new Error('Impossibile trovare il contenitore per i dati incorporati.');
+            notify(error.message, 'error');
+            throw error;
         }
         const previous = placeholder.textContent;
         const cleanup = () => {
@@ -180,16 +182,6 @@
         }
     }
 
-    function setButtonBusy(btn, busy) {
-        if (!btn) return;
-        btn.disabled = busy;
-        if (busy) {
-            btn.setAttribute('aria-busy', 'true');
-        } else {
-            btn.removeAttribute('aria-busy');
-        }
-    }
-
     function getEmbeddedMapData() {
         if (typeof window === 'undefined') return null;
         return window.__EMBEDDED_MAP_DATA__ || null;
@@ -230,7 +222,9 @@
 
     async function saveFullPageSnapshot() {
         if (typeof salvaMappaFormat !== 'function') {
-            console.error('salvaMappaFormat non disponibile.');
+            const message = 'salvaMappaFormat non disponibile.';
+            console.error(message);
+            notify(message, 'error');
             return;
         }
         try {
@@ -254,12 +248,7 @@
     function init() {
         const btn = document.getElementById('save-full-page');
         if (btn) {
-            btn.addEventListener('click', () => {
-                setButtonBusy(btn, true);
-                saveFullPageSnapshot().finally(() => {
-                    setButtonBusy(btn, false);
-                });
-            });
+            btn.addEventListener('click', saveFullPageSnapshot);
         }
         bootstrapEmbeddedMap();
     }
