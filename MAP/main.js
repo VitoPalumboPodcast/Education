@@ -136,7 +136,7 @@ const FONT_AWESOME_STYLE_PREFIXES = {
     duotone: "fad"
 };
 
-const CONNECTION_LABEL_DEFAULT_SIZE = 14;
+const CONNECTION_LABEL_DEFAULT_SIZE = 16;
 const REMOTE_ICON_CATALOG_URLS = [
     "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/metadata/icons.json",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/metadata/icons.json"
