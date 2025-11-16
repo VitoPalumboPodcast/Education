@@ -58,8 +58,6 @@ const CONFIG = {
     }
 };
 
-const CONNECTION_LABEL_DEFAULT_SIZE = 14;
-
 const ICON_SVGS = (ICON_LIBRARY.svgMap && Object.keys(ICON_LIBRARY.svgMap).length ? ICON_LIBRARY.svgMap : {
   "fas fa-lightbulb": `<svg viewBox="0 0 384 512"><path fill="currentColor" d="M96 464a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-16H96zm96-464C112.9 0 48 64.6 48 144c0 61.9 37.2 114.6 89.7 135.2C149.6 297.8 176 336 176 384v8a24 24 0 0 0 24 24h16a24 24 0 0 0 24-24v-8c0-48 26.4-86.2 56.3-104.8C314.8 258.6 352 205.9 352 144c0-79.4-64.9-144-144-144z"/></svg>`,
   "fas fa-star": `<svg viewBox="0 0 576 512"><path fill="currentColor" d="M287.9 17.8L354 150.2 490.5 171.5c26.2 3.8 36.7 36 17.7 54.6L402.3 312l23.7 138.4c4.5 26.3-23.2 46-46.4 33.7L288 439.6l-91.6 48.1c-23.2 12.2-50.9-7.4-46.4-33.7L173.7 312 67.8 226.1c-19-18.6-8.5-50.8 17.7-54.6L222 150.2 288.1 17.8c11.7-23.6 45.6-23.9 57.8 0z"/></svg>`,
@@ -137,6 +135,8 @@ const FONT_AWESOME_STYLE_PREFIXES = {
     thin: "fat",
     duotone: "fad"
 };
+
+const CONNECTION_LABEL_DEFAULT_SIZE = 14;
 const REMOTE_ICON_CATALOG_URLS = [
     "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/metadata/icons.json",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/metadata/icons.json"
@@ -292,7 +292,6 @@ const nodesGroup = svg.select("#nodes-group");
 const connectionsGroup = svg.select("#connections-group");
 const defs = svg.select('defs');
 const sidebar = document.getElementById("sidebar");
-const closeSidebarButton = document.getElementById("close-sidebar");
 const nodeEditor = document.getElementById("node-editor");
 const connEditor = document.getElementById("connection-editor");
 const minimapContainer = document.getElementById("minimap");
@@ -1700,31 +1699,8 @@ document.getElementById("open-sidebar").onclick = () => {
     else if (appState.selectedConnection) apriSidebarConnessione();
     else showToast("Seleziona un nodo o una connessione per modificarla.", "error");
 };
-
-const handleSidebarClose = (event) => {
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-    chiudiSidebar(true);
-};
-
-if (closeSidebarButton) {
-    closeSidebarButton.addEventListener("click", handleSidebarClose);
-    closeSidebarButton.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-            handleSidebarClose(event);
-        }
-    });
-}
-
-if (sidebar) {
-    sidebar.addEventListener("click", (event) => {
-        if (event.target.closest('[data-close-sidebar]')) {
-            handleSidebarClose(event);
-        }
-    });
-}
+// Ensure the close button reliably triggers the handler
+document.getElementById("close-sidebar").addEventListener("click", () => chiudiSidebar(true));
 
 function apriSidebarNodo() {
     sidebar.classList.add("open");
@@ -2636,101 +2612,20 @@ function downloadFile(data, filename, mime) {
     URL.revokeObjectURL(link.href);
 }
 
-async function fetchAssetAsText(path) {
-    const response = await fetch(path, { cache: "no-cache" });
-    if (!response.ok) {
-        throw new Error(`Impossibile caricare la risorsa "${path}" (${response.status})`);
-    }
-    return await response.text();
-}
-
-function shouldInlineAsset(path) {
-    if (!path) return false;
-    const trimmed = String(path).trim();
-    if (!trimmed || /^data:/i.test(trimmed)) return false;
-    return true;
-}
-
-function resolveAssetUrl(path) {
-    if (!shouldInlineAsset(path)) return null;
-    try {
-        return new URL(path, window.location.href).href;
-    } catch (_) {
-        return path;
-    }
-}
-
-async function inlineDocumentAssets(tempDoc) {
-    const tasks = [];
-    const failures = [];
-
-    tempDoc.querySelectorAll('link[rel=\"stylesheet\"][href]').forEach(link => {
-        const href = link.getAttribute('href');
-        const assetUrl = resolveAssetUrl(href);
-        if (assetUrl) {
-            tasks.push((async () => {
-                try {
-                    const cssContent = await fetchAssetAsText(assetUrl);
-                    const styleEl = tempDoc.createElement('style');
-                    styleEl.setAttribute('data-inline-source', href);
-                    if (link.media) {
-                        styleEl.setAttribute('media', link.media);
-                    }
-                    styleEl.textContent = cssContent;
-                    link.replaceWith(styleEl);
-                } catch (error) {
-                    console.warn(`Impossibile incorporare il CSS "${href}":`, error);
-                    failures.push({ type: 'css', path: href, error });
-                }
-            })());
-        }
-    });
-
-    tempDoc.querySelectorAll('script[src]').forEach(script => {
-        const src = script.getAttribute('src');
-        const assetUrl = resolveAssetUrl(src);
-        if (assetUrl) {
-            tasks.push((async () => {
-                try {
-                    const jsContent = await fetchAssetAsText(assetUrl);
-                    const inlineScript = tempDoc.createElement('script');
-                    Array.from(script.attributes).forEach(attr => {
-                        if (attr.name === 'src') return;
-                        inlineScript.setAttribute(attr.name, attr.value);
-                    });
-                    inlineScript.setAttribute('data-inline-source', src);
-                    inlineScript.textContent = jsContent;
-                    script.replaceWith(inlineScript);
-                } catch (error) {
-                    console.warn(`Impossibile incorporare lo script "${src}":`, error);
-                    failures.push({ type: 'js', path: src, error });
-                }
-            })());
-        }
-    });
-
-    await Promise.allSettled(tasks);
-    return failures;
-}
-
-async function esportaPaginaHtmlConMappa() {
+function esportaPaginaHtmlConMappa() {
     try {
         const mapData = salvaMappaFormat();
-        const { htmlContent, inlineFailures } = await generaPaginaHtmlConMappa(mapData);
+        const htmlContent = generaPaginaHtmlConMappa(mapData);
         const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
         downloadFile(htmlContent, `MAP-GENERATOR-${timestamp}.html`, "text/html");
-        if (inlineFailures.length > 0) {
-            showToast("Pagina salvata, ma alcuni asset non sono stati incorporati (controlla la console).", "warning");
-        } else {
-            showToast("Pagina HTML esportata con successo!", "success");
-        }
+        showToast("Pagina HTML esportata con successo!", "success");
     } catch (error) {
         console.error("Errore durante l'esportazione della pagina HTML:", error);
         showToast("Errore durante l'esportazione della pagina HTML.", "error");
     }
 }
 
-async function generaPaginaHtmlConMappa(mapData) {
+function generaPaginaHtmlConMappa(mapData) {
     if (!mapData) throw new Error("Dati mappa non disponibili");
     const parser = new DOMParser();
     const serializedDom = document.documentElement.outerHTML;
@@ -2752,13 +2647,8 @@ async function generaPaginaHtmlConMappa(mapData) {
     scriptEl.textContent = `window.__EMBEDDED_MAP_DATA__ = ${safeData};\nwindow.__EMBEDDED_MAP_EXPORT_TIME__ = "${timestamp}";`;
     tempDoc.body.appendChild(scriptEl);
 
-    const inlineFailures = await inlineDocumentAssets(tempDoc);
-
     const serializer = new XMLSerializer();
-    return {
-        htmlContent: "<!DOCTYPE html>\n" + serializer.serializeToString(tempDoc.documentElement),
-        inlineFailures
-    };
+    return "<!DOCTYPE html>\n" + serializer.serializeToString(tempDoc.documentElement);
 }
 
 function caricaMappa(data) {
@@ -2855,8 +2745,8 @@ if (saveMapBtn) {
 
 const saveHtmlBtn = document.getElementById("save-html");
 if (saveHtmlBtn) {
-    saveHtmlBtn.onclick = async () => {
-        await esportaPaginaHtmlConMappa();
+    saveHtmlBtn.onclick = () => {
+        esportaPaginaHtmlConMappa();
     };
 }
 

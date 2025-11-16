@@ -34,7 +34,7 @@
     <div class="divider"></div>
     <div class="btn-group">
         <button class="btn success" id="save-map" title="Salva Mappa Locale (Ctrl+S)"><i class="fas fa-save"></i> Salva</button>
-        <button class="btn" id="save-html" title="Esporta questa pagina HTML con la mappa corrente"><i class="fas fa-file-code"></i> Salva Pagina</button>
+        <button class="btn" id="save-full-page" title="Salva pagina completa con la mappa corrente"><i class="fas fa-file-export"></i> Salva Pagina</button>
         <button class="btn" id="open-json-modal" title="Import/Export"><i class="fas fa-code"></i> Import/Export</button>
     </div>
     <div class="divider"></div>
@@ -80,7 +80,7 @@
 </div>
 
 <div class="sidebar" id="sidebar">
-    <button class="btn danger" id="close-sidebar" type="button" aria-label="Chiudi editor" data-close-sidebar style="float:right;margin-bottom:15px;"><i class="fas fa-times" aria-hidden="true"></i></button>
+    <button class="btn danger" id="close-sidebar" style="float:right;margin-bottom:15px;"><i class="fas fa-times"></i></button>
     
     <div class="search-container">
         <input type="text" class="search-input" id="node-search" placeholder="Cerca nodi...">
@@ -291,6 +291,21 @@
     </div>
 </div>
 
+<script id="embedded-map-data" type="application/json"></script>
+<script>
+    window.__EMBEDDED_MAP_DATA__ = (() => {
+        const dataEl = document.getElementById('embedded-map-data');
+        if (!dataEl) return null;
+        const content = (dataEl.textContent || '').trim();
+        if (!content) return null;
+        try {
+            return JSON.parse(content);
+        } catch (err) {
+            console.error('Impossibile leggere la mappa incorporata:', err);
+            return null;
+        }
+    })();
+</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -298,5 +313,6 @@
 <script defer src="../icon-library.js"></script>
 <script defer src="../data/fontawesome-icons.js"></script>
 <script defer src="main.js"></script>
+<script defer src="../scripts/save-full-page.js"></script>
 </body>
 </html>
