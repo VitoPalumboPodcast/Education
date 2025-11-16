@@ -2651,16 +2651,22 @@ function isLocalAssetPath(path) {
 
 async function inlineLocalAssets(tempDoc) {
     const tasks = [];
+    const failures = [];
 
     tempDoc.querySelectorAll('link[rel=\"stylesheet\"][href]').forEach(link => {
         const href = link.getAttribute('href');
         if (isLocalAssetPath(href)) {
             tasks.push((async () => {
-                const cssContent = await fetchAssetAsText(href);
-                const styleEl = tempDoc.createElement('style');
-                styleEl.setAttribute('data-inline-source', href);
-                styleEl.textContent = cssContent;
-                link.replaceWith(styleEl);
+                try {
+                    const cssContent = await fetchAssetAsText(href);
+                    const styleEl = tempDoc.createElement('style');
+                    styleEl.setAttribute('data-inline-source', href);
+                    styleEl.textContent = cssContent;
+                    link.replaceWith(styleEl);
+                } catch (error) {
+                    console.warn(`Impossibile incorporare il CSS locale "${href}":`, error);
+                    failures.push({ type: 'css', path: href, error });
+                }
             })());
         }
     });
@@ -2669,25 +2675,35 @@ async function inlineLocalAssets(tempDoc) {
         const src = script.getAttribute('src');
         if (isLocalAssetPath(src)) {
             tasks.push((async () => {
-                const jsContent = await fetchAssetAsText(src);
-                const inlineScript = tempDoc.createElement('script');
-                inlineScript.setAttribute('data-inline-source', src);
-                inlineScript.textContent = jsContent;
-                script.replaceWith(inlineScript);
+                try {
+                    const jsContent = await fetchAssetAsText(src);
+                    const inlineScript = tempDoc.createElement('script');
+                    inlineScript.setAttribute('data-inline-source', src);
+                    inlineScript.textContent = jsContent;
+                    script.replaceWith(inlineScript);
+                } catch (error) {
+                    console.warn(`Impossibile incorporare lo script locale "${src}":`, error);
+                    failures.push({ type: 'js', path: src, error });
+                }
             })());
         }
     });
 
-    await Promise.all(tasks);
+    await Promise.allSettled(tasks);
+    return failures;
 }
 
 async function esportaPaginaHtmlConMappa() {
     try {
         const mapData = salvaMappaFormat();
-        const htmlContent = await generaPaginaHtmlConMappa(mapData);
+        const { htmlContent, inlineFailures } = await generaPaginaHtmlConMappa(mapData);
         const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
         downloadFile(htmlContent, `MAP-GENERATOR-${timestamp}.html`, "text/html");
-        showToast("Pagina HTML esportata con successo!", "success");
+        if (inlineFailures.length > 0) {
+            showToast("Pagina salvata, ma alcuni asset locali non sono stati incorporati.", "warning");
+        } else {
+            showToast("Pagina HTML esportata con successo!", "success");
+        }
     } catch (error) {
         console.error("Errore durante l'esportazione della pagina HTML:", error);
         showToast("Errore durante l'esportazione della pagina HTML.", "error");
@@ -2716,10 +2732,13 @@ async function generaPaginaHtmlConMappa(mapData) {
     scriptEl.textContent = `window.__EMBEDDED_MAP_DATA__ = ${safeData};\nwindow.__EMBEDDED_MAP_EXPORT_TIME__ = "${timestamp}";`;
     tempDoc.body.appendChild(scriptEl);
 
-    await inlineLocalAssets(tempDoc);
+    const inlineFailures = await inlineLocalAssets(tempDoc);
 
     const serializer = new XMLSerializer();
-    return "<!DOCTYPE html>\n" + serializer.serializeToString(tempDoc.documentElement);
+    return {
+        htmlContent: "<!DOCTYPE html>\n" + serializer.serializeToString(tempDoc.documentElement),
+        inlineFailures
+    };
 }
 
 function caricaMappa(data) {
