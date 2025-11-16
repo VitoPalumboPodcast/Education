@@ -2644,27 +2644,42 @@ async function fetchAssetAsText(path) {
     return await response.text();
 }
 
-function isLocalAssetPath(path) {
+function shouldInlineAsset(path) {
     if (!path) return false;
-    return !/^https?:\/\//i.test(path) && !/^\/\//.test(path);
+    const trimmed = String(path).trim();
+    if (!trimmed || /^data:/i.test(trimmed)) return false;
+    return true;
 }
 
-async function inlineLocalAssets(tempDoc) {
+function resolveAssetUrl(path) {
+    if (!shouldInlineAsset(path)) return null;
+    try {
+        return new URL(path, window.location.href).href;
+    } catch (_) {
+        return path;
+    }
+}
+
+async function inlineDocumentAssets(tempDoc) {
     const tasks = [];
     const failures = [];
 
     tempDoc.querySelectorAll('link[rel=\"stylesheet\"][href]').forEach(link => {
         const href = link.getAttribute('href');
-        if (isLocalAssetPath(href)) {
+        const assetUrl = resolveAssetUrl(href);
+        if (assetUrl) {
             tasks.push((async () => {
                 try {
-                    const cssContent = await fetchAssetAsText(href);
+                    const cssContent = await fetchAssetAsText(assetUrl);
                     const styleEl = tempDoc.createElement('style');
                     styleEl.setAttribute('data-inline-source', href);
+                    if (link.media) {
+                        styleEl.setAttribute('media', link.media);
+                    }
                     styleEl.textContent = cssContent;
                     link.replaceWith(styleEl);
                 } catch (error) {
-                    console.warn(`Impossibile incorporare il CSS locale "${href}":`, error);
+                    console.warn(`Impossibile incorporare il CSS "${href}":`, error);
                     failures.push({ type: 'css', path: href, error });
                 }
             })());
@@ -2673,16 +2688,21 @@ async function inlineLocalAssets(tempDoc) {
 
     tempDoc.querySelectorAll('script[src]').forEach(script => {
         const src = script.getAttribute('src');
-        if (isLocalAssetPath(src)) {
+        const assetUrl = resolveAssetUrl(src);
+        if (assetUrl) {
             tasks.push((async () => {
                 try {
-                    const jsContent = await fetchAssetAsText(src);
+                    const jsContent = await fetchAssetAsText(assetUrl);
                     const inlineScript = tempDoc.createElement('script');
+                    Array.from(script.attributes).forEach(attr => {
+                        if (attr.name === 'src') return;
+                        inlineScript.setAttribute(attr.name, attr.value);
+                    });
                     inlineScript.setAttribute('data-inline-source', src);
                     inlineScript.textContent = jsContent;
                     script.replaceWith(inlineScript);
                 } catch (error) {
-                    console.warn(`Impossibile incorporare lo script locale "${src}":`, error);
+                    console.warn(`Impossibile incorporare lo script "${src}":`, error);
                     failures.push({ type: 'js', path: src, error });
                 }
             })());
@@ -2700,7 +2720,7 @@ async function esportaPaginaHtmlConMappa() {
         const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
         downloadFile(htmlContent, `MAP-GENERATOR-${timestamp}.html`, "text/html");
         if (inlineFailures.length > 0) {
-            showToast("Pagina salvata, ma alcuni asset locali non sono stati incorporati.", "warning");
+            showToast("Pagina salvata, ma alcuni asset non sono stati incorporati (controlla la console).", "warning");
         } else {
             showToast("Pagina HTML esportata con successo!", "success");
         }
@@ -2732,7 +2752,7 @@ async function generaPaginaHtmlConMappa(mapData) {
     scriptEl.textContent = `window.__EMBEDDED_MAP_DATA__ = ${safeData};\nwindow.__EMBEDDED_MAP_EXPORT_TIME__ = "${timestamp}";`;
     tempDoc.body.appendChild(scriptEl);
 
-    const inlineFailures = await inlineLocalAssets(tempDoc);
+    const inlineFailures = await inlineDocumentAssets(tempDoc);
 
     const serializer = new XMLSerializer();
     return {
