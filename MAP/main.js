@@ -1293,11 +1293,15 @@ function wrapConnectionLabel(textElement, labelText) {
     textElement.text("");
 
     lines.forEach((line, index) => {
-        textElement.append("tspan")
+        const tspan = textElement.append("tspan")
             .attr("x", x)
-            .attr("y", y)
-            .attr("dy", index === 0 ? 0 : "1.2em")
             .text(line);
+
+        if (index === 0) {
+            tspan.attr("y", y);
+        } else {
+            tspan.attr("dy", "1.2em");
+        }
     });
 }
 
