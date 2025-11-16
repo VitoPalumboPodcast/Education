@@ -136,7 +136,8 @@ const FONT_AWESOME_STYLE_PREFIXES = {
     duotone: "fad"
 };
 
-const CONNECTION_LABEL_DEFAULT_SIZE = 16;
+const CONNECTION_LABEL_DEFAULT_SIZE = 20;
+const CONNECTION_LABEL_WRAP_LIMIT = 14;
 const REMOTE_ICON_CATALOG_URLS = [
     "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/metadata/icons.json",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/metadata/icons.json"
@@ -1259,6 +1260,52 @@ function formatConnectionLabel(conn) {
     return `${conn.label} (tra ${source} e ${target})`;
 }
 
+function wrapConnectionLabel(textElement, labelText) {
+    const maxChars = CONNECTION_LABEL_WRAP_LIMIT;
+    const words = (labelText || "").trim().split(/\s+/);
+    const lines = [];
+    let currentLine = "";
+
+    for (const word of words) {
+        if (word.length > maxChars) {
+            if (currentLine.trim()) {
+                lines.push(currentLine.trim());
+                currentLine = "";
+            }
+            word.match(new RegExp(`.{1,${maxChars}}`, "g")).forEach(chunk => lines.push(chunk));
+            continue;
+        }
+
+        const prospective = currentLine ? `${currentLine.trim()} ${word}` : word;
+        if (prospective.length > maxChars && currentLine.trim()) {
+            lines.push(currentLine.trim());
+            currentLine = `${word} `;
+        } else {
+            currentLine += `${word} `;
+        }
+    }
+
+    if (currentLine.trim()) lines.push(currentLine.trim());
+    if (!lines.length) lines.push(labelText || "");
+
+    const x = textElement.attr("x");
+    const y = textElement.attr("y");
+    textElement.text("");
+
+    lines.forEach((line, index) => {
+        const tspan = textElement.append("tspan")
+            .attr("x", x);
+
+        if (index === 0) {
+            tspan.attr("y", y);
+        } else {
+            tspan.attr("dy", "1.2em");
+        }
+
+        tspan.text(line);
+    });
+}
+
 function creaConnessione(sourceNode, targetNode, label = "") {
     if (!sourceNode || !targetNode || sourceNode.id === targetNode.id) {
       showToast("Impossibile connettere il nodo a se stesso o a un nodo non valido.", "error");
@@ -1401,13 +1448,13 @@ function disegnaConnessione(conn) {
         const labelText = formatConnectionLabel(conn);
         if (labelText) {
             const mx = (p1x + p2x) / 2, my = (p1y + p2y) / 2;
-            g.append("text")
+            const labelElement = g.append("text")
                 .attr("class", "connection-label")
                 .attr("x", mx)
                 .attr("y", my - 7)
                 .attr("text-anchor", "middle")
-                .style("font-size", (conn.labelSize || CONNECTION_LABEL_DEFAULT_SIZE) + "px")
-                .text(labelText);
+                .style("font-size", (conn.labelSize || CONNECTION_LABEL_DEFAULT_SIZE) + "px");
+            wrapConnectionLabel(labelElement, labelText);
         }
     }
     if (appState.selectedConnection && appState.selectedConnection.id === conn.id) {
