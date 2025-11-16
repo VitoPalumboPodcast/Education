@@ -2484,10 +2484,55 @@ function downloadFile(data, filename, mime) {
     URL.revokeObjectURL(link.href);
 }
 
-function esportaPaginaHtmlConMappa() {
+async function fetchAssetAsText(path) {
+    const response = await fetch(path, { cache: "no-cache" });
+    if (!response.ok) {
+        throw new Error(`Impossibile caricare la risorsa "${path}" (${response.status})`);
+    }
+    return await response.text();
+}
+
+function isLocalAssetPath(path) {
+    if (!path) return false;
+    return !/^https?:\/\//i.test(path) && !/^\/\//.test(path);
+}
+
+async function inlineLocalAssets(tempDoc) {
+    const tasks = [];
+
+    tempDoc.querySelectorAll('link[rel=\"stylesheet\"][href]').forEach(link => {
+        const href = link.getAttribute('href');
+        if (isLocalAssetPath(href)) {
+            tasks.push((async () => {
+                const cssContent = await fetchAssetAsText(href);
+                const styleEl = tempDoc.createElement('style');
+                styleEl.setAttribute('data-inline-source', href);
+                styleEl.textContent = cssContent;
+                link.replaceWith(styleEl);
+            })());
+        }
+    });
+
+    tempDoc.querySelectorAll('script[src]').forEach(script => {
+        const src = script.getAttribute('src');
+        if (isLocalAssetPath(src)) {
+            tasks.push((async () => {
+                const jsContent = await fetchAssetAsText(src);
+                const inlineScript = tempDoc.createElement('script');
+                inlineScript.setAttribute('data-inline-source', src);
+                inlineScript.textContent = jsContent;
+                script.replaceWith(inlineScript);
+            })());
+        }
+    });
+
+    await Promise.all(tasks);
+}
+
+async function esportaPaginaHtmlConMappa() {
     try {
         const mapData = salvaMappaFormat();
-        const htmlContent = generaPaginaHtmlConMappa(mapData);
+        const htmlContent = await generaPaginaHtmlConMappa(mapData);
         const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
         downloadFile(htmlContent, `MAP-GENERATOR-${timestamp}.html`, "text/html");
         showToast("Pagina HTML esportata con successo!", "success");
@@ -2497,7 +2542,7 @@ function esportaPaginaHtmlConMappa() {
     }
 }
 
-function generaPaginaHtmlConMappa(mapData) {
+async function generaPaginaHtmlConMappa(mapData) {
     if (!mapData) throw new Error("Dati mappa non disponibili");
     const parser = new DOMParser();
     const serializedDom = document.documentElement.outerHTML;
@@ -2518,6 +2563,8 @@ function generaPaginaHtmlConMappa(mapData) {
     const timestamp = new Date().toISOString();
     scriptEl.textContent = `window.__EMBEDDED_MAP_DATA__ = ${safeData};\nwindow.__EMBEDDED_MAP_EXPORT_TIME__ = "${timestamp}";`;
     tempDoc.body.appendChild(scriptEl);
+
+    await inlineLocalAssets(tempDoc);
 
     const serializer = new XMLSerializer();
     return "<!DOCTYPE html>\n" + serializer.serializeToString(tempDoc.documentElement);
@@ -2613,8 +2660,8 @@ if (saveMapBtn) {
 
 const saveHtmlBtn = document.getElementById("save-html");
 if (saveHtmlBtn) {
-    saveHtmlBtn.onclick = () => {
-        esportaPaginaHtmlConMappa();
+    saveHtmlBtn.onclick = async () => {
+        await esportaPaginaHtmlConMappa();
     };
 }
 
