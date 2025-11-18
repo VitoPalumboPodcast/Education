@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="it">
+ <head>
+  <meta charset="UTF-8">
+  <title>Classroom Vocabulary</title>
+  <!-- SDKs -->
+  <script src="/_sdk/element_sdk.js"></script>
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    /* Transizioni morbide e focus visibile */
+    .card-transition {
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card-transition:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+    }
+
+    .focus-ring:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, 0.7);
+      outline-offset: 2px;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <header class="w-full">
+   <div id="page-root" class="h-full min-h-full flex items-center justify-center bg-sky-50">
+    <!-- MAIN CARD -->
+    <div class="w-full max-w-5xl mx-auto px-4 py-6">
+     <section class="bg-sky-100/80 rounded-3xl shadow-xl border border-sky-200 px-6 py-6 md:px-10 md:py-8">
+      <!-- Header -->
+      <header class="mb-6">
+       <p id="badge" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-200 text-sky-900 text-xs md:text-sm font-semibold tracking-wide">
+        <span aria-hidden="true">����</span>
+        <span>English • Italiano</span>
+       </p>
+       <h1 id="main-title" class="mt-4 text-2xl md:text-3xl font-extrabold text-sky-950 tracking-tight">
+        Classroom Vocabulary
+       </h1>
+       <p id="subtitle" class="mt-2 text-sky-900/80 text-sm md:text-base max-w-xl">
+        Simple English words for things you see in a classroom, with Italian translations and cute icons.
+       </p>
+      </header>
+
+      <!-- Controls -->
+      <main class="flex flex-col gap-5" aria-label="Elenco vocaboli">
+       <div class="flex flex-wrap items-center gap-3 justify-between">
+        <div class="flex items-center gap-2 text-xs md:text-sm text-sky-900/80">
+         <span class="inline-flex h-4 w-4 rounded-full border border-sky-400 bg-sky-200"></span>
+         <span>Click a card to mark it as learned</span>
+        </div>
+        <button
+          id="reset-button"
+          type="button"
+          class="focus-ring inline-flex items-center gap-2 rounded-full border border-sky-500 bg-sky-500 text-white px-3 py-1.5 text-xs md:text-sm font-semibold shadow-sm hover:bg-sky-600 card-transition"
+        >
+         <span aria-hidden="true">🔁</span>
+         <span>Reset learned</span>
+        </button>
+       </div>
+
+       <!-- Vocabulary Grid -->
+       <section id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 mt-2">
+        <!-- Cards will be populated by JS -->
+       </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="mt-6 pt-4 border-t border-sky-200 flex flex-wrap items-center justify-between gap-3">
+       <p id="footer-text" class="text-xs md:text-sm text-sky-900/80">
+        Touch a card to mark it as learned. Perfect for kids and beginners! ✨
+       </p>
+       <p class="text-[0.7rem] md:text-xs text-sky-900/70">
+        🔊 Click on a card to hear the English pronunciation!
+       </p>
+      </footer>
+     </section>
+    </div>
+   </div>
+  </header>
+
+  <!-- Manteniamo main/footer semantici nascosti -->
+  <main class="hidden"></main>
+  <footer class="hidden"></footer>
+
+  <script>
+    // ------------ CONFIG & ELEMENT SDK --------------
+
+    const defaultConfig = {
+      // Colors (max 5)
+      background_color: "#e0f2fe",    // sky-100
+      surface_color: "#bfdbfe",       // sky-200
+      text_color: "#0f172a",          // slate-950 approx
+      primary_action_color: "#0ea5e9",// sky-500
+      secondary_action_color: "#0369a1", // sky-700
+
+      // Typography
+      font_family: "system-ui",
+      font_size: 16,
+
+      // Text content (edit panel)
+      title_text: "Classroom Vocabulary",
+      subtitle_text: "Simple English words for things you see in a classroom, with Italian translations and cute icons.",
+      footer_text: "Touch a card to mark it as learned. Perfect for kids and beginners! ✨"
+    };
+
+    // Vocabulary data (static reference content)
+    const VOCAB_ITEMS = [
+      {
+        id: "board",
+        english: "board",
+        italian: "lavagna",
+        emoji: "🧑‍🏫",
+        description: "Where the teacher writes."
+      },
+      {
+        id: "screen",
+        english: "screen",
+        italian: "schermo",
+        emoji: "🖥️",
+        description: "Where you see images or videos."
+      },
+      {
+        id: "chair",
+        english: "chair",
+        italian: "sedia",
+        emoji: "💺",
+        description: "Where you sit."
+      },
+      {
+        id: "desk",
+        english: "desk",
+        italian: "banco",
+        emoji: "🪑",
+        description: "Where you work and write."
+      },
+      {
+        id: "window",
+        english: "window",
+        italian: "finestra",
+        emoji: "🪟",
+        description: "You can look outside."
+      },
+      {
+        id: "door",
+        english: "door",
+        italian: "porta",
+        emoji: "🚪",
+        description: "You enter and exit the classroom."
+      },
+      {
+        id: "teacher",
+        english: "teacher",
+        italian: "insegnante",
+        emoji: "👩‍🏫",
+        description: "The person who teaches."
+      },
+      {
+        id: "student",
+        english: "student",
+        italian: "studente",
+        emoji: "🧒",
+        description: "A child or person who learns."
+      },
+      {
+        id: "book",
+        english: "book",
+        italian: "libro",
+        emoji: "📘",
+        description: "You read and study with it."
+      },
+      {
+        id: "pen",
+        english: "pen",
+        italian: "penna",
+        emoji: "🖊️",
+        description: "You use it to write."
+      },
+      {
+        id: "pencil",
+        english: "pencil",
+        italian: "matita",
+        emoji: "✏️",
+        description: "You can erase what you write."
+      },
+      {
+        id: "ruler",
+        english: "ruler",
+        italian: "righello",
+        emoji: "📏",
+        description: "You draw straight lines."
+      }
+    ];
+
+    // Local state: which items are "learned"
+    let learnedSet = new Set();
+
+    // --------- GESTIONE VOCI TTS (più robusta) ---------
+
+    let ttsVoices = [];
+
+    function loadTtsVoices() {
+      if (!('speechSynthesis' in window)) {
+        console.warn("Sintesi vocale non supportata da questo browser.");
+        return;
+      }
+      const voices = window.speechSynthesis.getVoices();
+      if (voices && voices.length > 0) {
+        ttsVoices = voices;
+      }
+    }
+
+    // Carica subito le voci, se disponibili
+    if ('speechSynthesis' in window) {
+      loadTtsVoices();
+      // Alcuni browser caricano le voci in ritardo
+      window.speechSynthesis.onvoiceschanged = () => {
+        loadTtsVoices();
+      };
+    }
+
+    // Text-to-Speech function (migliorata)
+    function speakWord(word) {
+      if (!('speechSynthesis' in window)) {
+        console.warn("Sintesi vocale non supportata da questo browser.");
+        return;
+      }
+
+      // assicuriamoci di avere la lista aggiornata
+      if (!ttsVoices || ttsVoices.length === 0) {
+        ttsVoices = window.speechSynthesis.getVoices() || [];
+      }
+
+      const utterance = new SpeechSynthesisUtterance(word);
+
+      // Scegliamo una voce inglese se disponibile, altrimenti la prima
+      let chosenVoice = null;
+      if (ttsVoices && ttsVoices.length > 0) {
+        chosenVoice =
+          ttsVoices.find(v => v.lang && v.lang.toLowerCase().startsWith("en")) ||
+          ttsVoices[0];
+      }
+
+      if (chosenVoice) {
+        utterance.voice = chosenVoice;
+        utterance.lang = chosenVoice.lang || "en-US";
+      } else {
+        utterance.lang = "en-US";
+      }
+
+      utterance.rate = 0.9;   // leggermente più lento per chiarezza
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+
+      // Annulla eventuale parlato in corso e avvia con un piccolo delay
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+      }, 10);
+    }
+
+    // --------- COSTRUZIONE CARD ---------
+
+    // Create SVG-style illustration elements for each item
+    function createIconCircle(colorBg, emoji) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "flex items-center justify-center rounded-2xl";
+      wrapper.style.backgroundColor = colorBg;
+      wrapper.setAttribute("aria-hidden", "true");
+
+      // Use padding to keep aspect ratio-ish
+      wrapper.classList.add("px-3", "py-3", "md:px-4", "md:py-4");
+
+      const span = document.createElement("span");
+      span.textContent = emoji;
+      span.className = "text-2xl md:text-3xl";
+      wrapper.appendChild(span);
+      return wrapper;
+    }
+
+    // Create one vocab card
+    function createVocabCard(item, config) {
+      const baseFont = config.font_family || defaultConfig.font_family;
+      const baseSize = Number(config.font_size || defaultConfig.font_size);
+
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className =
+        "focus-ring text-left w-full rounded-2xl border border-sky-200 bg-sky-50/70 px-4 py-3 md:px-5 md:py-4 flex flex-col gap-3 card-transition";
+      card.dataset.itemId = item.id;
+      card.setAttribute("aria-pressed", "false");
+
+      // Top: icon + words
+      const topRow = document.createElement("div");
+      topRow.className = "flex items-start gap-3";
+
+      const iconContainer = createIconCircle("#bae6fd", item.emoji);
+      iconContainer.classList.add("shrink-0");
+
+      const textCol = document.createElement("div");
+      textCol.className = "flex-1 min-w-0";
+
+      const english = document.createElement("h2");
+      english.className = "font-bold tracking-tight text-sky-950 truncate";
+      english.textContent = item.english;
+      english.style.fontFamily = baseFont + ", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      english.style.fontSize = (baseSize * 1.2) + "px";
+
+      const italian = document.createElement("p");
+      italian.className = "text-sky-800";
+      italian.textContent = item.italian;
+      italian.style.fontFamily = baseFont + ", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      italian.style.fontSize = (baseSize) + "px";
+
+      textCol.appendChild(english);
+      textCol.appendChild(italian);
+
+      topRow.appendChild(iconContainer);
+      topRow.appendChild(textCol);
+
+      // Bottom: simple description
+      const desc = document.createElement("p");
+      desc.className = "text-xs md:text-sm text-sky-900/80";
+      desc.textContent = item.description;
+      desc.style.fontFamily = baseFont + ", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      desc.style.fontSize = (baseSize * 0.9) + "px";
+
+      card.appendChild(topRow);
+      card.appendChild(desc);
+
+      // Click handler to toggle "learned" + speak word
+      card.addEventListener("click", function () {
+        const id = item.id;
+        const isLearned = learnedSet.has(id);
+        if (isLearned) {
+          learnedSet.delete(id);
+        } else {
+          learnedSet.add(id);
+        }
+        updateCardLearnedState(card, id, config);
+
+        // Speak the English word
+        speakWord(item.english);
+      });
+
+      return card;
+    }
+
+    function updateCardLearnedState(card, id, config) {
+      const isLearned = learnedSet.has(id);
+      const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+
+      if (isLearned) {
+        card.style.backgroundColor = primaryColor;
+        card.style.borderColor = primaryColor;
+        card.classList.add("text-white");
+        card.setAttribute("aria-pressed", "true");
+      } else {
+        card.style.backgroundColor = "rgba(248, 250, 252, 0.9)"; // neutral
+        card.style.borderColor = "#bfdbfe";
+        card.classList.remove("text-white");
+        card.setAttribute("aria-pressed", "false");
+      }
+    }
+
+    function renderVocabGrid(config) {
+      const grid = document.getElementById("vocab-grid");
+      if (!grid) return;
+
+      // Preserve learnedSet but rebuild DOM
+      grid.innerHTML = "";
+      VOCAB_ITEMS.forEach(item => {
+        const card = createVocabCard(item, config);
+        grid.appendChild(card);
+        updateCardLearnedState(card, item.id, config);
+      });
+    }
+
+    function applyColorsAndTypography(config) {
+      const cfg = config || defaultConfig;
+
+      const backgroundColor = cfg.background_color || defaultConfig.background_color;
+      const surfaceColor = cfg.surface_color || defaultConfig.surface_color;
+      const textColor = cfg.text_color || defaultConfig.text_color;
+      const primaryActionColor = cfg.primary_action_color || defaultConfig.primary_action_color;
+      const secondaryActionColor = cfg.secondary_action_color || defaultConfig.secondary_action_color;
+
+      const fontFamily = cfg.font_family || defaultConfig.font_family;
+      const baseSize = Number(cfg.font_size || defaultConfig.font_size);
+
+      const pageRoot = document.getElementById("page-root");
+      if (pageRoot) {
+        pageRoot.style.backgroundColor = backgroundColor; // BACKGROUND
+      }
+
+      // Main card surface and border
+      const mainCard = pageRoot ? pageRoot.querySelector("section.bg-sky-100\\/80") : null;
+      if (mainCard) {
+        mainCard.style.backgroundColor = surfaceColor; // SECONDARY_SURFACE
+        mainCard.style.borderColor = surfaceColor;
+      }
+
+      // Text color on headings/body
+      const mainTitle = document.getElementById("main-title");
+      const subtitle = document.getElementById("subtitle");
+      const footerText = document.getElementById("footer-text");
+      const badge = document.getElementById("badge");
+
+      const fullFontStack = fontFamily + ", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+
+      if (mainTitle) {
+        mainTitle.style.color = textColor; // TEXT
+        mainTitle.style.fontFamily = fullFontStack;
+        mainTitle.style.fontSize = (baseSize * 2) + "px";
+      }
+      if (subtitle) {
+        subtitle.style.color = textColor;
+        subtitle.style.opacity = 0.9;
+        subtitle.style.fontFamily = fullFontStack;
+        subtitle.style.fontSize = (baseSize * 1.0) + "px";
+      }
+      if (footerText) {
+        footerText.style.color = textColor;
+        footerText.style.opacity = 0.85;
+        footerText.style.fontFamily = fullFontStack;
+        footerText.style.fontSize = (baseSize * 0.9) + "px";
+      }
+      if (badge) {
+        badge.style.color = textColor;
+        badge.style.fontFamily = fullFontStack;
+        badge.style.fontSize = (baseSize * 0.8) + "px";
+      }
+
+      // Primary button
+      const resetBtn = document.getElementById("reset-button");
+      if (resetBtn) {
+        resetBtn.style.backgroundColor = primaryActionColor; // PRIMARY_ACTION
+        resetBtn.style.borderColor = primaryActionColor;
+        resetBtn.style.color = "#ffffff";
+        resetBtn.style.fontFamily = fullFontStack;
+        resetBtn.style.fontSize = (baseSize * 0.9) + "px";
+
+        resetBtn.onmouseenter = function () {
+          resetBtn.style.backgroundColor = secondaryActionColor; // SECONDARY_ACTION hover
+          resetBtn.style.borderColor = secondaryActionColor;
+        };
+        resetBtn.onmouseleave = function () {
+          resetBtn.style.backgroundColor = primaryActionColor;
+          resetBtn.style.borderColor = primaryActionColor;
+        };
+      }
+
+      // Apply to cards
+      renderVocabGrid(cfg);
+    }
+
+    // INIT: Element SDK + config-driven UI
+    (function initElementSdk() {
+      if (!window.elementSdk) {
+        // Fallback: render with defaults if SDK not present
+        applyColorsAndTypography(defaultConfig);
+        return;
+      }
+
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          const cfg = { ...defaultConfig, ...(config || {}) };
+
+          // Update text content from config (edit panel)
+          const mainTitle = document.getElementById("main-title");
+          const subtitle = document.getElementById("subtitle");
+          const footerText = document.getElementById("footer-text");
+
+          if (mainTitle) {
+            mainTitle.textContent = cfg.title_text || defaultConfig.title_text;
+          }
+          if (subtitle) {
+            subtitle.textContent = cfg.subtitle_text || defaultConfig.subtitle_text;
+          }
+          if (footerText) {
+            footerText.textContent = cfg.footer_text || defaultConfig.footer_text;
+          }
+
+          // Apply colors + typography + redraw cards
+          applyColorsAndTypography(cfg);
+        },
+        mapToCapabilities: (config) => {
+          const cfg = config || defaultConfig;
+          return {
+            recolorables: [
+              {
+                get: () => cfg.background_color || defaultConfig.background_color,
+                set: (value) => {
+                  cfg.background_color = value;
+                  window.elementSdk.setConfig({ background_color: value });
+                }
+              },
+              {
+                get: () => cfg.surface_color || defaultConfig.surface_color,
+                set: (value) => {
+                  cfg.surface_color = value;
+                  window.elementSdk.setConfig({ surface_color: value });
+                }
+              },
+              {
+                get: () => cfg.text_color || defaultConfig.text_color,
+                set: (value) => {
+                  cfg.text_color = value;
+                  window.elementSdk.setConfig({ text_color: value });
+                }
+              },
+              {
+                get: () => cfg.primary_action_color || defaultConfig.primary_action_color,
+                set: (value) => {
+                  cfg.primary_action_color = value;
+                  window.elementSdk.setConfig({ primary_action_color: value });
+                }
+              },
+              {
+                get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color,
+                set: (value) => {
+                  cfg.secondary_action_color = value;
+                  window.elementSdk.setConfig({ secondary_action_color: value });
+                }
+              }
+            ],
+            borderables: [],
+            fontEditable: {
+              get: () => cfg.font_family || defaultConfig.font_family,
+              set: (value) => {
+                cfg.font_family = value;
+                window.elementSdk.setConfig({ font_family: value });
+              }
+            },
+            fontSizeable: {
+              get: () => Number(cfg.font_size || defaultConfig.font_size),
+              set: (value) => {
+                const numeric = Number(value) || defaultConfig.font_size;
+                cfg.font_size = numeric;
+                window.elementSdk.setConfig({ font_size: numeric });
+              }
+            }
+          };
+        },
+        mapToEditPanelValues: (config) => {
+          const cfg = config || defaultConfig;
+          return new Map([
+            ["title_text", cfg.title_text || defaultConfig.title_text],
+            ["subtitle_text", cfg.subtitle_text || defaultConfig.subtitle_text],
+            ["footer_text", cfg.footer_text || defaultConfig.footer_text]
+          ]);
+        }
+      });
+    })();
+
+    // Basic behavior even if elementSdk is absent
+    document.addEventListener("DOMContentLoaded", function () {
+      // Attach reset button behavior
+      const resetBtn = document.getElementById("reset-button");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", function () {
+          learnedSet = new Set();
+          const config = (window.elementSdk && window.elementSdk.config) ? window.elementSdk.config : defaultConfig;
+          const grid = document.getElementById("vocab-grid");
+          if (!grid) return;
+          Array.from(grid.children).forEach((card) => {
+            const id = card.dataset.itemId;
+            if (id) {
+              updateCardLearnedState(card, id, config);
+            }
+          });
+        });
+      }
+
+      // Se elementSdk non è disponibile, render con default
+      if (!window.elementSdk) {
+        applyColorsAndTypography(defaultConfig);
+      }
+    });
+  </script>
+
+  <!-- Script esterno originale (Cloudflare) lasciato invariato -->
+  <script>
+    (function(){
+      function c(){
+        var b=a.contentDocument||a.contentWindow.document;
+        if(b){
+          var d=b.createElement('script');
+          d.innerHTML="window.__CF$cv$params={r:'9a06f8e817e9ed67',t:'MTc2MzQ2MzcxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+          b.getElementsByTagName('head')[0].appendChild(d)
+        }
+      }
+      if(document.body){
+        var a=document.createElement('iframe');
+        a.height=1;
+        a.width=1;
+        a.style.position='absolute';
+        a.style.top=0;
+        a.style.left=0;
+        a.style.border='none';
+        a.style.visibility='hidden';
+        document.body.appendChild(a);
+        if('loading'!==document.readyState)c();
+        else if(window.addEventListener)
+          document.addEventListener('DOMContentLoaded',c);
+        else{
+          var e=document.onreadystatechange||function(){};
+          document.onreadystatechange=function(b){
+            e(b);
+            'loading'!==document.readyState&&(document.onreadystatechange=e,c())
+          }
+        }
+      }
+    })();
+  </script>
+ </body>
+</html>
