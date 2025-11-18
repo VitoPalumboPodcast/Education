@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analisi logica – Web App educativa</title>
+  <style>
+    /* Reset & layout */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+    body { background: #f4f7f7; color: #222; min-height: 100vh; }
+    button, select { cursor: pointer; border: none; padding: .5rem .9rem; border-radius: 6px; font-size: 1rem; }
+    select { background: #fff; border: 1px solid #bbb; }
+
+    /* Container */
+    #app { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem; max-width: 920px; margin: auto; }
+    #topBar { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; width: 100%; }
+    #badge, #timerBox, #playerBox { padding: .5rem 1rem; background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+    #progressWrap { width: 100%; max-width: 480px; height: 10px; background: #ddd; border-radius: 6px; overflow: hidden; }
+    #progressBar { height: 100%; width: 0; background: #28a745; transition: width .3s; }
+    #sentenceArea { min-height: 120px; padding: 1rem; border: 2px dashed #ccc; border-radius: 10px; width: 100%; text-align: center; font-size: 1.3rem; line-height: 2rem; }
+
+    /* Blocks */
+    .block { display: inline-block; margin: .2rem .3rem; padding: .2rem .4rem; border-radius: 6px; transition: .2s; cursor: pointer; }
+    .block:hover:not(.solved) { background: #e0f7ff; transform: scale(1.05); }
+    .block.active  { background: #fffbcc; }
+    .block.solved  { background: #d6ffd8; cursor: default; }
+    .block.flash   { animation: flashRed .6s; }
+    @keyframes flashRed { 0%,100% { background: #ffb1b1 } 50% { background: #ffdada } }
+
+    /* Selection area */
+    #selectionArea { width: 100%; padding: 1rem; border-top: 2px solid #ddd; min-height: 160px; display: flex; flex-direction: column; align-items: center; gap: .8rem; }
+    #options { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
+    .optionBtn {
+      background: #e6e6e6;
+      border: 1px solid #ccc;
+      padding: .5rem 1rem;
+      border-radius: 6px;
+      transition: background-color .2s, border-color .2s;
+    }
+    .optionBtn:hover   { background-color: #cce5ff; border-color: #3399ff; }
+    .optionBtn.correct { background-color: #4caf50; color: #fff; border-color: #388e3c; }
+    .optionBtn.wrong   { background-color: #f44336; color: #fff; border-color: #c62828; }
+
+    /* Hint & next */
+    #hintBox { display: none; padding: .8rem 1rem; background: #fff3cd; border-left: 6px solid #f0ad4e; border-radius: 8px; width: 100%; max-width: 660px; line-height: 1.4; }
+    #nextBtn { display: none; padding: .6rem 1.2rem; border-radius: 6px; background: #28a745; color: #fff; transition: background .2s; }
+    #nextBtn:hover { background: #208438; }
+    #changeSentenceBtn { padding: .6rem 1.2rem; border-radius: 6px; background: #007bff; color: #fff; transition: background .2s; }
+    #changeSentenceBtn:hover { background: #0056b3; }
+
+    /* Modal */
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; z-index: 999; visibility: hidden; opacity: 0; transition: .2s; }
+    .modal.show { visibility: visible; opacity: 1; }
+    .modalContent { background: #fff; padding: 1.4rem 2rem; border-radius: 12px; max-width: 600px; width: 90%; display: flex; flex-direction: column; gap: 1rem; }
+
+    @media(max-width:600px) {
+      #sentenceArea { font-size: 1.1rem; }
+      #controlsBox { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="topBar">
+      <div id="badge">Punti: <span id="score">0</span>/100</div>
+      <div id="timerBox">Tempo: <span id="timer">0</span>s</div>
+      <div id="playerBox" style="display:none">Turno: <span id="playerNum">1</span></div>
+      <button id="readBtn">🔊 Leggi frase</button>
+      <button id="changeSentenceBtn">Cambia Frase</button>
+      <div id="controlsBox" style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:center">
+        <label for="modeSel">Modalità:</label>
+        <select id="modeSel">
+          <option value="single">Studio</option>
+          <option value="guide">Guida</option>
+          <option value="challenge">Sfida 2P</option>
+        </select>
+        <label for="levelSel">Livello:</label>
+        <select id="levelSel">
+          <option value="base">Base</option>
+          <option value="intermedio">Intermedio</option>
+          <option value="avanzato">Avanzato</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="progressWrap"><div id="progressBar"></div></div>
+    <div id="sentenceArea"></div>
+
+    <div id="selectionArea">
+      <div id="question">Tocca un blocco per iniziare.</div>
+      <div id="options"></div>
+      <button id="nextBtn">Frase successiva ➜</button>
+    </div>
+
+    <div id="hintBox"></div>
+  </div>
+
+  <div id="reportModal" class="modal">
+    <div class="modalContent" id="reportCnt"></div>
+  </div>
+
+  <audio id="sndOk" src="https://www.soundjay.com/human/applause-01.wav" preload="auto"></audio>
+  <audio id="sndNo" src="https://www.soundjay.com/misc/beep-07.wav" preload="auto"></audio>
+
+  <script>
+    /* ------------------------- DATI & DESCRIZIONI ------------------------- */
+    const LOGIC_DESC = {
+      Soggetto:"indica chi o che cosa compie o subisce l’azione.",
+      Predicato:"è il verbo, nucleo dell'enunciato.",
+      Complemento:"aggiunge informazioni al nucleo della frase.",
+      Attributo:"è un aggettivo o un nome usato come aggettivo che si unisce a un nome.",
+      Apposizione:"è un nome che si unisce a un altro nome per determinarlo.",
+      Vocazione:"indica la persona a cui ci si rivolge direttamente.",
+      Esclamazione:"esprime stupore, meraviglia, dolore, ecc.",
+      "predicativo del soggetto":"completa il soggetto dopo verbi copulativi.",
+      "predicativo dell'oggetto":"completa l’oggetto dopo verbi transitivi.",
+      /* principali Complementi */
+      oggetto:"precisa l’ente coinvolto direttamente dall'azione.",
+      "di luogo":"specifica dove avviene l’azione.",
+      "stato in luogo":"indica dove si trova il soggetto o l'oggetto.",
+      "moto a luogo":"indica verso quale luogo si muove l’azione.",
+      "moto da luogo":"indica da quale luogo proviene l’azione.",
+      "moto per luogo":"indica attraverso quale luogo avviene l’azione.",
+      "di tempo":"indica quando avviene l’azione.",
+      "determinato":"indica un momento preciso.",
+      "continuato":"indica la durata.",
+      "di argomento":"precisa l’argomento trattato.",
+      "di modo":"descrive come avviene l’azione.",
+      "di termine":"indica il destinatario.",
+      "di specificazione":"specifica o chiarisce il termine da cui dipende.",
+      partitivo:"indica una parte di un tutto.",
+      denominazione:"specifica il nome proprio associato a un comune.",
+      agente:"indica chi compie l’azione in frase passiva.",
+      "causa efficiente":"cosa inanimata che compie l’azione passiva.",
+      causa:"spiega la ragione o motivo dell’azione.",
+      fine:"indica lo scopo.",
+      strumento:"specifica il mezzo.",
+      compagnia:"indica con chi avviene l’azione.",
+      unione:"indica con cosa avviene l’azione.",
+      paragone:"introduce il confronto.",
+      limitazione:"definisce il vincolo entro cui vale.",
+      colpa:"indica il reato o la mancanza.",
+      pena:"indica la punizione inflitta.",
+      vantaggio:"a beneficio di chi/cosa.",
+      svantaggio:"a danno di chi/cosa.",
+      abbondanza:"ciò di cui si abbonda.",
+      privazione:"ciò di cui si è privi.",
+      qualità:"descrive una qualità.",
+      età:"indica l'età.",
+      materia:"indica la materia.",
+      relazione:"indica con chi/cosa si ha relazione."
+    };
+
+    /* ------------------------- ARRAY DI FRASI COMPLETO ------------------------- */
+    const DATA = [
+      // Base
+      { level:"base", text:"Il cane abbaia nel cortile.", blocks:[
+        {txt:"Il cane",cat:"Soggetto"},
+        {txt:"abbaia",cat:"Predicato"},
+        {txt:"nel cortile",cat:"Complemento",subcat:"di luogo",subcat2:"stato in luogo"}
+      ]},
+      { level:"base", text:"La bicicletta di Marco è rossa.", blocks:[
+        {txt:"La bicicletta",cat:"Soggetto"},
+        {txt:"di Marco",cat:"Complemento",subcat:"di specificazione"},
+        {txt:"è rossa",cat:"Predicato"}
+      ]},
+      { level:"base", text:"Ho mangiato della pizza.", blocks:[
+        {txt:"Ho mangiato",cat:"Predicato"},
+        {txt:"della pizza",cat:"Complemento",subcat:"partitivo"}
+      ]},
+      // Intermedio / avanzato ecc.
+      { level:"intermedio", text:"La città di Bologna è affascinante.", blocks:[
+        {txt:"La città di Bologna",cat:"Soggetto"},
+        {txt:"è affascinante",cat:"Predicato"}
+      ]},
+      { level:"intermedio", text:"Il quadro è stato dipinto da Leonardo.", blocks:[
+        {txt:"Il quadro",cat:"Soggetto"},
+        {txt:"è stato dipinto",cat:"Predicato"},
+        {txt:"da Leonardo",cat:"Complemento",subcat:"agente"}
+      ]},
+      { level:"intermedio", text:"Piange per la tristezza.", blocks:[
+        {txt:"Piange",cat:"Predicato"},
+        {txt:"per la tristezza",cat:"Complemento",subcat:"causa"}
+      ]},
+      { level:"intermedio", text:"Studia per superare l’esame.", blocks:[
+        {txt:"Studia",cat:"Predicato"},
+        {txt:"per superare l’esame",cat:"Complemento",subcat:"fine"}
+      ]},
+      { level:"intermedio", text:"Scrive con la penna.", blocks:[
+        {txt:"Scrive",cat:"Predicato"},
+        {txt:"con la penna",cat:"Complemento",subcat:"strumento"}
+      ]},
+      { level:"base", text:"Va al cinema con gli amici.", blocks:[
+        {txt:"Va",cat:"Predicato"},
+        {txt:"al cinema",cat:"Complemento",subcat:"di luogo",subcat2:"moto a luogo"},
+        {txt:"con gli amici",cat:"Complemento",subcat:"compagnia"}
+      ]},
+      { level:"avanzato", text:"Corri più veloce di Marco.", blocks:[
+        {txt:"Corri",cat:"Predicato"},
+        {txt:"più veloce di Marco",cat:"Complemento",subcat:"paragone"}
+      ]},
+      { level:"avanzato", text:"Rimani entro le mura.", blocks:[
+        {txt:"Rimani",cat:"Predicato"},
+        {txt:"entro le mura",cat:"Complemento",subcat:"limitazione"}
+      ]},
+      { level:"avanzato", text:"Torna da scuola.", blocks:[
+        {txt:"Torna",cat:"Predicato"},
+        {txt:"da scuola",cat:"Complemento",subcat:"di luogo",subcat2:"moto da luogo"}
+      ]},
+      { level:"base", text:"Il piccolo cane abbaia.", blocks:[
+        {txt:"Il piccolo",cat:"Attributo"},
+        {txt:"cane",cat:"Soggetto"},
+        {txt:"abbaia",cat:"Predicato"}
+      ]},
+      { level:"intermedio", text:"Ho letto un libro interessante.", blocks:[
+        {txt:"Ho letto",cat:"Predicato"},
+        {txt:"un libro",cat:"Complemento",subcat:"oggetto"},
+        {txt:"interessante",cat:"Attributo"}
+      ]},
+      { level:"intermedio", text:"Marco, il mio amico, è arrivato.", blocks:[
+        {txt:"Marco",cat:"Soggetto"},
+        {txt:"il mio amico",cat:"Apposizione"},
+        {txt:"è arrivato",cat:"Predicato"}
+      ]},
+      { level:"avanzato", text:"Ho incontrato Luca, il caposquadra.", blocks:[
+        {txt:"Ho incontrato",cat:"Predicato"},
+        {txt:"Luca",cat:"Complemento",subcat:"oggetto"},
+        {txt:"il caposquadra",cat:"Apposizione"}
+      ]},
+      { level:"intermedio", text:"La casa è stata distrutta dal terremoto.", blocks:[
+        {txt:"La casa",cat:"Soggetto"},
+        {txt:"è stata distrutta",cat:"Predicato"},
+        {txt:"dal terremoto",cat:"Complemento",subcat:"causa efficiente"}
+      ]},
+      { level:"intermedio", text:"È uscito con il cane al guinzaglio.", blocks:[
+        {txt:"È uscito",cat:"Predicato"},
+        {txt:"con il cane al guinzaglio",cat:"Complemento",subcat:"unione"}
+      ]},
+      { level:"avanzato", text:"Lo hanno accusato di furto.", blocks:[
+        {txt:"Lo hanno accusato",cat:"Predicato"},
+        {txt:"di furto",cat:"Complemento",subcat:"colpa"}
+      ]},
+      { level:"avanzato", text:"È stato condannato a due anni.", blocks:[
+        {txt:"È stato condannato",cat:"Predicato"},
+        {txt:"a due anni",cat:"Complemento",subcat:"pena"}
+      ]},
+      { level:"intermedio", text:"Ha lavorato per la sua famiglia.", blocks:[
+        {txt:"Ha lavorato",cat:"Predicato"},
+        {txt:"per la sua famiglia",cat:"Complemento",subcat:"vantaggio"}
+      ]},
+      { level:"avanzato", text:"Questo è dannoso per la salute.", blocks:[
+        {txt:"Questo",cat:"Soggetto"},
+        {txt:"è dannoso",cat:"Predicato"},
+        {txt:"per la salute",cat:"Complemento",subcat:"svantaggio"}
+      ]},
+      { level:"avanzato", text:"La zona è ricca di risorse.", blocks:[
+        {txt:"La zona",cat:"Soggetto"},
+        {txt:"è ricca",cat:"Predicato"},
+        {txt:"di risorse",cat:"Complemento",subcat:"abbondanza"}
+      ]},
+      { level:"avanzato", text:"È privo di speranza.", blocks:[
+        {txt:"È privo",cat:"Predicato"},
+        {txt:"di speranza",cat:"Complemento",subcat:"privazione"}
+      ]},
+      { level:"intermedio", text:"Un uomo di grande valore.", blocks:[
+        {txt:"Un uomo",cat:"Soggetto"},
+        {txt:"di grande valore",cat:"Complemento",subcat:"qualità"}
+      ]},
+      { level:"base", text:"Mio fratello di otto anni gioca.", blocks:[
+        {txt:"Mio fratello",cat:"Soggetto"},
+        {txt:"di otto anni",cat:"Complemento",subcat:"età"},
+        {txt:"gioca",cat:"Predicato"}
+      ]},
+      { level:"intermedio", text:"Ha comprato un tavolo di legno.", blocks:[
+        {txt:"Ha comprato",cat:"Predicato"},
+        {txt:"un tavolo",cat:"Complemento",subcat:"oggetto"},
+        {txt:"di legno",cat:"Complemento",subcat:"materia"}
+      ]},
+      { level:"avanzato", text:"Ho discusso con lui.", blocks:[
+        {txt:"Ho discusso",cat:"Predicato"},
+        {txt:"con lui",cat:"Complemento",subcat:"relazione"}
+      ]},
+      { level:"base", text:"Luca, vieni qui!", blocks:[
+        {txt:"Luca",cat:"Vocazione"},
+        {txt:"vieni",cat:"Predicato"},
+        {txt:"qui",cat:"Complemento",subcat:"di luogo",subcat2:"moto a luogo"}
+      ]},
+      { level:"base", text:"Che bello!", blocks:[
+        {txt:"Che bello",cat:"Esclamazione"}
+      ]},
+      { level:"avanzato", text:"Marco è considerato intelligente.", blocks:[
+        {txt:"Marco",cat:"Soggetto"},
+        {txt:"è considerato",cat:"Predicato"},
+        {txt:"intelligente",cat:"predicativo del soggetto"}
+      ]},
+      { level:"avanzato", text:"Hanno eletto Paolo rappresentante.", blocks:[
+        {txt:"Hanno eletto",cat:"Predicato"},
+        {txt:"Paolo",cat:"Complemento",subcat:"oggetto"},
+        {txt:"rappresentante",cat:"predicativo dell'oggetto"}
+      ]}
+    ];
+
+    /* ------------------ CATEGORIE PRINCIPALI E SOTTOCATEGORIE ------------- */
+    const CATS = [
+      "Soggetto","Predicato","Complemento",
+      "Attributo","Apposizione","Vocazione","Esclamazione",
+      "predicativo del soggetto","predicativo dell'oggetto"
+    ];
+    const SUBS = Array.from(new Set(
+      DATA.flatMap(s =>
+        s.blocks.filter(b => b.cat==="Complemento" && b.subcat).map(b=>b.subcat)
+      )
+    ));
+
+    /* ----------------------------- STATO ---------------------------------- */
+    let state = {
+      mode:"single", level:"base", sentences:[], idx:0,
+      blockIdx:null, correct:0, attempts:0, timerId:null,
+      turn:1, scores:[0,0]
+    };
+
+    /* ----------------------------- DOM ------------------------------------ */
+    const $ = id=>document.getElementById(id);
+    const sentenceArea=$("sentenceArea"),
+          optionsDiv=$("options"),
+          question=$("question"),
+          scoreSpan=$("score"),
+          timerSpan=$("timer"),
+          hintBox=$("hintBox"),
+          nextBtn=$("nextBtn"),
+          changeSentenceBtn=$("changeSentenceBtn"),
+          progressBar=$("progressBar"),
+          playerBox=$("playerBox"),
+          playerNum=$("playerNum"),
+          sndOk=$("sndOk"),
+          sndNo=$("sndNo");
+
+    /* -------------------------- FUNZIONI AUSILIARIE ------------------------ */
+    let audioUnlocked=false;
+    addEventListener("click",()=>audioUnlocked=true,{once:true});
+
+    function play(ok){
+      if(!audioUnlocked) return;
+      const s=ok? sndOk : sndNo;
+      s.currentTime=0; s.play().catch(()=>{});
+    }
+    function speak(text){
+      if(state.mode!=="guide") return;
+      const u=new SpeechSynthesisUtterance(text);
+      u.lang="it-IT"; speechSynthesis.speak(u);
+    }
+    function shuffle(arr){
+      for(let i=arr.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [arr[i],arr[j]]=[arr[j],arr[i]];
+      }
+    }
+
+    /* -------------------------- GESTIONE DATI ----------------------------- */
+    function loadSentences(){
+      state.sentences = DATA.filter(s=>s.level===state.level);
+      shuffle(state.sentences);
+      state.idx=0;
+    }
+
+    /* ----------------------------- TIMER & PUNTEGGIO ---------------------- */
+    function startTimer(){
+      clearInterval(state.timerId);
+      state.attempts = 1;
+      updateScore();
+      timerSpan.textContent="0";
+      state.timerId = setInterval(()=>{
+        state.attempts++;
+        updateScore();
+        timerSpan.textContent = (state.attempts-1)*20; // mostra i secondi reali
+      },20000);
+    }
+
+    function updateScore(){
+      const sc = Math.round((state.correct/(state.attempts||1))*100)||0;
+      scoreSpan.textContent = sc>100?100:sc;
+    }
+
+    /* --------------------------- RENDER DELLA FRASE ----------------------- */
+    function render(){
+      nextBtn.style.display="none";
+      hintBox.style.display="none";
+      sentenceArea.innerHTML="";
+      optionsDiv.innerHTML="";
+      question.textContent="Tocca un blocco per iniziare.";
+      progressBar.style.width="0%";
+
+      if(state.sentences.length===0){
+        sentenceArea.textContent="Nessuna frase disponibile per questo livello.";
+        return;
+      }
+
+      const s=state.sentences[state.idx];
+      s.blocks.forEach((b,i)=>{
+        const el=document.createElement("span");
+        el.textContent=b.txt; el.className="block";
+        el.addEventListener("click",()=>selectBlock(i));
+        sentenceArea.appendChild(el);
+      });
+
+      state.correct=0;
+      startTimer();
+    }
+
+    /* --------------------------- INTERAZIONE ------------------------------ */
+    function selectBlock(i){
+      if(sentenceArea.children[i].classList.contains("solved")) return;
+      state.blockIdx=i;
+      [...sentenceArea.children].forEach((e,idx)=>
+        e.classList.toggle("active",idx===i)
+      );
+      const b=state.sentences[state.idx].blocks[i];
+      question.textContent=`Funzione logica di "${b.txt}"?`;
+      showOptions(CATS,"cat");
+    }
+
+    function showOptions(list,type){
+      optionsDiv.innerHTML="";
+      list.forEach(v=>{
+        const btn=document.createElement("button");
+        btn.textContent=v; btn.className="optionBtn";
+        btn.addEventListener("click",()=>answer(v,type));
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function answer(val,type){
+      const b=state.sentences[state.idx].blocks[state.blockIdx];
+      state.attempts++; updateScore();
+
+      if(type==="cat"){
+        if(val===b.cat){
+          play(true); state.correct++;
+          if(b.cat==="Complemento"&&b.subcat){
+            question.textContent=`Tipo di complemento di "${b.txt}"?`;
+            return showOptions(SUBS,"sub");
+          }
+          markSolved();
+        }else{
+          play(false); flashError(state.blockIdx); showHint(val,"cat");
+        }
+      }else if(type==="sub"){
+        if(val===b.subcat){
+          play(true); state.correct++; markSolved();
+        }else{
+          play(false); flashError(state.blockIdx); showHint(val,"sub");
+        }
+      }
+    }
+
+    /* ------------------------ FEEDBACK & AVANZAMENTO ---------------------- */
+    function showHint(wrong,type){
+      const b=state.sentences[state.idx].blocks[state.blockIdx];
+      const correct = type==="cat"?b.cat:b.subcat;
+      let html=`<strong>Hai selezionato:</strong> ${wrong}<br>
+                <strong>Corretto:</strong> ${correct}<br><br>`;
+      if(LOGIC_DESC[correct]) html+=`<em>${LOGIC_DESC[correct]}</em><br>`;
+      if(LOGIC_DESC[wrong])   html+=`<em>${LOGIC_DESC[wrong]}</em>`;
+      hintBox.innerHTML=html;
+      hintBox.style.display="block";
+    }
+
+    function markSolved(){
+      const el=sentenceArea.children[state.blockIdx];
+      el.classList.add("solved"); el.classList.remove("active");
+      const done=[...sentenceArea.children].filter(e=>e.classList.contains("solved")).length;
+      progressBar.style.width=`${(done/state.sentences[state.idx].blocks.length)*100}%`;
+      checkDone();
+    }
+
+    function flashError(idx){
+      const el=sentenceArea.children[idx];
+      el.classList.add("flash");
+      el.addEventListener("animationend",()=>el.classList.remove("flash"),{once:true});
+    }
+
+    function checkDone(){
+      const all=state.sentences[state.idx].blocks.every((_,i)=>
+        sentenceArea.children[i].classList.contains("solved")
+      );
+      if(all){
+        nextBtn.style.display="inline-block";
+        clearInterval(state.timerId);
+        question.textContent="Frase completata! Punteggio aggiornato.";
+      }
+    }
+
+    /* --------------------------- NAVIGAZIONE ------------------------------ */
+    nextBtn.addEventListener("click",()=>{
+      state.idx++;
+      if(state.idx>=state.sentences.length){
+        alert(`Esercizio completato! Punteggio finale: ${scoreSpan.textContent}/100`);
+        loadSentences();
+      }
+      render();
+    });
+
+    changeSentenceBtn.addEventListener("click",()=>{
+      state.idx=(state.idx+1)%state.sentences.length;
+      render();
+    });
+
+    $("modeSel").addEventListener("change",e=>{
+      state.mode=e.target.value;
+      playerBox.style.display=state.mode==="challenge"?"block":"none";
+      render();
+    });
+
+    $("levelSel").addEventListener("change",e=>{
+      state.level=e.target.value;
+      loadSentences(); render();
+    });
+
+    $("readBtn").addEventListener("click",()=>{
+      speak(state.sentences[state.idx].text);
+    });
+
+    /* ---------------------------- AVVIO ----------------------------------- */
+    window.addEventListener("DOMContentLoaded",()=>{
+      loadSentences(); render();
+    });
+  </script>
+</body>
+</html>
