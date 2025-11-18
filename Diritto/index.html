@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Mappa della Costituzione Italiana - Generatore Diritto</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div style="padding:12px 16px;background:#f5f7fb;border-bottom:1px solid #e0e6ef;display:flex;align-items:center;gap:10px;">
+    <i class="fas fa-scale-balanced" style="color:#8e44ad;"></i>
+    <div>
+        <strong>Mappa pronta: struttura della Costituzione italiana</strong><br>
+        <span style="font-size:0.95rem;color:#4b5563;">Usa l'editor per esplorare, riordinare o ampliare le parti, i titoli e le sezioni.</span>
+    </div>
+</div>
+<div class="toolbar" id="toolbar">
+    <div class="btn-group">
+        <button class="btn" id="add-node" title="Aggiungi Nodo (N)"><i class="fas fa-plus"></i> Nodo</button>
+        <button class="btn danger" id="remove-node" title="Elimina Nodo (Delete)"><i class="fas fa-minus"></i> Elimina</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn" id="add-connection" title="Connetti Nodi (C)"><i class="fas fa-link"></i> Connetti</button>
+        <button class="btn danger" id="remove-connection" title="Elimina Connessione"><i class="fas fa-unlink"></i> Scollega</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn secondary" id="layout-radial" title="Layout Radiale"><i class="fas fa-sun"></i> Radiale</button>
+        <button class="btn secondary" id="layout-grid" title="Layout Griglia"><i class="fas fa-th"></i> Griglia</button>
+        <button class="btn secondary" id="layout-physics" title="Simulazione Fisica (P)"><i class="fas fa-globe"></i> Fisica</button>
+        <button class="btn secondary" id="layout-hierarchy" title="Layout Gerarchico (H)"><i class="fas fa-sitemap"></i> Gerarchia</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn" id="zoom-in" title="Zoom In (+)"><i class="fas fa-search-plus"></i></button>
+        <button class="btn" id="zoom-out" title="Zoom Out (-)"><i class="fas fa-search-minus"></i></button>
+        <button class="btn" id="fit-screen" title="Adatta Schermo (F)"><i class="fas fa-expand-arrows-alt"></i></button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn success" id="save-map" title="Salva Mappa Locale (Ctrl+S)"><i class="fas fa-save"></i> Salva</button>
+        <button class="btn" id="save-full-page" title="Salva pagina completa con la mappa corrente"><i class="fas fa-file-export"></i> Salva Pagina</button>
+        <button class="btn" id="open-json-modal" title="Import/Export"><i class="fas fa-code"></i> Import/Export</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn" id="export-png" title="Esporta PNG"><i class="fas fa-image"></i> PNG</button>
+        <button class="btn" id="export-pdf" title="Esporta PDF"><i class="fas fa-file-pdf"></i> PDF</button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn" id="undo" title="Annulla (Ctrl+Z)"><i class="fas fa-undo"></i></button>
+        <button class="btn" id="redo" title="Ripristina (Ctrl+Y)"><i class="fas fa-redo"></i></button>
+    </div>
+    <div class="divider"></div>
+    <div class="btn-group">
+        <button class="btn secondary theme-toggle" id="theme-toggle" title="Cambia Tema (T)">
+            <span class="theme-toggle-icon"><i class="fas fa-sun"></i><i class="fas fa-moon"></i></span> Tema
+        </button>
+        <button class="btn secondary" id="open-sidebar" title="Editor Proprietà (E)"><i class="fas fa-edit"></i> Editor</button>
+        <button class="btn secondary" id="toggle-toolbar" title="Nascondi/Mostra Toolbar"><i class="fas fa-chevron-up"></i></button>
+    </div>
+</div>
+
+<div id="mindmap-container">
+    <svg id="mindmap-svg" tabindex="0">
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" /> <!-- Fill is set by connection color -->
+            </marker>
+            <marker id="arrowhead-reverse" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+                <polygon points="10 0, 0 3.5, 10 7" /> <!-- Fill is set by connection color -->
+            </marker>
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge> 
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <g id="connections-group"></g>
+        <g id="nodes-group"></g>
+    </svg>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <button class="btn danger" id="close-sidebar" style="float:right;margin-bottom:15px;"><i class="fas fa-times"></i></button>
+    
+    <div class="search-container">
+        <input type="text" class="search-input" id="node-search" placeholder="Cerca nodi...">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+    
+    <div id="node-editor" style="display:none;">
+        <h3><i class="fas fa-edit"></i> Modifica Nodo</h3>
+        <div class="form-group">
+            <label for="node-text">Testo:</label>
+            <input type="text" id="node-text" maxlength="50">
+        </div>
+        <div class="form-group">
+            <label for="node-description">Descrizione:</label>
+            <textarea id="node-description" rows="3" maxlength="500"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="node-tags">Tag (separati da virgola):</label>
+            <input type="text" id="node-tags" placeholder="importante, idea, priorità">
+        </div>
+        <div class="form-group">
+            <label>Categoria:</label>
+            <select id="node-category">
+                <option value="idea">💡 Idea</option>
+                <option value="task">✅ Task</option>
+                <option value="person">👤 Persona</option>
+                <option value="resource">📚 Risorsa</option>
+                <option value="location">📍 Luogo</option>
+                <option value="date">📅 Data</option>
+                <option value="default">⚪ Default</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Colore Nodo:</label>
+            <div class="color-picker" id="node-bg-colors"></div>
+        </div>
+        <div class="form-group">
+            <label>Colore Testo:</label>
+            <div class="color-picker" id="node-text-colors"></div>
+        </div>
+        <div class="form-group">
+            <label>Icona:</label>
+            <div class="icon-picker" id="node-icon-picker"></div>
+        </div>
+        <div class="icon-search-section">
+            <div class="icon-search-inline">
+                <input type="text" id="sidebar-icon-search" placeholder="Cerca icone per parola chiave..." aria-label="Cerca icone per parola chiave">
+                <button type="button" class="btn secondary small" id="sidebar-icon-search-btn"><i class="fas fa-search"></i> Cerca</button>
+            </div>
+            <p class="icon-search-hint">Suggerimento: prova termini come "scuola", "salute" o "tecnologia".</p>
+        </div>
+        <div class="form-group">
+            <label>Colore Icona:</label>
+            <div class="color-picker" id="node-icon-colors"></div>
+        </div>
+        <div class="form-group">
+            <label>Fonti:</label>
+            <div class="sources-list" id="node-sources-list"></div>
+            <button type="button" class="btn secondary small" id="add-node-source" title="Aggiungi una nuova fonte">
+                <i class="fas fa-plus"></i> Aggiungi fonte
+            </button>
+            <p class="source-hint">Suggerimento: usa URL completi (https://) e, se vuoi, aggiungi la classe Font Awesome per mostrare un'icona.</p>
+        </div>
+        <div class="form-group">
+            <label>Dimensione Nodo:</label>
+            <input type="range" id="node-size" min="40" max="500" value="90" step="10">
+            <span id="node-size-value">90px</span>
+        </div>
+        <div class="form-group">
+            <label>Dimensione Testo:</label>
+            <input type="range" id="node-text-size" min="8" max="48" value="16" step="1">
+            <span id="node-text-size-value">16px</span>
+        </div>
+        <div class="form-group">
+             <label>Dimensione Icona:</label>
+             <input type="range" id="node-icon-size" min="12" max="80" value="26" step="2">
+             <span id="node-icon-size-value">26px</span>
+        </div>
+        <div class="form-group">
+            <label>Forma:</label>
+            <select id="node-shape">
+                <option value="rect">Rettangolo</option>
+                <option value="circle">Cerchio</option>
+                <option value="ellipse">Ellisse</option>
+                <option value="hex">Esagono</option>
+                <option value="diamond">Diamante</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Priorità:</label>
+            <select id="node-priority">
+                <option value="low">🟢 Bassa</option>
+                <option value="medium">🟡 Media</option>
+                <option value="high">🔴 Alta</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="connection-editor" style="display:none;">
+        <h3><i class="fas fa-link"></i> Modifica Connessione</h3>
+        <div class="form-group">
+            <label for="connection-label">Etichetta:</label>
+            <input type="text" id="connection-label" maxlength="30">
+        </div>
+        <div class="form-group">
+            <label>Colore:</label>
+            <div class="color-picker" id="connection-colors"></div>
+        </div>
+        <div class="form-group">
+            <label for="connection-arrow">Direzione:</label>
+            <select id="connection-arrow">
+                <option value="forward">→ Avanti</option>
+                <option value="backward">← Indietro</option>
+                <option value="both">↔ Bidirezionale</option>
+                <option value="none">— Nessuna</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="connection-style">Stile:</label>
+            <select id="connection-style">
+                <option value="solid">Linea continua</option>
+                <option value="dashed">Linea tratteggiata</option>                
+                <option value="dotted">Linea punteggiata</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Dimensione testo:</label>
+            <input type="range" id="connection-label-size" min="8" max="36" value="20">
+            <span id="connection-label-size-value">20px</span>
+        </div>
+    </div>
+</div>
+
+<div class="minimap" id="minimap">
+    <svg id="minimap-svg">
+        <g id="minimap-nodes-group"></g>
+        <g id="minimap-connections-group"></g>
+        <rect class="minimap-viewport" id="minimap-viewport-rect"></rect>
+    </svg>
+</div>
+
+<div class="shortcut-help" id="shortcut-help">
+    <strong>Scorciatoie:</strong><br>
+    N - Nuovo nodo<br>
+    C - Connetti<br>
+    Delete/Backspace - Elimina<br>
+    F - Adatta schermo<br>
+    E - Editor<br>
+    P - Fisica On/Off<br>
+    H - Layout Gerarchico<br>
+    T - Cambia Tema<br>
+    Ctrl+S - Salva Locale<br>
+    Ctrl+Z - Annulla<br>
+    Ctrl+Y - Ripristina<br>
+    +/- = Zoom In/Out
+</div>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>Elaborazione...</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="speech-overlay" id="speech-overlay" aria-live="polite" aria-atomic="true">
+    <div class="speech-overlay-content">
+        <i class="fas fa-volume-up speech-overlay-icon" aria-hidden="true"></i>
+        <div class="speech-overlay-text" id="speech-overlay-text"></div>
+    </div>
+</div>
+
+<div class="overlay-desc" id="overlay-desc" tabindex="0">
+    <div class="overlay-desc-box" id="overlay-desc-box">
+        <!-- Content injected by JS -->
+    </div>
+</div>
+
+<div id="icon-modal">
+    <div id="icon-modal-box">
+        <div class="icon-modal-header">
+            <h3><i class="fas fa-icons"></i> Tutte le icone</h3>
+            <button class="btn secondary" id="icon-modal-close" title="Chiudi"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="icon-modal-search">
+            <input type="text" id="icon-modal-search" placeholder="Cerca icone...">
+            <div class="icon-modal-autocomplete" id="icon-modal-autocomplete"></div>
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="icon-modal-hint">Suggerimento: clicca un'icona per applicarla al nodo.</div>
+        <div class="icon-picker icon-modal-grid" id="icon-modal-list"></div>
+    </div>
+</div>
+
+<div id="print-preview" style="display:none;">
+    <img id="preview-img" />
+    <button id="close-preview" class="btn" style="margin-top:15px;">Chiudi</button>
+</div>
+
+<div id="json-modal">
+    <div id="json-modal-box">
+        <h3><i class="fas fa-code"></i> Import/Export JSON</h3>
+        <textarea id="json-area" placeholder="Incolla qui il codice JSON della mappa o modifica quello esistente..."></textarea>
+        <div style="margin-top:15px;text-align:right;display:flex;gap:10px;justify-content:flex-end;">
+            <button class="btn success" id="btn-export-json"><i class="fas fa-download"></i> Esporta</button>
+            <button class="btn" id="btn-import-json"><i class="fas fa-upload"></i> Importa</button>
+            <button class="btn secondary" id="btn-close-json"><i class="fas fa-times"></i> Chiudi</button>
+        </div>
+    </div>
+</div>
+
+<script id="embedded-map-data" type="application/json">
+{
+  "nodes": [
+    {"id":"node1","x":600,"y":400,"text":"Costituzione Italiana","description":"Struttura generale della Carta del 1948.","tags":["diritto","costituzione"],"category":"resource","backgroundColor":"#3498db","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-scale-balanced","iconClass":"fas fa-scale-balanced","iconRenderMode":"font","size":110,"textSize":18,"iconSize":30,"shape":"rect","priority":"high","sources":[{"id":"source1","label":"Testo ufficiale","url":"https://www.gazzettaufficiale.it/atto/serie_generale/caricaDettaglioAtto/originario?atto.dataPubblicazioneGazzetta=1947-12-27&atto.codiceRedazionale=047U0001","icon":"fas fa-book"}],"parentId":null,"createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node2","x":360,"y":250,"text":"Principi fondamentali","description":"Articoli 1-12: valori fondativi, sovranità popolare, diritti inviolabili.","tags":["principi"],"category":"idea","backgroundColor":"#e67e22","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-flag","iconClass":"fas fa-flag","iconRenderMode":"font","size":95,"textSize":16,"iconSize":26,"shape":"rect","priority":"medium","sources":[],"parentId":"node1","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node3","x":360,"y":470,"text":"Parte I - Diritti e doveri","description":"Articoli 13-54: tutela dei diritti e responsabilità dei cittadini.","tags":["diritti","doveri"],"category":"idea","backgroundColor":"#2ecc71","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-user-shield","iconClass":"fas fa-user-shield","iconRenderMode":"font","size":95,"textSize":16,"iconSize":26,"shape":"rect","priority":"medium","sources":[],"parentId":"node1","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node4","x":860,"y":340,"text":"Parte II - Ordinamento","description":"Articoli 55-139: organizzazione delle istituzioni repubblicane.","tags":["ordinamento"],"category":"resource","backgroundColor":"#9b59b6","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-landmark","iconClass":"fas fa-landmark","iconRenderMode":"font","size":95,"textSize":16,"iconSize":26,"shape":"rect","priority":"medium","sources":[],"parentId":"node1","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node5","x":860,"y":560,"text":"Disposizioni transitorie","description":"Norme transitorie e finali a chiusura della Carta.","tags":["transitorie"],"category":"default","backgroundColor":"#f1c40f","textColor":"#2c3e50","iconColor":"#2c3e50","icon":"fas fa-hourglass-half","iconClass":"fas fa-hourglass-half","iconRenderMode":"font","size":90,"textSize":15,"iconSize":24,"shape":"rect","priority":"low","sources":[],"parentId":"node1","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node6","x":200,"y":400,"text":"Titolo I - Rapporti civili","description":"Libertà personali, domicilio, stampa, fede e circolazione.","tags":["titolo I"],"category":"default","backgroundColor":"#34495e","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-dove","iconClass":"fas fa-dove","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node3","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node7","x":200,"y":480,"text":"Titolo II - Etico-sociali","description":"Tutela della famiglia, salute, scuola, ricerca e cultura.","tags":["titolo II"],"category":"default","backgroundColor":"#16a085","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-heart","iconClass":"fas fa-heart","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node3","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node8","x":200,"y":560,"text":"Titolo III - Economici","description":"Rapporti economici, proprietà, lavoro e iniziativa privata.","tags":["titolo III"],"category":"default","backgroundColor":"#d35400","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-coins","iconClass":"fas fa-coins","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node3","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node9","x":200,"y":640,"text":"Titolo IV - Politici","description":"Cittadinanza, diritti politici e partecipazione democratica.","tags":["titolo IV"],"category":"default","backgroundColor":"#e74c3c","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-check-double","iconClass":"fas fa-check-double","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node3","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node10","x":1060,"y":190,"text":"Titolo I - Parlamento","description":"Bicameralismo, funzione legislativa e attività parlamentare.","tags":["parlamento"],"category":"default","backgroundColor":"#2980b9","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-gavel","iconClass":"fas fa-gavel","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node4","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node11","x":1060,"y":260,"text":"Titolo II - Presidente","description":"Elezione, poteri e responsabilità del Presidente della Repubblica.","tags":["presidente"],"category":"default","backgroundColor":"#8e44ad","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-user-tie","iconClass":"fas fa-user-tie","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node4","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node12","x":1060,"y":330,"text":"Titolo III - Governo","description":"Formazione del governo, responsabilità politica e amministrazione.","tags":["governo"],"category":"default","backgroundColor":"#c0392b","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-sitemap","iconClass":"fas fa-sitemap","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node4","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node13","x":1060,"y":400,"text":"Titolo IV - Magistratura","description":"Indipendenza della magistratura e funzioni della Corte costituzionale.","tags":["magistratura"],"category":"default","backgroundColor":"#27ae60","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-scale-balanced","iconClass":"fas fa-scale-balanced","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node4","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node14","x":1060,"y":470,"text":"Titolo V - Autonomie","description":"Regioni, Province, Città metropolitane, Comuni e autonomie locali.","tags":["autonomie"],"category":"default","backgroundColor":"#f39c12","textColor":"#2c3e50","iconColor":"#2c3e50","icon":"fas fa-city","iconClass":"fas fa-city","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node4","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"},
+    {"id":"node15","x":1060,"y":540,"text":"Titolo VI - Garanzie","description":"Corte costituzionale, revisione della Costituzione e leggi di revisione.","tags":["garanzie"],"category":"default","backgroundColor":"#1abc9c","textColor":"#ffffff","iconColor":"#ffffff","icon":"fas fa-shield-halved","iconClass":"fas fa-shield-halved","iconRenderMode":"font","size":85,"textSize":14,"iconSize":22,"shape":"rect","priority":"medium","sources":[],"parentId":"node4","createdAt":"2024-06-01T00:00:00.000Z","updatedAt":"2024-06-01T00:00:00.000Z"}
+  ],
+  "connections": [
+    {"id":"conn1","source":"node1","target":"node2","label":"Sezione","labelSize":14,"color":"#34495e","arrow":"forward","style":"solid"},
+    {"id":"conn2","source":"node1","target":"node3","label":"Corpo","labelSize":14,"color":"#9b59b6","arrow":"forward","style":"solid"},
+    {"id":"conn3","source":"node1","target":"node4","label":"Ordinamento","labelSize":14,"color":"#e67e22","arrow":"forward","style":"solid"},
+    {"id":"conn4","source":"node1","target":"node5","label":"Chiusura","labelSize":14,"color":"#2ecc71","arrow":"forward","style":"solid"},
+    {"id":"conn5","source":"node3","target":"node6","label":"Diritti civili","labelSize":14,"color":"#e74c3c","arrow":"forward","style":"solid"},
+    {"id":"conn6","source":"node3","target":"node7","label":"Società","labelSize":14,"color":"#16a085","arrow":"forward","style":"solid"},
+    {"id":"conn7","source":"node3","target":"node8","label":"Economia","labelSize":14,"color":"#d35400","arrow":"forward","style":"solid"},
+    {"id":"conn8","source":"node3","target":"node9","label":"Politica","labelSize":14,"color":"#2980b9","arrow":"forward","style":"solid"},
+    {"id":"conn9","source":"node4","target":"node10","label":"Poteri legislativi","labelSize":14,"color":"#8e44ad","arrow":"forward","style":"solid"},
+    {"id":"conn10","source":"node4","target":"node11","label":"Capo dello Stato","labelSize":14,"color":"#2ecc71","arrow":"forward","style":"solid"},
+    {"id":"conn11","source":"node4","target":"node12","label":"Esecutivo","labelSize":14,"color":"#c0392b","arrow":"forward","style":"solid"},
+    {"id":"conn12","source":"node4","target":"node13","label":"Giurisdizione","labelSize":14,"color":"#3498db","arrow":"forward","style":"solid"},
+    {"id":"conn13","source":"node4","target":"node14","label":"Autonomie","labelSize":14,"color":"#f1c40f","arrow":"forward","style":"solid"},
+    {"id":"conn14","source":"node4","target":"node15","label":"Garanzie","labelSize":14,"color":"#1abc9c","arrow":"forward","style":"solid"}
+  ],
+  "viewBox":"0 0 1200 800",
+  "theme":"light"
+}
+</script>
+<script>
+    window.__EMBEDDED_MAP_DATA__ = (() => {
+        const dataEl = document.getElementById('embedded-map-data');
+        if (!dataEl) return null;
+        const content = (dataEl.textContent || '').trim();
+        if (!content) return null;
+        try {
+            return JSON.parse(content);
+        } catch (err) {
+            console.error('Impossibile leggere la mappa incorporata:', err);
+            return null;
+        }
+    })();
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script defer src="../fontawesome-compat.js"></script>
+<script defer src="../icon-library.js"></script>
+<script defer src="../data/fontawesome-icons.js"></script>
+<script defer src="main.js"></script>
+<script defer src="../scripts/save-full-page.js"></script>
+</body>
+</html>
