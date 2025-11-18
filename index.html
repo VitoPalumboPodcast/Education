@@ -1,302 +1,176 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<title>Generatore Mappe Mentali Avanzato</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub Risorse Didattiche</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="landing.css">
 </head>
-<body>
-<div class="toolbar" id="toolbar">
-    <div class="btn-group">
-        <button class="btn" id="add-node" title="Aggiungi Nodo (N)"><i class="fas fa-plus"></i> Nodo</button>
-        <button class="btn danger" id="remove-node" title="Elimina Nodo (Delete)"><i class="fas fa-minus"></i> Elimina</button>
-    </div>
-    <div class="divider"></div>
-    <div class="btn-group">
-        <button class="btn" id="add-connection" title="Connetti Nodi (C)"><i class="fas fa-link"></i> Connetti</button>
-        <button class="btn danger" id="remove-connection" title="Elimina Connessione"><i class="fas fa-unlink"></i> Scollega</button>
-    </div>
-    <div class="divider"></div>
-    <div class="btn-group">
-        <button class="btn secondary" id="layout-radial" title="Layout Radiale"><i class="fas fa-sun"></i> Radiale</button>
-        <button class="btn secondary" id="layout-grid" title="Layout Griglia"><i class="fas fa-th"></i> Griglia</button>
-        <button class="btn secondary" id="layout-physics" title="Simulazione Fisica (P)"><i class="fas fa-globe"></i> Fisica</button>
-        <button class="btn secondary" id="layout-hierarchy" title="Layout Gerarchico (H)"><i class="fas fa-sitemap"></i> Gerarchia</button>
-    </div>
-    <div class="divider"></div>
-    <div class="btn-group">
-        <button class="btn" id="zoom-in" title="Zoom In (+)"><i class="fas fa-search-plus"></i></button>
-        <button class="btn" id="zoom-out" title="Zoom Out (-)"><i class="fas fa-search-minus"></i></button>
-        <button class="btn" id="fit-screen" title="Adatta Schermo (F)"><i class="fas fa-expand-arrows-alt"></i></button>
-    </div>
-    <div class="divider"></div>
-    <div class="btn-group">
-        <button class="btn success" id="save-map" title="Salva Mappa Locale (Ctrl+S)"><i class="fas fa-save"></i> Salva</button>
-        <button class="btn" id="save-html" title="Esporta questa pagina HTML con la mappa corrente"><i class="fas fa-file-code"></i> Salva Pagina</button>
-        <button class="btn" id="open-json-modal" title="Import/Export"><i class="fas fa-code"></i> Import/Export</button>
-    </div>
-    <div class="divider"></div>
-    <div class="btn-group">
-        <button class="btn" id="export-png" title="Esporta PNG"><i class="fas fa-image"></i> PNG</button>
-        <button class="btn" id="export-pdf" title="Esporta PDF"><i class="fas fa-file-pdf"></i> PDF</button>
-    </div>
-    <div class="divider"></div>
-    <div class="btn-group">
-        <button class="btn" id="undo" title="Annulla (Ctrl+Z)"><i class="fas fa-undo"></i></button>
-        <button class="btn" id="redo" title="Ripristina (Ctrl+Y)"><i class="fas fa-redo"></i></button>
-    </div>
-    <div class="divider"></div>
-    <div class="btn-group">
-        <button class="btn secondary theme-toggle" id="theme-toggle" title="Cambia Tema (T)">
-            <span class="theme-toggle-icon"><i class="fas fa-sun"></i><i class="fas fa-moon"></i></span> Tema
-        </button>
-        <button class="btn secondary" id="open-sidebar" title="Editor Proprietà (E)"><i class="fas fa-edit"></i> Editor</button>
-        <button class="btn secondary" id="toggle-toolbar" title="Nascondi/Mostra Toolbar"><i class="fas fa-chevron-up"></i></button>
-    </div>
-</div>
-
-<div id="mindmap-container">
-    <svg id="mindmap-svg" tabindex="0">
-        <defs>
-            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                <polygon points="0 0, 10 3.5, 0 7" /> <!-- Fill is set by connection color -->
-            </marker>
-            <marker id="arrowhead-reverse" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
-                <polygon points="10 0, 0 3.5, 10 7" /> <!-- Fill is set by connection color -->
-            </marker>
-            <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                <feMerge> 
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-            </filter>
-        </defs>
-        <g id="connections-group"></g>
-        <g id="nodes-group"></g>
-    </svg>
-</div>
-
-<div class="sidebar" id="sidebar">
-    <button class="btn danger" id="close-sidebar" style="float:right;margin-bottom:15px;"><i class="fas fa-times"></i></button>
-    
-    <div class="search-container">
-        <input type="text" class="search-input" id="node-search" placeholder="Cerca nodi...">
-        <i class="fas fa-search search-icon"></i>
-    </div>
-    
-    <div id="node-editor" style="display:none;">
-        <h3><i class="fas fa-edit"></i> Modifica Nodo</h3>
-        <div class="form-group">
-            <label for="node-text">Testo:</label>
-            <input type="text" id="node-text" maxlength="50">
-        </div>
-        <div class="form-group">
-            <label for="node-description">Descrizione:</label>
-            <textarea id="node-description" rows="3" maxlength="500"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="node-tags">Tag (separati da virgola):</label>
-            <input type="text" id="node-tags" placeholder="importante, idea, priorità">
-        </div>
-        <div class="form-group">
-            <label>Categoria:</label>
-            <select id="node-category">
-                <option value="idea">💡 Idea</option>
-                <option value="task">✅ Task</option>
-                <option value="person">👤 Persona</option>
-                <option value="resource">📚 Risorsa</option>
-                <option value="location">📍 Luogo</option>
-                <option value="date">📅 Data</option>
-                <option value="default">⚪ Default</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Colore Nodo:</label>
-            <div class="color-picker" id="node-bg-colors"></div>
-        </div>
-        <div class="form-group">
-            <label>Colore Testo:</label>
-            <div class="color-picker" id="node-text-colors"></div>
-        </div>
-        <div class="form-group">
-            <label>Icona:</label>
-            <div class="icon-picker" id="node-icon-picker"></div>
-        </div>
-        <div class="icon-search-section">
-            <div class="icon-search-inline">
-                <input type="text" id="sidebar-icon-search" placeholder="Cerca icone per parola chiave..." aria-label="Cerca icone per parola chiave">
-                <button type="button" class="btn secondary small" id="sidebar-icon-search-btn"><i class="fas fa-search"></i> Cerca</button>
+<body id="top">
+    <header class="hero">
+        <div class="hero__content">
+            <p class="eyebrow"><i class="fas fa-graduation-cap"></i> Collezione di strumenti interattivi</p>
+            <h1>Benvenuto nel tuo hub per mappe mentali, grammatica e creatività linguistica</h1>
+            <p class="subtitle">Accedi rapidamente a tutte le pagine del progetto da un unico punto di partenza. Ogni sezione è descritta brevemente così puoi scegliere subito lo strumento giusto.</p>
+            <div class="hero__actions">
+                <a class="btn primary" href="#risorse"><i class="fas fa-compass"></i> Esplora le risorse</a>
+                <a class="btn ghost" href="mappe-mentali-salvataggio.html"><i class="fas fa-diagram-project"></i> Vai alle mappe salvate</a>
             </div>
-            <p class="icon-search-hint">Suggerimento: prova termini come "scuola", "salute" o "tecnologia".</p>
+            <div class="hero__tags">
+                <span class="tag"><i class="fas fa-brain"></i> Mappe mentali</span>
+                <span class="tag"><i class="fas fa-language"></i> Grammatica</span>
+                <span class="tag"><i class="fas fa-rocket"></i> Costruttori</span>
+                <span class="tag"><i class="fas fa-book"></i> Vocabolario</span>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Colore Icona:</label>
-            <div class="color-picker" id="node-icon-colors"></div>
+        <div class="hero__badge">
+            <p>10 pagine</p>
+            <small>tutte raccolte qui</small>
         </div>
-        <div class="form-group">
-            <label>Fonti:</label>
-            <div class="sources-list" id="node-sources-list"></div>
-            <button type="button" class="btn secondary small" id="add-node-source" title="Aggiungi una nuova fonte">
-                <i class="fas fa-plus"></i> Aggiungi fonte
-            </button>
-            <p class="source-hint">Suggerimento: usa URL completi (https://) e, se vuoi, aggiungi la classe Font Awesome per mostrare un'icona.</p>
-        </div>
-        <div class="form-group">
-            <label>Dimensione Nodo:</label>
-            <input type="range" id="node-size" min="40" max="500" value="90" step="10">
-            <span id="node-size-value">90px</span>
-        </div>
-        <div class="form-group">
-            <label>Dimensione Testo:</label>
-            <input type="range" id="node-text-size" min="8" max="48" value="16" step="1">
-            <span id="node-text-size-value">16px</span>
-        </div>
-        <div class="form-group">
-             <label>Dimensione Icona:</label>
-             <input type="range" id="node-icon-size" min="12" max="80" value="26" step="2">
-             <span id="node-icon-size-value">26px</span>
-        </div>
-        <div class="form-group">
-            <label>Forma:</label>
-            <select id="node-shape">
-                <option value="rect">Rettangolo</option>
-                <option value="circle">Cerchio</option>
-                <option value="ellipse">Ellisse</option>
-                <option value="hex">Esagono</option>
-                <option value="diamond">Diamante</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Priorità:</label>
-            <select id="node-priority">
-                <option value="low">🟢 Bassa</option>
-                <option value="medium">🟡 Media</option>
-                <option value="high">🔴 Alta</option>
-            </select>
-        </div>
-    </div>
-    
-    <div id="connection-editor" style="display:none;">
-        <h3><i class="fas fa-link"></i> Modifica Connessione</h3>
-        <div class="form-group">
-            <label for="connection-label">Etichetta:</label>
-            <input type="text" id="connection-label" maxlength="30">
-        </div>
-        <div class="form-group">
-            <label>Colore:</label>
-            <div class="color-picker" id="connection-colors"></div>
-        </div>
-        <div class="form-group">
-            <label for="connection-arrow">Direzione:</label>
-            <select id="connection-arrow">
-                <option value="forward">→ Avanti</option>
-                <option value="backward">← Indietro</option>
-                <option value="both">↔ Bidirezionale</option>
-                <option value="none">— Nessuna</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="connection-style">Stile:</label>
-            <select id="connection-style">
-                <option value="solid">Linea continua</option>
-                <option value="dashed">Linea tratteggiata</option>                
-                <option value="dotted">Linea punteggiata</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Dimensione testo:</label>
-            <input type="range" id="connection-label-size" min="8" max="36" value="14">
-            <span id="connection-label-size-value">14px</span>
-        </div>
-    </div>
-</div>
+    </header>
 
-<div class="minimap" id="minimap">
-    <svg id="minimap-svg">
-        <g id="minimap-nodes-group"></g>
-        <g id="minimap-connections-group"></g>
-        <rect class="minimap-viewport" id="minimap-viewport-rect"></rect>
-    </svg>
-</div>
-
-<div class="shortcut-help" id="shortcut-help">
-    <strong>Scorciatoie:</strong><br>
-    N - Nuovo nodo<br>
-    C - Connetti<br>
-    Delete/Backspace - Elimina<br>
-    F - Adatta schermo<br>
-    E - Editor<br>
-    P - Fisica On/Off<br>
-    H - Layout Gerarchico<br>
-    T - Cambia Tema<br>
-    Ctrl+S - Salva Locale<br>
-    Ctrl+Z - Annulla<br>
-    Ctrl+Y - Ripristina<br>
-    +/- = Zoom In/Out
-</div>
-
-<div class="loading" id="loading">
-    <div class="spinner"></div>
-    <span>Elaborazione...</span>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<div class="speech-overlay" id="speech-overlay" aria-live="polite" aria-atomic="true">
-    <div class="speech-overlay-content">
-        <i class="fas fa-volume-up speech-overlay-icon" aria-hidden="true"></i>
-        <div class="speech-overlay-text" id="speech-overlay-text"></div>
-    </div>
-</div>
-
-<div class="overlay-desc" id="overlay-desc" tabindex="0">
-    <div class="overlay-desc-box" id="overlay-desc-box">
-        <!-- Content injected by JS -->
-    </div>
-</div>
-
-<div id="icon-modal">
-    <div id="icon-modal-box">
-        <div class="icon-modal-header">
-            <h3><i class="fas fa-icons"></i> Tutte le icone</h3>
-            <button class="btn secondary" id="icon-modal-close" title="Chiudi"><i class="fas fa-times"></i></button>
+    <main class="content" id="risorse">
+        <div class="content__header">
+            <div>
+                <p class="eyebrow">Navigazione veloce</p>
+                <h2>Trova subito la pagina che ti serve</h2>
+                <p class="subtitle">Usa la ricerca per filtrare titoli, descrizioni o categorie. Ogni riquadro porta direttamente al file corrispondente.</p>
+            </div>
+            <div class="search">
+                <label for="search-input" class="sr-only">Cerca tra le risorse</label>
+                <input type="search" id="search-input" placeholder="Cerca per titolo, categoria o parola chiave..." aria-label="Cerca tra le risorse">
+                <i class="fas fa-search"></i>
+            </div>
         </div>
-        <div class="icon-modal-search">
-            <input type="text" id="icon-modal-search" placeholder="Cerca icone...">
-            <div class="icon-modal-autocomplete" id="icon-modal-autocomplete"></div>
-            <i class="fas fa-search"></i>
+
+        <div class="grid" id="resource-grid">
+            <article class="card" data-tags="mappe mentale generatore editor avanzato" aria-label="Generatore mappe mentali avanzato">
+                <div class="card__icon gradient-blue"><i class="fas fa-diagram-project"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Mappe mentali</p>
+                    <h3>Generatore mappe mentali (versione avanzata)</h3>
+                    <p>Editor completo con layout multipli, esportazione e gestione di icone personalizzate.</p>
+                </div>
+                <a class="card__link" href="MAP/index.html">Apri pagina</a>
+            </article>
+
+            <article class="card" data-tags="mappe mentale salvataggio locale backup" aria-label="Mappe mentali con salvataggio locale">
+                <div class="card__icon gradient-purple"><i class="fas fa-cloud"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Mappe mentali</p>
+                    <h3>Mappe mentali con salvataggio</h3>
+                    <p>Versione focalizzata su import/export JSON e gestione delle mappe salvate nel browser.</p>
+                </div>
+                <a class="card__link" href="mappe-mentali-salvataggio.html">Apri pagina</a>
+            </article>
+
+            <article class="card" data-tags="mappe mentale generatore legacy" aria-label="Generatore mappe mentali compatibile">
+                <div class="card__icon gradient-green"><i class="fas fa-sitemap"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Mappe mentali</p>
+                    <h3>Generatore mappe mentali (compatibile)</h3>
+                    <p>Implementazione alternativa del generatore per chi preferisce la versione predefinita.</p>
+                </div>
+                <a class="card__link" href="MAP-GENERATOR.html">Apri pagina</a>
+            </article>
+
+            <article class="card" data-tags="grammatica analisi logica sintassi" aria-label="Analisi logica">
+                <div class="card__icon gradient-orange"><i class="fas fa-shapes"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Grammatica</p>
+                    <h3>Analisi logica</h3>
+                    <p>Strumento per riconoscere e classificare i complementi all'interno della frase.</p>
+                </div>
+                <a class="card__link" href="analisi-logica.html">Apri pagina</a>
+            </article>
+
+            <article class="card" data-tags="grammatica analisi grammaticale morfologia" aria-label="Analisi grammaticale">
+                <div class="card__icon gradient-red"><i class="fas fa-language"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Grammatica</p>
+                    <h3>Analisi grammaticale</h3>
+                    <p>Aiuto interattivo per individuare articolo, nome, verbo e altre parti del discorso.</p>
+                </div>
+                <a class="card__link" href="analisi_grammaticale.html">Apri pagina</a>
+            </article>
+
+            <article class="card" data-tags="grammatica fonetica pronuncia suoni" aria-label="Fonetica">
+                <div class="card__icon gradient-cyan"><i class="fas fa-wave-square"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Grammatica</p>
+                    <h3>Fonetica</h3>
+                    <p>Tabella interattiva per esplorare suoni, accenti e regole di pronuncia.</p>
+                </div>
+                <a class="card__link" href="fonetica.html">Apri pagina</a>
+            </article>
+
+            <article class="card" data-tags="costruttore frase combinazioni creative" aria-label="Costruttore di frase in italiano">
+                <div class="card__icon gradient-yellow"><i class="fas fa-wand-magic-sparkles"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Creatività</p>
+                    <h3>Costruttore di frase</h3>
+                    <p>Genera frasi italiane combinando soggetti, predicati e complementi in modo dinamico.</p>
+                </div>
+                <a class="card__link" href="costruttore-di-frase.html">Apri pagina</a>
+            </article>
+
+            <article class="card" data-tags="costruttore frase inglese builder" aria-label="Sentence builder in inglese">
+                <div class="card__icon gradient-teal"><i class="fas fa-comment-dots"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Creatività</p>
+                    <h3>Sentence builder (English)</h3>
+                    <p>Crea frasi in inglese scegliendo soggetti, verbi e complementi con un click.</p>
+                </div>
+                <a class="card__link" href="sentence-builder.html">Apri pagina</a>
+            </article>
+
+            <article class="card" data-tags="vocabolario inglese scuola classroom" aria-label="Vocabolario d'aula in inglese">
+                <div class="card__icon gradient-indigo"><i class="fas fa-school"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Vocabolario</p>
+                    <h3>Classroom Vocabulary (English)</h3>
+                    <p>Glossario illustrato dei principali termini scolastici in inglese.</p>
+                </div>
+                <a class="card__link" href="English/ClassroomVocabulary.html">Apri pagina</a>
+            </article>
+
+            <article class="card" data-tags="storia statuto costituzione italiano" aria-label="Statuto Albertino e Costituzione">
+                <div class="card__icon gradient-amber"><i class="fas fa-scale-balanced"></i></div>
+                <div class="card__body">
+                    <p class="eyebrow">Storia & Educazione civica</p>
+                    <h3>Statuto Albertino & Costituzione</h3>
+                    <p>Confronto interattivo tra lo Statuto Albertino e la Costituzione italiana.</p>
+                </div>
+                <a class="card__link" href="StatutoAlbertino-Costituzione.html">Apri pagina</a>
+            </article>
         </div>
-        <div class="icon-modal-hint">Suggerimento: clicca un'icona per applicarla al nodo.</div>
-        <div class="icon-picker icon-modal-grid" id="icon-modal-list"></div>
-    </div>
-</div>
+    </main>
 
-<div id="print-preview" style="display:none;">
-    <img id="preview-img" />
-    <button id="close-preview" class="btn" style="margin-top:15px;">Chiudi</button>
-</div>
-
-<div id="json-modal">
-    <div id="json-modal-box">
-        <h3><i class="fas fa-code"></i> Import/Export JSON</h3>
-        <textarea id="json-area" placeholder="Incolla qui il codice JSON della mappa o modifica quello esistente..."></textarea>
-        <div style="margin-top:15px;text-align:right;display:flex;gap:10px;justify-content:flex-end;">
-            <button class="btn success" id="btn-export-json"><i class="fas fa-download"></i> Esporta</button>
-            <button class="btn" id="btn-import-json"><i class="fas fa-upload"></i> Importa</button>
-            <button class="btn secondary" id="btn-close-json"><i class="fas fa-times"></i> Chiudi</button>
+    <footer class="footer">
+        <div>
+            <p class="eyebrow">Suggerimento</p>
+            <p class="subtitle">Aggiungi questa pagina ai preferiti: resterà l'accesso rapido a tutte le risorse, anche dopo aver creato nuove mappe mentali.</p>
         </div>
-    </div>
-</div>
+        <a class="btn ghost" href="#top"><i class="fas fa-arrow-up"></i> Torna su</a>
+    </footer>
 
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script defer src="fontawesome-compat.js"></script>
-<script defer src="icon-library.js"></script>
-<script defer src="data/fontawesome-icons.js"></script>
-<script defer src="main.js"></script>
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const cards = Array.from(document.querySelectorAll('.card'));
+
+        function filterCards() {
+            const query = searchInput.value.toLowerCase();
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', filterCards);
+    </script>
 </body>
 </html>
