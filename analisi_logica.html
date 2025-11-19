@@ -47,6 +47,8 @@
     #nextBtn:hover { background: #208438; }
     #changeSentenceBtn { padding: .6rem 1.2rem; border-radius: 6px; background: #007bff; color: #fff; transition: background .2s; }
     #changeSentenceBtn:hover { background: #0056b3; }
+    #hintBtn { display: none; background: #ffd966; color: #4a3b00; border: 1px solid #e0b800; }
+    #hintBtn:hover { background: #f2c94c; }
 
     /* Modal */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; z-index: 999; visibility: hidden; opacity: 0; transition: .2s; }
@@ -89,6 +91,7 @@
     <div id="selectionArea">
       <div id="question">Tocca un blocco per iniziare.</div>
       <div id="options"></div>
+      <button id="hintBtn">💡 Suggerimento</button>
       <button id="nextBtn">Frase successiva ➜</button>
     </div>
 
@@ -315,7 +318,7 @@
     /* ----------------------------- STATO ---------------------------------- */
     let state = {
       mode:"single", level:"base", sentences:[], idx:0,
-      blockIdx:null, correct:0, attempts:0, timerId:null,
+      blockIdx:null, questionType:"cat", correct:0, attempts:0, timerId:null,
       turn:1, scores:[0,0]
     };
 
@@ -327,6 +330,7 @@
           scoreSpan=$("score"),
           timerSpan=$("timer"),
           hintBox=$("hintBox"),
+          hintBtn=$("hintBtn"),
           nextBtn=$("nextBtn"),
           changeSentenceBtn=$("changeSentenceBtn"),
           progressBar=$("progressBar"),
@@ -385,6 +389,10 @@
     function render(){
       nextBtn.style.display="none";
       hintBox.style.display="none";
+      hintBtn.style.display="none";
+      hintBtn.disabled=true;
+      state.blockIdx=null;
+      state.questionType="cat";
       sentenceArea.innerHTML="";
       optionsDiv.innerHTML="";
       question.textContent="Tocca un blocco per iniziare.";
@@ -411,15 +419,19 @@
     function selectBlock(i){
       if(sentenceArea.children[i].classList.contains("solved")) return;
       state.blockIdx=i;
+      state.questionType="cat";
       [...sentenceArea.children].forEach((e,idx)=>
         e.classList.toggle("active",idx===i)
       );
       const b=state.sentences[state.idx].blocks[i];
       question.textContent=`Funzione logica di "${b.txt}"?`;
+      hintBtn.style.display="inline-block";
+      hintBtn.disabled=false;
       showOptions(CATS,"cat");
     }
 
     function showOptions(list,type){
+      state.questionType=type;
       optionsDiv.innerHTML="";
       list.forEach(v=>{
         const btn=document.createElement("button");
@@ -454,6 +466,23 @@
     }
 
     /* ------------------------ FEEDBACK & AVANZAMENTO ---------------------- */
+    function showUserHint(){
+      if(state.blockIdx===null) return;
+      const b=state.sentences[state.idx].blocks[state.blockIdx];
+      const key = state.questionType==="sub" && b.subcat ? b.subcat : b.cat;
+      let html = "<strong>Suggerimento:</strong> ";
+      if(LOGIC_DESC[key]){
+        html += LOGIC_DESC[key];
+      }else{
+        html += "Osserva il ruolo che questo frammento svolge rispetto al verbo principale.";
+      }
+      if(b.cat==="Complemento" && b.subcat && state.questionType==="cat"){
+        html += "<br><em>Dopo aver trovato il complemento, indica anche il suo tipo.</em>";
+      }
+      hintBox.innerHTML=html;
+      hintBox.style.display="block";
+    }
+
     function showHint(wrong,type){
       const b=state.sentences[state.idx].blocks[state.blockIdx];
       const correct = type==="cat"?b.cat:b.subcat;
@@ -468,6 +497,8 @@
     function markSolved(){
       const el=sentenceArea.children[state.blockIdx];
       el.classList.add("solved"); el.classList.remove("active");
+      hintBtn.style.display="none";
+      hintBtn.disabled=true;
       const done=[...sentenceArea.children].filter(e=>e.classList.contains("solved")).length;
       progressBar.style.width=`${(done/state.sentences[state.idx].blocks.length)*100}%`;
       checkDone();
@@ -515,6 +546,8 @@
       state.level=e.target.value;
       loadSentences(); render();
     });
+
+    hintBtn.addEventListener("click",showUserHint);
 
     $("readBtn").addEventListener("click",()=>{
       speak(state.sentences[state.idx].text);
