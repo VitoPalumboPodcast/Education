@@ -50,6 +50,11 @@
     #hintBtn { display: none; background: #ffd966; color: #4a3b00; border: 1px solid #e0b800; }
     #hintBtn:hover { background: #f2c94c; }
 
+    /* Feedback */
+    #feedback { display: none; width: 100%; max-width: 660px; padding: .6rem 1rem; border-radius: 8px; text-align: center; font-weight: 600; }
+    #feedback.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    #feedback.error   { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
     /* Modal */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; z-index: 999; visibility: hidden; opacity: 0; transition: .2s; }
     .modal.show { visibility: visible; opacity: 1; }
@@ -96,6 +101,7 @@
     </div>
 
     <div id="hintBox"></div>
+    <div id="feedback"></div>
   </div>
 
   <div id="reportModal" class="modal">
@@ -337,7 +343,8 @@
           playerBox=$("playerBox"),
           playerNum=$("playerNum"),
           sndOk=$("sndOk"),
-          sndNo=$("sndNo");
+          sndNo=$("sndNo"),
+          feedback=$("feedback");
 
     /* -------------------------- FUNZIONI AUSILIARIE ------------------------ */
     let audioUnlocked=false;
@@ -352,6 +359,16 @@
       if(state.mode!=="guide") return;
       const u=new SpeechSynthesisUtterance(text);
       u.lang="it-IT"; speechSynthesis.speak(u);
+    }
+    function showFeedback(ok){
+      feedback.textContent = ok ? "Risposta esatta!" : "Risposta errata, riprova.";
+      feedback.className = ok ? "success" : "error";
+      feedback.style.display = "block";
+    }
+    function clearFeedback(){
+      feedback.textContent="";
+      feedback.className="";
+      feedback.style.display="none";
     }
     function shuffle(arr){
       for(let i=arr.length-1;i>0;i--){
@@ -396,6 +413,7 @@
       sentenceArea.innerHTML="";
       optionsDiv.innerHTML="";
       question.textContent="Tocca un blocco per iniziare.";
+      clearFeedback();
       progressBar.style.width="0%";
 
       if(state.sentences.length===0){
@@ -420,6 +438,7 @@
       if(sentenceArea.children[i].classList.contains("solved")) return;
       state.blockIdx=i;
       state.questionType="cat";
+      clearFeedback();
       hintBox.innerHTML="";
       hintBox.style.display="none";
       [...sentenceArea.children].forEach((e,idx)=>
@@ -449,20 +468,20 @@
 
       if(type==="cat"){
         if(val===b.cat){
-          play(true); state.correct++;
+          play(true); state.correct++; showFeedback(true);
           if(b.cat==="Complemento"&&b.subcat){
             question.textContent=`Tipo di complemento di "${b.txt}"?`;
             return showOptions(SUBS,"sub");
           }
           markSolved();
         }else{
-          play(false); flashError(state.blockIdx); showHint(val,"cat");
+          play(false); flashError(state.blockIdx); showHint(val,"cat"); showFeedback(false);
         }
       }else if(type==="sub"){
         if(val===b.subcat){
-          play(true); state.correct++; markSolved();
+          play(true); state.correct++; showFeedback(true); markSolved();
         }else{
-          play(false); flashError(state.blockIdx); showHint(val,"sub");
+          play(false); flashError(state.blockIdx); showHint(val,"sub"); showFeedback(false);
         }
       }
     }
