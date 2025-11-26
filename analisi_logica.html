@@ -471,6 +471,7 @@
       if(sentenceArea.children[i].classList.contains("solved")) return;
       state.blockIdx=i;
       state.questionType="cat";
+      clearFeedback();
       hintBox.innerHTML="";
       hintBox.style.display="none";
       [...sentenceArea.children].forEach((e,idx)=>
