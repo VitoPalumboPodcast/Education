@@ -12,13 +12,16 @@
     select { background: #fff; border: 1px solid #bbb; }
 
     /* Container */
-    #app { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1.25rem; max-width: 960px; width: min(100%, 960px); margin: auto; }
+    #app { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1.25rem; max-width: 1040px; width: min(100%, 1040px); margin: auto; }
     #topBar { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; width: 100%; align-items: stretch; }
     #badge, #timerBox, #playerBox { padding: .5rem 1rem; background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
     #topBar > * { flex: 1 1 180px; text-align: center; }
     #progressWrap { width: 100%; max-width: 480px; height: 10px; background: #ddd; border-radius: 6px; overflow: hidden; }
     #progressBar { height: 100%; width: 0; background: #28a745; transition: width .3s; }
-    #sentenceArea { min-height: 120px; padding: 1rem; border: 2px dashed #ccc; border-radius: 10px; width: 100%; text-align: center; font-size: 1.3rem; line-height: 2rem; word-break: break-word; }
+    #sentenceCard { position: relative; width: 100%; background: #ffffff; border-radius: 14px; padding: 1.2rem 1.4rem 1.4rem; box-shadow: 0 12px 35px rgba(0,0,0,.05); border: 1px solid #d8e7ec; overflow: hidden; }
+    #sentenceCard::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0, 123, 255, 0.08), rgba(40, 167, 69, 0.08)); pointer-events: none; }
+    .sentenceLabel { position: absolute; top: 14px; left: 16px; background: #0069d9; color: #fff; padding: .35rem .9rem; border-radius: 999px; font-weight: 700; letter-spacing: .3px; font-size: .95rem; box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+    #sentenceArea { position: relative; z-index: 1; min-height: 140px; padding: 1.4rem 1rem 1rem; margin-top: 1.6rem; border: 2px dashed #54b4ff; border-radius: 12px; width: 100%; text-align: center; font-size: 1.35rem; line-height: 2rem; word-break: break-word; background: #f8fbff; box-shadow: inset 0 1px 0 rgba(255,255,255,.7); }
 
     /* Blocks */
     .block { display: inline-block; margin: .2rem .3rem; padding: .2rem .4rem; border-radius: 6px; transition: .2s; cursor: pointer; }
@@ -63,7 +66,9 @@
 
     @media(max-width:900px) {
       #app { padding: 1rem; }
-      #sentenceArea { font-size: 1.15rem; line-height: 1.8rem; }
+      #sentenceCard { padding: 1rem 1rem 1.2rem; }
+      .sentenceLabel { top: 10px; left: 12px; font-size: .9rem; }
+      #sentenceArea { font-size: 1.15rem; line-height: 1.8rem; padding: 1.1rem .9rem .9rem; }
       #selectionArea { align-items: stretch; }
     }
 
@@ -82,7 +87,8 @@
       #controlsBox { flex-direction: column; align-items: stretch; }
       #controlsBox label, #controlsBox select { width: 100%; }
       button, select { width: 100%; }
-      #sentenceArea { font-size: 1.05rem; line-height: 1.6rem; padding: .9rem; text-align: left; }
+      #sentenceCard { padding: .95rem .9rem 1.1rem; border-radius: 12px; }
+      #sentenceArea { font-size: 1.05rem; line-height: 1.6rem; padding: .85rem .8rem .8rem; text-align: left; }
       #selectionArea { align-items: stretch; }
       #options { flex-direction: column; width: 100%; }
       .optionBtn { width: 100%; text-align: center; }
@@ -115,7 +121,10 @@
     </div>
 
     <div id="progressWrap"><div id="progressBar"></div></div>
-    <div id="sentenceArea"></div>
+    <div id="sentenceCard">
+      <div class="sentenceLabel">Frase da analizzare</div>
+      <div id="sentenceArea"></div>
+    </div>
 
     <div id="selectionArea">
       <div id="question">Tocca un blocco per iniziare.</div>
