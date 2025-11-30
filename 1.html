@@ -1,0 +1,2010 @@
+<!-- =========================================================
+     PAGINA 1 – ATOMI E IONI
+     Salva come: parte1_atomi_ioni.html
+========================================================= -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Atomi e Ioni – Parte 1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #e7f0fb;
+      color: #222;
+      line-height: 1.5;
+    }
+
+    body {
+      padding: 1rem;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      padding: 1.5rem 1.5rem 2.5rem;
+    }
+
+    h1, h2, h3 {
+      margin-top: 1.2rem;
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+      color: #153b6b;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      border-left: 4px solid #2a74d6;
+      padding-left: 0.6rem;
+    }
+
+    h3 {
+      font-size: 1.12rem;
+      color: #1d4d8f;
+    }
+
+    p {
+      margin: 0.35rem 0;
+      font-size: 1rem;
+    }
+
+    ul, ol {
+      margin: 0.3rem 0 0.4rem 1.2rem;
+      font-size: 0.98rem;
+    }
+
+    .intro {
+      background: #e7f1ff;
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.1rem;
+      border: 1px solid #c3dafc;
+      font-size: 0.98rem;
+    }
+
+    .keyword {
+      font-weight: 700;
+      color: #0d3e7a;
+    }
+
+    .box-def {
+      margin: 0.75rem 0;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border-left: 4px solid #2a74d6;
+      background: #f1f5ff;
+      font-size: 0.98rem;
+    }
+
+    .box-def strong {
+      display: inline-block;
+      margin-bottom: 0.15rem;
+    }
+
+    .capitolo {
+      margin-top: 1.5rem;
+      padding-top: 0.2rem;
+    }
+
+    .cap-title {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: #153b6b;
+      color: #ffffff;
+      font-size: 0.86rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0.35rem 0 0.7rem;
+    }
+
+    .pill {
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      background: #eef3ff;
+      border: 1px solid #c4d4ff;
+      color: #1a3e7a;
+      white-space: nowrap;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.25rem;
+    }
+
+    ul.note {
+      margin-left: 1.2rem;
+    }
+
+    /* DIAGRAMMA GUSCI ELETTRONICI */
+    .shell-diagram {
+      margin-top: 0.5rem;
+      margin-bottom: 0.6rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shell-atom {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shell-nucleus {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #ffeb3b;
+      border: 2px solid #fbc02d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.62rem;
+      text-align: center;
+      padding: 0.15rem;
+    }
+
+    .shell-circle-inner,
+    .shell-circle-outer {
+      position: absolute;
+      border-radius: 50%;
+      border-style: solid;
+      border-color: rgba(21, 101, 192, 0.5);
+    }
+
+    .shell-circle-inner {
+      width: 90px;
+      height: 90px;
+      border-width: 2px;
+    }
+
+    .shell-circle-outer {
+      width: 132px;
+      height: 132px;
+      border-width: 3px;
+      border-color: #1565c0; /* guscio esterno evidenziato */
+    }
+
+    .shell-electron {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #1565c0;
+      box-shadow: 0 0 0 3px rgba(21,101,192,0.25);
+    }
+
+    .shell-electron.inner-1 { top: 50%; left: 18px; transform: translateY(-50%); }
+    .shell-electron.inner-2 { top: 50%; right: 18px; transform: translateY(-50%); }
+
+    .shell-electron.outer-1 { top: 10px; left: 50%; transform: translateX(-50%); }
+    .shell-electron.outer-2 { bottom: 10px; left: 50%; transform: translateX(-50%); }
+    .shell-electron.outer-3 { top: 50%; left: 10px; transform: translateY(-50%); }
+    .shell-electron.outer-4 { top: 50%; right: 10px; transform: translateY(-50%); }
+
+    .shell-legend {
+      font-size: 0.86rem;
+      max-width: 260px;
+    }
+
+    .shell-legend-item {
+      margin-bottom: 0.25rem;
+    }
+
+    .shell-color-box {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      margin-right: 0.25rem;
+      vertical-align: middle;
+    }
+
+    .legend-inner {
+      border: 2px solid rgba(21, 101, 192, 0.5);
+    }
+
+    .legend-outer {
+      border: 2px solid #1565c0;
+    }
+
+    /* DIAGRAMMI ATOMO/IONE + SCHEDE RIASSUNTIVE */
+    .diagram-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .atom {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .atom.neutrale {
+      background: #fff8e1;
+      border: 2px solid #ffca28;
+    }
+
+    .atom.catione {
+      background: #e3f2fd;
+      border: 2px solid #64b5f6;
+    }
+
+    .atom.anione {
+      background: #fce4ec;
+      border: 2px solid #f06292;
+    }
+
+    .atom .elem-symbol {
+      font-size: 1.4rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .atom .charge {
+      font-size: 1rem;
+    }
+
+    .atom .sub-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #333;
+      margin-top: 0.1rem;
+    }
+
+    .arrow {
+      font-size: 1.6rem;
+      padding: 0 0.2rem;
+    }
+
+    .e-spot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #1565c0;
+      box-shadow: 0 0 0 3px rgba(21,101,192,0.25);
+    }
+
+    .e-spot.left {
+      left: 7px;
+      top: 15px;
+    }
+
+    .e-spot.right {
+      right: 7px;
+      bottom: 15px;
+    }
+
+    .card-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .card {
+      flex: 1 1 250px;
+      min-width: 0;
+      border-radius: 10px;
+      border: 1px solid #cfd8e3;
+      background: #f9fbff;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.94rem;
+    }
+
+    .card-title {
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: #173f7a;
+    }
+
+    .card-badge {
+      display: inline-block;
+      padding: 0.12rem 0.4rem;
+      font-size: 0.76rem;
+      border-radius: 999px;
+      margin-bottom: 0.15rem;
+      color: #fff;
+    }
+
+    .badge-neutro {
+      background: #ffca28;
+    }
+
+    .badge-catione {
+      background: #42a5f5;
+    }
+
+    .badge-anione {
+      background: #ec407a;
+    }
+
+    /* TABELLA ATOMO / CATIONE / ANIONE */
+    .ion-table-container {
+      margin: 0.75rem 0 0.4rem;
+      overflow-x: auto;
+    }
+
+    table.ion-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      margin-top: 0.2rem;
+    }
+
+    .ion-table th,
+    .ion-table td {
+      border: 1px solid #cfd8e3;
+      padding: 0.35rem 0.5rem;
+      text-align: center;
+    }
+
+    .ion-table th {
+      background: #e3edf9;
+      font-weight: 700;
+    }
+
+    .ion-table tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .ion-table .header-row td {
+      background: #eef3fb;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    /* TAVOLA PERIODICA SEMPLIFICATA */
+    .periodic-mini {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.7rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .periodic-block {
+      flex: 1 1 260px;
+      min-width: 0;
+      padding: 0.8rem;
+      border-radius: 10px;
+      border: 1px solid #d0d7e6;
+      background: #f8fafc;
+      font-size: 0.94rem;
+    }
+
+    .periodic-title {
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: #173f7a;
+    }
+
+    .periodic-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: 0.3rem;
+    }
+
+    .chip {
+      padding: 0.2rem 0.45rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: #ffffff;
+      white-space: nowrap;
+    }
+
+    .chip.metallo {
+      background: #e3f2fd;
+      border-color: #90caf9;
+      color: #0d47a1;
+    }
+
+    .chip.non-metallo {
+      background: #e8f5e9;
+      border-color: #a5d6a7;
+      color: #1b5e20;
+    }
+
+    .chip.gas-nobile {
+      background: #f3e5f5;
+      border-color: #ce93d8;
+      color: #4a148c;
+    }
+
+    /* DOMANDE DI RIPASSO */
+    .qa-block {
+      margin-top: 0.8rem;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border: 1px solid #d0d7e6;
+      background: #f8fafc;
+      font-size: 0.95rem;
+    }
+
+    .question {
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: #1a3e7a;
+    }
+
+    .answer {
+      margin-top: 0.3rem;
+      display: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-toggle {
+      display: inline-block;
+      margin-top: 0.15rem;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      border: 1px solid #2a74d6;
+      background: #ffffff;
+      color: #2a74d6;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-toggle:hover {
+      background: #2a74d6;
+      color: #ffffff;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 1rem 1rem 2rem;
+      }
+      .shell-atom {
+        width: 150px;
+        height: 150px;
+      }
+      .atom {
+        width: 84px;
+        height: 84px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Atomi e Ioni – Parte 1</h1>
+
+    <div class="intro">
+      La materia è formata da <span class="keyword">atomi</span>, ma spesso in natura
+      si trovano anche <span class="keyword">ioni</span> e <span class="keyword">molecole</span>.  
+      Per capire come si formano i legami chimici è necessario seguire una catena di idee
+      ben precisa:
+      <span class="keyword">struttura dell’atomo → bilancio delle cariche → ioni</span>.
+    </div>
+
+    <!-- CAPITOLO 1 -->
+    <div class="capitolo" id="cap1">
+      <div class="cap-title">Capitolo 1</div>
+      <h2>Struttura dell’atomo e gusci elettronici</h2>
+
+      <div class="pill-row">
+        <span class="pill">Nucleo</span>
+        <span class="pill">Protoni</span>
+        <span class="pill">Neutroni</span>
+        <span class="pill">Elettroni</span>
+        <span class="pill">Guscio esterno</span>
+      </div>
+
+      <div class="box-def">
+        <strong>Atomo</strong><br>
+        L’<span class="keyword">atomo</span> è la più piccola porzione di un elemento chimico
+        che ne conserva le proprietà chimiche.
+      </div>
+
+      <p>La struttura dell’atomo, in modo semplificato, è organizzata così:</p>
+      <ul>
+        <li>nel <strong>nucleo</strong> si trovano <span class="keyword">protoni</span> (carica positiva) e <span class="keyword">neutroni</span> (carica neutra);</li>
+        <li>intorno al nucleo, su zone ben definite, si muovono gli <span class="keyword">elettroni</span> (carica negativa).</li>
+      </ul>
+
+      <p>
+        Il numero di protoni di un atomo si chiama <span class="keyword">numero atomico</span>
+        e identifica l’elemento. Questo numero non cambia: se cambiasse, cambierebbe l’elemento.
+      </p>
+
+      <h3>1.1 Gusci elettronici e guscio esterno</h3>
+
+      <p>
+        Gli elettroni non occupano qualsiasi posizione, ma sono distribuiti su livelli
+        energetici separati. Nel linguaggio scolastico si parla spesso di
+        <span class="keyword">gusci elettronici</span>.
+      </p>
+
+      <p>
+        In modo schematico:
+      </p>
+      <ul>
+        <li>il <strong>primo guscio</strong> (più vicino al nucleo) può contenere fino a 2 elettroni;</li>
+        <li>il <strong>secondo guscio</strong> può contenere fino a 8 elettroni;</li>
+        <li>il <strong>terzo guscio</strong>, per gli elementi più leggeri, si considera fino a 8 elettroni.</li>
+      </ul>
+
+      <div class="box-def">
+        <strong>Guscio esterno</strong><br>
+        Il <span class="keyword">guscio esterno</span> è il guscio più lontano dal nucleo
+        che contiene almeno un elettrone.  
+        Il numero di elettroni nel guscio esterno determina il comportamento chimico
+        dell’atomo:
+        <ul>
+          <li>se nel guscio esterno ci sono pochi elettroni, l’atomo tende a <strong>cederli</strong>;</li>
+          <li>se il guscio esterno è quasi completo, l’atomo tende ad <strong>acquistare</strong> elettroni o a <strong>condividerli</strong>;</li>
+          <li>se il guscio esterno è già completo, l’atomo risulta molto stabile e reagisce poco.</li>
+        </ul>
+      </div>
+
+      <!-- Schema gusci -->
+      <div class="shell-diagram">
+        <div class="shell-atom">
+          <div class="shell-nucleus">nucleo<br>p<sup>+</sup>, n<sup>0</sup></div>
+          <div class="shell-circle-inner"></div>
+          <div class="shell-circle-outer"></div>
+
+          <div class="shell-electron inner-1"></div>
+          <div class="shell-electron inner-2"></div>
+
+          <div class="shell-electron outer-1"></div>
+          <div class="shell-electron outer-2"></div>
+          <div class="shell-electron outer-3"></div>
+          <div class="shell-electron outer-4"></div>
+        </div>
+
+        <div class="shell-legend">
+          <div class="shell-legend-item">
+            <span class="shell-color-box legend-inner"></span>
+            <strong>Guscio interno</strong>: primo livello, più vicino al nucleo.
+          </div>
+          <div class="shell-legend-item">
+            <span class="shell-color-box legend-outer"></span>
+            <strong>Guscio esterno</strong>: ultimo livello occupato.
+          </div>
+          <div class="shell-legend-item">
+            I dischetti blu rappresentano in modo simbolico alcuni
+            <strong>elettroni</strong>.
+          </div>
+        </div>
+      </div>
+
+      <p class="note">
+        Quando si parlerà di metalli con pochi elettroni nel guscio esterno o di non metalli
+        con guscio esterno quasi completo, il riferimento è sempre a questo schema.
+      </p>
+    </div>
+
+    <!-- CAPITOLO 2 -->
+    <div class="capitolo" id="cap2">
+      <div class="cap-title">Capitolo 2</div>
+      <h2>Atomo neutro e bilancio delle cariche</h2>
+
+      <div class="pill-row">
+        <span class="pill">Carica positiva</span>
+        <span class="pill">Carica negativa</span>
+        <span class="pill">Bilanciamento</span>
+        <span class="pill">Carica totale</span>
+      </div>
+
+      <div class="box-def">
+        <strong>Atomo neutro</strong><br>
+        Un <span class="keyword">atomo neutro</span> ha lo stesso numero di protoni (cariche positive)
+        e di elettroni (cariche negative). Le cariche si compensano e la carica totale è zero.
+      </div>
+
+      <p>Si può ragionare in questo modo:</p>
+      <ul>
+        <li>ogni protone contribuisce con una carica +1;</li>
+        <li>ogni elettrone contribuisce con una carica −1;</li>
+        <li>se protoni ed elettroni sono in ugual numero, la somma delle cariche è 0.</li>
+      </ul>
+
+      <p>
+        In molte situazioni, però, gli atomi non restano neutri: possono
+        <strong>perdere</strong> o <strong>acquistare</strong> elettroni.  
+        È a questo punto che nasce il concetto di <span class="keyword">ione</span>.
+      </p>
+    </div>
+
+    <!-- CAPITOLO 3 -->
+    <div class="capitolo" id="cap3">
+      <div class="cap-title">Capitolo 3</div>
+      <h2>Ioni: cationi e anioni</h2>
+
+      <div class="pill-row">
+        <span class="pill">Ione</span>
+        <span class="pill">Catione</span>
+        <span class="pill">Anione</span>
+        <span class="pill">Eccesso di carica</span>
+      </div>
+
+      <div class="box-def">
+        <strong>Ione</strong><br>
+        Uno <span class="keyword">ione</span> è un atomo (o un gruppo di atomi) che ha
+        <strong>perso</strong> oppure <strong>acquistato</strong> uno o più elettroni.
+        Non è più neutro e porta una <span class="keyword">carica elettrica</span> complessiva:
+        positiva o negativa.
+        <br><br>
+        – Se perde elettroni ➜ si forma uno <span class="keyword">ione positivo</span> (catione).<br>
+        – Se acquista elettroni ➜ si forma uno <span class="keyword">ione negativo</span> (anione).
+      </div>
+
+      <p>
+        Il numero di protoni è fissato e non cambia. A cambiare è il numero di elettroni.
+        Di conseguenza cambia il bilancio tra cariche positive e negative.
+      </p>
+
+      <h3>3.1 Schema numerico: Na, Cl, Mg, O</h3>
+
+      <p>
+        La tabella seguente mostra il confronto fra <span class="keyword">atomo neutro</span>
+        e <span class="keyword">ione</span> per alcuni elementi, usando numeri semplici.
+      </p>
+
+      <div class="ion-table-container">
+        <table class="ion-table">
+          <tbody>
+            <tr class="header-row">
+              <td colspan="4">Sodio (Na)</td>
+            </tr>
+            <tr>
+              <th>Stato</th>
+              <th>Protoni</th>
+              <th>Elettroni</th>
+              <th>Risultato della carica</th>
+            </tr>
+            <tr>
+              <td>Atomo neutro Na</td>
+              <td>11</td>
+              <td>11</td>
+              <td>+11 e −11 si compensano ➜ carica totale 0</td>
+            </tr>
+            <tr>
+              <td>Ione Na<sup>+</sup></td>
+              <td>11</td>
+              <td>10</td>
+              <td>una carica positiva in più ➜ ione con carica +1</td>
+            </tr>
+
+            <tr class="header-row">
+              <td colspan="4">Cloro (Cl)</td>
+            </tr>
+            <tr>
+              <th>Stato</th>
+              <th>Protoni</th>
+              <th>Elettroni</th>
+              <th>Risultato della carica</th>
+            </tr>
+            <tr>
+              <td>Atomo neutro Cl</td>
+              <td>17</td>
+              <td>17</td>
+              <td>carica totale 0</td>
+            </tr>
+            <tr>
+              <td>Ione Cl<sup>−</sup></td>
+              <td>17</td>
+              <td>18</td>
+              <td>una carica negativa in più ➜ ione con carica −1</td>
+            </tr>
+
+            <tr class="header-row">
+              <td colspan="4">Magnesio (Mg)</td>
+            </tr>
+            <tr>
+              <th>Stato</th>
+              <th>Protoni</th>
+              <th>Elettroni</th>
+              <th>Risultato della carica</th>
+            </tr>
+            <tr>
+              <td>Atomo neutro Mg</td>
+              <td>12</td>
+              <td>12</td>
+              <td>carica totale 0</td>
+            </tr>
+            <tr>
+              <td>Ione Mg<sup>2+</sup></td>
+              <td>12</td>
+              <td>10</td>
+              <td>due cariche positive in più ➜ ione con carica +2</td>
+            </tr>
+
+            <tr class="header-row">
+              <td colspan="4">Ossigeno (O)</td>
+            </tr>
+            <tr>
+              <th>Stato</th>
+              <th>Protoni</th>
+              <th>Elettroni</th>
+              <th>Risultato della carica</th>
+            </tr>
+            <tr>
+              <td>Atomo neutro O</td>
+              <td>8</td>
+              <td>8</td>
+              <td>carica totale 0</td>
+            </tr>
+            <tr>
+              <td>Ione O<sup>2−</sup></td>
+              <td>8</td>
+              <td>10</td>
+              <td>due cariche negative in più ➜ ione con carica −2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note">
+        Nel passaggio da atomo neutro a ione:
+        <strong>protoni e nucleo restano gli stessi</strong>, cambiano solo gli elettroni.
+      </p>
+
+      <h3>3.2 Tre schede riassuntive: neutro, catione, anione</h3>
+
+      <div class="card-row">
+        <div class="card">
+          <div class="card-badge badge-neutro">Atomo neutro</div>
+          <div class="card-title">Carica totale 0</div>
+          <p>
+            Protoni ed elettroni sono in numero uguale. Le cariche positive e negative
+            si compensano esattamente.
+          </p>
+          <p class="note">
+            Esempio: Na (11 p<sup>+</sup>, 11 e<sup>−</sup>).
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-catione">Catione</div>
+          <div class="card-title">Ione positivo</div>
+          <p>
+            L’atomo ha <strong>perso</strong> uno o più elettroni. Rimangono in eccesso
+            le cariche positive dei protoni.
+          </p>
+          <p class="note">
+            Esempio: Na<sup>+</sup> (11 p<sup>+</sup>, 10 e<sup>−</sup>).
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-badge badge-anione">Anione</div>
+          <div class="card-title">Ione negativo</div>
+          <p>
+            L’atomo ha <strong>acquistato</strong> uno o più elettroni. Rimangono in eccesso
+            le cariche negative degli elettroni.
+          </p>
+          <p class="note">
+            Esempio: Cl<sup>−</sup> (17 p<sup>+</sup>, 18 e<sup>−</sup>).
+          </p>
+        </div>
+      </div>
+
+      <p class="note">
+        Molte sostanze in soluzione (come i sali disciolti in acqua) sono costituite
+        in gran parte da ioni, non solo da atomi neutri isolati.
+      </p>
+
+      <h3>3.3 Schema grafico Na → Na<sup>+</sup> e Cl → Cl<sup>−</sup></h3>
+
+      <p class="note">
+        Nel disegno simbolico seguente:
+      </p>
+      <ul class="note">
+        <li>il cerchio giallo rappresenta un atomo neutro di sodio (Na);</li>
+        <li>il cerchio azzurro rappresenta il catione Na<sup>+</sup>;</li>
+        <li>il cerchio rosa rappresenta l’anione Cl<sup>−</sup>;</li>
+        <li>i dischetti blu indicano alcuni elettroni che possono essere ceduti o acquisiti.</li>
+      </ul>
+
+      <div class="diagram-row">
+        <div class="atom neutrale">
+          <div class="elem-symbol">Na</div>
+          <div class="charge">0</div>
+          <div class="sub-label">atomo neutro</div>
+          <div class="e-spot left"></div>
+          <div class="e-spot right"></div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="atom catione">
+          <div class="elem-symbol">Na</div>
+          <div class="charge">+</div>
+          <div class="sub-label">catione</div>
+        </div>
+        <div class="atom anione">
+          <div class="elem-symbol">Cl</div>
+          <div class="charge">−</div>
+          <div class="sub-label">anione</div>
+        </div>
+      </div>
+
+      <p class="note">
+        Na ha ceduto un elettrone e si è trasformato in Na<sup>+</sup>.  
+        Cl ha acquistato un elettrone e si è trasformato in Cl<sup>−</sup>.  
+        Più avanti, questi due ioni potranno unirsi formando un legame ionico.
+      </p>
+    </div>
+
+    <!-- CAPITOLO 4 -->
+    <div class="capitolo" id="cap4">
+      <div class="cap-title">Capitolo 4</div>
+      <h2>Tavola periodica semplificata: metalli, non metalli, gas nobili</h2>
+
+      <div class="pill-row">
+        <span class="pill">Metalli</span>
+        <span class="pill">Non metalli</span>
+        <span class="pill">Gas nobili</span>
+        <span class="pill">Guscio esterno</span>
+      </div>
+
+      <p>
+        Nella <span class="keyword">tavola periodica</span> gli elementi sono raggruppati
+        anche in base al loro comportamento chimico.  
+        Per lo scopo di questa pagina basta distinguere tre gruppi principali.
+      </p>
+
+      <div class="periodic-mini">
+        <div class="periodic-block">
+          <div class="periodic-title">Metalli</div>
+          <p class="note">
+            In molti metalli il guscio esterno contiene pochi elettroni.  
+            Per raggiungere una configurazione più stabile, questi elementi tendono a
+            <strong>cedere</strong> elettroni e formare cationi.
+          </p>
+          <div class="periodic-chips">
+            <span class="chip metallo">Na</span>
+            <span class="chip metallo">Mg</span>
+            <span class="chip metallo">Al</span>
+            <span class="chip metallo">K</span>
+            <span class="chip metallo">Ca</span>
+            <span class="chip metallo">Fe</span>
+            <span class="chip metallo">Cu</span>
+          </div>
+        </div>
+
+        <div class="periodic-block">
+          <div class="periodic-title">Non metalli</div>
+          <p class="note">
+            Molti non metalli hanno il guscio esterno quasi pieno, ma non del tutto.  
+            Tendono ad <strong>acquistare</strong> elettroni o a <strong>condividerli</strong>,
+            formando anioni o legami covalenti.
+          </p>
+          <div class="periodic-chips">
+            <span class="chip non-metallo">H</span>
+            <span class="chip non-metallo">C</span>
+            <span class="chip non-metallo">N</span>
+            <span class="chip non-metallo">O</span>
+            <span class="chip non-metallo">F</span>
+            <span class="chip non-metallo">Cl</span>
+            <span class="chip non-metallo">S</span>
+          </div>
+        </div>
+
+        <div class="periodic-block">
+          <div class="periodic-title">Gas nobili</div>
+          <p class="note">
+            Nei gas nobili il guscio esterno è già completo.  
+            Per questo reagiscono poco e raramente cedono o acquistano elettroni.
+          </p>
+          <div class="periodic-chips">
+            <span class="chip gas-nobile">He</span>
+            <span class="chip gas-nobile">Ne</span>
+            <span class="chip gas-nobile">Ar</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="note">
+        I gas nobili rappresentano un modello di massima stabilità.  
+        Molti atomi, formando ioni o molecole, tendono a raggiungere una configurazione
+        di elettroni nel guscio esterno simile a quella dei gas nobili.
+      </p>
+    </div>
+
+    <!-- CAPITOLO 5 – RIPASSO -->
+    <div class="capitolo" id="cap5">
+      <div class="cap-title">Capitolo 5</div>
+      <h2>Domande di ripasso – Parte 1</h2>
+
+      <p>
+        Le domande seguenti servono a verificare in modo rapido i concetti principali
+        di questa prima parte. È utile provare a rispondere prima di aprire la soluzione.
+      </p>
+
+      <div class="qa-block">
+        <div class="question">
+          1. Che cosa distingue un atomo neutro da uno ione, dal punto di vista del numero di protoni e di elettroni?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('p1_ans1')">Mostra risposta</button>
+        <div class="answer" id="p1_ans1">
+          In un <strong>atomo neutro</strong> il numero di protoni e quello di elettroni è uguale:
+          le cariche positive e negative si compensano.  
+          In uno <strong>ione</strong> il numero di elettroni è diverso dal numero di protoni:
+          si crea un eccesso di cariche positive (catione) o di cariche negative (anione).
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          2. Perché il numero di protoni non può cambiare quando si forma uno ione?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('p1_ans2')">Mostra risposta</button>
+        <div class="answer" id="p1_ans2">
+          Il numero di protoni è il <strong>numero atomico</strong> ed è la “carta d’identità”
+          dell’elemento.  
+          Se cambiasse il numero di protoni cambierebbe anche l’elemento stesso.  
+          Nella formazione degli ioni variano solo gli elettroni, non i protoni.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          3. In che cosa differisce, rispetto alla reattività, un gas nobile da un metallo alcalino come il sodio?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('p1_ans3')">Mostra risposta</button>
+        <div class="answer" id="p1_ans3">
+          Un <strong>gas nobile</strong> ha il guscio esterno già completo, perciò tende a
+          non cedere e non acquistare elettroni: è molto poco reattivo.  
+          Un <strong>metallo alcalino</strong> come il sodio ha un solo elettrone nel guscio esterno
+          e tende a cederlo facilmente, formando Na<sup>+</sup> e risultando molto reattivo.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleAnswer(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = (el.style.display === "block") ? "none" : "block";
+    }
+  </script>
+</body>
+</html>
+
+
+<!-- =========================================================
+     PAGINA 2 – ELETTRONEGATIVITÀ, LEGAMI, ACQUA
+     Salva come: parte2_elettronegativita_legami_acqua.html
+========================================================= -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Elettronegatività, Legami e Acqua – Parte 2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #e7f0fb;
+      color: #222;
+      line-height: 1.5;
+    }
+
+    body {
+      padding: 1rem;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      padding: 1.5rem 1.5rem 2.5rem;
+    }
+
+    h1, h2, h3 {
+      margin-top: 1.2rem;
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+      color: #153b6b;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      border-left: 4px solid #2a74d6;
+      padding-left: 0.6rem;
+    }
+
+    h3 {
+      font-size: 1.12rem;
+      color: #1d4d8f;
+    }
+
+    p {
+      margin: 0.35rem 0;
+      font-size: 1rem;
+    }
+
+    ul, ol {
+      margin: 0.3rem 0 0.4rem 1.2rem;
+      font-size: 0.98rem;
+    }
+
+    .intro {
+      background: #e7f1ff;
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.1rem;
+      border: 1px solid #c3dafc;
+      font-size: 0.98rem;
+    }
+
+    .keyword {
+      font-weight: 700;
+      color: #0d3e7a;
+    }
+
+    .box-def {
+      margin: 0.75rem 0;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border-left: 4px solid #2a74d6;
+      background: #f1f5ff;
+      font-size: 0.98rem;
+    }
+
+    .box-def strong {
+      display: inline-block;
+      margin-bottom: 0.15rem;
+    }
+
+    .capitolo {
+      margin-top: 1.5rem;
+      padding-top: 0.2rem;
+    }
+
+    .cap-title {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: #153b6b;
+      color: #ffffff;
+      font-size: 0.86rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0.35rem 0 0.7rem;
+    }
+
+    .pill {
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      background: #eef3ff;
+      border: 1px solid #c4d4ff;
+      color: #1a3e7a;
+      white-space: nowrap;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.25rem;
+    }
+
+    ul.note {
+      margin-left: 1.2rem;
+    }
+
+    /* SCALA ELETTRONEGATIVITÀ */
+    .en-scale-container {
+      margin-top: 0.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .en-scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #333;
+      margin-bottom: 0.2rem;
+    }
+
+    .en-scale {
+      position: relative;
+      height: 22px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #fefefe, #cde5ff, #90caf9, #1e88e5, #0d47a1);
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.25);
+      margin-bottom: 0.3rem;
+    }
+
+    .en-notch {
+      position: absolute;
+      top: 50%;
+      width: 2px;
+      height: 16px;
+      background: rgba(0,0,0,0.2);
+      transform: translateY(-50%);
+    }
+
+    .en-notch-label {
+      position: absolute;
+      top: 100%;
+      transform: translateX(-50%);
+      margin-top: 0.15rem;
+      font-size: 0.7rem;
+      color: #333;
+    }
+
+    .rule-box {
+      margin: 0.75rem 0;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border: 1px dashed #4079d6;
+      background: #f5f8ff;
+      font-size: 0.95rem;
+    }
+
+    .rule-title {
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      color: #173f7a;
+    }
+
+    /* TIRO ALLA FUNE – ΔEN */
+    .tug-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+      margin: 0.6rem 0;
+      justify-content: center;
+    }
+
+    .tug-label {
+      min-width: 130px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1d4d8f;
+    }
+
+    .tug-diagram {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .atom-box {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #e8f5e9;
+      border: 2px solid #81c784;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      position: relative;
+      color: #1b5e20;
+    }
+
+    .atom-box.B {
+      background: #e3f2fd;
+      border-color: #64b5f6;
+      color: #0d47a1;
+    }
+
+    .bond-disk {
+      width: 60px;
+      height: 24px;
+      border-radius: 999px;
+      background: #1565c0;
+      position: relative;
+      box-shadow: 0 0 0 3px rgba(21,101,192,0.25);
+    }
+
+    .bond-dot {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #ffffff;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .bond-dot.left {
+      left: 16px;
+    }
+
+    .bond-dot.middle {
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .bond-dot.right {
+      right: 16px;
+    }
+
+    .tug-caption {
+      font-size: 0.86rem;
+      max-width: 320px;
+    }
+
+    /* SCHEMA LEGAME IONICO NA–CL */
+    .diagram-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .atom {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .atom.neutrale {
+      background: #fff8e1;
+      border: 2px solid #ffca28;
+    }
+
+    .atom.catione {
+      background: #e3f2fd;
+      border: 2px solid #64b5f6;
+    }
+
+    .atom.anione {
+      background: #fce4ec;
+      border: 2px solid #f06292;
+    }
+
+    .atom .elem-symbol {
+      font-size: 1.4rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .atom .charge {
+      font-size: 1rem;
+    }
+
+    .atom .sub-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #333;
+      margin-top: 0.1rem;
+    }
+
+    .arrow {
+      font-size: 1.6rem;
+      padding: 0 0.2rem;
+    }
+
+    .compound-box {
+      padding: 0.45rem 0.7rem;
+      border-radius: 10px;
+      border: 1px solid #cfd8e3;
+      background: #fdfdfd;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .compound-formula {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #153b6b;
+    }
+
+    .compound-note {
+      font-size: 0.86rem;
+      color: #555;
+    }
+
+    /* SCHEMA CARICHE */
+    .charges-diagram {
+      margin-top: 0.6rem;
+      margin-bottom: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .charge-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .charge-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #ffffff;
+    }
+
+    .charge-dot.plus {
+      background: #1565c0;
+    }
+
+    .charge-dot.minus {
+      background: #c62828;
+    }
+
+    .interaction-arrow {
+      font-size: 1.2rem;
+    }
+
+    .interaction-label {
+      font-size: 0.85rem;
+      color: #555;
+      min-width: 130px;
+      text-align: center;
+    }
+
+    /* ACQUA – H2O E PROPRIETÀ */
+    .h2o-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin: 0.7rem 0;
+    }
+
+    .h2o-atom-O {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #ffebee;
+      border: 2px solid #e57373;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #b71c1c;
+      position: relative;
+    }
+
+    .h2o-atom-H {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #e3f2fd;
+      border: 2px solid #64b5f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0d47a1;
+      position: relative;
+    }
+
+    .delta-label {
+      position: absolute;
+      top: -11px;
+      right: -4px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .bond-stick {
+      width: 38px;
+      height: 6px;
+      border-radius: 10px;
+      background: #1565c0;
+    }
+
+    .water-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-top: 0.6rem;
+    }
+
+    .water-card {
+      flex: 1 1 280px;
+      min-width: 0;
+      border-radius: 10px;
+      border: 1px solid #cfd8e3;
+      background: #f9fbff;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.95rem;
+    }
+
+    .water-title {
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+      color: #173f7a;
+    }
+
+    .water-tag {
+      display: inline-block;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background: #e3f2fd;
+      color: #0d47a1;
+      margin-bottom: 0.2rem;
+    }
+
+    /* DOMANDE DI RIPASSO */
+    .qa-block {
+      margin-top: 0.8rem;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border: 1px solid #d0d7e6;
+      background: #f8fafc;
+      font-size: 0.95rem;
+    }
+
+    .question {
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: #1a3e7a;
+    }
+
+    .answer {
+      margin-top: 0.3rem;
+      display: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-toggle {
+      display: inline-block;
+      margin-top: 0.15rem;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      border: 1px solid #2a74d6;
+      background: #ffffff;
+      color: #2a74d6;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-toggle:hover {
+      background: #2a74d6;
+      color: #ffffff;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 1rem 1rem 2rem;
+      }
+      .atom-box {
+        width: 64px;
+        height: 64px;
+      }
+      .h2o-atom-O {
+        width: 72px;
+        height: 72px;
+      }
+      .h2o-atom-H {
+        width: 48px;
+        height: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Elettronegatività, Legami e Acqua – Parte 2</h1>
+
+    <div class="intro">
+      Dopo aver definito <span class="keyword">atomi</span> e <span class="keyword">ioni</span>,
+      il passo successivo è capire come si uniscono tra loro.  
+      Per questo servono tre idee collegate:
+      <span class="keyword">elettronegatività</span>, <span class="keyword">tipi di legame</span>
+      e un esempio concreto molto importante: l’<span class="keyword">acqua</span>.
+    </div>
+
+    <!-- CAPITOLO 6 -->
+    <div class="capitolo" id="cap6">
+      <div class="cap-title">Capitolo 6</div>
+      <h2>Elettronegatività e differenza di elettronegatività</h2>
+
+      <div class="pill-row">
+        <span class="pill">Elettronegatività</span>
+        <span class="pill">ΔEN</span>
+        <span class="pill">Tendenza ad attirare elettroni</span>
+      </div>
+
+      <div class="box-def">
+        <strong>Elettronegatività</strong><br>
+        L’<span class="keyword">elettronegatività</span> misura la tendenza di un atomo
+        ad <strong>attirare a sé gli elettroni</strong> quando partecipa a un legame chimico.
+      </div>
+
+      <p>
+        Ogni elemento ha un suo valore di elettronegatività.  
+        Confrontando due elementi si calcola la <span class="keyword">differenza di elettronegatività</span>:
+      </p>
+
+      <p>
+        ΔEN = EN (atomo più elettronegativo) − EN (atomo meno elettronegativo).
+      </p>
+
+      <div class="en-scale-container">
+        <p class="note">
+          Nella barra seguente, in modo simbolico:
+        </p>
+        <ul class="note">
+          <li>a sinistra ci sono elementi con <strong>bassa elettronegatività</strong> (tipicamente metalli);</li>
+          <li>a destra elementi con <strong>alta elettronegatività</strong> (alcuni non metalli, come il fluoro);</li>
+          <li>le tacche mostrano alcuni valori indicativi della scala.</li>
+        </ul>
+
+        <div class="en-scale-labels">
+          <span>poca tendenza ad attirare elettroni</span>
+          <span>forte tendenza ad attirare elettroni</span>
+        </div>
+
+        <div class="en-scale">
+          <div class="en-notch" style="left: 8%;">
+            <div class="en-notch-label">≈0</div>
+          </div>
+          <div class="en-notch" style="left: 38%;">
+            <div class="en-notch-label">≈1,5</div>
+          </div>
+          <div class="en-notch" style="left: 74%;">
+            <div class="en-notch-label">≈3,0</div>
+          </div>
+          <div class="en-notch" style="left: 96%;">
+            <div class="en-notch-label">≈4,0</div>
+          </div>
+        </div>
+
+        <p class="note">
+          Metalli come sodio (Na) e magnesio (Mg) hanno elettronegatività più bassa;
+          non metalli come ossigeno (O), fluoro (F) e cloro (Cl) hanno elettronegatività più alta.
+        </p>
+      </div>
+
+      <div class="rule-box">
+        <div class="rule-title">Regola pratica per classificare il tipo di legame</div>
+        <p>
+          Con un approccio scolastico semplificato, la differenza di elettronegatività
+          fra due atomi può guidare nella classificazione del legame:
+        </p>
+        <ul>
+          <li><strong>ΔEN &lt; 0,4</strong> → legame covalente <strong>apolare</strong>
+              (condivisione quasi equa degli elettroni);</li>
+          <li><strong>0,4 ≤ ΔEN &lt; 1,9</strong> → legame covalente <strong>polare</strong>
+              (condivisione sbilanciata);</li>
+          <li><strong>ΔEN ≥ 1,9</strong> → legame in larga parte <strong>ionico</strong>
+              (trasferimento quasi completo dell’elettrone).</li>
+        </ul>
+        <p class="note">
+          I valori precisi dipendono dalla scala di elettronegatività utilizzata, ma le soglie
+          qui indicate sono utili come schema di lavoro per la classificazione.
+        </p>
+      </div>
+    </div>
+
+    <!-- CAPITOLO 7 -->
+    <div class="capitolo" id="cap7">
+      <div class="cap-title">Capitolo 7</div>
+      <h2>Tre situazioni a confronto: apolare, polare, ionico</h2>
+
+      <div class="pill-row">
+        <span class="pill">Condivisione equa</span>
+        <span class="pill">Condivisione sbilanciata</span>
+        <span class="pill">Trasferimento</span>
+      </div>
+
+      <p>
+        Si può rappresentare il comportamento degli elettroni di legame immaginandoli come
+        “concentrati” in una zona fra due atomi.  
+        La posizione di questa zona può rimanere al centro, spostarsi un po’ o essere
+        quasi del tutto attirata da uno solo dei due atomi.
+      </p>
+
+      <!-- Tiro alla fune 1: apolare -->
+      <div class="tug-row">
+        <div class="tug-label">Legame covalente apolare</div>
+        <div class="tug-diagram">
+          <div class="atom-box">A</div>
+          <div class="bond-disk">
+            <div class="bond-dot.middle"></div>
+          </div>
+          <div class="atom-box B">B</div>
+        </div>
+        <div class="tug-caption">
+          ΔEN molto piccola. Gli elettroni del legame restano, in media, a metà fra A e B.
+          La condivisione è quasi perfettamente simmetrica.
+        </div>
+      </div>
+
+      <!-- Tiro alla fune 2: polare -->
+      <div class="tug-row">
+        <div class="tug-label">Legame covalente polare</div>
+        <div class="tug-diagram">
+          <div class="atom-box">A</div>
+          <div class="bond-disk">
+            <div class="bond-dot.right"></div>
+          </div>
+          <div class="atom-box B">B</div>
+        </div>
+        <div class="tug-caption">
+          ΔEN intermedia. Gli elettroni del legame sono condivisi, ma si trovano più spesso vicino
+          all’atomo più elettronegativo (B). Nasce una parziale separazione di carica.
+        </div>
+      </div>
+
+      <!-- Tiro alla fune 3: ionico -->
+      <div class="tug-row">
+        <div class="tug-label">Legame ionico</div>
+        <div class="tug-diagram">
+          <div class="atom-box">A</div>
+          <div class="bond-disk">
+            <div class="bond-dot.right"></div>
+          </div>
+          <div class="atom-box B">B</div>
+        </div>
+        <div class="tug-caption">
+          ΔEN grande. L’elettrone che prima era condiviso viene praticamente trasferito a B.
+          Si formano due ioni di carica opposta: A diventa catione, B diventa anione.
+        </div>
+      </div>
+
+      <p class="note">
+        Gli schemi sono simbolici: non rappresentano la posizione reale degli elettroni,
+        ma aiutano a visualizzare come cambia la distribuzione delle cariche al variare di ΔEN.
+      </p>
+    </div>
+
+    <!-- CAPITOLO 8 -->
+    <div class="capitolo" id="cap8">
+      <div class="cap-title">Capitolo 8</div>
+      <h2>Legame ionico e legame covalente</h2>
+
+      <div class="pill-row">
+        <span class="pill">Legame ionico</span>
+        <span class="pill">Legame covalente</span>
+        <span class="pill">Cariche opposte</span>
+        <span class="pill">Condivisione</span>
+      </div>
+
+      <h3>8.1 Attrazione tra cariche: base del legame ionico</h3>
+
+      <div class="charges-diagram">
+        <div class="charge-row">
+          <div class="charge-dot plus">+</div>
+          <span class="interaction-arrow">← →</span>
+          <div class="charge-dot plus">+</div>
+          <div class="interaction-label">stessa carica ➜ repulsione</div>
+        </div>
+        <div class="charge-row">
+          <div class="charge-dot plus">+</div>
+          <span class="interaction-arrow">→ ←</span>
+          <div class="charge-dot minus">−</div>
+          <div class="interaction-label">cariche opposte ➜ attrazione</div>
+        </div>
+      </div>
+
+      <p class="note">
+        L’attrazione tra cariche di segno opposto è il principio alla base del
+        <span class="keyword">legame ionico</span>.
+      </p>
+
+      <div class="box-def">
+        <strong>Legame ionico</strong><br>
+        Il <span class="keyword">legame ionico</span> si forma soprattutto fra un
+        <strong>metallo</strong> e un <strong>non metallo</strong>:  
+        il metallo cede uno o più elettroni e diventa un catione, il non metallo li
+        acquista e diventa un anione.  
+        L’attrazione tra cariche opposte tiene uniti i due ioni.
+      </div>
+
+      <h3>8.2 Esempio: formazione del NaCl</h3>
+
+      <p>
+        Il cloruro di sodio (sale da cucina) è un esempio di composto ionico.
+        Si possono distinguere tre fasi logiche:
+      </p>
+      <ol>
+        <li>atomi neutri di Na e Cl separati;</li>
+        <li>formazione di Na<sup>+</sup> e Cl<sup>−</sup> (perdita e acquisto di elettroni);</li>
+        <li>attrazione tra Na<sup>+</sup> e Cl<sup>−</sup> → formazione del composto NaCl.</li>
+      </ol>
+
+      <div class="diagram-row">
+        <div class="atom catione">
+          <div class="elem-symbol">Na</div>
+          <div class="charge">+</div>
+          <div class="sub-label">catione</div>
+        </div>
+        <div class="arrow">↔</div>
+        <div class="atom anione">
+          <div class="elem-symbol">Cl</div>
+          <div class="charge">−</div>
+          <div class="sub-label">anione</div>
+        </div>
+        <div class="compound-box">
+          <div class="compound-formula">NaCl</div>
+          <div class="compound-note">
+            Attrazione fra cariche opposte ➜ reticolo di ioni Na<sup>+</sup> e Cl<sup>−</sup>.
+          </div>
+        </div>
+      </div>
+
+      <h3>8.3 Legame covalente</h3>
+
+      <div class="box-def">
+        <strong>Legame covalente</strong><br>
+        Il <span class="keyword">legame covalente</span> si forma soprattutto fra
+        <strong>non metalli</strong>.  
+        Gli atomi mettono in comune una o più coppie di elettroni: si parla di
+        <strong>coppie elettroniche condivise</strong>.
+      </div>
+
+      <p>
+        Se la differenza di elettronegatività è molto piccola, la condivisione è quasi
+        perfettamente simmetrica (legame covalente apolare).  
+        Se ΔEN è intermedia, la condivisione rimane ma gli elettroni passano più tempo
+        vicino all’atomo più elettronegativo (legame covalente polare).
+      </p>
+    </div>
+
+    <!-- CAPITOLO 9 -->
+    <div class="capitolo" id="cap9">
+      <div class="cap-title">Capitolo 9</div>
+      <h2>Esempio speciale: la molecola d’acqua (H₂O)</h2>
+
+      <div class="pill-row">
+        <span class="pill">H₂O</span>
+        <span class="pill">Legame covalente polare</span>
+        <span class="pill">Legami a idrogeno</span>
+        <span class="pill">Tensione superficiale</span>
+        <span class="pill">Densità del ghiaccio</span>
+      </div>
+
+      <h3>9.1 Polarità della molecola d’acqua</h3>
+
+      <p>
+        Nella molecola d’acqua gli atomi sono disposti così: O–H–H, con un angolo
+        fra i due legami O–H.  
+        L’ossigeno è più elettronegativo dell’idrogeno. Gli elettroni dei legami O–H
+        sono quindi, in media, più vicini all’ossigeno.
+      </p>
+
+      <div class="h2o-diagram">
+        <div class="h2o-atom-H">
+          H
+          <span class="delta-label">δ+</span>
+        </div>
+        <div class="bond-stick"></div>
+        <div class="h2o-atom-O">
+          O
+          <span class="delta-label">δ−</span>
+        </div>
+        <div class="bond-stick"></div>
+        <div class="h2o-atom-H">
+          H
+          <span class="delta-label">δ+</span>
+        </div>
+      </div>
+
+      <p class="note">
+        La notazione δ− indica un leggero eccesso di carica negativa,  
+        mentre δ+ indica un leggero eccesso di carica positiva.  
+        L’acqua è quindi una molecola <strong>polare</strong>.
+      </p>
+
+      <h3>9.2 Legami a idrogeno</h3>
+
+      <p>
+        Poiché la molecola d’acqua è polare, la parte δ− dell’ossigeno di una molecola
+        può attrarre debolmente la parte δ+ dell’idrogeno di un’altra molecola d’acqua.
+        Questo genera legami deboli detti <span class="keyword">legami a idrogeno</span>.
+      </p>
+
+      <p class="note">
+        I legami a idrogeno sono più deboli dei legami covalenti, ma abbastanza numerosi
+        da influenzare in modo deciso le proprietà dell’acqua.
+      </p>
+
+      <h3>9.3 Tre proprietà particolari dell’acqua</h3>
+
+      <div class="water-cards">
+        <div class="water-card">
+          <div class="water-tag">Polarità</div>
+          <div class="water-title">Solvente efficace</div>
+          <p>
+            La polarità rende l’acqua capace di interagire con molte sostanze cariche o polari,
+            facilitandone lo scioglimento.  
+            È uno dei motivi per cui l’acqua è un <strong>ottimo solvente</strong> in natura.
+          </p>
+        </div>
+
+        <div class="water-card">
+          <div class="water-tag">Legami a idrogeno</div>
+          <div class="water-title">Tensione superficiale</div>
+          <p>
+            Le molecole d’acqua in superficie sono tenute insieme dai legami a idrogeno.
+            Questo produce una <strong>tensione superficiale</strong> relativamente alta:
+            piccoli organismi e oggetti molto leggeri possono rimanere sulla superficie
+            senza affondare.
+          </p>
+        </div>
+
+        <div class="water-card">
+          <div class="water-tag">Struttura del ghiaccio</div>
+          <div class="water-title">Il ghiaccio galleggia</div>
+          <p>
+            Nel ghiaccio, le molecole d’acqua sono disposte in una struttura più ordinata
+            e “aperta” rispetto all’acqua liquida.  
+            A parità di massa, il ghiaccio occupa più volume, quindi ha
+            <strong>densità minore</strong> e galleggia sull’acqua liquida.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAPITOLO 10 – RIPASSO -->
+    <div class="capitolo" id="cap10">
+      <div class="cap-title">Capitolo 10</div>
+      <h2>Domande di ripasso – Parte 2</h2>
+
+      <p>
+        Le domande seguenti permettono di verificare la comprensione della seconda parte:
+        elettronegatività, tipi di legame e caso dell’acqua.
+      </p>
+
+      <div class="qa-block">
+        <div class="question">
+          1. Che cosa indica l’elettronegatività di un atomo in un legame?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('p2_ans1')">Mostra risposta</button>
+        <div class="answer" id="p2_ans1">
+          L’elettronegatività indica quanto un atomo tende ad
+          <strong>attirare a sé gli elettroni</strong> quando fa parte di un legame chimico.
+          Valori più alti corrispondono a una maggiore capacità di attrarre gli elettroni
+          di legame.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          2. In che modo la differenza di elettronegatività ΔEN aiuta a distinguere fra legame covalente apolare, covalente polare e ionico?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('p2_ans2')">Mostra risposta</button>
+        <div class="answer" id="p2_ans2">
+          Se <strong>ΔEN è molto piccola</strong> (meno di circa 0,4), il legame è
+          <strong>covalente apolare</strong> e gli elettroni sono condivisi quasi in modo simmetrico.  
+          Se <strong>ΔEN è intermedia</strong> (fra circa 0,4 e 1,9), il legame è
+          <strong>covalente polare</strong>: gli elettroni sono condivisi ma più vicini
+          all’atomo più elettronegativo.  
+          Se <strong>ΔEN è grande</strong> (maggiore o uguale a circa 1,9), il legame è
+          in larga parte <strong>ionico</strong>: l’elettrone è quasi completamente
+          trasferito all’atomo più elettronegativo e si formano due ioni.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          3. Perché nella molecola d’acqua compaiono le cariche parziali δ− sull’ossigeno e δ+ sugli idrogeni?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('p2_ans3')">Mostra risposta</button>
+        <div class="answer" id="p2_ans3">
+          L’ossigeno ha elettronegatività maggiore dell’idrogeno.  
+          Nei legami O–H gli elettroni sono condivisi ma passano più tempo vicino all’ossigeno.
+          Di conseguenza l’ossigeno presenta un <strong>leggero eccesso di carica negativa</strong>
+          (δ−), mentre ogni idrogeno presenta un <strong>leggero eccesso di carica positiva</strong>
+          (δ+). La molecola è quindi polare.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          4. Che relazione c’è fra la polarità dell’acqua, i legami a idrogeno e la tensione superficiale?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('p2_ans4')">Mostra risposta</button>
+        <div class="answer" id="p2_ans4">
+          La <strong>polarità</strong> dell’acqua fa sì che l’ossigeno di una molecola (δ−)
+          possa attrarre debolmente l’idrogeno di un’altra molecola (δ+).  
+          Questo genera <strong>legami a idrogeno</strong> fra le molecole d’acqua.  
+          In superficie, i numerosi legami a idrogeno fra le molecole producono una
+          <strong>tensione superficiale</strong> relativamente alta, che rende la superficie
+          dell’acqua più resistente alle deformazioni.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleAnswer(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = (el.style.display === "block") ? "none" : "block";
+    }
+  </script>
+</body>
+</html>

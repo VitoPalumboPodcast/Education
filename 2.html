@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chimica Interattiva (Offline)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      body { font-family: 'Inter', sans-serif; background-color: #f0f9ff; }
+      @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+      .animate-float { animation: float 3s ease-in-out infinite; }
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+      
+      const { useState, useEffect } = React;
+
+      // --- ICONS (Inlined for stability) ---
+      const Icon = ({ children, className, size = 24, ...props }) => (
+        <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+          {children}
+        </svg>
+      );
+
+      const Plus = (p) => <Icon {...p}><path d="M5 12h14" /><path d="M12 5v14" /></Icon>;
+      const Minus = (p) => <Icon {...p}><path d="M5 12h14" /></Icon>;
+      const Zap = (p) => <Icon {...p}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></Icon>;
+      const ArrowRight = (p) => <Icon {...p}><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></Icon>;
+      const Droplet = (p) => <Icon {...p}><path d="M12 22a7 7 0 0 0 7-7c0-2-6-9-7-10-1-1-7 8-7 10a7 7 0 0 0 7 7z" /></Icon>;
+      const Snowflake = (p) => <Icon {...p}><line x1="2" x2="22" y1="12" y2="12" /><line x1="12" x2="12" y1="2" y2="22" /><path d="m20 16-4-4 4-4" /><path d="m4 8 4 4-4 4" /><path d="m16 4-4 4-4-4" /><path d="m8 20 4-4 4 4" /></Icon>;
+      const Atom = (p) => <Icon {...p}><circle cx="12" cy="12" r="1" /><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z" /><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z" /></Icon>;
+      const Circle = (p) => <Icon {...p}><circle cx="12" cy="12" r="10" /></Icon>;
+      const BookOpen = (p) => <Icon {...p}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></Icon>;
+      const HelpCircle = (p) => <Icon {...p}><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></Icon>;
+      const GraduationCap = (p) => <Icon {...p}><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></Icon>;
+      const Download = (p) => <Icon {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" /></Icon>;
+      const RefreshCcw = (p) => <Icon {...p}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></Icon>;
+      const Box = (p) => <Icon {...p}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" x2="12" y1="22.08" y2="12" /></Icon>;
+      const Wind = (p) => <Icon {...p}><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" /><path d="M9.6 4.6A2 2 0 1 1 11 8H2" /><path d="M12.6 19.4A2 2 0 1 0 14 16H2" /></Icon>;
+      const Droplets = (p) => <Icon {...p}><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.8-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" /><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" /></Icon>;
+      const Skull = (p) => <Icon {...p}><path d="m12.5 17-.5-1-.5 1h1z" /><path d="M15 22a1 1 0 0 0 1-1v-1a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20v1a1 1 0 0 0 1 1z" /><circle cx="15" cy="12" r="1" /><circle cx="9" cy="12" r="1" /></Icon>;
+      const FlaskConical = (p) => <Icon {...p}><path d="M10 2v7.31" /><path d="M14 2v7.31" /><path d="M8.5 2h7" /><path d="M14 9.3a6.5 6.5 0 1 1-4 0" /><path d="M5.52 16h12.96" /></Icon>;
+
+      // --- TYPES & DATA ---
+      const BondType = {
+        COVALENT_NON_POLAR: 'Covalente Apolare',
+        COVALENT_POLAR: 'Covalente Polare',
+        IONIC: 'Ionico'
+      };
+
+      const period2Elements = [
+        { symbol: 'Li', name: 'Litio', atomicNumber: 3, group: 1, period: 2, color: 'bg-red-500', en: 0.98 },
+        { symbol: 'Be', name: 'Berillio', atomicNumber: 4, group: 2, period: 2, color: 'bg-orange-500', en: 1.57 },
+        { symbol: 'B', name: 'Boro', atomicNumber: 5, group: 3, period: 2, color: 'bg-yellow-500', en: 2.04 },
+        { symbol: 'C', name: 'Carbonio', atomicNumber: 6, group: 4, period: 2, color: 'bg-green-500', en: 2.55 },
+        { symbol: 'N', name: 'Azoto', atomicNumber: 7, group: 5, period: 2, color: 'bg-teal-500', en: 3.04 },
+        { symbol: 'O', name: 'Ossigeno', atomicNumber: 8, group: 6, period: 2, color: 'bg-blue-500', en: 3.44 },
+        { symbol: 'F', name: 'Fluoro', atomicNumber: 9, group: 7, period: 2, color: 'bg-indigo-500', en: 3.98 },
+        { symbol: 'Ne', name: 'Neon', atomicNumber: 10, group: 8, period: 2, color: 'bg-purple-500', en: 0 },
+      ];
+
+      const commonElements = [
+        { symbol: 'H', name: 'Idrogeno', atomicNumber: 1, group: 1, period: 1, color: 'bg-slate-400', en: 2.20 },
+        { symbol: 'Li', name: 'Litio', atomicNumber: 3, group: 1, period: 2, color: 'bg-red-500', en: 0.98 },
+        { symbol: 'C', name: 'Carbonio', atomicNumber: 6, group: 4, period: 2, color: 'bg-gray-600', en: 2.55 },
+        { symbol: 'N', name: 'Azoto', atomicNumber: 7, group: 5, period: 2, color: 'bg-blue-500', en: 3.04 },
+        { symbol: 'O', name: 'Ossigeno', atomicNumber: 8, group: 6, period: 2, color: 'bg-red-600', en: 3.44 },
+        { symbol: 'F', name: 'Fluoro', atomicNumber: 9, group: 7, period: 2, color: 'bg-green-500', en: 3.98 },
+        { symbol: 'Na', name: 'Sodio', atomicNumber: 11, group: 1, period: 3, color: 'bg-yellow-500', en: 0.93 },
+        { symbol: 'Mg', name: 'Magnesio', atomicNumber: 12, group: 2, period: 3, color: 'bg-orange-400', en: 1.31 },
+        { symbol: 'Cl', name: 'Cloro', atomicNumber: 17, group: 7, period: 3, color: 'bg-green-600', en: 3.16 },
+        { symbol: 'K', name: 'Potassio', atomicNumber: 19, group: 1, period: 4, color: 'bg-purple-500', en: 0.82 },
+      ];
+
+      const molecules = [
+        {
+          formula: 'CH₄',
+          name: 'Metano',
+          description: 'Il Carbonio (Gruppo 4) ha 4 elettroni di valenza. Ne servono altri 4 per arrivare a 8. Si lega con 4 idrogeni in una struttura tetraedrica perfetta.',
+          bonds: '4 Legami Singoli',
+          shape: 'Tetraedrica',
+          imageType: 'tetrahedral'
+        },
+        {
+          formula: 'NH₃',
+          name: 'Ammoniaca',
+          description: 'L\'Azoto (Gruppo 5) ha 5 elettroni. Ne servono 3. Si lega con 3 idrogeni. La coppia solitaria in alto "spinge" gli idrogeni verso il basso.',
+          bonds: '3 Legami Singoli',
+          shape: 'Piramidale',
+          imageType: 'pyramidal'
+        },
+        {
+          formula: 'H₂O',
+          name: 'Acqua',
+          description: 'L\'Ossigeno (Gruppo 6) ha 6 elettroni. Ne servono 2. Si lega con 2 idrogeni. Le due coppie solitarie occupano molto spazio e piegano la molecola.',
+          bonds: '2 Legami Singoli',
+          shape: 'Piegata (Bent)',
+          imageType: 'bent'
+        },
+        {
+          formula: 'O₂',
+          name: 'Ossigeno Molecolare',
+          description: 'Ogni Ossigeno ha bisogno di 2 elettroni. Mettono in comune 2 coppie ciascuno per aiutarsi a vicenda.',
+          bonds: 'Doppio Legame (O=O)',
+          shape: 'Lineare',
+          imageType: 'double'
+        },
+        {
+          formula: 'N₂',
+          name: 'Azoto Molecolare',
+          description: 'Ogni Azoto ha bisogno di 3 elettroni. Mettono in comune 3 coppie. È un legame fortissimo!',
+          bonds: 'Triplo Legame (N≡N)',
+          shape: 'Lineare',
+          imageType: 'triple'
+        }
+      ];
+
+      // --- COMPONENTS ---
+
+      const AtomBuilder = () => {
+        const protons = 11;
+        const [electrons, setElectrons] = useState(11);
+
+        const charge = protons - electrons;
+        const isCation = charge > 0;
+        const isAnion = charge < 0;
+        const isNeutral = charge === 0;
+
+        const handleAddElectron = () => {
+          if (electrons < 12) setElectrons(prev => prev + 1);
+        };
+
+        const handleRemoveElectron = () => {
+          if (electrons > 10) setElectrons(prev => prev - 1);
+        };
+
+        return (
+          <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+            <h3 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+              <Zap className="text-yellow-500" />
+              Costruisci il tuo Ione
+            </h3>
+            <p className="text-slate-600 mb-6">
+              Un atomo è neutro se protoni (+) ed elettroni (-) sono uguali. Cosa succede se modifichi l'equilibrio?
+              <br/><span className="text-sm italic text-slate-400">Esempio con atomo di Sodio (Na)</span>
+            </p>
+
+            <div className="flex flex-col md:flex-row items-center justify-center gap-12">
+              <div className="relative w-64 h-64 flex items-center justify-center">
+                <div className="absolute border-2 border-slate-200 rounded-full w-64 h-64 animate-[spin_10s_linear_infinite]" />
+                <div className="absolute border-2 border-slate-300 rounded-full w-48 h-48 animate-[spin_7s_linear_infinite_reverse]" />
+                <div className={`z-10 w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg transition-colors duration-500 ${isCation ? 'bg-red-500 shadow-red-200' : isAnion ? 'bg-blue-500 shadow-blue-200' : 'bg-slate-800'}`}>
+                  {charge > 0 ? `+${charge}` : charge < 0 ? charge : '0'}
+                </div>
+                {electrons === 11 && (
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-blue-400 rounded-full shadow-sm animate-pulse" title="Elettrone di valenza">
+                    <span className="absolute -top-4 text-xs font-bold text-blue-500">-</span>
+                  </div>
+                )}
+                {electrons === 12 && (
+                  <React.Fragment>
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-blue-400 rounded-full shadow-sm" />
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-blue-400 rounded-full shadow-sm" />
+                  </React.Fragment>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-4 w-full md:w-auto">
+                <div className="bg-slate-50 p-4 rounded-lg">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-semibold text-red-500">Protoni (+)</span>
+                    <span className="font-mono bg-white px-2 rounded border">{protons}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold text-blue-500">Elettroni (-)</span>
+                    <div className="flex items-center gap-2">
+                      <button onClick={handleRemoveElectron} className="p-1 bg-red-100 hover:bg-red-200 rounded text-red-600 disabled:opacity-50" disabled={electrons <= 10}><Minus size={16} /></button>
+                      <span className="font-mono bg-white px-2 rounded border w-8 text-center">{electrons}</span>
+                      <button onClick={handleAddElectron} className="p-1 bg-blue-100 hover:bg-blue-200 rounded text-blue-600 disabled:opacity-50" disabled={electrons >= 12}><Plus size={16} /></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`p-4 rounded-lg text-center transition-all duration-300 transform ${isCation ? 'bg-red-50 border-l-4 border-red-500 scale-105' : isAnion ? 'bg-blue-50 border-l-4 border-blue-500 scale-105' : 'bg-slate-50 border-l-4 border-slate-300'}`}>
+                  <h4 className="font-bold text-lg mb-1">{isNeutral ? 'Atomo Neutro' : isCation ? 'Catione (Ione +)' : 'Anione (Ione -)'}</h4>
+                  <p className="text-sm text-slate-600">
+                    {isNeutral && "Le cariche si bilanciano perfettamente."}
+                    {isCation && "Hai perso un elettrone! Le cariche positive prevalgono."}
+                    {isAnion && "Hai guadagnato un elettrone! Le cariche negative prevalgono."}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const ValenceVisualizer = () => {
+        const [selectedEl, setSelectedEl] = useState(period2Elements[0]);
+
+        const renderShellElectrons = (count, radius) => {
+          return Array.from({ length: count }).map((_, i) => {
+            const angle = (i * 360) / count;
+            const rad = (angle - 90) * (Math.PI / 180);
+            const x = 50 + radius * Math.cos(rad);
+            const y = 50 + radius * Math.sin(rad);
+            return <circle key={i} cx={`${x}%`} cy={`${y}%`} r="3" fill="#3B82F6" className="animate-pulse" />;
+          });
+        };
+
+        const renderLewisDots = (valence) => {
+          const dots = [];
+          const D = 3.6;
+          const S = 1.3;
+          const addDot = (x, y, key) => {
+            dots.push(
+              <div key={key} className="absolute w-3 h-3 bg-slate-800 rounded-full shadow-sm"
+                style={{ left: `calc(50% + ${x * 16}px)`, top: `calc(50% + ${y * 16}px)`, transform: 'translate(-50%, -50%)' }}
+              />
+            );
+          };
+          const topCount = valence >= 5 ? 2 : (valence >= 1 ? 1 : 0);
+          if (topCount === 1) addDot(0, -D, 't1');
+          if (topCount === 2) { addDot(-S, -D, 't1'); addDot(S, -D, 't2'); }
+          const rightCount = valence >= 6 ? 2 : (valence >= 2 ? 1 : 0);
+          if (rightCount === 1) addDot(D, 0, 'r1');
+          if (rightCount === 2) { addDot(D, -S, 'r1'); addDot(D, S, 'r2'); }
+          const bottomCount = valence >= 7 ? 2 : (valence >= 3 ? 1 : 0);
+          if (bottomCount === 1) addDot(0, D, 'b1');
+          if (bottomCount === 2) { addDot(-S, D, 'b1'); addDot(S, D, 'b2'); }
+          const leftCount = valence >= 8 ? 2 : (valence >= 4 ? 1 : 0);
+          if (leftCount === 1) addDot(-D, 0, 'l1');
+          if (leftCount === 2) { addDot(-D, -S, 'l1'); addDot(-D, S, 'l2'); }
+          return dots;
+        };
+
+        const valenceElectrons = selectedEl.group;
+        const innerElectrons = 2;
+
+        return (
+          <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+            <h3 className="text-2xl font-bold text-slate-800 mb-2">Elettroni di Valenza & Simboli di Lewis</h3>
+            <p className="text-slate-600 mb-6">Gli atomi cercano stabilità (Regola dell'Ottetto). Solo gli elettroni del guscio più esterno ("Valenza") partecipano ai legami.</p>
+            <div className="flex gap-2 overflow-x-auto pb-4 mb-6 justify-start md:justify-center">
+              {period2Elements.map((el) => (
+                <button key={el.symbol} onClick={() => setSelectedEl(el)}
+                  className={`flex flex-col items-center p-2 min-w-[60px] rounded-lg border-2 transition-all duration-200 ${selectedEl.symbol === el.symbol ? 'border-blue-500 bg-blue-50 scale-110 shadow-md' : 'border-slate-200 hover:border-blue-300'}`}>
+                  <span className="text-xs font-bold text-slate-400">{el.atomicNumber}</span>
+                  <span className="text-lg font-bold text-slate-800">{el.symbol}</span>
+                  <div className="flex gap-0.5 mt-1">
+                    {Array.from({ length: el.group }).map((_, i) => (
+                      <div key={i} className="w-1 h-1 rounded-full bg-blue-400" />
+                    ))}
+                  </div>
+                </button>
+              ))}
+            </div>
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="flex flex-col items-center">
+                <h4 className="font-bold text-slate-500 mb-4 uppercase text-sm tracking-wider">Modello a Strati (Bohr)</h4>
+                <div className="relative w-64 h-64">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border border-slate-300 border-dashed" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full border-2 border-blue-200 bg-blue-50/30" />
+                  <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full ${selectedEl.color} flex items-center justify-center text-white font-bold text-xl shadow-lg z-10`}>
+                    {selectedEl.symbol}
+                  </div>
+                  <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                    {renderShellElectrons(innerElectrons, 25)}
+                    {renderShellElectrons(valenceElectrons, 44)}
+                  </svg>
+                </div>
+                <p className="mt-2 text-center text-sm text-slate-600">
+                  <span className="font-bold">{innerElectrons}</span> interni + <span className="font-bold text-blue-600">{valenceElectrons}</span> di valenza
+                  <br />Totale: {selectedEl.atomicNumber} elettroni (<strong>{selectedEl.name}</strong>)
+                </p>
+              </div>
+              <div className="flex flex-col items-center">
+                <h4 className="font-bold text-slate-500 mb-4 uppercase text-sm tracking-wider">Simbolo di Lewis</h4>
+                <div className="relative w-40 h-40 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center">
+                   <span className="text-5xl font-bold text-slate-800 font-serif z-10">{selectedEl.symbol}</span>
+                   <span className="absolute bottom-3 text-sm font-semibold text-slate-400 uppercase tracking-wide">{selectedEl.name}</span>
+                   {renderLewisDots(valenceElectrons)}
+                </div>
+                <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-100 text-sm max-w-xs text-center">
+                  {valenceElectrons === 8 ? (
+                    <span className="text-green-600 font-bold flex items-center justify-center gap-1">Ottetto Completo! 🎉</span>
+                  ) : (
+                    <span className="text-slate-600">Mancano <strong className="text-red-500">{8 - valenceElectrons}</strong> elettroni per raggiungere l'ottetto (stabilità dei gas nobili).</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const BondSimulator = () => {
+        const [atomA, setAtomA] = useState(commonElements[6]);
+        const [atomB, setAtomB] = useState(commonElements[8]);
+
+        const deltaEn = Math.abs(atomA.en - atomB.en);
+
+        const getBondType = (val) => {
+          if (val < 0.4) return BondType.COVALENT_NON_POLAR;
+          if (val < 1.9) return BondType.COVALENT_POLAR;
+          return BondType.IONIC;
+        };
+
+        const getCompoundName = (a, b) => {
+          const els = [a, b].sort((x, y) => x.en - y.en); 
+          const lessEn = els[0];
+          const moreEn = els[1];
+          
+          if (a.symbol === b.symbol) return `${a.name} Molecolare (${a.symbol}₂)`;
+
+          if (moreEn.symbol === 'O' && lessEn.symbol === 'H') return "Acqua (H₂O)";
+          if (moreEn.symbol === 'N' && lessEn.symbol === 'H') return "Ammoniaca (NH₃)";
+          if (moreEn.symbol === 'C' && lessEn.symbol === 'H') return "Metano (CH₄)";
+          if (moreEn.symbol === 'O' && lessEn.symbol === 'C') return "Anidride Carbonica (CO₂)";
+
+          if (moreEn.symbol === 'H' && (lessEn.group === 1 || lessEn.group === 2)) {
+              return `Idruro di ${lessEn.name}`;
+          }
+
+          if (lessEn.symbol === 'H' && moreEn.group === 7) {
+              return `Acido ${moreEn.name.replace(/o$/, '')}idrico`; 
+          }
+
+          if (lessEn.symbol === 'C' && moreEn.group === 7) {
+              return `Tetra${moreEn.name.toLowerCase().slice(0, -1)}uro di Carbonio`; 
+          }
+
+          if (lessEn.symbol === 'O' && moreEn.symbol === 'F') return "Difluoruro di Ossigeno";
+          if (lessEn.symbol === 'Cl' && moreEn.symbol === 'O') return "Ossido di Cloro (Anidride)";
+          if (lessEn.symbol === 'N' && moreEn.symbol === 'O') return "Ossido di Azoto";
+
+          if (lessEn.symbol === 'Mg') {
+              if (moreEn.symbol === 'Cl') return "Cloruro di Magnesio";
+              if (moreEn.symbol === 'F') return "Fluoruro di Magnesio";
+              if (moreEn.symbol === 'O') return "Ossido di Magnesio";
+          }
+
+          let suffix = "uro";
+          let root = moreEn.name;
+
+          if (moreEn.symbol === 'O') { root = "Oss"; suffix = "ido"; }
+          else if (moreEn.symbol === 'N') { root = "Nitr"; }
+          else if (moreEn.symbol === 'S') { root = "Solf"; }
+          else if (moreEn.symbol === 'Cl') { root = "Clor"; }
+          else if (moreEn.symbol === 'F') { root = "Fluor"; }
+          else {
+              if (root.endsWith('o')) root = root.slice(0, -1);
+              if (root.endsWith('io')) root = root.slice(0, -2);
+          }
+
+          return `${root}${suffix} di ${lessEn.name}`;
+        };
+
+        const getCompoundProperties = (type, a, b) => {
+          const els = [a, b].sort((x, y) => x.en - y.en); 
+          const less = els[0];
+          const more = els[1];
+          const pair = `${less.symbol}-${more.symbol}`;
+
+          // Na-H
+          if (pair === 'Na-H') {
+            return {
+              icon: <Zap size={20} className="text-yellow-600" />,
+              state: "Solido Cristallino (Bianco/Grigio)",
+              desc: "L'Idruro di Sodio (NaH) è una base forte e un potente agente riducente. È super reattivo: a contatto con l'acqua reagisce violentemente liberando idrogeno infiammabile! Si usa nella sintesi organica."
+            };
+          }
+          // Na-Cl
+          if (pair === 'Na-Cl') {
+            return {
+              icon: <Box size={20} />,
+              state: "Solido Cristallino (Bianco)",
+              desc: "Il comune sale da cucina. Forma un reticolo cubico molto stabile grazie alla forte attrazione elettrostatica. Fonde a ben 801°C e si scioglie perfettamente in acqua."
+            };
+          }
+          // Mg-Cl
+          if (pair === 'Mg-Cl') {
+            return {
+              icon: <Snowflake size={20} />,
+              state: "Solido Cristallino (Igroscopico)",
+              desc: "Tende ad assorbire l'umidità dall'aria. È usato per disgelare le strade dal ghiaccio (è più efficace del sale comune a basse temperature) o come integratore di magnesio."
+            };
+          }
+          // H-F
+          if (pair === 'H-F') {
+            return {
+              icon: <Skull size={20} className="text-red-600" />,
+              state: "Liquido/Gas (Corrosivo)",
+              desc: "Estremamente pericoloso! Nonostante sia un acido 'debole', è altamente corrosivo e penetrante. È uno dei pochi acidi capaci di sciogliere il vetro (reagisce con il silicio)."
+            };
+          }
+          // H-O (Water)
+          if (pair === 'H-O') {
+            return {
+              icon: <Droplets size={20} />,
+              state: "Liquido (Anomalo)",
+              desc: "Essenziale per la vita. La sua forte polarità permette la formazione di 'legami a idrogeno', rendendola liquida a temperatura ambiente (altrimenti bollirebbe a -100°C!)."
+            };
+          }
+          // C-F / C-Cl
+          if ((pair === 'C-F' || pair === 'C-Cl') && type === BondType.COVALENT_POLAR) {
+            return {
+              icon: <Wind size={20} />,
+              state: "Gas o Liquido Volatile",
+              desc: "Nonostante i legami polari C-F/C-Cl, la simmetria della molecola spesso annulla la polarità totale (apolare). Sono usati come refrigeranti o solventi (attenzione all'ozono!)."
+            };
+          }
+          // Cl-O
+          if (pair === 'Cl-O') {
+            return {
+              icon: <FlaskConical size={20} />,
+              state: "Gas (Giallo-Bruno)",
+              desc: "Spesso instabile ed esplosivo. È un forte ossidante usato per la disinfezione e lo sbiancamento (la candeggina contiene derivati di questo legame)."
+            };
+          }
+          // Li-H
+          if (pair === 'Li-H') {
+            return {
+              icon: <Box size={20} />,
+              state: "Solido Cristallino",
+              desc: "Simile all'idruro di sodio ma più leggero. È un solido infiammabile usato per lo stoccaggio di idrogeno o nelle batterie."
+            };
+          }
+
+          // Generic Fallbacks
+          if (type === BondType.IONIC) {
+            return {
+              icon: <Box size={20} />,
+              state: "Solido Cristallino",
+              desc: "Gli ioni positivi e negativi si attraggono con forza formando un reticolo rigido e ordinato. Hanno punti di fusione molto alti e conducono elettricità se sciolti in acqua."
+            };
+          }
+          if (type === BondType.COVALENT_POLAR) {
+            return {
+              icon: <FlaskConical size={20} />,
+              state: "Liquido o Gas",
+              desc: "Le molecole sono polari (come piccoli magneti) e si attraggono un po' tra loro. Spesso sono liquidi o gas a temperatura ambiente, solubili in altri solventi polari."
+            };
+          }
+          return {
+            icon: <Wind size={20} />,
+            state: "Gas",
+            desc: "Le molecole non hanno poli elettrici significativi e si ignorano a vicenda (forze di Van der Waals deboli). A temperatura ambiente tendono a essere gassose."
+          };
+        };
+
+        const compoundName = getCompoundName(atomA, atomB);
+        const bondType = getBondType(deltaEn);
+        const properties = getCompoundProperties(bondType, atomA, atomB);
+        const pullPercentage = 50 + ((atomB.en - atomA.en) / 3.5) * 45; 
+        const clampedPull = Math.max(5, Math.min(95, pullPercentage));
+
+        const renderCompoundVisual = () => {
+          const sorted = [atomA, atomB].sort((a, b) => a.en - b.en);
+          const [less, more] = sorted;
+
+          if (bondType === BondType.IONIC) {
+              return (
+                  <div className="flex flex-col items-center justify-center bg-white/60 p-2 rounded-lg border border-white/50" title="Reticolo Cristallino">
+                      <div className="grid grid-cols-2 gap-0.5">
+                          <div className={`w-3 h-3 rounded-full ${more.color} border border-black/10`}></div>
+                          <div className={`w-3 h-3 rounded-full ${less.color} border border-black/10`}></div>
+                          <div className={`w-3 h-3 rounded-full ${less.color} border border-black/10`}></div>
+                          <div className={`w-3 h-3 rounded-full ${more.color} border border-black/10`}></div>
+                      </div>
+                      <span className="text-[9px] font-bold opacity-60 mt-1 uppercase tracking-tighter">Cristallo</span>
+                  </div>
+              );
+          }
+
+          if (more.symbol === 'O' && less.symbol === 'H') {
+               return (
+                   <div className="flex items-center justify-center bg-white/60 p-2 rounded-lg border border-white/50 w-16">
+                      <div className="relative w-10 h-8">
+                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-red-600 border border-red-800 z-10 flex items-center justify-center text-[8px] text-white font-bold">O</div>
+                         <div className="absolute bottom-0 left-0 w-3 h-3 rounded-full bg-slate-400 flex items-center justify-center text-[6px] text-white">H</div>
+                         <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-slate-400 flex items-center justify-center text-[6px] text-white">H</div>
+                      </div>
+                   </div>
+               );
+          }
+
+          return (
+              <div className="flex flex-col items-center justify-center bg-white/60 p-2 rounded-lg border border-white/50 w-16">
+                 <div className="flex items-center -space-x-1">
+                    <div className={`w-5 h-5 rounded-full ${atomA.color} opacity-90 border border-black/10`}></div>
+                    <div className={`w-5 h-5 rounded-full ${atomB.color} opacity-90 border border-black/10`}></div>
+                 </div>
+                 <span className="text-[9px] font-bold opacity-60 mt-1 uppercase tracking-tighter">Molecola</span>
+              </div>
+          );
+        }
+
+        return (
+          <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-200 mt-8">
+            <h3 className="text-2xl font-bold text-slate-800 mb-2">Calcolatrice di Legami</h3>
+            <p className="text-slate-600 mb-6">Seleziona due elementi per calcolare la differenza di elettronegatività (<span className="font-mono bg-yellow-100 px-1 rounded">ΔEN</span>) e scoprire che legame formano.</p>
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                 <label className="block text-sm font-bold text-slate-500 mb-3 uppercase">Elemento A</label>
+                 <div className="flex flex-wrap gap-2">
+                   {commonElements.map((el) => (
+                     <button key={el.symbol} onClick={() => setAtomA(el)} className={`w-10 h-10 rounded-lg font-bold text-sm transition-all ${atomA.symbol === el.symbol ? 'bg-slate-800 text-white shadow-lg scale-110' : 'bg-white text-slate-600 border border-slate-200 hover:border-blue-400'}`}>{el.symbol}</button>
+                   ))}
+                 </div>
+                 <div className="mt-4 flex items-center justify-between">
+                    <span className="font-bold text-xl text-slate-800">{atomA.name}</span>
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-mono font-bold">EN: {atomA.en.toFixed(2)}</span>
+                 </div>
+              </div>
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                 <label className="block text-sm font-bold text-slate-500 mb-3 uppercase">Elemento B</label>
+                 <div className="flex flex-wrap gap-2">
+                   {commonElements.map((el) => (
+                     <button key={el.symbol} onClick={() => setAtomB(el)} className={`w-10 h-10 rounded-lg font-bold text-sm transition-all ${atomB.symbol === el.symbol ? 'bg-slate-800 text-white shadow-lg scale-110' : 'bg-white text-slate-600 border border-slate-200 hover:border-blue-400'}`}>{el.symbol}</button>
+                   ))}
+                 </div>
+                 <div className="mt-4 flex items-center justify-between">
+                    <span className="font-bold text-xl text-slate-800">{atomB.name}</span>
+                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded font-mono font-bold">EN: {atomB.en.toFixed(2)}</span>
+                 </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center gap-4 mb-4 text-lg font-mono bg-slate-100 p-4 rounded-lg">
+               <span>| {atomA.en.toFixed(2)} - {atomB.en.toFixed(2)} |</span>
+               <ArrowRight className="text-slate-400" />
+               <span className="font-bold text-blue-600">ΔEN = {deltaEn.toFixed(2)}</span>
+            </div>
+
+            <div className="mb-8 relative pt-6 pb-2">
+              <div className="h-4 w-full rounded-full bg-gradient-to-r from-green-400 via-cyan-400 to-purple-500 shadow-inner relative">
+                 <div className="absolute top-0 bottom-0 w-0.5 bg-white/50" style={{ left: '11.4%' }} title="0.4 (Apolare/Polare)"></div>
+                 <div className="absolute top-0 bottom-0 w-0.5 bg-white/50" style={{ left: '54.2%' }} title="1.9 (Polare/Ionico)"></div>
+              </div>
+              <div className="absolute top-0 flex flex-col items-center transition-all duration-500" style={{ left: `calc(${Math.min(100, (deltaEn / 3.5) * 100)}% - 12px)` }}>
+                 <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-slate-800 mb-1"></div>
+                 <div className="px-2 py-0.5 bg-slate-800 text-white text-[10px] font-bold rounded shadow whitespace-nowrap">{deltaEn.toFixed(2)}</div>
+              </div>
+              <div className="flex justify-between text-[10px] text-slate-400 font-bold mt-2 uppercase tracking-wider">
+                 <span>0 (Apolare)</span><span className="pl-4">0.4</span><span className="pl-8">1.9</span><span>3.5+ (Ionico)</span>
+              </div>
+            </div>
+
+            <div className="relative h-48 bg-white rounded-xl mb-8 border border-slate-100 overflow-hidden flex items-center justify-between px-8 md:px-20 shadow-inner">
+              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-32 rounded-full blur-xl transition-all duration-500 opacity-40 ${bondType === BondType.IONIC ? 'bg-transparent' : 'bg-blue-400'}`}
+                 style={{ width: bondType === BondType.IONIC ? '0px' : '200px', transform: `translate(-50%, -50%) skewX(${deltaEn * 5}deg)` }} />
+              {bondType !== BondType.IONIC ? (
+                <div className="absolute top-1/2 w-8 h-8 flex items-center justify-center gap-1 z-10 transition-all duration-500 -translate-y-1/2" style={{ left: `calc(${clampedPull}% - 16px)` }}>
+                   <div className="w-3 h-3 bg-yellow-400 rounded-full shadow-[0_0_10px_rgba(250,204,21,0.8)] animate-pulse" />
+                   <div className="w-3 h-3 bg-yellow-400 rounded-full shadow-[0_0_10px_rgba(250,204,21,0.8)] animate-pulse delay-75" />
+                </div>
+              ) : (
+                 <div className="absolute top-1/2 w-8 h-8 flex items-center justify-center gap-1 z-10 transition-all duration-500 -translate-y-1/2" style={{ left: atomB.en > atomA.en ? '85%' : '15%' }}>
+                   <div className="w-3 h-3 bg-yellow-400 rounded-full shadow-[0_0_10px_rgba(250,204,21,0.8)]" />
+                </div>
+              )}
+              <div className="relative z-20 flex flex-col items-center">
+                <div className={`w-20 h-20 rounded-full border-4 flex items-center justify-center font-bold text-white shadow-lg transition-all ${atomA.color} ${bondType === BondType.IONIC && atomA.en < atomB.en ? 'scale-75' : ''}`}>
+                  {atomA.symbol}
+                  {bondType === BondType.COVALENT_POLAR && atomA.en < atomB.en && <span className="absolute -top-2 -right-2 text-sm bg-white text-slate-800 rounded px-1 shadow border font-serif">δ+</span>}
+                  {bondType === BondType.COVALENT_POLAR && atomA.en > atomB.en && <span className="absolute -top-2 -right-2 text-sm bg-white text-slate-800 rounded px-1 shadow border font-serif">δ-</span>}
+                  {bondType === BondType.IONIC && atomA.en < atomB.en && <span className="absolute -top-4 -right-4 text-xl font-bold text-red-500 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">+</span>}
+                  {bondType === BondType.IONIC && atomA.en > atomB.en && <span className="absolute -top-4 -right-4 text-xl font-bold text-blue-500 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">-</span>}
+                </div>
+              </div>
+              <div className="relative z-20 flex flex-col items-center">
+                <div className={`w-20 h-20 rounded-full border-4 flex items-center justify-center font-bold text-white shadow-lg transition-all ${atomB.color} ${bondType === BondType.IONIC && atomB.en < atomA.en ? 'scale-75' : ''}`}>
+                  {atomB.symbol}
+                  {bondType === BondType.COVALENT_POLAR && atomB.en < atomA.en && <span className="absolute -top-2 -right-2 text-sm bg-white text-slate-800 rounded px-1 shadow border font-serif">δ+</span>}
+                  {bondType === BondType.COVALENT_POLAR && atomB.en > atomA.en && <span className="absolute -top-2 -right-2 text-sm bg-white text-slate-800 rounded px-1 shadow border font-serif">δ-</span>}
+                  {bondType === BondType.IONIC && atomB.en < atomA.en && <span className="absolute -top-4 -right-4 text-xl font-bold text-red-500 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">+</span>}
+                  {bondType === BondType.IONIC && atomB.en > atomA.en && <span className="absolute -top-4 -right-4 text-xl font-bold text-blue-500 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">-</span>}
+                </div>
+              </div>
+            </div>
+            <div className={`p-5 rounded-xl border-l-8 transition-all duration-500 ${bondType === BondType.COVALENT_NON_POLAR ? 'bg-green-50 border-green-500' : bondType === BondType.COVALENT_POLAR ? 'bg-cyan-50 border-cyan-500' : 'bg-purple-50 border-purple-500'}`}>
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <h4 className="text-xl font-bold mb-1">{bondType}</h4>
+                  <div className="flex items-center gap-2"><span className="text-sm bg-slate-800 text-white px-2 py-1 rounded opacity-80 font-bold">{compoundName}</span></div>
+                </div>
+                <div className="hidden sm:block">{renderCompoundVisual()}</div>
+              </div>
+              <div className="mt-3 pt-3 border-t border-black/10 flex items-start gap-3">
+                 <div className={`p-2 rounded-lg text-white mt-1 shadow-sm ${bondType === BondType.COVALENT_NON_POLAR ? 'bg-green-500' : bondType === BondType.COVALENT_POLAR ? 'bg-cyan-600' : 'bg-purple-600'}`}>{properties.icon}</div>
+                 <div>
+                   <span className="block text-xs font-bold uppercase tracking-wider opacity-60 mb-0.5">Proprietà</span>
+                   <strong className="block text-slate-800 mb-1">{properties.state}</strong>
+                   <p className="text-sm text-slate-600 leading-snug">{properties.desc}</p>
+                 </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const MoleculeGallery = () => {
+        const [selected, setSelected] = useState(molecules[2]);
+
+        const renderBondedAtom = (angle, length, symbol, colorClass, size = 32) => {
+          return (
+            <div className="absolute top-1/2 left-1/2 flex items-center"
+              style={{ width: length, transformOrigin: '0% 50%', transform: `translate(0%, -50%) rotate(${angle}deg)`, zIndex: 0 }}>
+              <div className="w-full h-1.5 bg-slate-400 rounded-full" />
+              <div className={`absolute flex items-center justify-center rounded-full font-bold text-xs text-slate-800 shadow-sm border border-slate-300 z-10 ${colorClass}`}
+                style={{ width: size, height: size, right: -size/2, transform: `rotate(${-angle}deg)` }}>
+                {symbol}
+              </div>
+            </div>
+          );
+        };
+
+        const renderVisual = (type) => {
+          switch (type) {
+            case 'tetrahedral':
+              return (
+                <div className="relative w-full h-full flex items-center justify-center animate-float">
+                   <div className="relative w-14 h-14 rounded-full bg-slate-700 text-white flex items-center justify-center font-bold text-xl z-20 shadow-lg border-2 border-slate-600">C</div>
+                   {renderBondedAtom(90, 70, 'H', 'bg-slate-200')}
+                   {renderBondedAtom(210, 70, 'H', 'bg-slate-200')}
+                   {renderBondedAtom(330, 70, 'H', 'bg-slate-200')}
+                   <div className="absolute top-1/2 left-1/2 w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-xs border border-slate-300 z-30 shadow-md" style={{ transform: 'translate(-50%, -160%)' }}>H</div>
+                   <div className="absolute top-1/2 left-1/2 w-1.5 h-10 bg-slate-400 -z-10 origin-bottom" style={{ transform: 'translate(-50%, -100%)' }}></div>
+                </div>
+              );
+            case 'pyramidal':
+              return (
+                 <div className="relative w-full h-full flex items-center justify-center animate-float mt-8">
+                   <div className="relative w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl z-20 shadow-lg border-2 border-blue-700">N</div>
+                   <div className="absolute -top-10 w-16 h-20 bg-gradient-to-t from-blue-200 to-transparent border border-blue-200 opacity-60 rounded-[50%_50%_50%_50%_/_60%_60%_40%_40%] -z-10 flex items-end justify-center pb-2">
+                       <div className="flex gap-1"><div className="w-1.5 h-1.5 bg-blue-400 rounded-full" /><div className="w-1.5 h-1.5 bg-blue-400 rounded-full" /></div>
+                   </div>
+                   <div className="absolute -top-12 text-[10px] font-bold text-blue-400 bg-white/90 px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">Coppia Solitaria</div>
+                   {renderBondedAtom(60, 75, 'H', 'bg-slate-200')}
+                   {renderBondedAtom(120, 75, 'H', 'bg-slate-200')} 
+                   <div className="absolute top-1/2 left-1/2 w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-xs border border-slate-300 z-30 shadow-md" style={{ transform: 'translate(-50%, 80%)' }}>H</div>
+                   <div className="absolute top-1/2 left-1/2 w-1.5 h-12 bg-slate-400 z-10 origin-top" style={{ transform: 'translate(-50%, 0%)' }}></div>
+                </div>
+              );
+             case 'bent':
+              return (
+                 <div className="relative w-full h-full flex items-center justify-center animate-float mt-6">
+                   <div className="relative w-16 h-16 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xl z-20 shadow-lg border-2 border-red-700">O</div>
+                   <div className="absolute -top-12 w-32 h-20 flex justify-center -z-10 pointer-events-none">
+                       <div className="absolute left-2 top-2 w-12 h-16 bg-gradient-to-tr from-red-200 to-transparent border border-red-200 opacity-70 rounded-[50%_50%_50%_50%_/_60%_60%_40%_40%] -rotate-[25deg] flex items-center justify-center">
+                          <div className="flex gap-1 mt-4 ml-1 opacity-50"><div className="w-1.5 h-1.5 bg-red-400 rounded-full" /><div className="w-1.5 h-1.5 bg-red-400 rounded-full" /></div>
+                       </div>
+                       <div className="absolute right-2 top-2 w-12 h-16 bg-gradient-to-tl from-red-200 to-transparent border border-red-200 opacity-70 rounded-[50%_50%_50%_50%_/_60%_60%_40%_40%] rotate-[25deg] flex items-center justify-center">
+                          <div className="flex gap-1 mt-4 mr-1 opacity-50"><div className="w-1.5 h-1.5 bg-red-400 rounded-full" /><div className="w-1.5 h-1.5 bg-red-400 rounded-full" /></div>
+                       </div>
+                       <div className="absolute -top-4 text-[10px] font-bold text-red-400 bg-white/90 px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">Coppie Solitarie</div>
+                   </div>
+                   {renderBondedAtom(40, 75, 'H', 'bg-slate-200')}
+                   {renderBondedAtom(140, 75, 'H', 'bg-slate-200')}
+                </div>
+              );
+            case 'double':
+              return (
+                 <div className="relative w-full h-full flex items-center justify-center gap-1 animate-float">
+                   <div className="w-14 h-14 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xl shadow-lg z-10">O</div>
+                   <div className="flex flex-col gap-1.5"><div className="h-1.5 w-20 bg-slate-400 rounded-full" /><div className="h-1.5 w-20 bg-slate-400 rounded-full" /></div>
+                   <div className="w-14 h-14 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xl shadow-lg z-10">O</div>
+                </div>
+              );
+             case 'triple':
+              return (
+                 <div className="relative w-full h-full flex items-center justify-center gap-1 animate-float">
+                   <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl shadow-lg z-10">N</div>
+                   <div className="flex flex-col gap-1.5"><div className="h-1.5 w-20 bg-slate-400 rounded-full" /><div className="h-1.5 w-20 bg-slate-400 rounded-full" /><div className="h-1.5 w-20 bg-slate-400 rounded-full" /></div>
+                   <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl shadow-lg z-10">N</div>
+                </div>
+              );
+            default: return null;
+          }
+        }
+
+        return (
+          <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-200 mt-8">
+            <h3 className="text-2xl font-bold text-slate-800 mb-2 flex items-center gap-2"><Atom className="text-purple-500" /> Galleria Molecolare</h3>
+            <p className="text-slate-600 mb-6">Come si dispongono gli atomi nello spazio? Gli elettroni si respingono a vicenda e creano forme geometriche precise.</p>
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="flex-1 flex flex-col gap-2">
+                {molecules.map((mol) => (
+                  <button key={mol.formula} onClick={() => setSelected(mol)} className={`text-left p-3 rounded-xl border transition-all flex items-center justify-between ${selected.formula === mol.formula ? 'bg-purple-50 border-purple-500 shadow-md' : 'bg-white border-slate-100 hover:border-purple-200 hover:bg-slate-50'}`}>
+                    <div><span className="font-bold text-slate-800 text-lg">{mol.formula}</span><span className="text-sm text-slate-500 ml-2">{mol.name}</span></div>
+                    <Circle size={12} className={selected.formula === mol.formula ? 'fill-purple-500 text-purple-500' : 'text-slate-300'} />
+                  </button>
+                ))}
+              </div>
+              <div className="flex-1 bg-slate-50 rounded-2xl border border-slate-200 p-6 flex flex-col items-center justify-center min-h-[350px]">
+                 <div className="w-full h-64 mb-4 flex items-center justify-center relative">{renderVisual(selected.imageType)}</div>
+                 <div className="text-center w-full mt-auto">
+                   <div className="inline-block bg-white px-3 py-1 rounded-full border border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 shadow-sm">{selected.shape}</div>
+                   <h4 className="text-3xl font-bold text-purple-900 mb-2">{selected.formula}</h4>
+                   <p className="text-slate-600 text-sm leading-relaxed bg-white p-4 rounded-xl border border-purple-100 shadow-sm">{selected.description}</p>
+                   <div className="mt-3 text-xs font-mono text-purple-700 bg-purple-100 inline-block px-3 py-1 rounded-full font-bold">{selected.bonds}</div>
+                 </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const WaterProperties = () => {
+        const [activeTab, setActiveTab] = useState('polarity');
+
+        return (
+          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-2xl shadow-xl border border-blue-100 mt-8">
+            <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><Droplet className="text-blue-500 fill-blue-500" /> La Magia dell'Acqua (H₂O)</h3>
+            <div className="flex space-x-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+              {['polarity', 'tension', 'density', 'solvent'].map(tab => (
+                 <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-colors ${activeTab === tab ? 'bg-blue-600 text-white' : 'bg-white text-slate-600 hover:bg-blue-100'}`}>
+                  {tab === 'polarity' ? 'Polarità' : tab === 'tension' ? 'Tensione Superficiale' : tab === 'density' ? 'Ghiaccio' : 'Potere Solvente'}
+                 </button>
+              ))}
+            </div>
+            <div className="min-h-[350px] flex flex-col md:flex-row gap-8 items-center">
+              <div className="flex-1 order-2 md:order-1">
+                {activeTab === 'polarity' && (
+                  <div className="space-y-4 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <h4 className="text-xl font-bold text-blue-900">Una Calamita Molecolare</h4>
+                    <p className="text-slate-700">Poiché l'ossigeno è molto elettronegativo (3.5) rispetto all'idrogeno (2.2), attira gli elettroni creando un dipolo. L'ossigeno diventa parzialmente negativo (<span className="font-mono text-red-600 font-bold">δ-</span>) e gli idrogeni positivi (<span className="font-mono text-blue-600 font-bold">δ+</span>).</p>
+                    <div className="bg-white p-4 rounded-lg border border-blue-100 text-sm text-slate-600"><strong className="block mb-1 text-blue-700">Il Legame a Idrogeno:</strong>Le molecole d'acqua si attraggono a vicenda: il polo + di una si attacca al polo - di un'altra.</div>
+                  </div>
+                )}
+                {activeTab === 'tension' && (
+                  <div className="space-y-4 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <h4 className="text-xl font-bold text-blue-900">Una Pelle Invisibile</h4>
+                    <p className="text-slate-700">Le molecole in superficie sono attratte verso il basso e lateralmente dalle altre molecole, ma non verso l'alto. Questo crea una tensione che agisce come una pellicola elastica.</p>
+                    <ul className="list-disc list-inside text-slate-600 space-y-1"><li>Permette agli insetti di camminare sull'acqua.</li><li>Rende le gocce sferiche.</li></ul>
+                  </div>
+                )}
+                {activeTab === 'density' && (
+                  <div className="space-y-4 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <h4 className="text-xl font-bold text-blue-900">L'Anomalia del Ghiaccio</h4>
+                    <p className="text-slate-700">Quando l'acqua congela, i legami a idrogeno costringono le molecole a disporsi in una struttura <strong>esagonale ordinata</strong>. Questo ordine crea ampi spazi vuoti tra le molecole.</p>
+                    <div className="flex items-center gap-2 bg-blue-100 p-3 rounded-lg text-blue-800 font-semibold"><Snowflake size={20} /> Più Vuoto = Minore Densità = Galleggia</div>
+                  </div>
+                )}
+                 {activeTab === 'solvent' && (
+                  <div className="space-y-4 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <h4 className="text-xl font-bold text-blue-900">Solvente Universale</h4>
+                    <p className="text-slate-700">Grazie alla sua polarità, l'acqua riesce a "smontare" i cristalli di sale. Circonda gli ioni (Sfera di Idratazione) e li separa.</p>
+                    <div className="bg-green-50 p-3 rounded-lg text-green-800 text-sm">Nota come le molecole d'acqua si orientano diversamente in base alla carica dello ione!</div>
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 flex items-center justify-center order-1 md:order-2 w-full">
+                {activeTab === 'polarity' && (
+                  <div className="relative w-64 h-64">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                      <svg width="140" height="120" viewBox="0 0 140 120" className="animate-float">
+                         <circle cx="70" cy="70" r="35" fill="#EF4444" stroke="#991B1B" strokeWidth="3" /><text x="70" y="75" textAnchor="middle" fill="white" fontWeight="bold" fontSize="20">O</text><text x="90" y="50" textAnchor="middle" fill="white" fontWeight="bold" fontSize="14">δ-</text>
+                         <circle cx="30" cy="30" r="20" fill="#3B82F6" stroke="#1E40AF" strokeWidth="3" /><text x="30" y="35" textAnchor="middle" fill="white" fontWeight="bold" fontSize="14">H</text><text x="20" y="20" textAnchor="middle" fill="white" fontWeight="bold" fontSize="10">δ+</text>
+                         <circle cx="110" cy="30" r="20" fill="#3B82F6" stroke="#1E40AF" strokeWidth="3" /><text x="110" y="35" textAnchor="middle" fill="white" fontWeight="bold" fontSize="14">H</text><text x="120" y="20" textAnchor="middle" fill="white" fontWeight="bold" fontSize="10">δ+</text>
+                         <line x1="55" y1="50" x2="40" y2="40" stroke="white" strokeWidth="4" strokeLinecap="round" /><line x1="85" y1="50" x2="100" y2="40" stroke="white" strokeWidth="4" strokeLinecap="round" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+                {activeTab === 'tension' && (
+                  <div className="w-64 h-48 bg-blue-500 rounded-xl relative overflow-hidden shadow-2xl border-t-4 border-blue-300">
+                    <div className="absolute top-0 w-full flex justify-around px-2 pt-1">
+                       {Array.from({length: 6}).map((_, i) => (<div key={i} className="w-8 h-8 bg-blue-700 rounded-full border-2 border-blue-400 opacity-90" />))}
+                    </div>
+                    <div className="absolute top-8 w-full h-full flex flex-wrap content-start p-2 gap-2 justify-center opacity-60">
+                       {Array.from({length: 12}).map((_, i) => (<div key={i} className="w-8 h-8 bg-blue-800 rounded-full" />))}
+                    </div>
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-12 flex flex-col items-center animate-bounce" style={{ animationDuration: '3s' }}>
+                       <div className="text-3xl filter drop-shadow-lg">🦗</div>
+                    </div>
+                    <div className="absolute bottom-2 w-full text-center text-xs text-white/90">Legami laterali creano una rete forte</div>
+                  </div>
+                )}
+                {activeTab === 'density' && (
+                   <div className="relative w-72 h-72 bg-blue-50 rounded-full border-4 border-blue-100 flex items-center justify-center overflow-hidden">
+                      <div className="grid grid-cols-3 gap-8 rotate-12 scale-90">
+                          <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold">H₂O</div><div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold">H₂O</div><div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold">H₂O</div>
+                          <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold">H₂O</div><div className="w-12 h-12 border-2 border-dashed border-blue-300 rounded-full flex items-center justify-center text-[10px] text-blue-400 font-bold bg-white/50">VUOTO</div><div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold">H₂O</div>
+                          <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold">H₂O</div><div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold">H₂O</div><div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold">H₂O</div>
+                      </div>
+                      <svg className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-30">
+                         <line x1="30%" y1="30%" x2="50%" y2="30%" stroke="black" strokeWidth="2" strokeDasharray="4"/><line x1="50%" y1="30%" x2="70%" y2="30%" stroke="black" strokeWidth="2" strokeDasharray="4"/><line x1="30%" y1="50%" x2="30%" y2="30%" stroke="black" strokeWidth="2" strokeDasharray="4"/>
+                      </svg>
+                   </div>
+                )}
+                 {activeTab === 'solvent' && (
+                   <div className="relative w-64 h-64 bg-white rounded-xl border border-slate-200 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg border-4 border-green-600 z-10">Cl-</div>
+                      <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                         <div className="flex gap-1"><div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" /><div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" /></div><div className="w-6 h-6 bg-red-500 rounded-full" />
+                      </div>
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col-reverse items-center">
+                         <div className="flex gap-1"><div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" /><div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" /></div><div className="w-6 h-6 bg-red-500 rounded-full" />
+                      </div>
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-row items-center">
+                         <div className="flex flex-col gap-1"><div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" /><div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" /></div><div className="w-6 h-6 bg-red-500 rounded-full" />
+                      </div>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-row-reverse items-center">
+                         <div className="flex flex-col gap-1"><div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" /><div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" /></div><div className="w-6 h-6 bg-red-500 rounded-full" />
+                      </div>
+                      <div className="absolute top-2 right-2 text-[10px] text-slate-400 w-24 text-right">Gli idrogeni (δ+) circondano lo ione negativo</div>
+                   </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // --- MAIN APP ---
+      const App = () => {
+        return (
+          <div className="min-h-screen pb-20 font-sans">
+            <header className="bg-slate-900 text-white py-8 px-4 md:px-8 shadow-lg sticky top-0 z-50">
+              <div className="max-w-5xl mx-auto flex justify-between items-center">
+                <div>
+                  <h1 className="text-3xl font-extrabold tracking-tight text-blue-400">Chimica Interattiva</h1>
+                  <p className="text-slate-400 text-sm mt-1">Dagli atomi ai superpoteri dell'acqua</p>
+                </div>
+                <GraduationCap size={32} className="text-white opacity-80" />
+              </div>
+            </header>
+            <main className="max-w-5xl mx-auto px-4 mt-8 space-y-20">
+              <section className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-blue-100 rounded-full text-blue-600 hidden md:block"><BookOpen size={24} /></div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-800 mb-4">Benvenuto nel Micromondo</h2>
+                    <p className="text-slate-600 leading-relaxed text-lg">La chimica è come un gioco di costruzioni. Tutto dipende da come gli atomi si scambiano o condividono i loro "mattoncini" esterni: gli <strong>elettroni di valenza</strong>.</p>
+                  </div>
+                </div>
+              </section>
+              <section id="valence">
+                <div className="mb-6 flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">1</div>
+                   <div><h2 className="text-3xl font-bold text-slate-800">Elettroni di Valenza</h2><p className="text-slate-500 text-lg">I protagonisti delle reazioni chimiche</p></div>
+                </div>
+                <p className="text-slate-600 mb-8 max-w-3xl text-lg">Nella tavola periodica, gli elementi dello stesso gruppo hanno lo stesso numero di elettroni esterni. Questi vengono rappresentati con i <strong>simboli di Lewis</strong> (puntini attorno al simbolo). Tutti vogliono assomigliare ai Gas Nobili (Gruppo 8) per essere stabili.</p>
+                <ValenceVisualizer />
+              </section>
+              <section id="ions">
+                 <div className="mb-6 flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-bold text-xl">2</div>
+                   <div><h2 className="text-3xl font-bold text-slate-800">La Formazione degli Ioni</h2><p className="text-slate-500 text-lg">Quando l'equilibrio si rompe</p></div>
+                </div>
+                <p className="text-slate-600 mb-8 max-w-3xl text-lg">Alcuni atomi preferiscono cedere elettroni (metalli), altri acquistarli (non metalli). Quando succede, l'atomo non è più neutro: diventa uno <strong>Ione</strong> (Catione + o Anione -).</p>
+                <AtomBuilder />
+              </section>
+              <section id="bonds">
+                 <div className="mb-6 flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xl">3</div>
+                   <div><h2 className="text-3xl font-bold text-slate-800">I Legami Chimici</h2><p className="text-slate-500 text-lg">Il gioco dell'Elettronegatività</p></div>
+                </div>
+                <p className="text-slate-600 mb-8 max-w-3xl text-lg">Quando due atomi si incontrano, inizia un "tiro alla fune". Chi è più forte (più <strong>elettronegativo</strong>) attira a sé gli elettroni. Questo determina se il legame sarà covalente (condiviso) o ionico (rubato).<br/><br/><span className="bg-yellow-100 px-2 py-1 rounded text-sm font-bold text-yellow-800">Novità</span> Usa la calcolatrice qui sotto per vedere i valori reali dalla tavola periodica!</p>
+                <BondSimulator />
+              </section>
+              <section id="molecules">
+                 <div className="mb-6 flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold text-xl">4</div>
+                   <div><h2 className="text-3xl font-bold text-slate-800">Geometria delle Molecole</h2><p className="text-slate-500 text-lg">Metano, Ammoniaca e Legami Multipli</p></div>
+                </div>
+                <p className="text-slate-600 mb-8 max-w-3xl text-lg">Gli atomi non si legano a caso. Il numero di "buchi" nel loro guscio di valenza decide quanti legami possono formare. Guarda come il Carbonio forma il Metano o come l'Azoto forma l'Ammoniaca.</p>
+                <MoleculeGallery />
+              </section>
+              <section id="water">
+                 <div className="mb-6 flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 font-bold text-xl">5</div>
+                   <div><h2 className="text-3xl font-bold text-slate-800">L'Acqua: Una Molecola Speciale</h2><p className="text-slate-500 text-lg">Polarità e vita</p></div>
+                </div>
+                <WaterProperties />
+              </section>
+              <section className="bg-slate-800 text-slate-300 p-8 rounded-2xl mt-12">
+                <div className="flex items-center gap-3 mb-6"><HelpCircle className="text-yellow-400" /><h2 className="text-2xl font-bold text-white">Domande di Ripasso</h2></div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-slate-700 p-4 rounded-lg border-l-4 border-green-500"><h3 className="font-bold text-white mb-2">Cos'è la Regola dell'Ottetto?</h3><p className="text-sm">La tendenza degli atomi ad avere 8 elettroni nel guscio esterno per raggiungere la stabilità massima (come i gas nobili).</p></div>
+                  <div className="bg-slate-700 p-4 rounded-lg border-l-4 border-blue-500"><h3 className="font-bold text-white mb-2">Differenza tra Covalente e Ionico?</h3><p className="text-sm">Nel covalente gli elettroni sono condivisi (ΔEN &lt; 1.9). Nello ionico c'è un trasferimento completo (ΔEN &gt; 1.9).</p></div>
+                  <div className="bg-slate-700 p-4 rounded-lg border-l-4 border-purple-500"><h3 className="font-bold text-white mb-2">Perché il Metano è CH₄?</h3><p className="text-sm">Il Carbonio ha 4 elettroni di valenza e ne cerca altri 4. Si lega quindi con 4 idrogeni (che ne offrono 1 ciascuno).</p></div>
+                  <div className="bg-slate-700 p-4 rounded-lg border-l-4 border-cyan-500"><h3 className="font-bold text-white mb-2">Perché l'acqua scioglie il sale?</h3><p className="text-sm">Perché è polare. Le molecole d'acqua circondano gli ioni del sale (idratazione) separandoli grazie all'attrazione elettrica.</p></div>
+                </div>
+              </section>
+            </main>
+            <footer className="text-center text-slate-400 mt-20 text-sm pb-8 border-t border-slate-200 pt-8">
+              <p>© 2024 Lezione di Chimica Interattiva - Ispirato ai tuoi appunti</p>
+            </footer>
+          </div>
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    
+    </script>
+</body>
+</html>
