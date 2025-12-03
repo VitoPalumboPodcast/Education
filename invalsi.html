@@ -477,7 +477,385 @@
         ],
         correct: 0,
         explanation: 'Una traslazione verticale verso l\'alto di 4 unità aggiunge 4 al termine noto: y = 3x² + 4.',
-      }
+      },
+
+      {
+        id: 'allenamento-mat-15',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Un provider di internet fissa un costo mensile C dato dalla somma tra un costo fisso F e un costo variabile proporzionale alle ore di collegamento t al prezzo di k euro all\'ora. Quale formula esprime correttamente C?',
+        options: [
+          'C = F · t + k · t',
+          'C = F + k · t',
+          'C = k + F · t',
+          'C = F · k · t'
+        ],
+        correct: 1,
+        explanation: 'Il costo totale mensile è la somma del fisso più la quota variabile per t ore: C = F + k · t.',
+      },
+      {
+        id: 'allenamento-mat-16',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Nel mese di gennaio si è navigato per 185 ore. A febbraio le ore aumentano del 60%. Quale espressione fornisce il costo del mese di febbraio?',
+        options: [
+          'F + k · 185',
+          'F + k · (1 + 0,6 · 185)',
+          'F + k · 1,6 · 185',
+          'F + k · 60 · 185'
+        ],
+        correct: 2,
+        explanation: 'Un aumento del 60% porta le ore a 1,6 · 185; il costo è quindi F + k · 1,6 · 185.',
+      },
+      {
+        id: 'allenamento-mat-17',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Per quali valori naturali di n la somma n² + n è sempre pari?',
+        options: [
+          '7n + 1 è sempre dispari',
+          '1 + 2n² è sempre pari',
+          'n² + n è sempre pari',
+          '3n + 3 è sempre dispari'
+        ],
+        correct: 2,
+        explanation: 'n² + n = n(n + 1) è il prodotto di due interi consecutivi: uno è sempre pari, quindi il prodotto è sempre pari.',
+      },
+      {
+        id: 'allenamento-mat-18',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Una scalinata ha 4 gradini alti 16 cm e profondi 30 cm. La lunghezza della rampa che collega l\'inizio con la cima è circa:',
+        options: [
+          '170 cm',
+          '184 cm',
+          '102 cm',
+          '136 cm'
+        ],
+        correct: 3,
+        explanation: "Il dislivello è 4 · 16 = 64 cm e l'avanzamento 4 · 30 = 120 cm; l'ipotenusa misura √(64² + 120²) ≈ 136 cm.",
+      },
+      {
+        id: 'allenamento-mat-19',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Tre numeri reali a, b, c sono sulla retta: −2 < a < −1; 0 < c < 1; 1 < b < 2. Quale disuguaglianza è sempre vera?',
+        options: [
+          '−a > c',
+          '1/c < b',
+          '√(−a) > 0',
+          'a + c < b'
+        ],
+        correct: 0,
+        explanation: 'a è negativo con |a| > 1, quindi −a > 1 mentre c è tra 0 e 1: ne segue −a > c. (B è falsa perché 1/c > 1.)',
+      },
+      {
+        id: 'allenamento-mat-20',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'In una scuola 100 studenti studiano inglese, francese, spagnolo. 50 studiano inglese; 40 francese; 40 spagnolo; 8 studiano solo inglese e francese; 6 solo inglese e spagnolo; 4 solo francese e spagnolo. Quanti studiano tutte e tre le lingue?',
+        options: [
+          '18',
+          '8',
+          '4',
+          '6'
+        ],
+        correct: 3,
+        explanation: 'La somma degli insiemi singoli e doppi senza triple è 8 + 6 + 4 = 18; per arrivare a 100 servono 6 che studiano tutte le lingue.',
+      },
+      {
+        id: 'allenamento-mat-21',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Con i dati della tabella precedente, quanti studenti studiano soltanto francese?',
+        options: [
+          '38',
+          '28',
+          '22',
+          '32'
+        ],
+        correct: 2,
+        explanation: 'Totale francese 40 = solo francese + (8 + 4) + 6 triple → solo francese = 40 − 18 = 22.',
+      },
+      {
+        id: 'allenamento-mat-22',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Con la stessa tabella, qual è la probabilità che uno studente scelto a caso studi solo inglese?',
+        options: [
+          '0,5',
+          '0,3',
+          '0,44',
+          '0,24'
+        ],
+        correct: 1,
+        explanation: 'Gli studenti solo inglese sono 30 (50 − 8 − 6 − 6); su 100 studenti la probabilità è 30/100 = 0,3.',
+      },
+      {
+        id: 'allenamento-mat-23',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'In un grande quadrato 7×7 si costruiscono due quadrati più piccoli (A lato 4, B lato 3) e si disegnano due rettangoli come da figura. Calcola il perimetro del poligono C che rimane nella parte inferiore.',
+        options: [
+          '28',
+          '18',
+          '32',
+          '22'
+        ],
+        correct: 3,
+        explanation: 'Il contorno rimanente misura 7 + 7 + (7 − 3) + (7 − 4) = 22 unità.',
+      },
+      {
+        id: 'allenamento-mat-24',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Tabella ISTAT 2012 sui 19-enni: maschi mai sposati = 308 653, sposati = 325, divorziati (incognita), vedovi = 2; femmine mai sposate = 288 014, sposate (incognita), divorziate = 25, vedove (incognita). Totale maschi = 308 994; totali femmine = 291 785; totale complessivo = 600 779. Qual è il numero di maschi divorziati?',
+        options: [
+          '18',
+          '14',
+          '16',
+          '15'
+        ],
+        correct: 1,
+        explanation: "I maschi mancano all'appello 308 994 − (308 653 + 325 + 2) = 14: sono i divorziati.",
+      },
+      {
+        id: 'allenamento-mat-25',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Dalla stessa tabella: quante femmine sono sposate?',
+        options: [
+          '1 256',
+          '3 742',
+          '2 245',
+          '3 058'
+        ],
+        correct: 1,
+        explanation: 'Le femmine sposate valgono 291 785 − (288 014 + 25 + 4) = 3 742.',
+      },
+      {
+        id: 'allenamento-mat-26',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Dalla stessa tabella: quante femmine sono vedove?',
+        options: [
+          '3',
+          '5',
+          '8',
+          '4'
+        ],
+        correct: 3,
+        explanation: 'Dato il totale complessivo 600 779, i divorziati sono 39 → maschi 14 e femmine 25; le vedove restano 4 per chiudere i conteggi.',
+      },
+      {
+        id: 'allenamento-mat-27',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Dalla stessa tabella: quanti sono in totale i divorziati?',
+        options: [
+          '35',
+          '39',
+          '18',
+          '14'
+        ],
+        correct: 1,
+        explanation: 'I divorziati totali sono 600 779 − (maschi non divorziati 308 980 + femmine non divorziate 291 760) = 39.',
+      },
+      {
+        id: 'allenamento-mat-28',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Con i dati ISTAT sopra, qual è la probabilità che un 19-enne mai sposato scelto a caso sia maschio?',
+        options: [
+          '308 653 / 596 667',
+          '288 014 / 596 667',
+          '308 653 / 600 779',
+          '288 014 / 600 779'
+        ],
+        correct: 0,
+        explanation: 'Gli ever-single totali sono 308 653 + 288 014 = 596 667; la probabilità che sia maschio è 308 653 / 596 667.',
+      },
+      {
+        id: 'allenamento-mat-29',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Un paio di scarpe costa 100 €. A dicembre il prezzo aumenta del 10%, poi ai saldi di gennaio diminuisce del 10%. Qual è il prezzo finale?',
+        options: [
+          '90 €',
+          '91 €',
+          '99 €',
+          '100 €'
+        ],
+        correct: 2,
+        explanation: 'Dopo il +10% il prezzo è 110 €; scontandolo del 10% si ottiene 110 · 0,9 = 99 €.',
+      },
+      {
+        id: 'allenamento-mat-30',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Tabella incidenti stradali 2012: Umbria 2 358 incidenti su 3 469 km, Sicilia 12 242 incidenti su 24 809 km, Sardegna 4 022 su 8 777 km. In quale regione il rischio (incidenti per km) è maggiore?',
+        options: [
+          'Sicilia',
+          'Sardegna',
+          'Umbria',
+          'Uguale per tutte'
+        ],
+        correct: 2,
+        explanation: 'I rapporti sono circa 0,68 (Umbria), 0,49 (Sardegna), 0,49 (Sicilia): il valore più alto è in Umbria.',
+      },
+      {
+        id: 'allenamento-mat-31',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Confrontando Sicilia e media nazionale (incidenti/km ≈ 1), il rischio in Sicilia è superiore alla media?',
+        options: [
+          'Sì',
+          'No'
+        ],
+        correct: 1,
+        explanation: 'Il rapporto siciliano 12 242 / 24 809 ≈ 0,49 è inferiore alla media nazionale di circa 1.',
+      },
+      {
+        id: 'allenamento-mat-32',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Una confezione di cereali pesa 250 g e contiene 11,3 g di fibre. Qual è la percentuale di fibra?',
+        options: [
+          '3,9 %',
+          '4,52 %',
+          '5,2 %',
+          '9,0 %'
+        ],
+        correct: 1,
+        explanation: 'La percentuale è (11,3 / 250) · 100 ≈ 4,52%.',
+      },
+      {
+        id: 'allenamento-mat-33',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Dalla stessa confezione: quanti grammi di fibra ci sono in una porzione da 30 g?',
+        options: [
+          '0,9 g',
+          '1,4 g',
+          '2,0 g',
+          '3,9 g'
+        ],
+        correct: 1,
+        explanation: 'Usando la percentuale 4,52%, in 30 g si hanno 30 · 0,0452 ≈ 1,4 g di fibre.',
+      },
+      {
+        id: 'allenamento-mat-34',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Un test a 28 domande attribuisce +5 punti per risposta esatta, −2 per sbagliata, +1 per risposta lasciata vuota. Marco risponde a tutte e ottiene punteggio zero. Quante risposte sbagliate ha dato?',
+        options: [
+          '20',
+          '23',
+          '22',
+          '24'
+        ],
+        correct: 0,
+        explanation: 'Sia x il numero di esatte: 5x − 2(28 − x) = 0 → 7x = 56 → x = 8; le sbagliate sono 20.',
+      },
+      {
+        id: 'allenamento-mat-35',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'In una gara di danza vengono attribuiti punteggi da 12 a 20. Un grafico mostra 3 coppie con 12 punti, 4 con 14, 6 con 15, 5 con 17, 2 con 18, 2 con 19 e 1 con 20. Quante coppie hanno partecipato?',
+        options: [
+          '21',
+          '23',
+          '22',
+          '20'
+        ],
+        correct: 1,
+        explanation: 'Il totale è 3 + 4 + 6 + 5 + 2 + 2 + 1 = 23 coppie.',
+      },
+      {
+        id: 'allenamento-mat-36',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Con gli stessi dati: quante coppie hanno ottenuto almeno 15 punti?',
+        options: [
+          '13',
+          '16',
+          '14',
+          '20'
+        ],
+        correct: 1,
+        explanation: 'Sommiamo da 15 in su: 6 (15) + 5 (17) + 2 (18) + 2 (19) + 1 (20) = 16.',
+      },
+      {
+        id: 'allenamento-mat-37',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Con gli stessi dati: quale è la media dei punteggi?',
+        options: [
+          '16,2',
+          '15,7',
+          '15,8',
+          '16'
+        ],
+        correct: 1,
+        explanation: 'La somma ponderata (12·3 + 14·4 + 15·6 + 17·5 + 18·2 + 19·2 + 20·1) / 23 ≈ 15,7.',
+      },
+      {
+        id: 'allenamento-mat-38',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'In un piano cartesiano tre rette a, b, c hanno queste caratteristiche: a passa per (0, −1) e (1, 0), b per (0, 1) e (1, 0), c per (−1, 0) e (0, 1). Le equazioni proposte sono 1) y = x + 1; 2) y = x − 1; 3) y = −x + 1; 4) y = −x − 1. Quale associazione è corretta?',
+        options: [
+          'a → 4; b → 3; c → 1',
+          'a → 2; b → 1; c → 3',
+          'a → 4; b → 1; c → 3',
+          'a → 2; b → 3; c → 4'
+        ],
+        correct: 0,
+        explanation: 'a ha coefficiente −1 e intercetta −1 ⇒ y = −x − 1 (4); b ha coefficiente −1 e intercetta 1 ⇒ y = −x + 1 (3); c ha coefficiente 1 e intercetta 1 ⇒ y = x + 1 (1).',
+      },
+      {
+        id: 'allenamento-mat-39',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'In un sistema di assi cartesiani, A è il punto (0, 3) e B è il punto (8, 7). Il coefficiente angolare della retta AB vale?',
+        options: [
+          '8',
+          '7',
+          '1/2',
+          '3'
+        ],
+        correct: 2,
+        explanation: 'Il coefficiente angolare è (7 − 3) / (8 − 0) = 4/8 = 1/2.',
+      },
+      {
+        id: 'allenamento-mat-40',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Mauro percorre 24 km con 1 l di diesel che costa 1,70 €/l, mentre Piero percorre 13 km con 1 l di GPL che costa 0,79 €/l. Chi spende meno per km e perché?',
+        options: [
+          'Mauro perché 0,10 €/km < 0,07 €/km',
+          'Piero perché 0,08 €/km > 0,05 €/km',
+          'Mauro perché 0,08 €/km > 0,05 €/km',
+          'Piero perché 0,08 €/km < 0,05 €/km'
+        ],
+        correct: 1,
+        explanation: 'Costo diesel per km: 1,70 / 24 ≈ 0,08 €; costo GPL per km: 0,79 / 13 ≈ 0,05 € → conviene il GPL.',
+      },
+      {
+        id: 'allenamento-mat-41',
+        area: 'Matematica',
+        year: 'Allenamento',
+        text: 'Quale delle seguenti frazioni non può essere la probabilità di un evento?',
+        options: [
+          '8/7',
+          '11/15',
+          '20/27',
+          '2/3'
+        ],
+        correct: 0,
+        explanation: 'Le probabilità devono essere comprese tra 0 e 1: 8/7 è maggiore di 1 ed è impossibile.',
+      },
+
     ];
 
     let sessionQuestions = [];
