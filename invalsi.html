@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Allenamento INVALSI CBT – Classe Seconda Superiore (Grado 10)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #475569;
+      --card: #ffffff;
+      --primary: #2563eb;
+      --primary-strong: #1d4ed8;
+      --accent: #fcd34d;
+      --bg: linear-gradient(135deg, #f3f4f6 0%, #e0f2fe 45%, #e0e7ff 100%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 22px 24px 10px;
+    }
+
+    .hero {
+      background: radial-gradient(circle at 10% 20%, rgba(37,99,235,0.12), transparent 35%),
+                  radial-gradient(circle at 90% 10%, rgba(236,72,153,0.12), transparent 36%),
+                  var(--card);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 16px 60px rgba(15, 23, 42, 0.15);
+      border: 1px solid rgba(37, 99, 235, 0.08);
+    }
+
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.4rem, 2vw + 0.5rem, 2rem);
+      color: var(--ink);
+    }
+
+    .hero p {
+      margin: 4px 0 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      padding: 0 24px 24px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: rgba(37,99,235,0.08);
+      color: var(--primary-strong);
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .controls label { display: block; margin-bottom: 8px; color: var(--muted); font-weight: 600; }
+
+    .mode-group {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .mode-card {
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .mode-card input { margin-top: 4px; }
+
+    .mode-card:hover { border-color: rgba(37, 99, 235, 0.35); box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1); }
+
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      width: 100%;
+    }
+
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 34px rgba(37, 99, 235, 0.28); }
+
+    .btn:disabled {
+      background: #cbd5e1;
+      color: #475569;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .stat {
+      background: rgba(15, 23, 42, 0.04);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(15, 23, 42, 0.04);
+    }
+
+    .stat strong { color: var(--ink); }
+    .stat span { color: var(--muted); font-weight: 600; }
+
+    .question-area { margin-top: 16px; display: grid; gap: 12px; }
+
+    .question-title {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .question-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .options { display: grid; gap: 10px; }
+
+    .option {
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      text-align: left;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--ink);
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.1s ease;
+    }
+
+    .option:hover { border-color: rgba(37, 99, 235, 0.4); box-shadow: 0 8px 24px rgba(37, 99, 235, 0.14); transform: translateY(-1px); }
+    .option.selected { border-color: rgba(37, 99, 235, 0.7); box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.15); }
+    .option.correct { background: #ecfdf3; border-color: #22c55e; color: #166534; }
+    .option.wrong { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
+
+    .feedback {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      color: var(--muted);
+    }
+
+    .feedback.good { color: #166534; background: #ecfdf3; border-color: #bbf7d0; }
+    .feedback.bad { color: #991b1b; background: #fef2f2; border-color: #fecdd3; }
+
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .secondary { background: #0f172a; }
+    .ghost { background: #e2e8f0; color: #0f172a; box-shadow: none; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #2563eb, #22c55e);
+      transition: width 0.3s ease;
+    }
+
+    .history {
+      max-height: 420px;
+      overflow-y: auto;
+      display: grid;
+      gap: 8px;
+    }
+
+    .chip { padding: 4px 10px; border-radius: 999px; background: rgba(15, 23, 42, 0.06); font-weight: 600; font-size: 0.85rem; color: var(--muted); }
+    .chip.good { background: rgba(34,197,94,0.15); color: #166534; }
+    .chip.bad { background: rgba(239,68,68,0.15); color: #991b1b; }
+
+    .save-block { display: grid; gap: 8px; margin-top: 10px; }
+    .muted { color: var(--muted); font-size: 0.92rem; }
+
+    @media (max-width: 720px) {
+      header { padding: 18px 16px 8px; }
+      .grid { padding: 0 16px 18px; }
+      .card { padding: 14px; }
+      .toolbar { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hero">
+      <div class="pill">Simulatore CBT • Grado 10 (classe seconda superiore)</div>
+      <h1>Allenamento alle prove INVALSI</h1>
+      <p>Modalità ispirata alla piattaforma invalsi-areaprove.cineca.it con feedback immediato, timer e salvataggio locale delle risposte.</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card controls">
+      <h2>Imposta la sessione</h2>
+      <label>Grado selezionato</label>
+      <div class="pill" aria-label="Grado selezionato">Grado 10 • Secondaria di secondo grado</div>
+
+      <label style="margin-top:12px;">Modalità</label>
+      <div class="mode-group" role="radiogroup" aria-label="Modalità di prova">
+        <label class="mode-card"><input type="radio" name="mode" value="full-90" checked> <div><strong>Prova completa</strong><div class="muted">Timer 90 minuti e tutte le domande disponibili.</div></div></label>
+        <label class="mode-card"><input type="radio" name="mode" value="7"> <div><strong>Allenamento rapido</strong><div class="muted">Sessione di 7 domande (tempo suggerito: 15 minuti).</div></div></label>
+        <label class="mode-card"><input type="radio" name="mode" value="10"> <div><strong>Allenamento esteso</strong><div class="muted">Sessione di 10 domande (tempo suggerito: 20 minuti).</div></div></label>
+      </div>
+
+      <div class="save-block">
+        <button class="btn" id="start-btn">Avvia sessione</button>
+        <div class="actions">
+          <button class="btn ghost" id="load-btn" type="button">Carica ultimo salvataggio</button>
+          <button class="btn ghost" id="save-btn" type="button" disabled>Salva sessione</button>
+        </div>
+        <p class="muted">Le risposte vengono salvate nel browser (localStorage) insieme a corrette/errate e tempo rimanente.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Stato prova</h2>
+      <div class="toolbar">
+        <div class="stat" aria-live="polite"><span>Timer</span><strong id="timer">90:00</strong></div>
+        <div class="stat"><span>Domande totali</span><strong id="total">0</strong></div>
+        <div class="stat"><span>Risposte date</span><strong id="answered">0</strong></div>
+        <div class="stat"><span>Risposte esatte</span><strong id="correct">0</strong></div>
+      </div>
+      <div class="progress" aria-label="Progresso risposte">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="question-area" id="question-area">
+        <p class="muted">Avvia una modalità per vedere la prima domanda.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Storico risposte</h2>
+      <div class="history" id="history"></div>
+    </section>
+  </div>
+
+  <script>
+    const grade10QuestionBank = [
+      {
+        id: '2019-ita-01',
+        area: 'Italiano',
+        year: '2018-2019',
+        text: 'Nel passaggio «La discussione si fece più intensa mano a mano che l\'argomento si delineava», che funzione ha l\'espressione evidenziata?',
+        options: [
+          'Introduce un inciso che modifica il soggetto',
+          'Indica il grado crescente dell\'azione descritta',
+          'Specifica una conseguenza inattesa',
+          'Sostituisce il verbo principale per ellissi'
+        ],
+        correct: 1,
+        explanation: 'L\'espressione “mano a mano che” indica un aumento progressivo dell\'intensità dell\'azione.',
+      },
+      {
+        id: '2019-ita-02',
+        area: 'Italiano',
+        year: '2018-2019',
+        text: 'In un brano narrativo, la sequenza in cui il narratore descrive il luogo in cui avvengono i fatti è detta:',
+        options: [
+          'sequenza riflessiva',
+          'sequenza dialogica',
+          'sequenza descrittiva',
+          'sequenza argomentativa'
+        ],
+        correct: 2,
+        explanation: 'Quando il narratore si concentra sull\'ambiente e lo rappresenta, si tratta di sequenza descrittiva.',
+      },
+      {
+        id: '2019-ita-03',
+        area: 'Italiano',
+        year: '2018-2019',
+        text: 'Quale delle seguenti affermazioni esprime un\'opinione e non un fatto verificabile?',
+        options: [
+          'Il romanzo è stato pubblicato nel 2018.',
+          'Il protagonista percorre 30 km in bicicletta.',
+          'Il finale della storia è il più riuscito dell\'autore.',
+          'La vicenda si svolge a Torino.'
+        ],
+        correct: 2,
+        explanation: 'Definire un finale “più riuscito” è una valutazione soggettiva e quindi un\'opinione.',
+      },
+      {
+        id: '2019-mat-01',
+        area: 'Matematica',
+        year: '2018-2019',
+        text: 'Una funzione lineare passa per i punti (0,2) e (4,6). Qual è la sua equazione?',
+        options: [
+          'y = x + 2',
+          'y = x + 4',
+          'y = 2x + 2',
+          'y = 2x - 2'
+        ],
+        correct: 0,
+        explanation: 'Il coefficiente angolare è (6−2)/(4−0)=1 e l\'intercetta è 2: y = x + 2.',
+      },
+      {
+        id: '2019-mat-02',
+        area: 'Matematica',
+        year: '2018-2019',
+        text: 'Il 30% degli studenti di una classe pratica uno sport di squadra. Se la classe conta 25 studenti, quanti praticano uno sport di squadra?',
+        options: [
+          '6',
+          '7',
+          '8',
+          '9'
+        ],
+        correct: 1,
+        explanation: 'Il 30% di 25 è 0,30 × 25 = 7,5; arrotondando al numero intero più vicino si ottengono 7 studenti.',
+      },
+      {
+        id: '2019-mat-03',
+        area: 'Matematica',
+        year: '2018-2019',
+        text: 'Quale delle seguenti espressioni rappresenta la forma fattorizzata di x² − 9?',
+        options: [
+          '(x − 3)(x + 3)',
+          'x(x − 9)',
+          '(x − 9)(x + 1)',
+          'x²(1 − 9)'
+        ],
+        correct: 0,
+        explanation: 'La differenza di quadrati x² − 9 si scompone in (x − 3)(x + 3).',
+      },
+      {
+        id: '2019-ita-04',
+        area: 'Italiano',
+        year: '2018-2019',
+        text: 'In un testo espositivo l\'obiettivo principale è:',
+        options: [
+          'convincere il lettore di una tesi',
+          'raccontare un\'esperienza personale',
+          'informare e chiarire un argomento',
+          'descrivere un luogo in modo evocativo'
+        ],
+        correct: 2,
+        explanation: 'Il testo espositivo mira a informare e spiegare un tema con chiarezza.',
+      },
+      {
+        id: '2019-mat-04',
+        area: 'Matematica',
+        year: '2018-2019',
+        text: 'Se 5x − 3 = 2x + 12, qual è il valore di x?',
+        options: [
+          'x = 3',
+          'x = 5',
+          'x = −5',
+          'x = −3'
+        ],
+        correct: 1,
+        explanation: 'Portando le x da un lato otteniamo 3x = 15, quindi x = 5.',
+      },
+      {
+        id: '2019-ita-05',
+        area: 'Italiano',
+        year: '2018-2019',
+        text: 'Quale figura retorica è presente in: «Il silenzio urlava nella stanza vuota»?',
+        options: [
+          'Metafora',
+          'Ossimoro',
+          'Iperbole',
+          'Personificazione'
+        ],
+        correct: 3,
+        explanation: 'Il silenzio è presentato come se potesse urlare: è una personificazione.',
+      },
+      {
+        id: '2019-mat-05',
+        area: 'Matematica',
+        year: '2018-2019',
+        text: 'Un triangolo rettangolo ha i cateti di lunghezza 6 cm e 8 cm. Quanto misura l\'ipotenusa?',
+        options: [
+          '10 cm',
+          '12 cm',
+          '14 cm',
+          '16 cm'
+        ],
+        correct: 0,
+        explanation: 'Applicando Pitagora: √(6² + 8²) = √(36 + 64) = √100 = 10 cm.',
+      },
+      {
+        id: '2019-ita-06',
+        area: 'Italiano',
+        year: '2018-2019',
+        text: 'Individua il valore dell\'espressione verbale «avrebbe potuto partire»',
+        options: [
+          'futuro semplice',
+          'condizionale passato',
+          'congiuntivo imperfetto',
+          'imperfetto indicativo'
+        ],
+        correct: 1,
+        explanation: '«Avrebbe potuto partire» utilizza il condizionale passato (avrebbe + participio).',
+      },
+      {
+        id: '2019-mat-06',
+        area: 'Matematica',
+        year: '2018-2019',
+        text: 'La funzione y = 3x² viene traslata verso l\'alto di 4 unità. Qual è la nuova equazione?',
+        options: [
+          'y = 3x² + 4',
+          'y = 3(x + 4)²',
+          'y = 3x² − 4',
+          'y = 3(x − 4)² + 4'
+        ],
+        correct: 0,
+        explanation: 'Una traslazione verticale verso l\'alto di 4 unità aggiunge 4 al termine noto: y = 3x² + 4.',
+      }
+    ];
+
+    let sessionQuestions = [];
+    let currentIndex = 0;
+    let answeredCount = 0;
+    let correctCount = 0;
+    let timerInterval = null;
+    let timeRemaining = 5400; // 90 min default
+    let sessionActive = false;
+    const saveKey = 'invalsi-grade10-session';
+
+    const timerEl = document.getElementById('timer');
+    const totalEl = document.getElementById('total');
+    const answeredEl = document.getElementById('answered');
+    const correctEl = document.getElementById('correct');
+    const progressBar = document.getElementById('progress-bar');
+    const questionArea = document.getElementById('question-area');
+    const historyEl = document.getElementById('history');
+    const startBtn = document.getElementById('start-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const loadBtn = document.getElementById('load-btn');
+
+    function shuffle(array) {
+      return array.map(v => ({ v, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ v }) => v);
+    }
+
+    function formatTime(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function buildSessionQuestions(mode) {
+      const pool = shuffle([...grade10QuestionBank]);
+      let count = pool.length;
+      if (mode !== 'full-90') {
+        count = Math.min(parseInt(mode, 10), pool.length);
+      }
+      return pool.slice(0, count).map(q => ({ ...q, userAnswer: null, isCorrect: false }));
+    }
+
+    function setTimer(mode) {
+      if (mode === 'full-90') return 90 * 60;
+      if (mode === '7') return 15 * 60;
+      if (mode === '10') return 20 * 60;
+      return 90 * 60;
+    }
+
+    function startSession() {
+      const mode = document.querySelector('input[name="mode"]:checked').value;
+      sessionQuestions = buildSessionQuestions(mode);
+      timeRemaining = setTimer(mode);
+      currentIndex = 0;
+      answeredCount = 0;
+      correctCount = 0;
+      sessionActive = true;
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeRemaining -= 1;
+        updateTimer();
+        if (timeRemaining <= 0) {
+          endSession();
+        }
+      }, 1000);
+      updateTimer();
+      totalEl.textContent = sessionQuestions.length;
+      saveBtn.disabled = false;
+      renderQuestion();
+      updateStats();
+      renderHistory();
+    }
+
+    function updateTimer() {
+      timerEl.textContent = formatTime(Math.max(timeRemaining, 0));
+    }
+
+    function updateStats() {
+      answeredEl.textContent = `${answeredCount}/${sessionQuestions.length}`;
+      correctEl.textContent = `${correctCount}/${sessionQuestions.length}`;
+      const progress = sessionQuestions.length ? (answeredCount / sessionQuestions.length) * 100 : 0;
+      progressBar.style.width = `${progress}%`;
+    }
+
+    function renderQuestion() {
+      if (!sessionQuestions.length) {
+        questionArea.innerHTML = '<p class="muted">Non ci sono domande in questa sessione. Seleziona una modalità e riprova.</p>';
+        return;
+      }
+      const q = sessionQuestions[currentIndex];
+      const answered = q.userAnswer !== null;
+      const optionsHTML = q.options.map((opt, idx) => {
+        const classes = ['option'];
+        if (answered) {
+          if (idx === q.correct) classes.push('correct');
+          if (idx === q.userAnswer && idx !== q.correct) classes.push('wrong');
+          if (idx === q.userAnswer) classes.push('selected');
+        }
+        return `<button class="${classes.join(' ')}" data-idx="${idx}" ${answered ? 'disabled' : ''}>${opt}</button>`;
+      }).join('');
+
+      const feedback = answered
+        ? `<div class="feedback ${q.isCorrect ? 'good' : 'bad'}">${q.isCorrect ? 'Risposta corretta!' : 'Risposta errata.'} ${q.explanation}</div>`
+        : '<div class="feedback">Scegli una delle 4 opzioni. Il feedback è immediato.</div>';
+
+      questionArea.innerHTML = `
+        <div class="question-meta">
+          <span class="chip">Domanda ${currentIndex + 1} / ${sessionQuestions.length}</span>
+          <span class="chip">Area: ${q.area}</span>
+          <span class="chip">Anno: ${q.year}</span>
+        </div>
+        <h3 class="question-title">${q.text}</h3>
+        <div class="options" id="options">${optionsHTML}</div>
+        ${feedback}
+        <div class="actions">
+          <button class="btn ghost" type="button" ${currentIndex === 0 ? 'disabled' : ''} id="prev-btn">Indietro</button>
+          <button class="btn secondary" type="button" ${currentIndex === sessionQuestions.length - 1 ? 'disabled' : ''} id="next-btn">Prossima</button>
+          <button class="btn" type="button" id="finish-btn">Termina e salva</button>
+        </div>
+      `;
+
+      questionArea.querySelectorAll('.option').forEach(btn => {
+        btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.idx, 10)));
+      });
+      document.getElementById('prev-btn').addEventListener('click', () => moveQuestion(-1));
+      document.getElementById('next-btn').addEventListener('click', () => moveQuestion(1));
+      document.getElementById('finish-btn').addEventListener('click', endSession);
+    }
+
+    function handleAnswer(choice) {
+      if (!sessionActive) return;
+      const q = sessionQuestions[currentIndex];
+      if (q.userAnswer !== null) return;
+      q.userAnswer = choice;
+      q.isCorrect = choice === q.correct;
+      answeredCount += 1;
+      if (q.isCorrect) correctCount += 1;
+      renderQuestion();
+      updateStats();
+      renderHistory();
+    }
+
+    function moveQuestion(delta) {
+      const target = currentIndex + delta;
+      if (target < 0 || target >= sessionQuestions.length) return;
+      currentIndex = target;
+      renderQuestion();
+    }
+
+    function renderHistory() {
+      if (!sessionQuestions.length) {
+        historyEl.innerHTML = '<p class="muted">Nessuna risposta registrata.</p>';
+        return;
+      }
+      historyEl.innerHTML = sessionQuestions.map((q, idx) => {
+        const status = q.userAnswer === null ? 'In sospeso' : q.isCorrect ? 'Corretta' : 'Errata';
+        const cls = q.userAnswer === null ? '' : q.isCorrect ? 'good' : 'bad';
+        const chosen = q.userAnswer !== null ? q.options[q.userAnswer] : '—';
+        return `<div class="stat" aria-label="Riepilogo domanda ${idx + 1}">
+          <div>
+            <strong>Domanda ${idx + 1}</strong><br><span class="muted">${q.area} • ${q.year}</span>
+          </div>
+          <div style="text-align:right;">
+            <div class="chip ${cls}">${status}</div>
+            <div class="muted" style="margin-top:4px;">Risposta: ${chosen}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function endSession() {
+      if (!sessionActive) return;
+      sessionActive = false;
+      clearInterval(timerInterval);
+      timeRemaining = Math.max(timeRemaining, 0);
+      updateTimer();
+      saveSession();
+      const summary = `Hai risposto a ${answeredCount} su ${sessionQuestions.length} domande. Corrette: ${correctCount}.`;
+      const finalFeedback = document.createElement('div');
+      finalFeedback.className = 'feedback';
+      finalFeedback.textContent = summary + ' Sessione salvata in locale.';
+      questionArea.appendChild(finalFeedback);
+    }
+
+    function saveSession() {
+      const payload = {
+        sessionQuestions,
+        currentIndex,
+        answeredCount,
+        correctCount,
+        timeRemaining,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem(saveKey, JSON.stringify(payload));
+    }
+
+    function loadSession() {
+      const raw = localStorage.getItem(saveKey);
+      if (!raw) {
+        alert('Nessun salvataggio disponibile.');
+        return;
+      }
+      try {
+        const data = JSON.parse(raw);
+        sessionQuestions = data.sessionQuestions || [];
+        currentIndex = data.currentIndex || 0;
+        answeredCount = data.answeredCount || 0;
+        correctCount = data.correctCount || 0;
+        timeRemaining = data.timeRemaining || setTimer('full-90');
+        sessionActive = true;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          timeRemaining -= 1;
+          updateTimer();
+          if (timeRemaining <= 0) endSession();
+        }, 1000);
+        totalEl.textContent = sessionQuestions.length;
+        saveBtn.disabled = false;
+        renderQuestion();
+        updateStats();
+        renderHistory();
+      } catch (error) {
+        alert('Impossibile leggere il salvataggio. Avvia una nuova sessione.');
+      }
+    }
+
+    startBtn.addEventListener('click', startSession);
+    saveBtn.addEventListener('click', saveSession);
+    loadBtn.addEventListener('click', loadSession);
+
+    // Ripristina timer di default e progressi all'avvio
+    updateTimer();
+    updateStats();
+  </script>
+</body>
+</html>
