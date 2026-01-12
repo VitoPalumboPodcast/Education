@@ -1236,16 +1236,16 @@
         <div className="flex flex-col items-center justify-center min-h-full p-6">
           <h1 className="text-5xl font-extrabold text-blue-600 mb-10">Il Mio Mondo</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
-             <MenuCard title="L'Intersezione" description="Cosa hanno in comune?" color="bg-yellow-100" borderColor="border-yellow-400" textColor="text-yellow-800" icon={<GitMerge size={40}/>} onClick={() => onSelectGame(GameType.INTERSECTION)} />
-             <MenuCard title="Chi ne ha di più?" description="Quale gruppo è più grande?" color="bg-amber-100" borderColor="border-amber-400" textColor="text-amber-800" icon={<Scale size={40}/>} onClick={() => onSelectGame(GameType.MORE_LESS)} />
-             <MenuCard title="Appartiene?" description="È vero o falso?" color="bg-sky-100" borderColor="border-sky-400" textColor="text-sky-800" icon={<CheckCircle2 size={40}/>} onClick={() => onSelectGame(GameType.BELONGS)} />
-             <MenuCard title="Uniamo Tutto" description="Metti tutto insieme!" color="bg-violet-100" borderColor="border-violet-400" textColor="text-violet-800" icon={<Combine size={40}/>} onClick={() => onSelectGame(GameType.UNION)} />
-             <MenuCard title="Metti Insieme" description="Dividi gli oggetti" color="bg-blue-100" borderColor="border-blue-400" textColor="text-blue-800" icon={<LayoutGrid size={40}/>} onClick={() => onSelectGame(GameType.SORTING)} />
              <MenuCard title="Trova l'Intruso" description="Quale non c'entra?" color="bg-purple-100" borderColor="border-purple-400" textColor="text-purple-800" icon={<AlertCircle size={40}/>} onClick={() => onSelectGame(GameType.INTRUDER)} />
-             <MenuCard title="Dove va questo?" description="Venn Diagram" color="bg-green-100" borderColor="border-green-400" textColor="text-green-800" icon={<CircleDot size={40}/>} onClick={() => onSelectGame(GameType.VENN)} />
              <MenuCard title="Quanti sono?" description="Conta" color="bg-orange-100" borderColor="border-orange-400" textColor="text-orange-800" icon={<Calculator size={40}/>} onClick={() => onSelectGame(GameType.COUNTING)} />
-             <MenuCard title="Completa l'Insieme" description="Cosa manca?" color="bg-teal-100" borderColor="border-teal-400" textColor="text-teal-800" icon={<Puzzle size={40}/>} onClick={() => onSelectGame(GameType.COMPLETE_SET)} />
+             <MenuCard title="Chi ne ha di più?" description="Quale gruppo è più grande?" color="bg-amber-100" borderColor="border-amber-400" textColor="text-amber-800" icon={<Scale size={40}/>} onClick={() => onSelectGame(GameType.MORE_LESS)} />
+             <MenuCard title="Metti Insieme" description="Dividi gli oggetti" color="bg-blue-100" borderColor="border-blue-400" textColor="text-blue-800" icon={<LayoutGrid size={40}/>} onClick={() => onSelectGame(GameType.SORTING)} />
              <MenuCard title="Riempi l'Insieme" description="Seleziona oggetti" color="bg-indigo-100" borderColor="border-indigo-400" textColor="text-indigo-800" icon={<Box size={40}/>} onClick={() => onSelectGame(GameType.FILL_SET)} />
+             <MenuCard title="Appartiene?" description="È vero o falso?" color="bg-sky-100" borderColor="border-sky-400" textColor="text-sky-800" icon={<CheckCircle2 size={40}/>} onClick={() => onSelectGame(GameType.BELONGS)} />
+             <MenuCard title="Completa l'Insieme" description="Cosa manca?" color="bg-teal-100" borderColor="border-teal-400" textColor="text-teal-800" icon={<Puzzle size={40}/>} onClick={() => onSelectGame(GameType.COMPLETE_SET)} />
+             <MenuCard title="Uniamo Tutto" description="Metti tutto insieme!" color="bg-violet-100" borderColor="border-violet-400" textColor="text-violet-800" icon={<Combine size={40}/>} onClick={() => onSelectGame(GameType.UNION)} />
+             <MenuCard title="L'Intersezione" description="Cosa hanno in comune?" color="bg-yellow-100" borderColor="border-yellow-400" textColor="text-yellow-800" icon={<GitMerge size={40}/>} onClick={() => onSelectGame(GameType.INTERSECTION)} />
+             <MenuCard title="Dove va questo?" description="Venn Diagram" color="bg-green-100" borderColor="border-green-400" textColor="text-green-800" icon={<CircleDot size={40}/>} onClick={() => onSelectGame(GameType.VENN)} />
              <MenuCard title="Cerchi Magici" description="Sposta i cerchi" color="bg-pink-100" borderColor="border-pink-400" textColor="text-pink-800" icon={<Move size={40}/>} onClick={() => onSelectGame(GameType.SETS_PLAYGROUND)} />
           </div>
           <p className="mt-10 text-gray-400">Versione Offline</p>
