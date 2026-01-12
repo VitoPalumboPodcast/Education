@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Insiemistica (Offline)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/genai": "https://esm.sh/@google/genai@^1.35.0"
+      }
+    }
+  </script>
+  <script type="module">
+    import { GoogleGenAI, Type } from "@google/genai";
+    window.GoogleGenAI = { GoogleGenAI, Type };
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+    body { font-family: 'Fredoka', sans-serif; background-color: #f0f9ff; }
+    .animate-bounce-in { animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    @keyframes bounceIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .animate-bounce-small { animation: bounceSmall 2s infinite; }
+    @keyframes bounceSmall { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .animate-shake { animation: shake 0.5s; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    .animate-fade-in-up { animation: fadeInUp 0.5s ease-out; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Print Fixes for Offline Version */
+    @media print {
+      @page { margin: 0.5cm; }
+      body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background-color: white !important; }
+      ::-webkit-scrollbar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    if (window.lucide?.createIcons) {
+      window.lucide.createIcons();
+    }
+    window.process = { env: { API_KEY: 'GEMINI_API_KEY' } };
+  </script>
+  <script type="text/babel">
+
+    const { useState, useEffect, useRef, useMemo } = React;
+    const { GoogleGenAI, Type } = window.GoogleGenAI || { GoogleGenAI: class{}, Type: {} };
+
+    const createLucideIcon = (name) => {
+      return ({ size = 24, className = '', strokeWidth, ...props }) => (
+        <i
+          data-lucide={name}
+          width={size}
+          height={size}
+          strokeWidth={strokeWidth}
+          className={className}
+          {...props}
+        ></i>
+      );
+    };
+
+    const LayoutGrid = createLucideIcon('layout-grid');
+    const AlertCircle = createLucideIcon('alert-circle');
+    const CircleDot = createLucideIcon('circle-dot');
+    const Calculator = createLucideIcon('calculator');
+    const Puzzle = createLucideIcon('puzzle');
+    const Move = createLucideIcon('move');
+    const Box = createLucideIcon('box');
+    const Download = createLucideIcon('download');
+    const ArrowLeft = createLucideIcon('arrow-left');
+    const RefreshCw = createLucideIcon('refresh-cw');
+    const Layers = createLucideIcon('layers');
+    const Wand2 = createLucideIcon('wand-2');
+    const Hand = createLucideIcon('hand');
+    const Plus = createLucideIcon('plus');
+    const Check = createLucideIcon('check');
+    const X = createLucideIcon('x');
+    const ThumbsUp = createLucideIcon('thumbs-up');
+    const ThumbsDown = createLucideIcon('thumbs-down');
+    const CheckCircle2 = createLucideIcon('check-circle-2');
+    const Combine = createLucideIcon('combine');
+    const ArrowDown = createLucideIcon('arrow-down');
+    const Scale = createLucideIcon('scale');
+    const GitMerge = createLucideIcon('git-merge');
+    const Printer = createLucideIcon('printer');
+
+
+    const GameType = {
+      MENU: 'MENU',
+      SORTING: 'SORTING',
+      INTRUDER: 'INTRUDER',
+      COUNTING: 'COUNTING',
+      VENN: 'VENN',
+      COMPLETE_SET: 'COMPLETE_SET',
+      SETS_PLAYGROUND: 'SETS_PLAYGROUND',
+      FILL_SET: 'FILL_SET',
+      BELONGS: 'BELONGS',
+      UNION: 'UNION',
+      MORE_LESS: 'MORE_LESS',
+      INTERSECTION: 'INTERSECTION'
+    };
+
+
+    const triggerWinConfetti = () => {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#EF4444', '#3B82F6', '#10B981', '#F59E0B']
+        });
+      }
+    };
+
+
+    const Button = ({ children, variant = 'primary', size = 'md', className = '', ...props }) => {
+      const baseStyles = "font-bold rounded-2xl transition-all duration-200 active:scale-95 shadow-md flex items-center justify-center gap-2";
+      const variants = {
+        primary: "bg-blue-500 hover:bg-blue-600 text-white border-b-4 border-blue-700",
+        secondary: "bg-purple-500 hover:bg-purple-600 text-white border-b-4 border-purple-700",
+        success: "bg-green-500 hover:bg-green-600 text-white border-b-4 border-green-700",
+        danger: "bg-red-500 hover:bg-red-600 text-white border-b-4 border-red-700",
+        outline: "bg-white hover:bg-gray-50 text-gray-700 border-2 border-gray-300",
+      };
+      const sizes = {
+        sm: "px-3 py-1 text-sm",
+        md: "px-6 py-3 text-lg",
+        lg: "px-8 py-4 text-xl",
+        xl: "px-10 py-6 text-2xl",
+      };
+      return (
+        <button className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`} {...props}>
+          {children}
+        </button>
+      );
+    };
+
+
+    // Mocked for offline use as API keys won't persist securely or might not be set
+    const getEncouragement = async (context) => {
+       const phrases = ["Bravissimo! 🎉", "Ottimo lavoro! 🌟", "Fantastico! 🚀", "Super! 🌈"];
+       return phrases[Math.floor(Math.random() * phrases.length)];
+    };
+
+
+    const LEVEL_PRESETS_SORT = [
+      {
+        id: 'fruit_animals',
+        items: [
+          { id: '1', label: 'Mela', emoji: '🍎', category: 'FRUTTA' },
+          { id: '2', label: 'Cane', emoji: '🐶', category: 'ANIMALI' },
+          { id: '3', label: 'Banana', emoji: '🍌', category: 'FRUTTA' },
+          { id: '4', label: 'Gatto', emoji: '🐱', category: 'ANIMALI' },
+          { id: '5', label: 'Uva', emoji: '🍇', category: 'FRUTTA' },
+          { id: '6', label: 'Leone', emoji: '🦁', category: 'ANIMALI' },
+        ],
+        containers: [
+          { id: 'c1', label: 'FRUTTA', validCategories: ['FRUTTA'], color: 'bg-green-100 border-green-500 text-green-800' },
+          { id: 'c2', label: 'ANIMALI', validCategories: ['ANIMALI'], color: 'bg-orange-100 border-orange-500 text-orange-800' },
+        ]
+      }
+    ];
+
+    const shuffleArray = (array) => {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    };
+
+    const SortingGame = ({ onBack }) => {
+      const [items, setItems] = useState(() => shuffleArray(LEVEL_PRESETS_SORT[0].items));
+      const [containers, setContainers] = useState(LEVEL_PRESETS_SORT[0].containers);
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [sortedItems, setSortedItems] = useState({});
+      const [completed, setCompleted] = useState(false);
+      const [feedback, setFeedback] = useState(null);
+      const [encouragement, setEncouragement] = useState("");
+
+      const currentItem = items[currentIndex];
+
+      const handleChoice = (containerId) => {
+        const container = containers.find(c => c.id === containerId);
+        if (!container || !currentItem) return;
+
+        if (container.validCategories.includes(currentItem.category)) {
+          setSortedItems(prev => ({ ...prev, [containerId]: [...(prev[containerId] || []), currentItem] }));
+          if (currentIndex + 1 < items.length) {
+            setCurrentIndex(prev => prev + 1);
+            setFeedback(null);
+          } else {
+            setCompleted(true);
+            triggerWinConfetti();
+            getEncouragement('sorting').then(setEncouragement);
+          }
+        } else {
+          setFeedback(`No, ${currentItem.label} non va lì!`);
+          setTimeout(() => setFeedback(null), 2000);
+        }
+      };
+
+      const resetGame = () => {
+        setItems(shuffleArray([...LEVEL_PRESETS_SORT[0].items]));
+        setCurrentIndex(0);
+        setSortedItems({});
+        setCompleted(false);
+        setFeedback(null);
+      };
+
+      return (
+        <div className="flex flex-col h-full max-w-5xl mx-auto p-4">
+          <div className="flex justify-between items-center mb-6">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-2xl font-bold text-blue-600">Metti Insieme</h2>
+            <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /> Stampa</Button>
+          </div>
+          {completed ? (
+            <div className="flex-1 flex flex-col items-center justify-center space-y-8 animate-fade-in-up">
+              <div className="text-8xl">📦</div>
+              <h2 className="text-4xl font-bold text-green-600 text-center">{encouragement || "Bravissimo!"}</h2>
+              <div className="flex gap-4 print:hidden">
+                <Button onClick={resetGame} variant="primary" size="lg"><RefreshCw className="mr-2" /> Rigioca</Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex-1 flex flex-col items-center justify-between">
+              <div className="flex flex-col items-center mb-4 min-h-[12rem] justify-center print:hidden">
+                <div className="w-40 h-40 bg-white rounded-3xl shadow-xl flex flex-col items-center justify-center border-4 border-gray-100 animate-bounce-small">
+                  <span className="text-7xl">{currentItem.emoji}</span>
+                  <span className="text-lg font-bold text-gray-700 mt-2">{currentItem.label}</span>
+                </div>
+              </div>
+              <div className={`h-8 font-bold text-xl ${feedback ? 'text-red-500' : 'text-transparent'} print:hidden`}>{feedback || "..."}</div>
+              <div className="grid grid-cols-2 gap-4 w-full mt-2">
+                {containers.map((c) => (
+                  <button key={c.id} onClick={() => handleChoice(c.id)} className={`min-h-[12rem] rounded-3xl border-dashed border-4 flex flex-col items-center py-4 transition-all duration-200 active:scale-95 ${c.color}`}>
+                    <span className="text-xl font-bold mb-2 uppercase text-center px-2 leading-tight">{c.label}</span>
+                    <div className="flex flex-wrap justify-center gap-1">
+                      {(sortedItems[c.id] || []).map((item) => (
+                        <div key={item.id} className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"><span className="text-lg">{item.emoji}</span></div>
+                      ))}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+
+    const IntruderGame = ({ onBack }) => {
+      const PRESETS = [{
+        id: 'red_things',
+        instruction: "Tocca quello che NON è rosso!",
+        items: [
+          { id: '1', label: 'Fragola', emoji: '🍓', category: 'RED' },
+          { id: '2', label: 'Cuore', emoji: '❤️', category: 'RED' },
+          { id: '3', label: 'Mela', emoji: '🍎', category: 'RED' },
+          { id: '4', label: 'Pomodoro', emoji: '🍅', category: 'RED' },
+          { id: '5', label: 'Pesce', emoji: '🐟', category: 'BLUE' },
+          { id: '6', label: 'Ciliegia', emoji: '🍒', category: 'RED' },
+        ],
+        intruderId: '5'
+      }];
+      const [completed, setCompleted] = useState(false);
+      const [wrongId, setWrongId] = useState(null);
+      const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+      const currentLevel = PRESETS[0];
+
+      const handleItemClick = (item) => {
+        if (isAnimatingOut || completed) return;
+        if (item.id === currentLevel.intruderId) {
+          setIsAnimatingOut(true);
+          setTimeout(() => { setCompleted(true); triggerWinConfetti(); }, 1500);
+        } else {
+          setWrongId(item.id);
+          setTimeout(() => setWrongId(null), 800);
+        }
+      };
+
+      return (
+        <div className="flex flex-col h-full max-w-4xl mx-auto p-4">
+           <div className="flex justify-between items-center mb-6">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-2xl font-bold text-purple-600">Trova l'Intruso</h2>
+            <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /></Button>
+          </div>
+          {completed ? (
+            <div className="flex-1 flex flex-col items-center justify-center space-y-8 animate-bounce-in">
+              <div className="text-8xl">🕵️‍♂️</div>
+              <h2 className="text-4xl font-bold text-green-600 text-center">Trovato!</h2>
+              <Button onClick={() => setCompleted(false)} variant="primary" size="lg" className="print:hidden"><RefreshCw className="mr-2" /> Rigioca</Button>
+            </div>
+          ) : (
+            <div className="flex-1 flex flex-col items-center justify-start">
+              <h3 className="text-xl text-gray-600 mb-6 text-center bg-white px-6 py-2 rounded-full shadow-sm border border-gray-100">{currentLevel.instruction}</h3>
+              <div className="relative w-full max-w-3xl bg-purple-50 rounded-[4rem] border-4 border-dashed border-purple-300 p-8 md:p-12 shadow-inner mx-auto mt-4 print:border-gray-300 print:bg-white">
+                 <div className="flex flex-wrap justify-center gap-6 relative">
+                  {currentLevel.items.map((item) => (
+                    <button key={item.id} onClick={() => handleItemClick(item)} className={`w-24 h-24 md:w-32 md:h-32 rounded-3xl border-4 shadow-lg flex flex-col items-center justify-center transition-all duration-700 ${(isAnimatingOut && item.id === currentLevel.intruderId) ? 'translate-y-64 opacity-0 scale-50 bg-green-100' : wrongId === item.id ? 'bg-red-100 border-red-400 animate-shake' : 'bg-white border-gray-100 hover:scale-105'}`}>
+                      <span className="text-5xl md:text-6xl">{item.emoji}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+
+    const VennGame = ({ onBack }) => {
+      const currentLevel = {
+        labelA: 'DA MANGIARE', labelB: 'ROSSO', colorA: '#22c55e', colorB: '#ef4444',
+        items: [
+          { id: '1', label: 'Mela', emoji: '🍎', category: 'BOTH' },
+          { id: '2', label: 'Banana', emoji: '🍌', category: 'A' },
+          { id: '3', label: 'Cuore', emoji: '❤️', category: 'B' },
+          { id: '4', label: 'Fragola', emoji: '🍓', category: 'BOTH' },
+          { id: '5', label: 'Camion', emoji: '🚒', category: 'B' },
+          { id: '6', label: 'Pera', emoji: '🍐', category: 'A' },
+        ]
+      };
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [completed, setCompleted] = useState(false);
+      const [feedback, setFeedback] = useState(null);
+      const currentItem = currentLevel.items[currentIndex];
+
+      const handleChoice = (zone) => {
+        if (!currentItem) return;
+        if (currentItem.category === zone) {
+          if (currentIndex + 1 < currentLevel.items.length) {
+            setCurrentIndex(prev => prev + 1);
+            setFeedback(null);
+          } else {
+            setCompleted(true);
+            triggerWinConfetti();
+          }
+        } else {
+          setFeedback("No, guarda bene!");
+          setTimeout(() => setFeedback(null), 1500);
+        }
+      };
+
+      return (
+        <div className="flex flex-col h-full max-w-5xl mx-auto p-4 select-none">
+          <div className="flex justify-between items-center mb-2">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-2xl font-bold text-indigo-600">Diagrammi di Venn</h2>
+            <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /> Stampa</Button>
+          </div>
+          {completed ? (
+            <div className="flex-1 flex flex-col items-center justify-center space-y-8">
+              <div className="text-8xl">🌈</div>
+              <h2 className="text-4xl font-bold text-green-600">Bravissimo!</h2>
+              <Button onClick={() => { setCurrentIndex(0); setCompleted(false); }} variant="primary" size="lg" className="print:hidden">Rigioca</Button>
+            </div>
+          ) : (
+            <div className="flex-1 flex flex-col items-center justify-start">
+              <div className="text-center mb-4 print:hidden">
+                <div className="w-28 h-28 bg-white rounded-3xl shadow-xl border-4 border-indigo-100 flex flex-col items-center justify-center animate-bounce-small mx-auto">
+                   <span className="text-6xl">{currentItem.emoji}</span>
+                   <span className="text-xs font-bold text-gray-400 mt-1 uppercase">{currentItem.label}</span>
+                </div>
+              </div>
+              <div className={`text-lg font-bold min-h-[1.5rem] mb-2 text-red-500 ${feedback ? 'opacity-100' : 'opacity-0'} print:hidden`}>{feedback}</div>
+              <div className="relative w-full max-w-2xl aspect-[1.5/1]">
+                <svg viewBox="0 0 600 400" className="w-full h-full drop-shadow-xl overflow-visible">
+                  <path d="M 300 73.1 A 150 150 0 0 1 300 326.9 A 150 150 0 0 1 300 73.1 Z" fill="#ffffff" />
+                  <circle cx="220" cy="200" r="150" fill={currentLevel.colorA} fillOpacity="0.1" stroke={currentLevel.colorA} strokeWidth="10" />
+                  <circle cx="380" cy="200" r="150" fill={currentLevel.colorB} fillOpacity="0.1" stroke={currentLevel.colorB} strokeWidth="10" />
+                  <path d="M 300 73.1 A 150 150 0 1 0 300 326.9 A 150 150 0 0 0 300 73.1 Z" fill="transparent" className="cursor-pointer hover:fill-black/5" onClick={() => handleChoice('A')} />
+                  <path d="M 300 73.1 A 150 150 0 1 1 300 326.9 A 150 150 0 0 1 300 73.1 Z" fill="transparent" className="cursor-pointer hover:fill-black/5" onClick={() => handleChoice('B')} />
+                  <path d="M 300 73.1 A 150 150 0 0 1 300 326.9 A 150 150 0 0 1 300 73.1 Z" fill="transparent" className="cursor-pointer hover:fill-slate-100" onClick={() => handleChoice('BOTH')} />
+                  <g pointerEvents="none">
+                    <text x="145" y="200" textAnchor="middle" style={{ font: 'bold 22px Fredoka', fill: currentLevel.colorA }}>{currentLevel.labelA}</text>
+                    <text x="455" y="200" textAnchor="middle" style={{ font: 'bold 22px Fredoka', fill: currentLevel.colorB }}>{currentLevel.labelB}</text>
+                    <text x="300" y="195" textAnchor="middle" style={{ font: 'bold 24px Fredoka', fill: '#1e293b' }}>ENTRAMBI</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+
+    const CountingGame = ({ onBack }) => {
+      const EMOJIS = ['🐱', '🐶', '🍎', '🚗', '⭐', '🍪', '🐸', '🦋', '⚽', '🍬'];
+      const [insideCount, setInsideCount] = useState(3);
+      const [outsideCount, setOutsideCount] = useState(0);
+      const [emoji, setEmoji] = useState('🐱');
+      const [completed, setCompleted] = useState(false);
+      const [levelDifficulty, setLevelDifficulty] = useState(1);
+      const [questionType, setQuestionType] = useState('INSIDE');
+      const [correctAnswer, setCorrectAnswer] = useState(3);
+
+      useEffect(() => { generateLevel(1); }, []);
+
+      const generateLevel = (difficulty) => {
+        setLevelDifficulty(difficulty);
+        const newEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+        setEmoji(newEmoji);
+        setCompleted(false);
+
+        let iCount = 0;
+        let oCount = 0;
+        let qType = 'INSIDE';
+
+        if (difficulty === 1) {
+          iCount = Math.floor(Math.random() * 5) + 1;
+          oCount = Math.floor(Math.random() * 4);
+          qType = 'INSIDE';
+        } else if (difficulty === 2) {
+          iCount = Math.floor(Math.random() * 5) + 1;
+          oCount = Math.floor(Math.random() * 5) + 1;
+          qType = Math.random() > 0.5 ? 'INSIDE' : 'OUTSIDE';
+        } else if (difficulty === 3) {
+          iCount = Math.floor(Math.random() * 6) + 1;
+          oCount = Math.floor(Math.random() * 6) + 1;
+          qType = 'TOTAL';
+        } else {
+          // LEVEL 4: NO VISUAL CUES
+          iCount = Math.floor(Math.random() * 6) + 1;
+          oCount = Math.floor(Math.random() * 6) + 1;
+          const rand = Math.random();
+          if (rand < 0.33) qType = 'INSIDE';
+          else if (rand < 0.66) qType = 'OUTSIDE';
+          else qType = 'TOTAL';
+        }
+
+        setInsideCount(iCount);
+        setOutsideCount(oCount);
+        setQuestionType(qType);
+
+        if (qType === 'INSIDE') setCorrectAnswer(iCount);
+        else if (qType === 'OUTSIDE') setCorrectAnswer(oCount);
+        else setCorrectAnswer(iCount + oCount);
+      };
+
+      const handleAnswer = (num) => {
+        if (num === correctAnswer) {
+          triggerWinConfetti();
+          setCompleted(true);
+        }
+      };
+
+      const renderOutsideItems = () => {
+        const isLevelHard = levelDifficulty === 4;
+        const isFocus = questionType === 'OUTSIDE' || questionType === 'TOTAL';
+        const opacityClass = (isLevelHard || isFocus) ? "opacity-100 scale-110 drop-shadow-md" : "opacity-30 grayscale blur-[1px]";
+        const validSlots = [0, 1, 2, 3, 4, 7, 8, 9, 10, 11];
+
+        return (
+          <div className="absolute inset-0 grid grid-cols-4 grid-rows-3 pointer-events-none p-2">
+            {Array.from({ length: 12 }).map((_, gridIndex) => {
+              const logicalIndex = validSlots.indexOf(gridIndex);
+              if (logicalIndex === -1) return <div key={gridIndex} />;
+              const hasItem = logicalIndex < outsideCount;
+              return (
+                <div key={gridIndex} className="flex items-center justify-center">
+                  {hasItem && (
+                    <div className={`text-5xl transition-all duration-500 ${opacityClass}`}>
+                      {emoji}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
+      };
+
+      const isLevelHard = levelDifficulty === 4;
+      const isInsideFocus = questionType === 'INSIDE' || questionType === 'TOTAL';
+      const insideContainerClass = (isLevelHard || isInsideFocus) ? 'border-orange-400 opacity-100' : 'border-gray-300 opacity-50 grayscale';
+
+      return (
+        <div className="flex flex-col h-full max-w-4xl mx-auto p-4 select-none">
+          <div className="flex justify-between items-center mb-4">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <div className="flex gap-2 print:hidden overflow-x-auto">
+               <Button variant={levelDifficulty === 1 ? 'success' : 'outline'} size="sm" onClick={() => generateLevel(1)}>Liv. 1</Button>
+               <Button variant={levelDifficulty === 2 ? 'success' : 'outline'} size="sm" onClick={() => generateLevel(2)}>Liv. 2</Button>
+               <Button variant={levelDifficulty === 3 ? 'success' : 'outline'} size="sm" onClick={() => generateLevel(3)}>Liv. 3</Button>
+               <Button variant={levelDifficulty === 4 ? 'danger' : 'outline'} size="sm" onClick={() => generateLevel(4)}>Liv. 4 🔥</Button>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /> Stampa</Button>
+          </div>
+
+          <div className="flex-1 flex flex-col items-center">
+            <h2 className="text-3xl font-bold text-gray-700 mb-6 text-center flex flex-col md:flex-row items-center gap-3">
+              <span>Quanti sono</span>
+              {questionType === 'INSIDE' && <span className="text-orange-600 bg-orange-100 px-3 py-1 rounded-xl border-2 border-orange-200 shadow-sm">DENTRO?</span>}
+              {questionType === 'OUTSIDE' && <span className="text-sky-600 bg-sky-100 px-3 py-1 rounded-xl border-2 border-sky-200 shadow-sm">FUORI?</span>}
+              {questionType === 'TOTAL' && <span className="text-purple-600 bg-purple-100 px-3 py-1 rounded-xl border-2 border-purple-200 shadow-sm">IN TUTTO?</span>}
+            </h2>
+
+            <div className="relative w-full max-w-lg aspect-square mb-8 bg-slate-100 rounded-[3rem] border-4 border-slate-200 shadow-inner flex items-center justify-center overflow-hidden">
+               {renderOutsideItems()}
+               <div className={`relative z-10 w-48 h-48 md:w-64 md:h-64 bg-white rounded-[2rem] border-8 shadow-2xl flex flex-wrap gap-2 items-center justify-center p-4 content-center transition-all duration-500 ${insideContainerClass}`}>
+                 {Array.from({ length: insideCount }).map((_, i) => (
+                   <div key={`in-${i}`} className="text-5xl animate-bounce" style={{ animationDelay: `${i * 100}ms` }}>{emoji}</div>
+                 ))}
+                 {(isLevelHard || isInsideFocus) && (
+                    <div className="absolute -bottom-5 bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-bold border-2 border-white shadow-sm uppercase">Recinto</div>
+                 )}
+               </div>
+            </div>
+
+            {completed ? (
+              <div className="flex flex-col items-center animate-fade-in-up">
+                <h3 className="text-5xl font-bold text-green-600 mb-6">Bravissimo! {correctAnswer}!</h3>
+                <Button onClick={() => generateLevel(levelDifficulty)} variant="success" size="lg" className="print:hidden"><RefreshCw className="mr-2" /> Ancora!</Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-6 md:grid-cols-6 gap-2 w-full max-w-2xl px-2 print:hidden">
+                {Array.from({ length: 12 }).map((_, i) => {
+                  const val = i + 1;
+                  return (
+                    <button key={val} onClick={() => handleAnswer(val)} className="bg-white border-b-8 border-gray-200 active:border-b-0 active:translate-y-2 rounded-2xl py-3 text-3xl font-bold text-gray-700 hover:bg-orange-50 transition-all shadow-md active:bg-orange-100">{val}</button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+
+    const CompleteSetGame = ({ onBack }) => {
+      const PRESETS_SET = [
+        {
+          id: 'red_things',
+          ruleLabel: 'TUTTO ROSSO',
+          examples: [{ emoji: '❤️' }, { emoji: '🍓' }, { emoji: '🍅' }],
+          options: [{ label: 'Mela', emoji: '🍎', isCorrect: true }, { label: 'Banana', emoji: '🍌', isCorrect: false }, { label: 'Pesce', emoji: '🐟', isCorrect: false }]
+        }
+      ];
+      const [completed, setCompleted] = useState(false);
+      const [wrongSelection, setWrongSelection] = useState(null);
+      const [finalItem, setFinalItem] = useState(null);
+      const currentLevel = PRESETS_SET[0];
+
+      const handleOptionClick = (item, index) => {
+        if (completed) return;
+        if (item.isCorrect) {
+          setFinalItem(item);
+          setCompleted(true);
+          triggerWinConfetti();
+        } else {
+          setWrongSelection(index);
+          setTimeout(() => setWrongSelection(null), 1000);
+        }
+      };
+
+      return (
+        <div className="flex flex-col h-full max-w-4xl mx-auto p-4">
+          <div className="flex justify-between items-center mb-6">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-2xl font-bold text-teal-600">Completa l'Insieme</h2>
+            <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /> Stampa</Button>
+          </div>
+          <div className="flex-1 flex flex-col items-center space-y-8">
+            <h3 className="text-xl text-gray-600 text-center bg-white px-6 py-2 rounded-full shadow-sm border border-gray-100">Cosa manca: <strong>{currentLevel.ruleLabel}</strong>?</h3>
+            <div className="relative p-8 bg-teal-50 border-4 border-dashed border-teal-400 rounded-[3rem] w-full max-w-2xl flex flex-col items-center print:border-gray-300 print:bg-white">
+               <div className="flex flex-wrap justify-center gap-6 mt-4">
+                  {currentLevel.examples.map((item, idx) => (
+                    <div key={idx} className="w-24 h-24 bg-white rounded-2xl shadow-md flex items-center justify-center text-5xl">{item.emoji}</div>
+                  ))}
+                  {completed && finalItem ? (
+                     <div className="w-24 h-24 bg-green-100 rounded-2xl shadow-xl border-4 border-green-400 flex items-center justify-center text-5xl animate-bounce-in">{finalItem.emoji}</div>
+                  ) : (
+                    <div className="w-24 h-24 rounded-2xl border-4 border-gray-300 border-dashed flex items-center justify-center bg-gray-50 text-4xl text-gray-300">?</div>
+                  )}
+               </div>
+            </div>
+            {!completed && (
+              <div className="grid grid-cols-3 gap-4 w-full max-w-2xl print:hidden">
+                {currentLevel.options.map((item, idx) => (
+                  <button key={idx} onClick={() => handleOptionClick(item, idx)} className={`bg-white border-b-8 rounded-2xl py-6 flex flex-col items-center shadow-lg transition-all ${wrongSelection === idx ? 'border-red-400 bg-red-50 animate-shake' : 'border-gray-200 hover:bg-teal-50'}`}>
+                    <span className="text-6xl">{item.emoji}</span>
+                    <span className="text-lg font-bold text-gray-600">{item.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+
+    const SetsPlayground = ({ onBack }) => {
+      const PRESETS = [
+        {
+          labelA: 'COSE DA MANGIARE',
+          labelB: 'COSE GIALLE',
+          colorA: 'rgba(34, 197, 94, 0.2)',
+          colorB: 'rgba(234, 179, 8, 0.2)',
+          elements: [
+            { id: 'f1', emoji: '🍎', category: 'A' },
+            { id: 'f2', emoji: '🥦', category: 'A' },
+            { id: 'f3', emoji: '🍒', category: 'A' },
+            { id: 'c1', emoji: '🍌', category: 'BOTH' },
+            { id: 'c2', emoji: '🍋', category: 'BOTH' },
+            { id: 'f4', emoji: '🥩', category: 'A' },
+            { id: 'o1', emoji: '⭐', category: 'B' },
+            { id: 'o2', emoji: '🐤', category: 'B' },
+            { id: 'o4', emoji: '🌙', category: 'B' },
+          ]
+        },
+        {
+          labelA: 'ANIMALI',
+          labelB: 'COSE ROSSE',
+          colorA: 'rgba(59, 130, 246, 0.2)',
+          colorB: 'rgba(239, 68, 68, 0.2)',
+          elements: [
+            { id: 'a1', emoji: '🐶', category: 'A' },
+            { id: 'a2', emoji: '🐱', category: 'A' },
+            { id: 'a3', emoji: '🐘', category: 'A' },
+            { id: 'r1', emoji: '🐞', category: 'BOTH' },
+            { id: 'r2', emoji: '🦞', category: 'BOTH' },
+            { id: 'r3', emoji: '🌹', category: 'B' },
+            { id: 'r4', emoji: '🚒', category: 'B' },
+            { id: 'r5', emoji: '🎈', category: 'B' },
+          ]
+        }
+      ];
+
+      const [levelIdx, setLevelIdx] = useState(0);
+      const level = PRESETS[levelIdx];
+      const containerRef = useRef(null);
+      const [isDragging, setIsDragging] = useState(null);
+      const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+
+      const [posA, setPosA] = useState({ x: 300, y: 300 });
+      const [posB, setPosB] = useState({ x: 600, y: 300 });
+      const radius = 140;
+
+      const { itemsA, itemsB, itemsBoth } = useMemo(() => {
+        return {
+          itemsA: level.elements.filter(e => e.category === 'A'),
+          itemsB: level.elements.filter(e => e.category === 'B'),
+          itemsBoth: level.elements.filter(e => e.category === 'BOTH'),
+        };
+      }, [level]);
+
+      const distance = (x1, y1, x2, y2) => Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+      const handlePointerDown = (e, setId) => {
+        const pos = setId === 'A' ? posA : posB;
+        setIsDragging(setId);
+        setDragOffset({ x: e.clientX - pos.x, y: e.clientY - pos.y });
+        e.target.setPointerCapture(e.pointerId);
+      };
+
+      const handlePointerMove = (e) => {
+        if (!isDragging || !containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const nx = Math.max(radius, Math.min(rect.width - radius, e.clientX - dragOffset.x));
+        const ny = Math.max(radius, Math.min(rect.height - radius, e.clientY - dragOffset.y));
+        if (isDragging === 'A') setPosA({ x: nx, y: ny });
+        else setPosB({ x: nx, y: ny });
+      };
+
+      const calculatePosition = (category, index, total) => {
+        const d = distance(posA.x, posA.y, posB.x, posB.y);
+        const sumR = radius * 2;
+        const maxDistForInteraction = sumR + 200;
+
+        let factor = 0;
+        if (d < maxDistForInteraction) {
+          factor = 1 - (d - sumR) / 200;
+          if (factor < 0) factor = 0;
+        }
+
+        if (category === 'BOTH') {
+          if (d < sumR) {
+            const mx = (posA.x + posB.x) / 2;
+            const my = (posA.y + posB.y) / 2;
+            const jitterX = (index % 2 === 0 ? 1 : -1) * 20 * (Math.ceil((index + 1) / 2) * 0.5);
+            const jitterY = ((index % 3) - 1) * 20;
+            return { x: mx + jitterX, y: my + jitterY };
+          } else {
+            const home = index % 2 === 0 ? posA : posB;
+            const angle = (index * 2);
+            const r = radius * 0.4;
+            return { x: home.x + Math.cos(angle) * r, y: home.y + Math.sin(angle) * r };
+          }
+        }
+
+        const home = category === 'A' ? posA : posB;
+        const other = category === 'A' ? posB : posA;
+        const angleDefault = (index / total) * 2 * Math.PI - (Math.PI / 2);
+        const rDefault = radius * 0.5;
+        const x0 = home.x + Math.cos(angleDefault) * rDefault;
+        const y0 = home.y + Math.sin(angleDefault) * rDefault;
+
+        const dx = home.x - other.x;
+        const dy = home.y - other.y;
+        const angleAway = Math.atan2(dy, dx);
+        const spread = (Math.PI * 2) / 3;
+        const idxNorm = total > 1 ? (index / (total - 1)) - 0.5 : 0;
+        const angleTarget = angleAway + (idxNorm * spread);
+        const rTarget = radius * 0.65;
+        const xTarget = home.x + Math.cos(angleTarget) * rTarget;
+        const yTarget = home.y + Math.sin(angleTarget) * rTarget;
+
+        const mix = Math.min(Math.max(factor, 0), 1);
+        const x = x0 + (xTarget - x0) * mix;
+        const y = y0 + (yTarget - y0) * mix;
+        return { x, y };
+      };
+
+      const nextLevel = () => setLevelIdx((prev) => (prev + 1) % PRESETS.length);
+
+      return (
+        <div className="flex flex-col h-full w-full bg-slate-50 overflow-hidden select-none">
+          <div className="p-4 flex justify-between items-center bg-white shadow-sm z-20">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-2xl font-bold text-pink-600 flex items-center gap-2"><Hand className="animate-bounce" /> Cerchi Magici</h2>
+            <div className="flex gap-2">
+               <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /></Button>
+               <Button variant="success" size="sm" onClick={nextLevel} className="print:hidden"><Layers size={20} /> Prossimo</Button>
+            </div>
+          </div>
+          <div ref={containerRef} className="flex-1 relative touch-none" onPointerMove={handlePointerMove}>
+            <div onPointerDown={(e) => handlePointerDown(e, 'A')} onPointerUp={() => setIsDragging(null)} className="absolute rounded-full border-4 border-green-500 shadow-lg cursor-grab active:cursor-grabbing flex items-start justify-center pt-4" style={{ width: radius * 2, height: radius * 2, left: posA.x - radius, top: posA.y - radius, backgroundColor: level.colorA, zIndex: isDragging === 'A' ? 10 : 1 }}>
+              <span className="font-bold text-green-700 text-xs bg-white/80 px-2 rounded-full uppercase">{level.labelA}</span>
+            </div>
+            <div onPointerDown={(e) => handlePointerDown(e, 'B')} onPointerUp={() => setIsDragging(null)} className="absolute rounded-full border-4 border-yellow-500 shadow-lg cursor-grab active:cursor-grabbing flex items-end justify-center pb-4" style={{ width: radius * 2, height: radius * 2, left: posB.x - radius, top: posB.y - radius, backgroundColor: level.colorB, zIndex: isDragging === 'B' ? 10 : 1 }}>
+              <span className="font-bold text-yellow-700 text-xs bg-white/80 px-2 rounded-full uppercase">{level.labelB}</span>
+            </div>
+
+            {itemsA.map((el, i) => {
+              const p = calculatePosition('A', i, itemsA.length);
+              return <div key={el.id} className="absolute text-5xl transition-all duration-75 pointer-events-none drop-shadow-md z-20" style={{ left: p.x, top: p.y, transform: 'translate(-50%, -50%)' }}>{el.emoji}</div>;
+            })}
+
+            {itemsB.map((el, i) => {
+              const p = calculatePosition('B', i, itemsB.length);
+              return <div key={el.id} className="absolute text-5xl transition-all duration-75 pointer-events-none drop-shadow-md z-20" style={{ left: p.x, top: p.y, transform: 'translate(-50%, -50%)' }}>{el.emoji}</div>;
+            })}
+
+            {itemsBoth.map((el, i) => {
+              const p = calculatePosition('BOTH', i, itemsBoth.length);
+              return <div key={el.id} className="absolute text-5xl transition-all duration-75 pointer-events-none drop-shadow-md z-20" style={{ left: p.x, top: p.y, transform: 'translate(-50%, -50%)', filter: el.emoji === '🦀' ? 'saturate(300%) contrast(1.2)' : undefined }}>{el.emoji}</div>;
+            })}
+          </div>
+        </div>
+      );
+    };
+
+
+    const FillSetGame = ({ onBack }) => {
+      const PRESETS_FILL = [{
+        id: 'animals', rule: 'Metti tutti gli ANIMALI', targetCategory: 'ANIMAL',
+        pool: [{ id: '1', emoji: '🐶', category: 'ANIMAL' }, { id: '2', emoji: '🚗', category: 'VEHICLE' }, { id: '3', emoji: '🐱', category: 'ANIMAL' }]
+      }];
+      const [selectedIds, setSelectedIds] = useState([]);
+      const [completed, setCompleted] = useState(false);
+      const level = PRESETS_FILL[0];
+
+      const handleItemClick = (item) => {
+        if(completed) return;
+        if(item.category === level.targetCategory && !selectedIds.includes(item.id)) {
+           const newSel = [...selectedIds, item.id];
+           setSelectedIds(newSel);
+           if(newSel.length === level.pool.filter(i=>i.category===level.targetCategory).length) {
+             setCompleted(true);
+             triggerWinConfetti();
+           }
+        }
+      };
+
+      return (
+         <div className="flex flex-col h-full max-w-4xl mx-auto p-4">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-center text-2xl font-bold my-4">Riempi l'Insieme</h2>
+            <div className="flex gap-2 mb-4 print:hidden">
+                <Button variant="outline" size="sm" onClick={() => window.print()}><Printer size={20} /></Button>
+            </div>
+            <p className="text-center text-xl mb-4">{level.rule}</p>
+            <div className="flex justify-center gap-4 mb-8 min-h-[100px] border-4 border-dashed rounded-xl p-4 items-center print:border-gray-300 print:bg-white">
+               {selectedIds.length === 0 ? "Vuoto" : selectedIds.map(id => <span key={id} className="text-4xl">{level.pool.find(i=>i.id===id).emoji}</span>)}
+            </div>
+            {!completed && <div className="flex justify-center gap-4 print:hidden">{level.pool.filter(i=>!selectedIds.includes(i.id)).map(item => <button key={item.id} onClick={() => handleItemClick(item)} className="text-6xl bg-white p-4 rounded-xl shadow">{item.emoji}</button>)}</div>}
+            {completed && <h2 className="text-center text-4xl text-green-600 font-bold">Fatto!</h2>}
+         </div>
+      );
+    };
+
+
+    const BelongsGame = ({ onBack }) => {
+      const QUESTIONS = [
+        { id: '1', emoji: '🍎', label: 'Mela', categoryLabel: 'FRUTTA', categoryItems: ['🍌', '🍇', '🍒', '🍐'], doesBelong: true },
+        { id: '2', emoji: '🚗', label: 'Auto', categoryLabel: 'FRUTTA', categoryItems: ['🍓', '🍉', '🍍', '🥝'], doesBelong: false },
+        { id: '3', emoji: '🐶', label: 'Cane', categoryLabel: 'ANIMALI', categoryItems: ['🐱', '🦁', '🐘', '🦒'], doesBelong: true },
+        { id: '4', emoji: '🚲', label: 'Bici', categoryLabel: 'ANIMALI', categoryItems: ['🦓', '🐒', '🐻', '🐼'], doesBelong: false },
+        { id: '5', emoji: '🚌', label: 'Bus', categoryLabel: 'VEICOLI', categoryItems: ['🚗', '🚕', '🏍️', '🚚'], doesBelong: true },
+        { id: '6', emoji: '🍕', label: 'Pizza', categoryLabel: 'VEICOLI', categoryItems: ['🚑', '🚒', '🚓', '🚜'], doesBelong: false },
+        { id: '7', emoji: '👕', label: 'Maglietta', categoryLabel: 'VESTITI', categoryItems: ['👖', '👗', '🧥', '🧦'], doesBelong: true },
+        { id: '8', emoji: '🍌', label: 'Banana', categoryLabel: 'VESTITI', categoryItems: ['🧢', '🧤', '🧣', '👟'], doesBelong: false },
+      ];
+
+      const [qIndex, setQIndex] = useState(0);
+      const [feedback, setFeedback] = useState(null);
+      const [shuffledQuestions, setShuffledQuestions] = useState([]);
+
+      useEffect(() => {
+        setShuffledQuestions([...QUESTIONS].sort(() => Math.random() - 0.5));
+      }, []);
+
+      const currentQ = shuffledQuestions[qIndex];
+
+      const handleAnswer = (answerYes) => {
+        if (feedback) return;
+        if (answerYes === currentQ.doesBelong) {
+          setFeedback('correct');
+          triggerWinConfetti();
+          setTimeout(() => {
+            setFeedback(null);
+            setQIndex((prev) => (prev + 1) % shuffledQuestions.length);
+          }, 1500);
+        } else {
+          setFeedback('wrong');
+          setTimeout(() => setFeedback(null), 1000);
+        }
+      };
+
+      if (!currentQ) return <div>Caricamento...</div>;
+
+      return (
+        <div className="flex flex-col h-full max-w-4xl mx-auto p-4 select-none">
+          <div className="flex justify-between items-center mb-6">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-2xl font-bold text-sky-600">Appartiene?</h2>
+            <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /> Stampa</Button>
+          </div>
+
+          <div className="flex-1 flex flex-col items-center justify-center gap-8">
+            <div className="bg-white rounded-[3rem] p-6 md:p-8 shadow-xl border-4 border-sky-100 flex flex-col items-center w-full max-w-2xl animate-fade-in-up relative overflow-hidden print:border-gray-300">
+              {feedback === 'correct' && (
+                 <div className="absolute inset-0 bg-green-100/95 z-20 flex items-center justify-center flex-col animate-bounce-in print:hidden">
+                    <Check size={120} className="text-green-500" />
+                    <span className="text-4xl font-bold text-green-600">GIUSTO!</span>
+                 </div>
+              )}
+              {feedback === 'wrong' && (
+                 <div className="absolute inset-0 bg-red-100/95 z-20 flex items-center justify-center flex-col animate-bounce-in print:hidden">
+                    <X size={120} className="text-red-500" />
+                    <span className="text-4xl font-bold text-red-600">Riprova</span>
+                 </div>
+              )}
+
+              <div className="text-gray-500 text-xl font-bold mb-6 text-center">
+                 La <span className="text-sky-600 text-2xl uppercase">{currentQ.label}</span> fa parte di questo gruppo?
+              </div>
+
+              <div className="flex flex-col md:flex-row items-center justify-center gap-8 w-full mb-6">
+                <div className="flex flex-col items-center gap-2">
+                    <div className="w-40 h-40 bg-white rounded-3xl flex items-center justify-center text-8xl border-4 border-sky-200 shadow-lg z-10 print:border-gray-300">
+                       {currentQ.emoji}
+                    </div>
+                    <span className="font-bold text-sky-700 text-lg uppercase">{currentQ.label}</span>
+                </div>
+                <div className="text-4xl text-gray-300 rotate-90 md:rotate-0">➡️</div>
+                <div className="flex flex-col items-center gap-2">
+                    <div className="w-64 h-48 bg-orange-50 rounded-[2rem] border-4 border-orange-200 shadow-inner p-4 flex flex-wrap gap-2 justify-center items-center content-center relative print:border-gray-300 print:bg-white">
+                       <div className="absolute -top-4 bg-orange-100 px-3 py-1 rounded-full text-xs font-bold text-orange-400 border border-orange-200 uppercase tracking-widest print:bg-white print:text-gray-500 print:border print:border-gray-300">
+                          Insieme {currentQ.categoryLabel}
+                       </div>
+                       {currentQ.categoryItems.map((item, idx) => (
+                           <span key={idx} className="text-4xl animate-bounce-small" style={{ animationDelay: `${idx * 100}ms`}}>{item}</span>
+                       ))}
+                       <div className="w-10 h-10 rounded-full border-2 border-dashed border-orange-300 flex items-center justify-center opacity-50">?</div>
+                    </div>
+                     <span className="font-bold text-orange-600 text-lg uppercase">{currentQ.categoryLabel}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-6 w-full max-w-md justify-center print:hidden">
+              <button onClick={() => handleAnswer(false)} className="flex-1 bg-red-50 hover:bg-red-100 border-b-8 border-red-200 active:border-b-0 active:translate-y-2 rounded-3xl p-4 flex flex-col items-center gap-2 transition-all group">
+                 <div className="bg-white p-3 rounded-full shadow-sm group-hover:scale-110 transition-transform"><ThumbsDown size={32} className="text-red-500" /></div>
+                 <span className="text-xl font-black text-red-600 uppercase">NO</span>
+              </button>
+              <button onClick={() => handleAnswer(true)} className="flex-1 bg-green-50 hover:bg-green-100 border-b-8 border-green-200 active:border-b-0 active:translate-y-2 rounded-3xl p-4 flex flex-col items-center gap-2 transition-all group">
+                 <div className="bg-white p-3 rounded-full shadow-sm group-hover:scale-110 transition-transform"><ThumbsUp size={32} className="text-green-500" /></div>
+                 <span className="text-xl font-black text-green-600 uppercase">SÌ</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+
+    const UnionGame = ({ onBack }) => {
+      const LEVELS = [
+        {
+          label: 'Unisci Frutta e Verdura',
+          setA: [{ id: '1', emoji: '🍎' }, { id: '2', emoji: '🍌' }, { id: '3', emoji: '🍇' }],
+          setB: [{ id: '4', emoji: '🥦' }, { id: '5', emoji: '🥕' }],
+          colorA: 'bg-red-100 border-red-300',
+          colorB: 'bg-green-100 border-green-300',
+          colorU: 'bg-yellow-100 border-yellow-300'
+        },
+        {
+          label: 'Unisci Cani e Gatti',
+          setA: [{ id: 'c1', emoji: '🐶' }, { id: 'c2', emoji: '🐕' }],
+          setB: [{ id: 'g1', emoji: '🐱' }, { id: 'g2', emoji: '🐈' }, { id: 'g3', emoji: '🦁' }],
+          colorA: 'bg-orange-100 border-orange-300',
+          colorB: 'bg-blue-100 border-blue-300',
+          colorU: 'bg-purple-100 border-purple-300'
+        }
+      ];
+
+      const [levelIdx, setLevelIdx] = useState(0);
+      const level = LEVELS[levelIdx];
+      const [itemsA, setItemsA] = useState(level.setA);
+      const [itemsB, setItemsB] = useState(level.setB);
+      const [itemsUnion, setItemsUnion] = useState([]);
+
+      const moveToUnion = (item, source) => {
+        setItemsUnion(prev => [...prev, item]);
+        if (source === 'A') {
+          setItemsA(prev => prev.filter(i => i.id !== item.id));
+        } else {
+          setItemsB(prev => prev.filter(i => i.id !== item.id));
+        }
+        const remainingA = source === 'A' ? itemsA.length - 1 : itemsA.length;
+        const remainingB = source === 'B' ? itemsB.length - 1 : itemsB.length;
+        if (remainingA === 0 && remainingB === 0) {
+          triggerWinConfetti();
+        }
+      };
+
+      const nextLevel = () => {
+        const next = (levelIdx + 1) % LEVELS.length;
+        setLevelIdx(next);
+        setItemsA(LEVELS[next].setA);
+        setItemsB(LEVELS[next].setB);
+        setItemsUnion([]);
+      };
+
+      const resetCurrent = () => {
+        setItemsA(level.setA);
+        setItemsB(level.setB);
+        setItemsUnion([]);
+      };
+
+      const isComplete = itemsA.length === 0 && itemsB.length === 0;
+
+      return (
+        <div className="flex flex-col h-full max-w-4xl mx-auto p-4 select-none">
+           <div className="flex justify-between items-center mb-4">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-2xl font-bold text-violet-600">Facciamo l'Unione</h2>
+            <div className="flex gap-2">
+               <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /></Button>
+               <Button variant="primary" size="sm" onClick={resetCurrent} className="print:hidden"><RefreshCw size={20} /></Button>
+            </div>
+          </div>
+          <div className="flex-1 flex flex-col items-center">
+            <h3 className="text-xl text-gray-600 mb-6 bg-white px-4 py-2 rounded-full shadow-sm">
+               {level.label}: <span className="font-bold">Metti tutto insieme!</span>
+            </h3>
+            <div className="flex gap-4 w-full justify-center mb-4">
+              <div className={`flex-1 min-h-[10rem] rounded-3xl border-4 ${level.colorA} p-4 flex flex-wrap gap-2 content-start justify-center transition-all print:border-gray-300 print:bg-white`}>
+                {itemsA.map(item => (
+                  <button key={item.id} onClick={() => moveToUnion(item, 'A')} className="text-5xl hover:scale-110 active:scale-0 transition-all cursor-pointer animate-bounce-small">{item.emoji}</button>
+                ))}
+              </div>
+              <div className="flex flex-col justify-center text-gray-400 font-bold text-4xl gap-2"><span>+</span></div>
+              <div className={`flex-1 min-h-[10rem] rounded-3xl border-4 ${level.colorB} p-4 flex flex-wrap gap-2 content-start justify-center transition-all print:border-gray-300 print:bg-white`}>
+                {itemsB.map(item => (
+                  <button key={item.id} onClick={() => moveToUnion(item, 'B')} className="text-5xl hover:scale-110 active:scale-0 transition-all cursor-pointer animate-bounce-small">{item.emoji}</button>
+                ))}
+              </div>
+            </div>
+            <div className="mb-4 text-violet-300 animate-bounce print:text-gray-300"><ArrowDown size={48} strokeWidth={3} /></div>
+            <div className={`w-full max-w-2xl min-h-[14rem] rounded-[3rem] border-4 border-dashed ${level.colorU} p-6 flex flex-wrap gap-4 justify-center items-center transition-all relative print:border-gray-300 print:bg-white`}>
+                {itemsUnion.length === 0 && <span className="text-gray-400 font-bold text-2xl opacity-50 absolute">Metti tutto qui dentro</span>}
+                {itemsUnion.map((item, idx) => <div key={idx} className="text-6xl animate-bounce-in">{item.emoji}</div>)}
+            </div>
+            {isComplete && (
+              <div className="mt-8 flex flex-col items-center animate-fade-in-up">
+                <h2 className="text-4xl font-bold text-green-600 mb-4">Insieme Unito!</h2>
+                <Button onClick={nextLevel} variant="success" size="lg" className="print:hidden">Prossimo</Button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+
+    const MoreLessGame = ({ onBack }) => {
+      const EMOJIS = ['🍎', '🐶', '🚗', '⭐', '🍪', '🐸', '🦋', '⚽', '🍕', '🎈'];
+      const [leftCount, setLeftCount] = useState(0);
+      const [rightCount, setRightCount] = useState(0);
+      const [currentEmoji, setCurrentEmoji] = useState('🍎');
+      const [completed, setCompleted] = useState(false);
+      const [questionType, setQuestionType] = useState('MORE');
+      const [feedback, setFeedback] = useState(null);
+
+      const generateLevel = () => {
+        const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+        let left = Math.floor(Math.random() * 8) + 1;
+        let right = Math.floor(Math.random() * 8) + 1;
+        while (left === right) right = Math.floor(Math.random() * 8) + 1;
+        setLeftCount(left);
+        setRightCount(right);
+        setCurrentEmoji(emoji);
+        setQuestionType(Math.random() > 0.5 ? 'MORE' : 'LESS');
+        setCompleted(false);
+        setFeedback(null);
+      };
+
+      useEffect(() => { generateLevel(); }, []);
+
+      const handleChoice = (side) => {
+        if (completed) return;
+
+        let isCorrect = false;
+        if (questionType === 'MORE') {
+          const isLeftMore = leftCount > rightCount;
+          isCorrect = (side === 'left' && isLeftMore) || (side === 'right' && !isLeftMore);
+        } else {
+          const isLeftLess = leftCount < rightCount;
+          isCorrect = (side === 'left' && isLeftLess) || (side === 'right' && !isLeftLess);
+        }
+
+        if (isCorrect) {
+          setFeedback('correct');
+          setCompleted(true);
+          triggerWinConfetti();
+        } else {
+          setFeedback('wrong');
+          setTimeout(() => setFeedback(null), 1000);
+        }
+      };
+
+      return (
+        <div className="flex flex-col h-full max-w-4xl mx-auto p-4 select-none">
+          <div className="flex justify-between items-center mb-6">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-2xl font-bold text-amber-600 flex items-center gap-2"><Scale className="animate-pulse" /> Di più o di meno?</h2>
+            <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /> Stampa</Button>
+          </div>
+          <div className="flex-1 flex flex-col items-center justify-center gap-8">
+
+            <div className={`px-8 py-4 rounded-full shadow-md border-4 ${questionType === 'MORE' ? 'bg-amber-50 border-amber-200' : 'bg-pink-50 border-pink-200'}`}>
+               <h3 className="text-2xl font-bold text-gray-700 text-center">
+                 Chi ne ha di <span className={`${questionType === 'MORE' ? 'text-amber-600' : 'text-pink-600'} font-black text-4xl uppercase`}>
+                   {questionType === 'MORE' ? 'PIÙ' : 'MENO'}
+                 </span>?
+               </h3>
+            </div>
+
+            <div className="flex flex-row gap-4 w-full items-stretch justify-center h-[28rem]">
+                <button onClick={() => handleChoice('left')} className={`flex-1 bg-sky-50 rounded-[2rem] border-8 border-sky-200 shadow-lg hover:bg-sky-100 active:scale-95 transition-all flex flex-wrap content-center justify-center gap-4 p-4 relative ${feedback === 'wrong' ? 'animate-shake border-red-400 bg-red-50' : ''} ${completed && ((questionType === 'MORE' && leftCount > rightCount) || (questionType === 'LESS' && leftCount < rightCount)) ? 'border-green-500 bg-green-50 scale-105' : ''} print:bg-white print:border-gray-300`}>
+                    {Array.from({ length: leftCount }).map((_, i) => <span key={i} className="text-6xl drop-shadow-sm animate-bounce-small" style={{ animationDelay: `${i * 100}ms` }}>{currentEmoji}</span>)}
+                </button>
+                <div className="flex flex-col justify-center items-center"><div className="w-1 bg-gray-300 h-full rounded-full opacity-50"></div></div>
+                <button onClick={() => handleChoice('right')} className={`flex-1 bg-orange-50 rounded-[2rem] border-8 border-orange-200 shadow-lg hover:bg-orange-100 active:scale-95 transition-all flex flex-wrap content-center justify-center gap-4 p-4 relative ${feedback === 'wrong' ? 'animate-shake border-red-400 bg-red-50' : ''} ${completed && ((questionType === 'MORE' && rightCount > leftCount) || (questionType === 'LESS' && rightCount < leftCount)) ? 'border-green-500 bg-green-50 scale-105' : ''} print:bg-white print:border-gray-300`}>
+                    {Array.from({ length: rightCount }).map((_, i) => <span key={i} className="text-6xl drop-shadow-sm animate-bounce-small" style={{ animationDelay: `${(i+5) * 100}ms` }}>{currentEmoji}</span>)}
+                </button>
+            </div>
+            <div className="h-24 flex items-center justify-center w-full">
+                {completed ? (
+                    <div className="animate-fade-in-up flex flex-col items-center gap-2">
+                        <h2 className="text-4xl font-bold text-green-600">Esatto! 🎉</h2>
+                        <Button onClick={generateLevel} variant="success" size="lg" className="print:hidden"><RefreshCw className="mr-2" /> Ancora</Button>
+                    </div>
+                ) : feedback === 'wrong' ? (
+                    <h2 className="text-3xl font-bold text-red-500 animate-pulse">Riprova!</h2>
+                ) : null}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+
+    const IntersectionGame = ({ onBack }) => {
+      const LEVEL_DATA = {
+        targetColor: 'YELLOW',
+        targetLabel: 'GIALLO',
+        items: [
+          { id: 'f1', emoji: '🍌', label: 'Banana', color: 'YELLOW', sourceSet: 'FRUIT' },
+          { id: 'f2', emoji: '🍋', label: 'Limone', color: 'YELLOW', sourceSet: 'FRUIT' },
+          { id: 'f3', emoji: '🍎', label: 'Mela', color: 'RED', sourceSet: 'FRUIT' },
+          { id: 'f4', emoji: '🍇', label: 'Uva', color: 'PURPLE', sourceSet: 'FRUIT' },
+          { id: 'v1', emoji: '🌽', label: 'Mais', color: 'YELLOW', sourceSet: 'VEG' },
+          { id: 'v2', emoji: '🫑', label: 'Peperone', color: 'YELLOW', sourceSet: 'VEG' },
+          { id: 'v3', emoji: '🥦', label: 'Broccolo', color: 'GREEN', sourceSet: 'VEG' },
+          { id: 'v4', emoji: '🥕', label: 'Carota', color: 'ORANGE', sourceSet: 'VEG' },
+        ]
+      };
+
+      const [items, setItems] = useState(LEVEL_DATA.items);
+      const [intersectionItems, setIntersectionItems] = useState([]);
+      const [completed, setCompleted] = useState(false);
+      const [wrongId, setWrongId] = useState(null);
+
+      const fruitItems = items.filter(i => i.sourceSet === 'FRUIT');
+      const vegItems = items.filter(i => i.sourceSet === 'VEG');
+
+      const handleItemClick = (item) => {
+        if (completed) return;
+
+        if (item.color === LEVEL_DATA.targetColor) {
+          setIntersectionItems([...intersectionItems, item]);
+          setItems(items.filter(i => i.id !== item.id));
+
+          if (intersectionItems.length + 1 === 4) {
+            setCompleted(true);
+            triggerWinConfetti();
+          }
+        } else {
+          setWrongId(item.id);
+          setTimeout(() => setWrongId(null), 800);
+        }
+      };
+
+      const resetGame = () => {
+        setItems(LEVEL_DATA.items);
+        setIntersectionItems([]);
+        setCompleted(false);
+        setWrongId(null);
+      };
+
+      return (
+        <div className="flex flex-col h-full max-w-5xl mx-auto p-4 select-none">
+          <div className="flex justify-between items-center mb-4">
+            <Button variant="outline" size="sm" onClick={onBack} className="print:hidden"><ArrowLeft size={20} /> Menu</Button>
+            <h2 className="text-2xl font-bold text-yellow-600">L'Intersezione</h2>
+            <div className="flex gap-2">
+               <Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden"><Printer size={20} /></Button>
+               <Button variant="primary" size="sm" onClick={resetGame} className="print:hidden"><RefreshCw size={20} /></Button>
+            </div>
+          </div>
+          <div className="flex-1 flex flex-col items-center">
+            <div className="bg-white px-6 py-3 rounded-2xl shadow-sm border border-yellow-200 mb-6 text-center">
+              <p className="text-lg text-gray-600">Metti nell'intersezione solo la frutta e la verdura di colore <strong className="text-yellow-600 uppercase text-xl">GIALLO</strong></p>
+            </div>
+            <div className="flex w-full gap-4 justify-center items-stretch mb-2">
+                <div className="flex-1 bg-red-50 border-4 border-red-200 rounded-3xl p-4 flex flex-col items-center min-h-[12rem] print:bg-white print:border-gray-300">
+                    <h3 className="text-red-400 font-bold mb-2 uppercase tracking-wider">Frutta</h3>
+                    <div className="flex flex-wrap gap-3 justify-center">
+                        {fruitItems.map(item => (
+                            <button key={item.id} onClick={() => handleItemClick(item)} className={`text-5xl transition-transform hover:scale-110 active:scale-95 ${wrongId === item.id ? 'animate-shake opacity-50' : ''}`}>{item.emoji}</button>
+                        ))}
+                    </div>
+                </div>
+                <div className="flex-1 bg-green-50 border-4 border-green-200 rounded-3xl p-4 flex flex-col items-center min-h-[12rem] print:bg-white print:border-gray-300">
+                    <h3 className="text-green-600 font-bold mb-2 uppercase tracking-wider">Verdura</h3>
+                    <div className="flex flex-wrap gap-3 justify-center">
+                        {vegItems.map(item => (
+                            <button key={item.id} onClick={() => handleItemClick(item)} className={`text-5xl transition-transform hover:scale-110 active:scale-95 ${wrongId === item.id ? 'animate-shake opacity-50' : ''}`}>{item.emoji}</button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <div className="flex w-full justify-center gap-20 text-yellow-300 my-2 print:text-gray-300">
+                <ArrowDown size={40} className="animate-bounce" />
+                <ArrowDown size={40} className="animate-bounce" style={{ animationDelay: '100ms'}} />
+            </div>
+            <div className="w-full max-w-md min-h-[12rem] bg-yellow-50 border-4 border-dashed border-yellow-400 rounded-[3rem] p-6 flex flex-col items-center relative transition-all duration-500 print:bg-white print:border-gray-300">
+                <span className="absolute -top-5 bg-yellow-400 text-white px-4 py-1 rounded-full font-bold shadow-sm uppercase tracking-widest text-sm print:bg-white print:text-gray-500 print:border print:border-gray-300">Intersezione (Giallo)</span>
+                <div className="flex flex-wrap gap-4 justify-center mt-4 w-full">
+                    {intersectionItems.length === 0 && !completed && <span className="text-yellow-200 font-bold text-xl mt-8">Trascina qui</span>}
+                    {intersectionItems.map(item => <div key={item.id} className="text-6xl animate-bounce-in drop-shadow-sm">{item.emoji}</div>)}
+                </div>
+            </div>
+            {completed && (
+                 <div className="mt-6 animate-fade-in-up flex flex-col items-center">
+                    <h2 className="text-4xl font-bold text-green-600 mb-2">Ottimo Lavoro!</h2>
+                    <p className="text-gray-500 mb-4">Hai trovato l'intersezione.</p>
+                    <Button onClick={resetGame} variant="success" size="lg" className="print:hidden">Rigioca</Button>
+                 </div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+
+    const MenuCard = ({ title, description, color, borderColor, textColor, icon, onClick }) => (
+      <button onClick={onClick} className={`${color} border-b-8 ${borderColor} rounded-3xl p-6 flex items-center gap-6 shadow-lg w-full text-left group active:scale-95 transition-all`}>
+        <div className={`p-4 bg-white rounded-2xl shadow-sm ${textColor} group-hover:scale-110`}>{icon}</div>
+        <div><h2 className={`text-2xl font-bold ${textColor}`}>{title}</h2><p className="text-gray-600">{description}</p></div>
+      </button>
+    );
+
+    const MainMenu = ({ onSelectGame }) => {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-full p-6">
+          <h1 className="text-5xl font-extrabold text-blue-600 mb-10">Il Mio Mondo</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
+             <MenuCard title="L'Intersezione" description="Cosa hanno in comune?" color="bg-yellow-100" borderColor="border-yellow-400" textColor="text-yellow-800" icon={<GitMerge size={40}/>} onClick={() => onSelectGame(GameType.INTERSECTION)} />
+             <MenuCard title="Chi ne ha di più?" description="Quale gruppo è più grande?" color="bg-amber-100" borderColor="border-amber-400" textColor="text-amber-800" icon={<Scale size={40}/>} onClick={() => onSelectGame(GameType.MORE_LESS)} />
+             <MenuCard title="Appartiene?" description="È vero o falso?" color="bg-sky-100" borderColor="border-sky-400" textColor="text-sky-800" icon={<CheckCircle2 size={40}/>} onClick={() => onSelectGame(GameType.BELONGS)} />
+             <MenuCard title="Uniamo Tutto" description="Metti tutto insieme!" color="bg-violet-100" borderColor="border-violet-400" textColor="text-violet-800" icon={<Combine size={40}/>} onClick={() => onSelectGame(GameType.UNION)} />
+             <MenuCard title="Metti Insieme" description="Dividi gli oggetti" color="bg-blue-100" borderColor="border-blue-400" textColor="text-blue-800" icon={<LayoutGrid size={40}/>} onClick={() => onSelectGame(GameType.SORTING)} />
+             <MenuCard title="Trova l'Intruso" description="Quale non c'entra?" color="bg-purple-100" borderColor="border-purple-400" textColor="text-purple-800" icon={<AlertCircle size={40}/>} onClick={() => onSelectGame(GameType.INTRUDER)} />
+             <MenuCard title="Dove va questo?" description="Venn Diagram" color="bg-green-100" borderColor="border-green-400" textColor="text-green-800" icon={<CircleDot size={40}/>} onClick={() => onSelectGame(GameType.VENN)} />
+             <MenuCard title="Quanti sono?" description="Conta" color="bg-orange-100" borderColor="border-orange-400" textColor="text-orange-800" icon={<Calculator size={40}/>} onClick={() => onSelectGame(GameType.COUNTING)} />
+             <MenuCard title="Completa l'Insieme" description="Cosa manca?" color="bg-teal-100" borderColor="border-teal-400" textColor="text-teal-800" icon={<Puzzle size={40}/>} onClick={() => onSelectGame(GameType.COMPLETE_SET)} />
+             <MenuCard title="Riempi l'Insieme" description="Seleziona oggetti" color="bg-indigo-100" borderColor="border-indigo-400" textColor="text-indigo-800" icon={<Box size={40}/>} onClick={() => onSelectGame(GameType.FILL_SET)} />
+             <MenuCard title="Cerchi Magici" description="Sposta i cerchi" color="bg-pink-100" borderColor="border-pink-400" textColor="text-pink-800" icon={<Move size={40}/>} onClick={() => onSelectGame(GameType.SETS_PLAYGROUND)} />
+          </div>
+          <p className="mt-10 text-gray-400">Versione Offline</p>
+        </div>
+      );
+    };
+
+
+    const App = () => {
+      const [view, setView] = React.useState(GameType.MENU);
+
+      useEffect(() => {
+        if (window.lucide?.createIcons) {
+          window.lucide.createIcons();
+        }
+      }, [view]);
+
+      const goBack = () => setView(GameType.MENU);
+      const renderView = () => {
+        switch (view) {
+          case GameType.SORTING: return <SortingGame onBack={goBack} />;
+          case GameType.INTRUDER: return <IntruderGame onBack={goBack} />;
+          case GameType.VENN: return <VennGame onBack={goBack} />;
+          case GameType.COUNTING: return <CountingGame onBack={goBack} />;
+          case GameType.COMPLETE_SET: return <CompleteSetGame onBack={goBack} />;
+          case GameType.SETS_PLAYGROUND: return <SetsPlayground onBack={goBack} />;
+          case GameType.FILL_SET: return <FillSetGame onBack={goBack} />;
+          case GameType.BELONGS: return <BelongsGame onBack={goBack} />;
+          case GameType.UNION: return <UnionGame onBack={goBack} />;
+          case GameType.MORE_LESS: return <MoreLessGame onBack={goBack} />;
+          case GameType.INTERSECTION: return <IntersectionGame onBack={goBack} />;
+          default: return <MainMenu onSelectGame={setView} />;
+        }
+      };
+      return (
+        <div className="min-h-screen bg-slate-50 relative overflow-hidden print:bg-white">
+          <div className="absolute top-0 left-0 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2 print:hidden"></div>
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 translate-x-1/2 translate-y-1/2 print:hidden"></div>
+          <main className="relative z-10 h-screen print:h-auto">{renderView()}</main>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+
+
+  </script>
+</body>
+</html>
