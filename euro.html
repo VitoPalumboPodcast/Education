@@ -179,6 +179,38 @@
     .checklist li {
       margin-bottom: 8px;
     }
+
+    .money-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .money-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .money-card img {
+      width: 100%;
+      max-width: 120px;
+      height: auto;
+      display: block;
+      margin: 0 auto 8px;
+    }
+
+    .money-card.banknote img {
+      max-width: 170px;
+    }
+
+    .money-card figcaption {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -209,7 +241,77 @@
 
     <section>
       <h2>1. Riscaldamento: riconosci il valore</h2>
-      <p>Scrivi il valore della moneta o della banconota indicata.</p>
+      <p>Scrivi il valore della moneta o della banconota indicata. Usa le immagini dei tagli presenti nella pagina Wikipedia sulle monete in euro.</p>
+      <div class="card">
+        <h3>Monete: scrivi il valore sotto ogni immagine</h3>
+        <div class="money-grid">
+          <figure class="money-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/1%20euro%20cent%20coin.png" alt="Moneta da 1 centesimo">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/2%20euro%20cent%20coin.png" alt="Moneta da 2 centesimi">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/5%20euro%20cent%20coin.png" alt="Moneta da 5 centesimi">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/10%20euro%20cent%20coin.png" alt="Moneta da 10 centesimi">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/20%20euro%20cent%20coin.png" alt="Moneta da 20 centesimi">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/50%20euro%20cent%20coin.png" alt="Moneta da 50 centesimi">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/1%20euro%20coin.png" alt="Moneta da 1 euro">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/2%20euro%20coin.png" alt="Moneta da 2 euro">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Banconote: scrivi il valore sotto ogni immagine</h3>
+        <div class="money-grid">
+          <figure class="money-card banknote">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%205%20obverse.jpg" alt="Banconota da 5 euro">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card banknote">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%2010%20obverse.jpg" alt="Banconota da 10 euro">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card banknote">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%2020%20obverse.jpg" alt="Banconota da 20 euro">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card banknote">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%2050%20obverse.jpg" alt="Banconota da 50 euro">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card banknote">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%20100%20obverse.jpg" alt="Banconota da 100 euro">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card banknote">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%20200%20obverse.jpg" alt="Banconota da 200 euro">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+          <figure class="money-card banknote">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%20500%20obverse.jpg" alt="Banconota da 500 euro">
+            <figcaption>Valore: ______</figcaption>
+          </figure>
+        </div>
+      </div>
       <div class="grid three">
         <div class="card">
           <h3>Monete</h3>
