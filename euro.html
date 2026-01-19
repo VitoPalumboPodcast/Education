@@ -211,6 +211,71 @@
       color: var(--muted);
       font-weight: 600;
     }
+
+    .input-inline {
+      margin-left: 6px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      max-width: 110px;
+    }
+
+    .input-inline:focus {
+      outline: 2px solid rgba(26, 77, 143, 0.25);
+      border-color: var(--primary);
+    }
+
+    .btn {
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: none;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn.secondary {
+      background: #e7effd;
+      color: var(--primary);
+    }
+
+    .feedback {
+      display: inline-block;
+      margin-left: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .is-correct {
+      color: #0e7a3a;
+    }
+
+    .is-wrong {
+      color: #b42318;
+    }
+
+    .interactive-group {
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 12px;
+      background: #fdfefe;
+    }
+
+    .group-result {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .helper {
+      background: #f4f8ff;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -240,77 +305,172 @@
     </section>
 
     <section>
+      <h2>Le banconote in euro: informazioni chiave</h2>
+      <p>Le banconote in euro sono 7 e hanno colori e dimensioni diverse. Ogni taglio rappresenta uno stile architettonico europeo e contiene elementi di sicurezza (filo di sicurezza, filigrana, ologramma). Dal 2019 la banconota da €500 non viene più emessa, ma resta valida.</p>
+      <div class="card">
+        <div class="grid two">
+          <div>
+            <h3>Colori principali dei tagli</h3>
+            <ul>
+              <li>€5 grigio</li>
+              <li>€10 rosso</li>
+              <li>€20 blu</li>
+              <li>€50 arancione</li>
+              <li>€100 verde</li>
+              <li>€200 giallo</li>
+              <li>€500 viola (non più emessa)</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Per ricordare meglio</h3>
+            <ul>
+              <li>Più alto è il valore, più grande è la banconota.</li>
+              <li>Ogni banconota ha dettagli visivi e tattili diversi.</li>
+              <li>La serie “Europa” ha il volto di Europa nel watermark e nell’ologramma.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <details>
+        <summary>Attività guidata</summary>
+        <p>Mostra due banconote e chiedi: “Qual è più grande? Quale vale di più?”. Usa sempre il colore come aiuto visivo.</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>Percorso facilitato (parto da zero)</h2>
+      <div class="card">
+        <ul class="checklist">
+          <li>Inizio con poche monete: 1, 2, 5, 10 centesimi.</li>
+          <li>Uso il colore per riconoscere le banconote.</li>
+          <li>Scrivo gli importi in grande e li leggo ad alta voce.</li>
+          <li>Conto in avanti con la linea dei numeri o con le dita.</li>
+          <li>Verifico subito con i pulsanti “Controlla”.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
       <h2>1. Riscaldamento: riconosci il valore</h2>
       <p>Scrivi il valore della moneta o della banconota indicata. Usa le immagini dei tagli presenti nella pagina Wikipedia sulle monete in euro.</p>
       <div class="card">
         <h3>Monete: scrivi il valore sotto ogni immagine</h3>
-        <div class="money-grid">
+        <div class="money-grid interactive-group" data-group="monete">
           <figure class="money-card">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/1%20euro%20cent%20coin.png" alt="Moneta da 1 centesimo">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="0.01" aria-label="Valore moneta 1 centesimo">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/2%20euro%20cent%20coin.png" alt="Moneta da 2 centesimi">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="0.02" aria-label="Valore moneta 2 centesimi">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/5%20euro%20cent%20coin.png" alt="Moneta da 5 centesimi">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="0.05" aria-label="Valore moneta 5 centesimi">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/10%20euro%20cent%20coin.png" alt="Moneta da 10 centesimi">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="0.10" aria-label="Valore moneta 10 centesimi">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/20%20euro%20cent%20coin.png" alt="Moneta da 20 centesimi">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="0.20" aria-label="Valore moneta 20 centesimi">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/50%20euro%20cent%20coin.png" alt="Moneta da 50 centesimi">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="0.50" aria-label="Valore moneta 50 centesimi">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/1%20euro%20coin.png" alt="Moneta da 1 euro">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="1" aria-label="Valore moneta 1 euro">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/2%20euro%20coin.png" alt="Moneta da 2 euro">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="2" aria-label="Valore moneta 2 euro">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
         </div>
+        <button class="btn" type="button" data-check-group="monete">Controlla monete</button>
+        <p class="group-result" aria-live="polite"></p>
       </div>
       <div class="card">
         <h3>Banconote: scrivi il valore sotto ogni immagine</h3>
-        <div class="money-grid">
+        <div class="money-grid interactive-group" data-group="banconote">
           <figure class="money-card banknote">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%205%20obverse.jpg" alt="Banconota da 5 euro">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="5" aria-label="Valore banconota 5 euro">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card banknote">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%2010%20obverse.jpg" alt="Banconota da 10 euro">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="10" aria-label="Valore banconota 10 euro">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card banknote">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%2020%20obverse.jpg" alt="Banconota da 20 euro">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="20" aria-label="Valore banconota 20 euro">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card banknote">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%2050%20obverse.jpg" alt="Banconota da 50 euro">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="50" aria-label="Valore banconota 50 euro">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card banknote">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%20100%20obverse.jpg" alt="Banconota da 100 euro">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="100" aria-label="Valore banconota 100 euro">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card banknote">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%20200%20obverse.jpg" alt="Banconota da 200 euro">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="200" aria-label="Valore banconota 200 euro">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
           <figure class="money-card banknote">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Euro%20banknote%20500%20obverse.jpg" alt="Banconota da 500 euro">
-            <figcaption>Valore: ______</figcaption>
+            <figcaption>Valore:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="500" aria-label="Valore banconota 500 euro">
+              <span class="feedback" aria-live="polite"></span>
+            </figcaption>
           </figure>
         </div>
+        <button class="btn" type="button" data-check-group="banconote">Controlla banconote</button>
+        <p class="group-result" aria-live="polite"></p>
       </div>
       <div class="grid three">
         <div class="card">
@@ -341,12 +501,26 @@
         <div class="card">
           <h3>Match veloce</h3>
           <p>Scrivi il valore:</p>
-          <ul>
-            <li>Moneta dorata più grande = ______</li>
-            <li>Moneta bimetallica = ______</li>
-            <li>Banconota azzurra = ______</li>
-            <li>Banconota arancione = ______</li>
-          </ul>
+          <div class="interactive-group" data-group="match">
+            <p>Moneta dorata più grande =
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="0.50" aria-label="Moneta dorata più grande">
+              <span class="feedback" aria-live="polite"></span>
+            </p>
+            <p>Moneta bimetallica =
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="1/2" aria-label="Moneta bimetallica">
+              <span class="feedback" aria-live="polite"></span>
+            </p>
+            <p>Banconota azzurra =
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="20" aria-label="Banconota azzurra">
+              <span class="feedback" aria-live="polite"></span>
+            </p>
+            <p>Banconota arancione =
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="50" aria-label="Banconota arancione">
+              <span class="feedback" aria-live="polite"></span>
+            </p>
+            <button class="btn secondary" type="button" data-check-group="match">Controlla</button>
+            <p class="group-result" aria-live="polite"></p>
+          </div>
         </div>
       </div>
       <details>
@@ -413,16 +587,43 @@
             <li>5 monete da €0,20</li>
             <li>6 monete da €0,10</li>
           </ul>
-          <p>Totale: __________________</p>
+          <div class="interactive-group" data-group="portamonete">
+            <p>Totale:
+              <input class="input-inline" type="text" inputmode="decimal" data-answer="10.60" aria-label="Totale portamonete">
+              <span class="feedback" aria-live="polite"></span>
+            </p>
+            <button class="btn secondary" type="button" data-check-group="portamonete">Controlla totale</button>
+            <p class="group-result" aria-live="polite"></p>
+          </div>
         </div>
         <div class="card">
           <h3>Quale costa di più?</h3>
           <p>Confronta i prezzi e cerchia l'offerta migliore.</p>
-          <ul>
-            <li>Succo 1L: €1,40 <span class="tag">o</span> Succo 1,5L: €1,90</li>
-            <li>Quaderno 80 pagine: €2,10 <span class="tag">o</span> Quaderno 100 pagine: €2,60</li>
-            <li>Yogurt 4 pezzi: €2,00 <span class="tag">o</span> Yogurt 6 pezzi: €2,70</li>
-          </ul>
+          <div class="interactive-group" data-group="confronto">
+            <p>Succo 1L: €1,40 <span class="tag">o</span> Succo 1,5L: €1,90</p>
+            <select class="input-inline" data-answer="1,5L" aria-label="Scelta succo">
+              <option value="">Scegli l'offerta migliore</option>
+              <option value="1L">Succo 1L</option>
+              <option value="1,5L">Succo 1,5L</option>
+            </select>
+            <span class="feedback" aria-live="polite"></span>
+            <p>Quaderno 80 pagine: €2,10 <span class="tag">o</span> Quaderno 100 pagine: €2,60</p>
+            <select class="input-inline" data-answer="100 pagine" aria-label="Scelta quaderno">
+              <option value="">Scegli l'offerta migliore</option>
+              <option value="80 pagine">Quaderno 80 pagine</option>
+              <option value="100 pagine">Quaderno 100 pagine</option>
+            </select>
+            <span class="feedback" aria-live="polite"></span>
+            <p>Yogurt 4 pezzi: €2,00 <span class="tag">o</span> Yogurt 6 pezzi: €2,70</p>
+            <select class="input-inline" data-answer="6 pezzi" aria-label="Scelta yogurt">
+              <option value="">Scegli l'offerta migliore</option>
+              <option value="4 pezzi">Yogurt 4 pezzi</option>
+              <option value="6 pezzi">Yogurt 6 pezzi</option>
+            </select>
+            <span class="feedback" aria-live="polite"></span>
+            <button class="btn secondary" type="button" data-check-group="confronto">Controlla confronto</button>
+            <p class="group-result" aria-live="polite"></p>
+          </div>
         </div>
       </div>
     </section>
@@ -431,7 +632,7 @@
       <h2>4. Il resto senza paura</h2>
       <p>Calcola il resto usando due strategie: sottrazione e conteggio in avanti.</p>
       <div class="card">
-        <table>
+        <table class="interactive-group" data-group="resto">
           <thead>
             <tr>
               <th>Prezzo</th>
@@ -443,20 +644,31 @@
             <tr>
               <td>€ 6,75</td>
               <td>€ 10,00</td>
-              <td>____________</td>
+              <td>
+                <input class="input-inline" type="text" inputmode="decimal" data-answer="3.25" aria-label="Resto da 6,75 a 10">
+                <span class="feedback" aria-live="polite"></span>
+              </td>
             </tr>
             <tr>
               <td>€ 12,40</td>
               <td>€ 20,00</td>
-              <td>____________</td>
+              <td>
+                <input class="input-inline" type="text" inputmode="decimal" data-answer="7.60" aria-label="Resto da 12,40 a 20">
+                <span class="feedback" aria-live="polite"></span>
+              </td>
             </tr>
             <tr>
               <td>€ 18,95</td>
               <td>€ 50,00</td>
-              <td>____________</td>
+              <td>
+                <input class="input-inline" type="text" inputmode="decimal" data-answer="31.05" aria-label="Resto da 18,95 a 50">
+                <span class="feedback" aria-live="polite"></span>
+              </td>
             </tr>
           </tbody>
         </table>
+        <button class="btn" type="button" data-check-group="resto">Controlla il resto</button>
+        <p class="group-result" aria-live="polite"></p>
       </div>
       <details>
         <summary>Strategia suggerita</summary>
@@ -560,10 +772,69 @@
           <li>So confrontare prezzi e scegliere l'offerta migliore.</li>
           <li>Posso pianificare un piccolo budget.</li>
         </ul>
+        <div class="helper">
+          <p>Se una voce è difficile, riparti dagli esercizi interattivi più semplici e usa gli aiuti visivi (colore e grandezza).</p>
+        </div>
       </div>
     </section>
 
     <p class="footer-note">Suggerimento per l'insegnante: stampa la pagina in modalità "solo contenuto" per avere schede pronte da compilare.</p>
   </div>
+  <script>
+    const normalizeNumber = (value) => {
+      if (!value) return null;
+      const cleaned = value.toString().toLowerCase().replace(/[€\s]/g, "").replace(",", ".");
+      if (cleaned === "") return null;
+      return Number.parseFloat(cleaned);
+    };
+
+    const checkValue = (input) => {
+      const answer = input.dataset.answer;
+      const feedback = input.nextElementSibling?.classList.contains("feedback")
+        ? input.nextElementSibling
+        : input.parentElement.querySelector(".feedback");
+      if (!feedback) return false;
+
+      let correct = false;
+      if (answer === "1/2") {
+        const value = normalizeNumber(input.value);
+        correct = value === 1 || value === 2;
+      } else if (input.tagName === "SELECT") {
+        correct = input.value === answer;
+      } else {
+        const value = normalizeNumber(input.value);
+        const expected = normalizeNumber(answer);
+        correct = value !== null && expected !== null && Math.abs(value - expected) < 0.01;
+      }
+
+      feedback.textContent = correct ? "✔️" : "✖️";
+      feedback.classList.toggle("is-correct", correct);
+      feedback.classList.toggle("is-wrong", !correct);
+      return correct;
+    };
+
+    const checkGroup = (groupName) => {
+      const group = document.querySelector(`[data-group="${groupName}"]`);
+      if (!group) return;
+      const inputs = group.querySelectorAll("input, select");
+      let correctCount = 0;
+      inputs.forEach((input) => {
+        if (checkValue(input)) {
+          correctCount += 1;
+        }
+      });
+      const result = group.parentElement.querySelector(".group-result");
+      if (result) {
+        result.textContent = `Risposte corrette: ${correctCount} / ${inputs.length}`;
+      }
+    };
+
+    document.querySelectorAll("[data-check-group]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const groupName = button.dataset.checkGroup;
+        checkGroup(groupName);
+      });
+    });
+  </script>
 </body>
 </html>
