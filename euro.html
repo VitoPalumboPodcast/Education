@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EuroLab - Suite completa di esercizi sul denaro</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --primary: #1a4d8f;
+      --primary-dark: #123a6f;
+      --accent: #f2b705;
+      --bg: #f5f8fc;
+      --card: #ffffff;
+      --text: #1f2430;
+      --muted: #5b667a;
+      --border: #d7e1f2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--card);
+      padding: 32px;
+      border-radius: 20px;
+      box-shadow: 0 18px 35px rgba(26, 77, 143, 0.12);
+      border: 1px solid var(--border);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .pill {
+      background: #e7effd;
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    section {
+      margin-top: 28px;
+    }
+
+    h2 {
+      color: var(--primary-dark);
+      font-size: 1.5rem;
+      margin-bottom: 14px;
+      border-left: 5px solid var(--accent);
+      padding-left: 12px;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 1.15rem;
+      margin: 18px 0 10px;
+    }
+
+    p {
+      margin-bottom: 12px;
+    }
+
+    ul {
+      margin-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: #f8fbff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin: 16px 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #eaf1ff;
+      color: var(--primary-dark);
+    }
+
+    .tag {
+      display: inline-block;
+      background: #fff1cc;
+      color: #7a5200;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-left: 6px;
+    }
+
+    .highlight {
+      background: #fff7e0;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    details {
+      background: #f4f6fa;
+      border-radius: 12px;
+      padding: 14px 18px;
+      border: 1px dashed var(--border);
+      margin-top: 12px;
+    }
+
+    details summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .footer-note {
+      margin-top: 26px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .checklist li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>EuroLab - Suite completa di esercizi sull'uso del denaro</h1>
+      <p>Una raccolta guidata per riconoscere monete e banconote, fare calcoli veloci, gestire il resto e prendere decisioni d'acquisto.</p>
+      <div class="pill-row">
+        <span class="pill">Classe primaria</span>
+        <span class="pill">Educazione civica</span>
+        <span class="pill">Matematica pratica</span>
+        <span class="pill">Compiti di realtà</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>Obiettivi della suite</h2>
+      <div class="card">
+        <ul class="checklist">
+          <li>Riconoscere monete e banconote in euro.</li>
+          <li>Comporre importi con combinazioni diverse.</li>
+          <li>Stimare, arrotondare e confrontare prezzi.</li>
+          <li>Calcolare il resto con strategie rapide.</li>
+          <li>Prendere decisioni di spesa consapevoli.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>1. Riscaldamento: riconosci il valore</h2>
+      <p>Scrivi il valore della moneta o della banconota indicata.</p>
+      <div class="grid three">
+        <div class="card">
+          <h3>Monete</h3>
+          <ul>
+            <li>€ 0,01 (1 centesimo)</li>
+            <li>€ 0,02 (2 centesimi)</li>
+            <li>€ 0,05 (5 centesimi)</li>
+            <li>€ 0,10 (10 centesimi)</li>
+            <li>€ 0,20 (20 centesimi)</li>
+            <li>€ 0,50 (50 centesimi)</li>
+            <li>€ 1,00 (1 euro)</li>
+            <li>€ 2,00 (2 euro)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Banconote</h3>
+          <ul>
+            <li>€ 5,00</li>
+            <li>€ 10,00</li>
+            <li>€ 20,00</li>
+            <li>€ 50,00</li>
+            <li>€ 100,00</li>
+            <li>€ 200,00</li>
+            <li>€ 500,00</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Match veloce</h3>
+          <p>Scrivi il valore:</p>
+          <ul>
+            <li>Moneta dorata più grande = ______</li>
+            <li>Moneta bimetallica = ______</li>
+            <li>Banconota azzurra = ______</li>
+            <li>Banconota arancione = ______</li>
+          </ul>
+        </div>
+      </div>
+      <details>
+        <summary>Soluzioni suggerite</summary>
+        <p>Moneta dorata più grande = €0,50. Moneta bimetallica = €1 o €2. Banconota azzurra = €20. Banconota arancione = €50.</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>2. Componi l'importo</h2>
+      <p>Trova almeno due combinazioni diverse per ogni cifra.</p>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Importo</th>
+              <th>Combinazione A</th>
+              <th>Combinazione B</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>€ 3,50</td>
+              <td>________________________________</td>
+              <td>________________________________</td>
+            </tr>
+            <tr>
+              <td>€ 7,80</td>
+              <td>________________________________</td>
+              <td>________________________________</td>
+            </tr>
+            <tr>
+              <td>€ 12,00</td>
+              <td>________________________________</td>
+              <td>________________________________</td>
+            </tr>
+            <tr>
+              <td>€ 18,30</td>
+              <td>________________________________</td>
+              <td>________________________________</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <details>
+        <summary>Idee possibili</summary>
+        <ul>
+          <li>€3,50 = €2 + €1 + €0,50 oppure €1 + €1 + €1 + €0,20 + €0,20 + €0,10.</li>
+          <li>€7,80 = €5 + €2 + €0,50 + €0,20 + €0,10 oppure €2 + €2 + €2 + €1 - €0,20.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section>
+      <h2>3. Conta e confronta</h2>
+      <div class="grid two">
+        <div class="card">
+          <h3>Conta il portamonete</h3>
+          <p>Nel tuo portamonete trovi:</p>
+          <ul>
+            <li>2 monete da €2</li>
+            <li>3 monete da €1</li>
+            <li>4 monete da €0,50</li>
+            <li>5 monete da €0,20</li>
+            <li>6 monete da €0,10</li>
+          </ul>
+          <p>Totale: __________________</p>
+        </div>
+        <div class="card">
+          <h3>Quale costa di più?</h3>
+          <p>Confronta i prezzi e cerchia l'offerta migliore.</p>
+          <ul>
+            <li>Succo 1L: €1,40 <span class="tag">o</span> Succo 1,5L: €1,90</li>
+            <li>Quaderno 80 pagine: €2,10 <span class="tag">o</span> Quaderno 100 pagine: €2,60</li>
+            <li>Yogurt 4 pezzi: €2,00 <span class="tag">o</span> Yogurt 6 pezzi: €2,70</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. Il resto senza paura</h2>
+      <p>Calcola il resto usando due strategie: sottrazione e conteggio in avanti.</p>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Prezzo</th>
+              <th>Paghi con</th>
+              <th>Resto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>€ 6,75</td>
+              <td>€ 10,00</td>
+              <td>____________</td>
+            </tr>
+            <tr>
+              <td>€ 12,40</td>
+              <td>€ 20,00</td>
+              <td>____________</td>
+            </tr>
+            <tr>
+              <td>€ 18,95</td>
+              <td>€ 50,00</td>
+              <td>____________</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <details>
+        <summary>Strategia suggerita</summary>
+        <p>Conta in avanti: da €6,75 a €7 (0,25), a €10 (3), totale €3,25. Poi aggiungi €0,00.</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>5. Problemi di vita quotidiana</h2>
+      <div class="grid two">
+        <div class="card">
+          <h3>La merenda al parco</h3>
+          <p>Hai €5,00. Compri un panino da €2,40 e un succo da €1,30.</p>
+          <ul>
+            <li>Quanto spendi in totale?</li>
+            <li>Quanto resta?</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>La lista della spesa</h3>
+          <p>Con €15,00 vuoi comprare:</p>
+          <ul>
+            <li>Latte €1,20</li>
+            <li>Pane €1,80</li>
+            <li>Uova €2,70</li>
+            <li>Frutta €4,50</li>
+            <li>Gelato €3,90</li>
+          </ul>
+          <p>Riesci a comprare tutto? Se no, cosa togli?</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>6. Missione: budget e risparmio</h2>
+      <p>Leggi il budget settimanale e pianifica le spese.</p>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Voce</th>
+              <th>Budget disponibile</th>
+              <th>Spesa prevista</th>
+              <th>Risparmio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Merende</td>
+              <td>€ 6,00</td>
+              <td>____________</td>
+              <td>____________</td>
+            </tr>
+            <tr>
+              <td>Piccoli giochi</td>
+              <td>€ 8,00</td>
+              <td>____________</td>
+              <td>____________</td>
+            </tr>
+            <tr>
+              <td>Libro speciale</td>
+              <td>€ 12,00</td>
+              <td>____________</td>
+              <td>____________</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <details>
+        <summary>Consiglio</summary>
+        <p>Se risparmi €2 alla settimana, in un mese accumuli circa €8. Scrivi la tua strategia.</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>7. Giochi finali e sfide a squadre</h2>
+      <div class="grid three">
+        <div class="card">
+          <h3>Banco del mercato</h3>
+          <p>Ogni squadra riceve €20. Compilate il miglior carrello con 5 prodotti e spiegate la scelta.</p>
+        </div>
+        <div class="card">
+          <h3>Resto lampo</h3>
+          <p>Un compagno fa il commesso: inventa 3 prezzi, l'altro calcola il resto in meno di 20 secondi.</p>
+        </div>
+        <div class="card">
+          <h3>Indovina l'importo</h3>
+          <p>Una squadra dispone 6 monete: l'altra deve calcolare l'importo totale il più velocemente possibile.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>8. Autovalutazione</h2>
+      <div class="card">
+        <p>Metti una spunta dove ti senti sicuro:</p>
+        <ul class="checklist">
+          <li>Riconosco tutte le monete e le banconote.</li>
+          <li>So comporre un importo in modi diversi.</li>
+          <li>Calcolo il resto rapidamente.</li>
+          <li>So confrontare prezzi e scegliere l'offerta migliore.</li>
+          <li>Posso pianificare un piccolo budget.</li>
+        </ul>
+      </div>
+    </section>
+
+    <p class="footer-note">Suggerimento per l'insegnante: stampa la pagina in modalità "solo contenuto" per avere schede pronte da compilare.</p>
+  </div>
+</body>
+</html>
