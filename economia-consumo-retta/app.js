@@ -75,6 +75,13 @@ function consumptionAt(income) {
   return state.autonomous + state.propensity * income;
 }
 
+function breakEvenIncome() {
+  if (state.propensity === 1) {
+    return state.autonomous === 0 ? 0 : Infinity;
+  }
+  return state.autonomous / (1 - state.propensity);
+}
+
 function syncControls() {
   incomeSlider.value = state.income;
   autonomousSlider.value = state.autonomous;
@@ -260,6 +267,67 @@ function drawLine() {
   drawPoint(sx, sy, "#b27712", "q = c₀");
 }
 
+function fillBetweenCurves(xStart, xEnd, fillStyle) {
+  if (xEnd <= xStart) return;
+  ctx.fillStyle = fillStyle;
+  ctx.beginPath();
+  ctx.moveTo(toX(xStart), toY(xStart));
+  ctx.lineTo(toX(xEnd), toY(xEnd));
+  ctx.lineTo(toX(xEnd), toY(consumptionAt(xEnd)));
+  ctx.lineTo(toX(xStart), toY(consumptionAt(xStart)));
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawSavingDebtAreas() {
+  const breakEven = breakEvenIncome();
+
+  if (breakEven === Infinity) {
+    fillBetweenCurves(0, maxIncome, "rgba(195, 61, 61, 0.10)");
+    drawAreaLabel("Debito", 1700, 2550, "#9f2f2f");
+    return;
+  }
+
+  const clampedBreakEven = Math.max(0, Math.min(maxIncome, breakEven));
+
+  if (breakEven <= 0) {
+    fillBetweenCurves(0, maxIncome, "rgba(20, 138, 98, 0.10)");
+    drawAreaLabel("Risparmio", 4300, 5000, "#0f684b");
+  } else if (breakEven >= maxIncome) {
+    fillBetweenCurves(0, maxIncome, "rgba(195, 61, 61, 0.10)");
+    drawAreaLabel("Debito", 2100, 2800, "#9f2f2f");
+  } else {
+    fillBetweenCurves(0, clampedBreakEven, "rgba(195, 61, 61, 0.10)");
+    fillBetweenCurves(clampedBreakEven, maxIncome, "rgba(20, 138, 98, 0.10)");
+    drawAreaLabel("Debito", clampedBreakEven * 0.45, consumptionAt(clampedBreakEven * 0.45), "#9f2f2f");
+    drawAreaLabel("Risparmio", clampedBreakEven + (maxIncome - clampedBreakEven) * 0.58, maxIncome * 0.78, "#0f684b");
+    drawBreakEvenPoint(clampedBreakEven);
+  }
+}
+
+function drawAreaLabel(label, income, consumption, color) {
+  const x = toX(Math.max(200, Math.min(maxIncome - 200, income)));
+  const y = toY(Math.max(200, Math.min(getMaxConsumption() - 200, consumption)));
+  ctx.fillStyle = color;
+  ctx.font = "900 13px Inter, system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(label, x, y);
+}
+
+function drawBreakEvenPoint(income) {
+  const x = toX(income);
+  const y = toY(income);
+  ctx.fillStyle = "#16202a";
+  ctx.beginPath();
+  ctx.arc(x, y, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.font = "800 12px Inter, system-ui, sans-serif";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  ctx.fillText(`Y* = ${Math.round(income)}`, x + 9, y + 8);
+}
+
 function drawSavingGuide() {
   const income = state.income;
   const consumption = consumptionAt(income);
@@ -310,7 +378,7 @@ function drawIdentityLine() {
   ctx.fillStyle = "#617080";
   ctx.font = "700 13px Inter, system-ui, sans-serif";
   ctx.textAlign = "right";
-  ctx.fillText("C = Y", toX(5600), toY(5600) - 10);
+  ctx.fillText("C = Y (S = 0)", toX(5600), toY(5600) - 10);
 }
 
 function drawPoint(x, y, color, label) {
@@ -327,6 +395,7 @@ function drawPoint(x, y, color, label) {
 
 function draw() {
   drawGrid();
+  drawSavingDebtAreas();
   drawIdentityLine();
   drawLine();
   drawSavingGuide();

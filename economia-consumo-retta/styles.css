@@ -329,6 +329,39 @@ output {
   color: #2f3b48;
 }
 
+.math-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 68px;
+  margin-right: 6px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge-blue {
+  background: #e9f1ff;
+  color: var(--blue);
+}
+
+.badge-green {
+  background: #e6f7ef;
+  color: var(--green);
+}
+
+.badge-gold {
+  background: #fff5df;
+  color: #8a5a0b;
+}
+
+.badge-purple {
+  background: #f1eaff;
+  color: #6b45b8;
+}
+
 .calculation-box p {
   font-weight: 850;
   font-variant-numeric: tabular-nums;
