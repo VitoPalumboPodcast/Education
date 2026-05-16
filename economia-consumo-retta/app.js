@@ -4,21 +4,32 @@ const ctx = canvas.getContext("2d");
 const incomeSlider = document.getElementById("incomeSlider");
 const autonomousSlider = document.getElementById("autonomousSlider");
 const propensitySlider = document.getElementById("propensitySlider");
+const deltaSlider = document.getElementById("deltaSlider");
 const incomeValue = document.getElementById("incomeValue");
 const autonomousValue = document.getElementById("autonomousValue");
 const propensityValue = document.getElementById("propensityValue");
+const deltaValue = document.getElementById("deltaValue");
 const consumptionValue = document.getElementById("consumptionValue");
 const savingValue = document.getElementById("savingValue");
 const statusValue = document.getElementById("statusValue");
+const deltaConsumptionValue = document.getElementById("deltaConsumptionValue");
+const statusMessage = document.getElementById("statusMessage");
+const barIncome = document.getElementById("barIncome");
+const barConsumption = document.getElementById("barConsumption");
+const barExtra = document.getElementById("barExtra");
+const barExtraLabel = document.getElementById("barExtraLabel");
+const calculationConsumption = document.getElementById("calculationConsumption");
+const calculationSaving = document.getElementById("calculationSaving");
+const calculationDelta = document.getElementById("calculationDelta");
 const resetBtn = document.getElementById("resetBtn");
 const storyBox = document.getElementById("storyBox");
 
 const maxIncome = 6000;
-const maxConsumption = 6000;
 let state = {
   income: 2500,
   autonomous: 650,
   propensity: 0.65,
+  delta: 100,
 };
 
 let dragging = null;
@@ -55,6 +66,11 @@ function decimal(value) {
   return value.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+function getMaxConsumption() {
+  const lineEnd = state.autonomous + state.propensity * maxIncome;
+  return Math.ceil(Math.max(6000, lineEnd, state.income, consumptionAt(state.income)) / 1000) * 1000;
+}
+
 function consumptionAt(income) {
   return state.autonomous + state.propensity * income;
 }
@@ -63,17 +79,52 @@ function syncControls() {
   incomeSlider.value = state.income;
   autonomousSlider.value = state.autonomous;
   propensitySlider.value = Math.round(state.propensity * 100);
+  deltaSlider.value = state.delta;
 
   const consumption = consumptionAt(state.income);
   const saving = state.income - consumption;
+  const deltaConsumption = state.propensity * state.delta;
+  const deltaSaving = state.delta - deltaConsumption;
+  const maxBar = Math.max(state.income, consumption, Math.abs(saving), 1);
 
   incomeValue.textContent = euro(state.income);
   autonomousValue.textContent = euro(state.autonomous);
   propensityValue.textContent = decimal(state.propensity);
+  deltaValue.textContent = euro(state.delta);
   consumptionValue.textContent = euro(consumption);
   savingValue.textContent = euro(saving);
-  statusValue.textContent = saving >= 0 ? "Risparmio" : "Debito";
-  statusValue.style.color = saving >= 0 ? "#148a62" : "#c33d3d";
+  deltaConsumptionValue.textContent = euro(deltaConsumption);
+
+  statusMessage.className = "status-message";
+  if (saving > 0) {
+    statusValue.textContent = "Risparmio";
+    statusValue.style.color = "#148a62";
+    statusMessage.textContent = "La famiglia risparmia perché il reddito è maggiore del consumo: Y > C.";
+    barExtraLabel.textContent = "Risparmio S";
+    barExtra.className = "bar-fill bar-saving";
+  } else if (saving < 0) {
+    statusValue.textContent = "Debito";
+    statusValue.style.color = "#c33d3d";
+    statusMessage.classList.add("debt");
+    statusMessage.textContent = "La famiglia è in debito perché il consumo è maggiore del reddito: C > Y.";
+    barExtraLabel.textContent = "Debito";
+    barExtra.className = "bar-fill bar-debt";
+  } else {
+    statusValue.textContent = "Pareggio";
+    statusValue.style.color = "#b27712";
+    statusMessage.classList.add("balance");
+    statusMessage.textContent = "La famiglia è in pareggio: consuma esattamente tutto il reddito, quindi C = Y.";
+    barExtraLabel.textContent = "Saldo";
+    barExtra.className = "bar-fill bar-saving";
+  }
+
+  barIncome.style.width = `${(state.income / maxBar) * 100}%`;
+  barConsumption.style.width = `${(consumption / maxBar) * 100}%`;
+  barExtra.style.width = `${(Math.abs(saving) / maxBar) * 100}%`;
+
+  calculationConsumption.textContent = `C = ${Math.round(state.autonomous)} + ${decimal(state.propensity)} × ${Math.round(state.income)} = ${Math.round(consumption)}`;
+  calculationSaving.textContent = `S = Y - C = ${Math.round(state.income)} - ${Math.round(consumption)} = ${Math.round(saving)}`;
+  calculationDelta.textContent = `ΔC = c × ΔY = ${decimal(state.propensity)} × ${Math.round(state.delta)} = ${Math.round(deltaConsumption)}; resto non consumato = ${Math.round(deltaSaving)}`;
 }
 
 function resizeCanvas() {
@@ -105,7 +156,7 @@ function toX(income) {
 
 function toY(consumption) {
   const m = metrics();
-  return m.bottom - (consumption / maxConsumption) * (m.bottom - m.top);
+  return m.bottom - (consumption / getMaxConsumption()) * (m.bottom - m.top);
 }
 
 function fromX(x) {
@@ -115,11 +166,13 @@ function fromX(x) {
 
 function fromY(y) {
   const m = metrics();
+  const maxConsumption = getMaxConsumption();
   return Math.max(0, Math.min(maxConsumption, ((m.bottom - y) / (m.bottom - m.top)) * maxConsumption));
 }
 
 function linePointForCanvasEnd() {
   const yAtMax = consumptionAt(maxIncome);
+  const maxConsumption = getMaxConsumption();
   if (yAtMax <= maxConsumption) return { income: maxIncome, consumption: yAtMax };
   const income = (maxConsumption - state.autonomous) / state.propensity;
   return { income: Math.max(0, income), consumption: maxConsumption };
@@ -138,7 +191,9 @@ function drawGrid() {
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
 
-  for (let i = 0; i <= 6; i += 1) {
+  const maxConsumption = getMaxConsumption();
+  const ySteps = Math.round(maxConsumption / 1000);
+  for (let i = 0; i <= ySteps; i += 1) {
     const value = i * 1000;
     const x = toX(value);
     ctx.beginPath();
@@ -281,6 +336,7 @@ function updateFromControls() {
   state.income = Number(incomeSlider.value);
   state.autonomous = Number(autonomousSlider.value);
   state.propensity = Number(propensitySlider.value) / 100;
+  state.delta = Number(deltaSlider.value);
   syncControls();
   draw();
 }
@@ -322,6 +378,7 @@ function setScenario(name) {
     income: selected.income,
     autonomous: selected.autonomous,
     propensity: selected.propensity,
+    delta: state.delta,
   };
 
   document.querySelectorAll(".scenario").forEach((button) => {
@@ -346,23 +403,21 @@ document.querySelectorAll(".scenario").forEach((button) => {
   button.addEventListener("click", () => setScenario(button.dataset.scenario));
 });
 
-[incomeSlider, autonomousSlider, propensitySlider].forEach((slider) => {
+[incomeSlider, autonomousSlider, propensitySlider, deltaSlider].forEach((slider) => {
   slider.addEventListener("input", updateFromControls);
 });
 
 resetBtn.addEventListener("click", () => {
-  state = { income: 2500, autonomous: 650, propensity: 0.65 };
+  state = { income: 2500, autonomous: 650, propensity: 0.65, delta: 100 };
   syncControls();
   draw();
 });
 
 canvas.addEventListener("pointerdown", (event) => {
   const pos = pointerPosition(event);
-  dragging = nearestHandle(pos);
-  if (dragging) {
-    canvas.setPointerCapture(event.pointerId);
-    applyDrag(pos);
-  }
+  dragging = nearestHandle(pos) || "income";
+  canvas.setPointerCapture(event.pointerId);
+  applyDrag(pos);
 });
 
 canvas.addEventListener("pointermove", (event) => {

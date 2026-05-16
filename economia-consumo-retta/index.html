@@ -65,6 +65,14 @@
                 </div>
               </div>
 
+              <div class="control-block">
+                <label for="deltaSlider">Aumento di reddito ΔY</label>
+                <div class="control-line">
+                  <input id="deltaSlider" type="range" min="50" max="1000" step="50" value="100" />
+                  <output id="deltaValue">100 €</output>
+                </div>
+              </div>
+
               <div class="result-grid" aria-label="Risultati">
                 <div>
                   <span>Consumo C</span>
@@ -78,6 +86,34 @@
                   <span>Situazione</span>
                   <strong id="statusValue">Risparmio</strong>
                 </div>
+                <div>
+                  <span>Consumo in più ΔC</span>
+                  <strong id="deltaConsumptionValue">65 €</strong>
+                </div>
+              </div>
+
+              <p class="status-message" id="statusMessage">La famiglia risparmia perché il reddito è maggiore del consumo.</p>
+
+              <div class="bar-stack" aria-label="Barre di confronto">
+                <div class="bar-row">
+                  <span>Reddito Y</span>
+                  <div class="bar-track"><div class="bar-fill bar-income" id="barIncome"></div></div>
+                </div>
+                <div class="bar-row">
+                  <span>Consumo C</span>
+                  <div class="bar-track"><div class="bar-fill bar-consumption" id="barConsumption"></div></div>
+                </div>
+                <div class="bar-row">
+                  <span id="barExtraLabel">Risparmio S</span>
+                  <div class="bar-track"><div class="bar-fill bar-saving" id="barExtra"></div></div>
+                </div>
+              </div>
+
+              <div class="calculation-box">
+                <h3>Calcolo guidato</h3>
+                <p id="calculationConsumption">C = c₀ + cY</p>
+                <p id="calculationSaving">S = Y - C</p>
+                <p id="calculationDelta">ΔC = c × ΔY</p>
               </div>
 
               <div class="mapping-box">

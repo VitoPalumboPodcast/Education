@@ -220,13 +220,14 @@ output {
 
 .result-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin: 20px 0;
 }
 
 .result-grid div,
 .mapping-box,
+.calculation-box,
 .story,
 .glossary div {
   border: 1px solid var(--line);
@@ -250,15 +251,87 @@ output {
   text-align: right;
 }
 
+.status-message {
+  margin: 0 0 14px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ecf8f3;
+  color: #0f684b;
+  font-weight: 800;
+}
+
+.status-message.debt {
+  background: #fff0f0;
+  color: #9f2f2f;
+}
+
+.status-message.balance {
+  background: #fff7e8;
+  color: #85540e;
+}
+
+.bar-stack {
+  display: grid;
+  gap: 9px;
+  margin-bottom: 16px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+
+.bar-track {
+  height: 16px;
+  border-radius: 999px;
+  background: #e5edf4;
+  overflow: hidden;
+}
+
+.bar-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 180ms ease;
+}
+
+.bar-income {
+  background: var(--blue);
+}
+
+.bar-consumption {
+  background: var(--gold);
+}
+
+.bar-saving {
+  background: var(--green);
+}
+
+.bar-debt {
+  background: var(--red);
+}
+
 .mapping-box,
+.calculation-box,
 .story {
   padding: 14px;
 }
 
 .mapping-box p,
+.calculation-box p,
 .story p {
   margin-bottom: 8px;
   color: #2f3b48;
+}
+
+.calculation-box p {
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
 }
 
 .scenario-buttons {
@@ -371,6 +444,11 @@ th {
   }
 
   .control-line {
+    grid-template-columns: 1fr;
+  }
+
+  .result-grid,
+  .bar-row {
     grid-template-columns: 1fr;
   }
 
