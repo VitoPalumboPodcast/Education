@@ -1,0 +1,380 @@
+:root {
+  color-scheme: light;
+  --ink: #16202a;
+  --muted: #617080;
+  --line: #d7e0e8;
+  --paper: #f6f8fb;
+  --panel: #ffffff;
+  --blue: #2468d8;
+  --green: #148a62;
+  --red: #c33d3d;
+  --gold: #b27712;
+  --shadow: 0 18px 48px rgba(29, 43, 62, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(1500px, 100%);
+  margin: 0 auto;
+  padding: 22px;
+}
+
+.workspace {
+  min-height: calc(100vh - 44px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 5px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: clamp(2rem, 4vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.formula-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  font-size: clamp(1rem, 1.7vw, 1.5rem);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.equals {
+  color: var(--blue);
+}
+
+.board-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 420px);
+  gap: 18px;
+  flex: 1;
+  min-height: 0;
+}
+
+.graph-panel,
+.control-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.graph-panel {
+  min-height: 520px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.graph-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+}
+
+.graph-head h2,
+.control-panel h3 {
+  margin-bottom: 6px;
+}
+
+.graph-head p {
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.icon-button {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #eef4fb;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  border-radius: 8px;
+  background: #fbfdff;
+  border: 1px solid #e6edf4;
+  touch-action: none;
+}
+
+.control-panel {
+  padding: 16px;
+  overflow: auto;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.tab,
+.scenario {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f2f6fa;
+  color: var(--ink);
+  padding: 10px 9px;
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.tab.active,
+.scenario.active {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.control-block {
+  margin-bottom: 18px;
+}
+
+.control-block label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.control-line {
+  display: grid;
+  grid-template-columns: 1fr 82px;
+  gap: 10px;
+  align-items: center;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--blue);
+}
+
+output {
+  text-align: right;
+  font-weight: 850;
+  color: var(--blue);
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.result-grid div,
+.mapping-box,
+.story,
+.glossary div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfdff;
+}
+
+.result-grid div {
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.result-grid span {
+  color: var(--muted);
+}
+
+.result-grid strong {
+  text-align: right;
+}
+
+.mapping-box,
+.story {
+  padding: 14px;
+}
+
+.mapping-box p,
+.story p {
+  margin-bottom: 8px;
+  color: #2f3b48;
+}
+
+.scenario-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  font-size: 0.92rem;
+}
+
+th,
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.glossary {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.glossary div {
+  padding: 12px;
+}
+
+.glossary dt {
+  font-weight: 850;
+  margin-bottom: 4px;
+}
+
+.glossary dd {
+  margin: 0;
+  color: #3a4653;
+}
+
+.lesson-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.lesson-strip article {
+  border-left: 4px solid var(--blue);
+  padding: 4px 16px;
+}
+
+.lesson-strip h2 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.lesson-strip p {
+  color: #394756;
+  margin-bottom: 0;
+}
+
+@media (max-width: 980px) {
+  .topbar,
+  .board-row {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .formula-pill {
+    justify-content: center;
+  }
+
+  .lesson-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .app-shell {
+    padding: 12px;
+  }
+
+  .board-row,
+  .lesson-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .graph-panel {
+    min-height: 430px;
+    padding: 12px;
+  }
+
+  canvas {
+    min-height: 330px;
+  }
+
+  .formula-pill {
+    white-space: normal;
+    width: 100%;
+  }
+
+  .control-line {
+    grid-template-columns: 1fr;
+  }
+
+  output {
+    text-align: left;
+  }
+}

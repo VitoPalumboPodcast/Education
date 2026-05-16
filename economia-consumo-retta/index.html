@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consumo, risparmio e retta</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-label="Lavagna interattiva">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Macroeconomia + matematica</p>
+            <h1>Consumo familiare come retta</h1>
+          </div>
+          <div class="formula-pill" aria-label="Equazione principale">
+            <span>C = c<sub>0</sub> + cY</span>
+            <span class="equals">↔</span>
+            <span>y = mx + q</span>
+          </div>
+        </header>
+
+        <div class="board-row">
+          <section class="graph-panel" aria-label="Grafico consumo reddito">
+            <div class="graph-head">
+              <div>
+                <h2>Lavagna</h2>
+                <p id="graphCaption">Muovi gli slider o trascina i punti per vedere cambiare la retta.</p>
+              </div>
+              <button class="icon-button" id="resetBtn" type="button" title="Ripristina valori" aria-label="Ripristina valori">↺</button>
+            </div>
+            <canvas id="graphCanvas" width="980" height="680" aria-label="Grafico cartesiano interattivo"></canvas>
+          </section>
+
+          <aside class="control-panel" aria-label="Controlli del modello">
+            <div class="tabs" role="tablist" aria-label="Sezioni">
+              <button class="tab active" type="button" data-tab="model">Modello</button>
+              <button class="tab" type="button" data-tab="examples">Esempi</button>
+              <button class="tab" type="button" data-tab="glossary">Glossario</button>
+            </div>
+
+            <section class="tab-panel active" id="modelPanel">
+              <div class="control-block">
+                <label for="incomeSlider">Reddito Y</label>
+                <div class="control-line">
+                  <input id="incomeSlider" type="range" min="0" max="6000" step="50" value="2500" />
+                  <output id="incomeValue">2500 €</output>
+                </div>
+              </div>
+
+              <div class="control-block">
+                <label for="autonomousSlider">Consumo autonomo c₀</label>
+                <div class="control-line">
+                  <input id="autonomousSlider" type="range" min="0" max="2000" step="50" value="650" />
+                  <output id="autonomousValue">650 €</output>
+                </div>
+              </div>
+
+              <div class="control-block">
+                <label for="propensitySlider">Propensione marginale c</label>
+                <div class="control-line">
+                  <input id="propensitySlider" type="range" min="0" max="100" step="1" value="65" />
+                  <output id="propensityValue">0,65</output>
+                </div>
+              </div>
+
+              <div class="result-grid" aria-label="Risultati">
+                <div>
+                  <span>Consumo C</span>
+                  <strong id="consumptionValue">2275 €</strong>
+                </div>
+                <div>
+                  <span>Risparmio S = Y - C</span>
+                  <strong id="savingValue">225 €</strong>
+                </div>
+                <div>
+                  <span>Situazione</span>
+                  <strong id="statusValue">Risparmio</strong>
+                </div>
+              </div>
+
+              <div class="mapping-box">
+                <h3>Collegamento con y = mx + q</h3>
+                <p><strong>Y</strong> è la x, cioè il reddito.</p>
+                <p><strong>C</strong> è la y, cioè il consumo.</p>
+                <p><strong>c</strong> è m, la pendenza della retta.</p>
+                <p><strong>c₀</strong> è q, l’intercetta sull’asse verticale.</p>
+              </div>
+            </section>
+
+            <section class="tab-panel" id="examplesPanel">
+              <div class="scenario-buttons" aria-label="Scenari">
+                <button type="button" class="scenario active" data-scenario="worker">Operaio</button>
+                <button type="button" class="scenario" data-scenario="teacher">Professore</button>
+                <button type="button" class="scenario" data-scenario="debt">Debito</button>
+              </div>
+              <div class="story" id="storyBox"></div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Persona</th>
+                    <th>Reddito iniziale</th>
+                    <th>Aumento</th>
+                    <th>Scelta probabile</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Operaio</td>
+                    <td>1000 €</td>
+                    <td>100 €</td>
+                    <td>Consuma una quota alta</td>
+                  </tr>
+                  <tr>
+                    <td>Professore</td>
+                    <td>5000 €</td>
+                    <td>100 €</td>
+                    <td>Risparmia una quota maggiore</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="tab-panel" id="glossaryPanel">
+              <dl class="glossary">
+                <div><dt>Reddito Y</dt><dd>Denaro ricevuto dalla famiglia, soprattutto attraverso il lavoro.</dd></div>
+                <div><dt>Consumo C</dt><dd>Parte del reddito usata per acquistare beni e servizi.</dd></div>
+                <div><dt>Risparmio S</dt><dd>Parte del reddito non consumata: S = Y - C.</dd></div>
+                <div><dt>Debito</dt><dd>Situazione in cui il consumo supera il reddito disponibile.</dd></div>
+                <div><dt>Consumo autonomo c₀</dt><dd>Consumo minimo necessario anche quando Y è zero.</dd></div>
+                <div><dt>Propensione marginale c</dt><dd>Quota di un aumento di reddito destinata al consumo.</dd></div>
+              </dl>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="lesson-strip" aria-label="Spiegazione sintetica">
+        <article>
+          <h2>1. La famiglia</h2>
+          <p>In macroeconomia la famiglia è un soggetto economico: lavora, riceve reddito, consuma, risparmia o si indebita.</p>
+        </article>
+        <article>
+          <h2>2. Reddito, consumo, risparmio</h2>
+          <p>Il reddito è Y. Il consumo è C. Il risparmio è la parte non consumata: <strong>S = Y - C</strong>.</p>
+        </article>
+        <article>
+          <h2>3. La retta del consumo</h2>
+          <p>La formula <strong>C = c₀ + cY</strong> è una retta: aumenta se il reddito aumenta, ma la pendenza dipende da c.</p>
+        </article>
+        <article>
+          <h2>4. Limite del modello</h2>
+          <p>È una semplificazione: nella realtà contano età, lavoro, figli, aspettative, costo della vita e sicurezza economica.</p>
+        </article>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
