@@ -358,7 +358,8 @@ function drawSavingGuide() {
   ctx.font = "800 13px Inter, system-ui, sans-serif";
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
-  ctx.fillText(saving >= 0 ? "S = Y - C" : "Debito", x + 20, (yC + yY) / 2);
+  const guideLabel = saving >= 0 ? `Risparmio: ${euro(saving)}` : `Debito: ${euro(Math.abs(saving))}`;
+  ctx.fillText(guideLabel, x + 20, (yC + yY) / 2);
 
   drawPoint(x, yC, "#2468d8", "P(Y, C)");
   drawPoint(x, yY, color, "Y");
