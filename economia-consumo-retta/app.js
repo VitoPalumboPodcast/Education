@@ -328,6 +328,68 @@ function drawBreakEvenPoint(income) {
   ctx.fillText(`Y* = ${Math.round(income)}`, x + 9, y + 8);
 }
 
+function drawArrow(fromX, fromY, toXValue, toYValue, color) {
+  const angle = Math.atan2(toYValue - fromY, toXValue - fromX);
+  const headLength = 9;
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(fromX, fromY);
+  ctx.lineTo(toXValue, toYValue);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(toXValue, toYValue);
+  ctx.lineTo(toXValue - headLength * Math.cos(angle - Math.PI / 6), toYValue - headLength * Math.sin(angle - Math.PI / 6));
+  ctx.lineTo(toXValue - headLength * Math.cos(angle + Math.PI / 6), toYValue - headLength * Math.sin(angle + Math.PI / 6));
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawDeltaGuide() {
+  const startIncome = state.income;
+  const endIncome = Math.min(maxIncome, startIncome + state.delta);
+  if (endIncome <= startIncome) return;
+
+  const startConsumption = consumptionAt(startIncome);
+  const endConsumption = consumptionAt(endIncome);
+  const visibleDeltaIncome = endIncome - startIncome;
+  const visibleDeltaConsumption = endConsumption - startConsumption;
+
+  const x1 = toX(startIncome);
+  const x2 = toX(endIncome);
+  const y1 = toY(startConsumption);
+  const y2 = toY(endConsumption);
+  const guideY = Math.min(y1 + 44, metrics().bottom - 28);
+  const guideX = Math.min(x2 + 22, metrics().right - 92);
+
+  ctx.setLineDash([5, 5]);
+  ctx.strokeStyle = "#b27712";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2, guideY);
+  ctx.lineTo(x1, guideY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  drawArrow(x1, guideY, x2, guideY, "#b27712");
+  drawArrow(x2, y1, x2, y2, "#148a62");
+
+  ctx.fillStyle = "#8a5a0b";
+  ctx.font = "900 12px Inter, system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "bottom";
+  ctx.fillText(`ΔY = ${euro(visibleDeltaIncome)}`, (x1 + x2) / 2, guideY - 6);
+
+  ctx.fillStyle = "#0f684b";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText(`ΔC = ${euro(visibleDeltaConsumption)}`, guideX, (y1 + y2) / 2);
+
+  drawPoint(x2, y2, "#b27712", "dopo ΔY");
+}
+
 function drawSavingGuide() {
   const income = state.income;
   const consumption = consumptionAt(income);
@@ -399,6 +461,7 @@ function draw() {
   drawSavingDebtAreas();
   drawIdentityLine();
   drawLine();
+  drawDeltaGuide();
   drawSavingGuide();
 }
 
