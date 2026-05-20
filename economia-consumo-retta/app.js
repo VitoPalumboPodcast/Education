@@ -66,13 +66,18 @@ function decimal(value) {
   return value.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function getMaxConsumption() {
-  const lineEnd = state.autonomous + state.propensity * maxIncome;
-  return Math.ceil(Math.max(6000, lineEnd, state.income, consumptionAt(state.income)) / 1000) * 1000;
-}
-
 function consumptionAt(income) {
   return state.autonomous + state.propensity * income;
+}
+
+function getMaxIncome() {
+  return Math.ceil(Math.max(maxIncome, state.income + state.delta) / 1000) * 1000;
+}
+
+function getMaxConsumption() {
+  const graphMaxIncome = getMaxIncome();
+  const lineEnd = state.autonomous + state.propensity * graphMaxIncome;
+  return Math.ceil(Math.max(6000, graphMaxIncome, lineEnd, consumptionAt(state.income + state.delta)) / 1000) * 1000;
 }
 
 function breakEvenIncome() {
@@ -158,7 +163,7 @@ function metrics() {
 
 function toX(income) {
   const m = metrics();
-  return m.left + (income / maxIncome) * (m.right - m.left);
+  return m.left + (income / getMaxIncome()) * (m.right - m.left);
 }
 
 function toY(consumption) {
@@ -168,7 +173,8 @@ function toY(consumption) {
 
 function fromX(x) {
   const m = metrics();
-  return Math.max(0, Math.min(maxIncome, ((x - m.left) / (m.right - m.left)) * maxIncome));
+  const income = ((x - m.left) / (m.right - m.left)) * getMaxIncome();
+  return Math.max(0, Math.min(maxIncome, income));
 }
 
 function fromY(y) {
@@ -178,9 +184,10 @@ function fromY(y) {
 }
 
 function linePointForCanvasEnd() {
-  const yAtMax = consumptionAt(maxIncome);
+  const graphMaxIncome = getMaxIncome();
+  const yAtMax = consumptionAt(graphMaxIncome);
   const maxConsumption = getMaxConsumption();
-  if (yAtMax <= maxConsumption) return { income: maxIncome, consumption: yAtMax };
+  if (yAtMax <= maxConsumption) return { income: graphMaxIncome, consumption: yAtMax };
   const income = (maxConsumption - state.autonomous) / state.propensity;
   return { income: Math.max(0, income), consumption: maxConsumption };
 }
@@ -198,9 +205,9 @@ function drawGrid() {
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
 
-  const maxConsumption = getMaxConsumption();
-  const ySteps = Math.round(maxConsumption / 1000);
-  for (let i = 0; i <= ySteps; i += 1) {
+  const graphMaxIncome = getMaxIncome();
+  const xSteps = Math.round(graphMaxIncome / 1000);
+  for (let i = 0; i <= xSteps; i += 1) {
     const value = i * 1000;
     const x = toX(value);
     ctx.beginPath();
@@ -212,7 +219,9 @@ function drawGrid() {
 
   ctx.textAlign = "right";
   ctx.textBaseline = "middle";
-  for (let i = 0; i <= 6; i += 1) {
+  const maxConsumption = getMaxConsumption();
+  const ySteps = Math.round(maxConsumption / 1000);
+  for (let i = 0; i <= ySteps; i += 1) {
     const value = i * 1000;
     const y = toY(value);
     ctx.beginPath();
@@ -281,32 +290,34 @@ function fillBetweenCurves(xStart, xEnd, fillStyle) {
 
 function drawSavingDebtAreas() {
   const breakEven = breakEvenIncome();
+  const graphMaxIncome = getMaxIncome();
 
   if (breakEven === Infinity) {
-    fillBetweenCurves(0, maxIncome, "rgba(195, 61, 61, 0.10)");
+    fillBetweenCurves(0, graphMaxIncome, "rgba(195, 61, 61, 0.10)");
     drawAreaLabel("Debito", 1700, 2550, "#9f2f2f");
     return;
   }
 
-  const clampedBreakEven = Math.max(0, Math.min(maxIncome, breakEven));
+  const clampedBreakEven = Math.max(0, Math.min(graphMaxIncome, breakEven));
 
   if (breakEven <= 0) {
-    fillBetweenCurves(0, maxIncome, "rgba(20, 138, 98, 0.10)");
-    drawAreaLabel("Risparmio", 4300, 5000, "#0f684b");
-  } else if (breakEven >= maxIncome) {
-    fillBetweenCurves(0, maxIncome, "rgba(195, 61, 61, 0.10)");
+    fillBetweenCurves(0, graphMaxIncome, "rgba(20, 138, 98, 0.10)");
+    drawAreaLabel("Risparmio", graphMaxIncome * 0.72, graphMaxIncome * 0.82, "#0f684b");
+  } else if (breakEven >= graphMaxIncome) {
+    fillBetweenCurves(0, graphMaxIncome, "rgba(195, 61, 61, 0.10)");
     drawAreaLabel("Debito", 2100, 2800, "#9f2f2f");
   } else {
     fillBetweenCurves(0, clampedBreakEven, "rgba(195, 61, 61, 0.10)");
-    fillBetweenCurves(clampedBreakEven, maxIncome, "rgba(20, 138, 98, 0.10)");
+    fillBetweenCurves(clampedBreakEven, graphMaxIncome, "rgba(20, 138, 98, 0.10)");
     drawAreaLabel("Debito", clampedBreakEven * 0.45, consumptionAt(clampedBreakEven * 0.45), "#9f2f2f");
-    drawAreaLabel("Risparmio", clampedBreakEven + (maxIncome - clampedBreakEven) * 0.58, maxIncome * 0.78, "#0f684b");
+    drawAreaLabel("Risparmio", clampedBreakEven + (graphMaxIncome - clampedBreakEven) * 0.58, graphMaxIncome * 0.78, "#0f684b");
     drawBreakEvenPoint(clampedBreakEven);
   }
 }
 
 function drawAreaLabel(label, income, consumption, color) {
-  const x = toX(Math.max(200, Math.min(maxIncome - 200, income)));
+  const graphMaxIncome = getMaxIncome();
+  const x = toX(Math.max(200, Math.min(graphMaxIncome - 200, income)));
   const y = toY(Math.max(200, Math.min(getMaxConsumption() - 200, consumption)));
   ctx.fillStyle = color;
   ctx.font = "900 13px Inter, system-ui, sans-serif";
@@ -348,7 +359,7 @@ function drawArrow(fromX, fromY, toXValue, toYValue, color) {
 
 function drawDeltaGuide() {
   const startIncome = state.income;
-  const endIncome = Math.min(maxIncome, startIncome + state.delta);
+  const endIncome = startIncome + state.delta;
   if (endIncome <= startIncome) return;
 
   const startConsumption = consumptionAt(startIncome);
@@ -382,10 +393,11 @@ function drawDeltaGuide() {
   ctx.textBaseline = "bottom";
   ctx.fillText(`ΔY = ${euro(visibleDeltaIncome)}`, (x1 + x2) / 2, guideY - 6);
 
+  const nearRight = x2 > metrics().right - 150;
   ctx.fillStyle = "#0f684b";
-  ctx.textAlign = "left";
+  ctx.textAlign = nearRight ? "right" : "left";
   ctx.textBaseline = "middle";
-  ctx.fillText(`ΔC = ${euro(visibleDeltaConsumption)}`, guideX, (y1 + y2) / 2);
+  ctx.fillText(`ΔC = ${euro(visibleDeltaConsumption)}`, nearRight ? x2 - 14 : guideX, (y1 + y2) / 2);
 
   drawPoint(x2, y2, "#b27712", "dopo ΔY");
 }
@@ -418,17 +430,20 @@ function drawSavingGuide() {
 
   ctx.fillStyle = color;
   ctx.font = "800 13px Inter, system-ui, sans-serif";
-  ctx.textAlign = "left";
+  const m = metrics();
+  const labelOnLeft = x > m.right - 180;
+  ctx.textAlign = labelOnLeft ? "right" : "left";
   ctx.textBaseline = "middle";
   const guideLabel = saving >= 0 ? `Risparmio: ${euro(saving)}` : `Debito: ${euro(Math.abs(saving))}`;
-  ctx.fillText(guideLabel, x + 20, (yC + yY) / 2);
+  ctx.fillText(guideLabel, labelOnLeft ? x - 20 : x + 20, (yC + yY) / 2);
 
   drawPoint(x, yC, "#2468d8", "P(Y, C)");
   drawPoint(x, yY, color, "Y");
 }
 
 function drawIdentityLine() {
-  const end = { income: maxIncome, consumption: maxIncome };
+  const graphMaxIncome = getMaxIncome();
+  const end = { income: graphMaxIncome, consumption: graphMaxIncome };
   ctx.strokeStyle = "#9eabb8";
   ctx.lineWidth = 2;
   ctx.setLineDash([10, 8]);
@@ -441,19 +456,21 @@ function drawIdentityLine() {
   ctx.fillStyle = "#617080";
   ctx.font = "700 13px Inter, system-ui, sans-serif";
   ctx.textAlign = "right";
-  ctx.fillText("C = Y (S = 0)", toX(5600), toY(5600) - 10);
+  ctx.fillText("C = Y (S = 0)", toX(graphMaxIncome * 0.93), toY(graphMaxIncome * 0.93) - 10);
 }
 
 function drawPoint(x, y, color, label) {
+  const m = metrics();
+  const labelOnLeft = x > m.right - 90;
   ctx.fillStyle = color;
   ctx.beginPath();
   ctx.arc(x, y, 8, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = "#16202a";
   ctx.font = "800 12px Inter, system-ui, sans-serif";
-  ctx.textAlign = "left";
+  ctx.textAlign = labelOnLeft ? "right" : "left";
   ctx.textBaseline = "bottom";
-  ctx.fillText(label, x + 11, y - 8);
+  ctx.fillText(label, labelOnLeft ? x - 11 : x + 11, y - 8);
 }
 
 function draw() {
