@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sociogramma scolastico pseudonimizzato, senza account, backend o servizi esterni.">
+    <title>Sociogramma riservato</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <a class="brand" href="../" aria-label="Torna alla biblioteca delle app">
+            <span class="brand-mark" aria-hidden="true">S</span>
+            <span>
+                <strong>Sociogramma riservato</strong>
+                <small>Strumento locale e pseudonimizzato</small>
+            </span>
+        </a>
+        <div class="privacy-status" title="Nessun dato viene inviato in rete">
+            <span class="status-dot" aria-hidden="true"></span>
+            Dati solo in memoria
+        </div>
+    </header>
+
+    <div class="app-shell">
+        <nav class="step-nav" aria-label="Fasi del lavoro">
+            <button type="button" class="step-button is-active" data-step="project" aria-current="step">
+                <span>1</span>
+                <strong>Progetto</strong>
+            </button>
+            <button type="button" class="step-button" data-step="participants">
+                <span>2</span>
+                <strong>Codici</strong>
+            </button>
+            <button type="button" class="step-button" data-step="survey">
+                <span>3</span>
+                <strong>Rilevazione</strong>
+            </button>
+            <button type="button" class="step-button" data-step="analysis">
+                <span>4</span>
+                <strong>Analisi</strong>
+            </button>
+        </nav>
+
+        <main class="workspace">
+            <div class="toolbar" aria-label="Gestione del progetto">
+                <div class="toolbar__group">
+                    <button type="button" class="tool-button" id="new-project">Nuovo</button>
+                    <button type="button" class="tool-button" id="import-project">Importa backup</button>
+                    <input type="file" id="import-file" accept=".socio,.json,application/json" hidden>
+                    <button type="button" class="tool-button" id="export-project">Esporta cifrato</button>
+                </div>
+                <div class="toolbar__group">
+                    <button type="button" class="tool-button" id="print-report">Stampa</button>
+                    <button type="button" class="tool-button danger" id="delete-project">Cancella dati</button>
+                </div>
+            </div>
+
+            <section class="step-panel is-active" id="step-project" aria-labelledby="project-title">
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">Fase 1</p>
+                        <h1 id="project-title">Imposta il progetto</h1>
+                        <p>Definisci lo scopo e genera codici che non rendano riconoscibili le persone.</p>
+                    </div>
+                    <button type="button" class="text-button" id="open-privacy-note">Promemoria privacy</button>
+                </div>
+
+                <div class="notice notice--safe">
+                    <strong>Nomi vietati nell'app.</strong>
+                    Conserva l'eventuale corrispondenza tra codici e persone separatamente, sotto la responsabilit&agrave; dell'istituzione.
+                </div>
+
+                <form id="project-form" class="form-grid">
+                    <label>
+                        <span>Titolo interno del progetto</span>
+                        <input id="project-name" type="text" maxlength="80" placeholder="Esempio: Laboratorio gruppi - maggio">
+                    </label>
+                    <label>
+                        <span>Finalit&agrave;</span>
+                        <select id="project-purpose">
+                            <option value="groups">Organizzazione dei gruppi di lavoro</option>
+                            <option value="climate">Osservazione del clima relazionale</option>
+                            <option value="support">Rete di aiuto tra pari</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span>Numero di partecipanti</span>
+                        <input id="participant-count" type="number" min="3" max="40" value="12">
+                    </label>
+                    <label>
+                        <span>Prefisso dei codici</span>
+                        <input id="code-prefix" type="text" maxlength="3" value="P" pattern="[A-Za-z]{1,3}" autocomplete="off">
+                    </label>
+                    <label>
+                        <span>Data consigliata di cancellazione</span>
+                        <input id="deletion-date" type="date">
+                    </label>
+                    <div class="field-static">
+                        <span>Conservazione nell'app</span>
+                        <strong>Solo per questa sessione</strong>
+                        <small>Ricaricando o chiudendo la pagina i dati scompaiono.</small>
+                    </div>
+                    <label class="consent-field full-width">
+                        <input id="authorization-check" type="checkbox">
+                        <span>Confermo che l'attivit&agrave; &egrave; autorizzata dall'istituzione e che &egrave; stata predisposta un'informativa comprensibile agli interessati.</span>
+                    </label>
+                    <div class="form-actions full-width">
+                        <button type="submit" class="primary-button">Genera i codici</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="step-panel" id="step-participants" aria-labelledby="participants-title" hidden>
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">Fase 2</p>
+                        <h1 id="participants-title">Controlla i codici</h1>
+                        <p>I codici sono gli unici identificativi ammessi nella rilevazione e nei risultati.</p>
+                    </div>
+                    <button type="button" class="secondary-button" id="add-participant">Aggiungi codice</button>
+                </div>
+
+                <div class="code-grid" id="participant-list"></div>
+                <div class="panel-actions">
+                    <button type="button" class="secondary-button" data-go="project">Indietro</button>
+                    <button type="button" class="primary-button" data-go="survey">Avvia la rilevazione</button>
+                </div>
+            </section>
+
+            <section class="step-panel" id="step-survey" aria-labelledby="survey-title" hidden>
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">Fase 3</p>
+                        <h1 id="survey-title">Registra le scelte</h1>
+                        <p>Per ogni codice seleziona fino a tre persone. Le domande evitano giudizi negativi o richieste di esclusione.</p>
+                    </div>
+                    <div class="progress-box">
+                        <strong id="survey-progress">0%</strong>
+                        <span>completato</span>
+                    </div>
+                </div>
+
+                <div class="survey-controls">
+                    <label>
+                        <span>Domanda</span>
+                        <select id="question-select"></select>
+                    </label>
+                    <label>
+                        <span>Risponde il codice</span>
+                        <select id="respondent-select"></select>
+                    </label>
+                </div>
+
+                <fieldset class="choice-fieldset">
+                    <legend>Scegli da uno a tre codici</legend>
+                    <div class="choice-grid" id="choice-list"></div>
+                    <p class="choice-count" id="choice-count">0 di 3 selezionati</p>
+                </fieldset>
+
+                <div class="panel-actions">
+                    <button type="button" class="secondary-button" data-go="participants">Indietro</button>
+                    <button type="button" class="primary-button" id="save-and-next">Salva e continua</button>
+                    <button type="button" class="secondary-button" data-go="analysis">Vai all'analisi</button>
+                </div>
+            </section>
+
+            <section class="step-panel analysis-panel" id="step-analysis" aria-labelledby="analysis-title" hidden>
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">Fase 4</p>
+                        <h1 id="analysis-title">Leggi la rete</h1>
+                        <p>I risultati descrivono le scelte raccolte: non sono diagnosi e non devono produrre decisioni automatiche.</p>
+                    </div>
+                    <label class="analysis-filter">
+                        <span>Visualizza</span>
+                        <select id="analysis-question"></select>
+                    </label>
+                </div>
+
+                <div class="metrics" id="summary-metrics"></div>
+
+                <div class="analysis-layout">
+                    <section class="network-area" aria-labelledby="network-title">
+                        <div class="section-heading">
+                            <h2 id="network-title">Mappa delle scelte</h2>
+                            <div class="legend">
+                                <span><i class="legend-line"></i> Scelta</span>
+                                <span><i class="legend-line mutual"></i> Reciproca</span>
+                            </div>
+                        </div>
+                        <div class="network-wrap">
+                            <svg id="network-graph" viewBox="0 0 760 520" role="img" aria-label="Rappresentazione pseudonimizzata delle scelte"></svg>
+                        </div>
+                    </section>
+
+                    <section class="table-area" aria-labelledby="table-title">
+                        <div class="section-heading">
+                            <h2 id="table-title">Conteggi per codice</h2>
+                        </div>
+                        <div class="table-scroll">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Codice</th>
+                                        <th>Ricevute</th>
+                                        <th>Espresse</th>
+                                        <th>Reciproche</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="metrics-table"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="notice notice--caution">
+                    <strong>Interpretazione professionale necessaria.</strong>
+                    Contesto, assenze, comprensione delle domande e dinamiche temporanee possono modificare il significato dei dati.
+                </div>
+
+                <div class="panel-actions">
+                    <button type="button" class="secondary-button" data-go="survey">Torna alla rilevazione</button>
+                    <button type="button" class="primary-button" id="print-analysis">Stampa analisi pseudonimizzata</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <dialog id="privacy-dialog">
+        <div class="dialog-heading">
+            <h2>Promemoria prima dell'uso</h2>
+            <button type="button" class="icon-button" data-close-dialog aria-label="Chiudi">&times;</button>
+        </div>
+        <div class="dialog-content">
+            <ul class="privacy-list">
+                <li>Definire titolare, finalit&agrave;, base giuridica e tempo di conservazione.</li>
+                <li>Informare studenti e famiglie con linguaggio comprensibile.</li>
+                <li>Usare soltanto codici e custodire separatamente l'eventuale chiave di corrispondenza.</li>
+                <li>Limitare l'accesso ai soli professionisti autorizzati.</li>
+                <li>Non pubblicare mappe, graduatorie o risultati individuali.</li>
+                <li>Cancellare dati e backup quando la finalit&agrave; &egrave; conclusa.</li>
+                <li>Confrontarsi con dirigente e RPD/DPO per la valutazione del trattamento.</li>
+            </ul>
+            <p>Lo strumento riduce la raccolta tecnica, ma non sostituisce gli adempimenti dell'istituzione.</p>
+        </div>
+        <div class="dialog-actions">
+            <button type="button" class="primary-button" data-close-dialog>Ho compreso</button>
+        </div>
+    </dialog>
+
+    <dialog id="password-dialog">
+        <form method="dialog" id="password-form">
+            <div class="dialog-heading">
+                <h2 id="password-title">Proteggi il backup</h2>
+                <button type="button" class="icon-button" data-close-dialog aria-label="Chiudi">&times;</button>
+            </div>
+            <div class="dialog-content">
+                <p id="password-description">La password non viene salvata. Senza di essa il backup non potr&agrave; essere recuperato.</p>
+                <label>
+                    <span>Password</span>
+                    <input id="backup-password" type="password" minlength="10" autocomplete="new-password" required>
+                </label>
+                <p class="field-error" id="password-error" role="alert"></p>
+            </div>
+            <div class="dialog-actions">
+                <button type="button" class="secondary-button" data-close-dialog>Annulla</button>
+                <button type="submit" class="primary-button" id="password-confirm">Continua</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="confirm-dialog">
+        <div class="dialog-heading">
+            <h2 id="confirm-title">Conferma</h2>
+            <button type="button" class="icon-button" data-close-dialog aria-label="Chiudi">&times;</button>
+        </div>
+        <div class="dialog-content">
+            <p id="confirm-message"></p>
+        </div>
+        <div class="dialog-actions">
+            <button type="button" class="secondary-button" data-close-dialog>Annulla</button>
+            <button type="button" class="danger-button" id="confirm-action">Conferma</button>
+        </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
