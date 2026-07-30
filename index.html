@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub Risorse Didattiche</title>
+    <meta name="description" content="Catalogo di app e risorse didattiche interattive per lo studio, l'inclusione e la didattica.">
+    <title>Biblioteca delle app didattiche</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,245 +12,568 @@
     <link rel="stylesheet" href="landing.css">
 </head>
 <body id="top">
-    <header class="hero">
-        <div class="hero__content">
-            <p class="eyebrow"><i class="fas fa-graduation-cap"></i> Collezione di strumenti interattivi</p>
-            <h1>Benvenuto nel tuo hub per mappe mentali, grammatica e creatività linguistica</h1>
-            <p class="subtitle">Accedi rapidamente a tutte le pagine del progetto da un unico punto di partenza. Ogni sezione è descritta brevemente così puoi scegliere subito lo strumento giusto.</p>
-            <div class="hero__actions">
-                <a class="btn primary" href="#risorse"><i class="fas fa-compass"></i> Esplora le risorse</a>
-                <a class="btn ghost" href="mappe-mentali-salvataggio.html"><i class="fas fa-diagram-project"></i> Vai alle mappe salvate</a>
-            </div>
-            <div class="hero__tags">
-                <span class="tag"><i class="fas fa-brain"></i> Mappe mentali</span>
-                <span class="tag"><i class="fas fa-language"></i> Grammatica</span>
-                <span class="tag"><i class="fas fa-rocket"></i> Costruttori</span>
-                <span class="tag"><i class="fas fa-book"></i> Vocabolario</span>
-            </div>
-        </div>
-        <div class="hero__badge">
-            <p>18 pagine/app</p>
-            <small>tutte raccolte qui</small>
-        </div>
+    <header class="site-header">
+        <a class="brand" href="#top" aria-label="Biblioteca delle app didattiche">
+            <span class="brand__mark"><i class="fa-solid fa-graduation-cap"></i></span>
+            <span>
+                <strong>App didattiche</strong>
+                <small>Risorse interattive per imparare</small>
+            </span>
+        </a>
+        <a class="header-link" href="#catalogo">
+            <i class="fa-solid fa-compass"></i>
+            Esplora
+        </a>
     </header>
 
-    <main class="content" id="risorse">
-        <div class="content__header">
+    <main>
+        <section class="intro" aria-labelledby="page-title">
             <div>
-                <p class="eyebrow">Navigazione veloce</p>
-                <h2>Trova subito la pagina che ti serve</h2>
-                <p class="subtitle">Usa la ricerca per filtrare titoli, descrizioni o categorie. Ogni riquadro porta direttamente al file corrispondente.</p>
+                <p class="eyebrow">Biblioteca digitale</p>
+                <h1 id="page-title">Strumenti per studiare, capire e sperimentare</h1>
+                <p>Una selezione curata delle versioni pi&ugrave; complete: app accessibili, laboratori, mappe, simulatori ed esercizi per diverse discipline.</p>
             </div>
-            <div class="search">
-                <label for="search-input" class="sr-only">Cerca tra le risorse</label>
-                <input type="search" id="search-input" placeholder="Cerca per titolo, categoria o parola chiave..." aria-label="Cerca tra le risorse">
-                <i class="fas fa-search"></i>
+            <div class="intro__count" aria-live="polite">
+                <strong id="total-count">0</strong>
+                <span>risorse selezionate</span>
             </div>
-        </div>
+        </section>
 
-        <div class="grid" id="resource-grid">
-            <article class="card" data-tags="mappe mentale generatore editor avanzato" aria-label="Generatore mappe mentali avanzato">
-                <div class="card__icon gradient-blue"><i class="fas fa-diagram-project"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Mappe mentali</p>
-                    <h3>Generatore mappe mentali (versione avanzata)</h3>
-                    <p>Editor completo con layout multipli, esportazione e gestione di icone personalizzate.</p>
+        <section class="catalog" id="catalogo" aria-labelledby="catalog-title">
+            <div class="catalog__top">
+                <div>
+                    <p class="eyebrow">Catalogo</p>
+                    <h2 id="catalog-title">Scegli l'attivit&agrave;</h2>
                 </div>
-                <a class="card__link" href="MAP/index.html">Apri pagina</a>
-            </article>
+                <label class="search" for="search-input">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <span class="sr-only">Cerca tra le risorse</span>
+                    <input type="search" id="search-input" placeholder="Cerca titolo, materia o argomento">
+                    <button type="button" id="clear-search" aria-label="Cancella ricerca" title="Cancella ricerca">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </label>
+            </div>
 
-            <article class="card" data-tags="diritto costituzione mappa mentale esempio" aria-label="Mappa Costituzione Italiana">
-                <div class="card__icon gradient-amber"><i class="fas fa-scale-balanced"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Diritto</p>
-                    <h3>Mappa: Struttura della Costituzione</h3>
-                    <p>Esempio precompilato del generatore con i principi, le parti e i titoli della Costituzione.</p>
-                </div>
-                <a class="card__link" href="Diritto/index.html">Apri mappa pronta</a>
-            </article>
+            <div class="filters" id="category-filters" aria-label="Filtra per categoria"></div>
 
-            <article class="card" data-tags="mappe mentale salvataggio locale backup" aria-label="Mappe mentali con salvataggio locale">
-                <div class="card__icon gradient-purple"><i class="fas fa-cloud"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Mappe mentali</p>
-                    <h3>Mappe mentali con salvataggio</h3>
-                    <p>Versione focalizzata su import/export JSON e gestione delle mappe salvate nel browser.</p>
-                </div>
-                <a class="card__link" href="mappe-mentali-salvataggio.html">Apri pagina</a>
-            </article>
+            <div class="results-bar">
+                <p id="result-count" aria-live="polite"></p>
+                <button class="reset-button" type="button" id="reset-filters">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Azzera filtri
+                </button>
+            </div>
 
-            <article class="card" data-tags="mappe mentale generatore legacy" aria-label="Generatore mappe mentali compatibile">
-                <div class="card__icon gradient-green"><i class="fas fa-sitemap"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Mappe mentali</p>
-                    <h3>Generatore mappe mentali (compatibile)</h3>
-                    <p>Implementazione alternativa del generatore per chi preferisce la versione predefinita.</p>
-                </div>
-                <a class="card__link" href="MAP-GENERATOR.html">Apri pagina</a>
-            </article>
+            <div class="grid" id="resource-grid"></div>
 
-            <article class="card" data-tags="grammatica analisi logica sintassi" aria-label="Analisi logica">
-                <div class="card__icon gradient-orange"><i class="fas fa-shapes"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Grammatica</p>
-                    <h3>Analisi logica</h3>
-                    <p>Strumento per riconoscere e classificare i complementi all'interno della frase.</p>
-                </div>
-                <a class="card__link" href="analisi-logica.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="grammatica analisi logica interattiva gioco frasi" aria-label="Analisi logica interattiva">
-                <div class="card__icon gradient-pink"><i class="fas fa-puzzle-piece"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Grammatica</p>
-                    <h3>Analisi logica (gioco interattivo)</h3>
-                    <p>Allenamento guidato con badge, timer e progressione per classificare i complementi della frase.</p>
-                </div>
-                <a class="card__link" href="analisi_logica.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="grammatica analisi grammaticale morfologia" aria-label="Analisi grammaticale">
-                <div class="card__icon gradient-red"><i class="fas fa-language"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Grammatica</p>
-                    <h3>Analisi grammaticale</h3>
-                    <p>Aiuto interattivo per individuare articolo, nome, verbo e altre parti del discorso.</p>
-                </div>
-                <a class="card__link" href="analisi_grammaticale.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="grammatica fonetica pronuncia suoni" aria-label="Fonetica">
-                <div class="card__icon gradient-cyan"><i class="fas fa-wave-square"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Grammatica</p>
-                    <h3>Fonetica</h3>
-                    <p>Tabella interattiva per esplorare suoni, accenti e regole di pronuncia.</p>
-                </div>
-                <a class="card__link" href="fonetica.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="costruttore frase combinazioni creative" aria-label="Costruttore di frase in italiano">
-                <div class="card__icon gradient-yellow"><i class="fas fa-wand-magic-sparkles"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Creatività</p>
-                    <h3>Costruttore di frase</h3>
-                    <p>Genera frasi italiane combinando soggetti, predicati e complementi in modo dinamico.</p>
-                </div>
-                <a class="card__link" href="costruttore-di-frase.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="costruttore frase inglese builder" aria-label="Sentence builder in inglese">
-                <div class="card__icon gradient-teal"><i class="fas fa-comment-dots"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Creatività</p>
-                    <h3>Sentence builder (English)</h3>
-                    <p>Crea frasi in inglese scegliendo soggetti, verbi e complementi con un click.</p>
-                </div>
-                <a class="card__link" href="sentence-builder.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="vocabolario inglese scuola classroom" aria-label="Vocabolario d'aula in inglese">
-                <div class="card__icon gradient-indigo"><i class="fas fa-school"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Vocabolario</p>
-                    <h3>Classroom Vocabulary (English)</h3>
-                    <p>Glossario illustrato dei principali termini scolastici in inglese.</p>
-                </div>
-                <a class="card__link" href="English/ClassroomVocabulary.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="storia statuto costituzione italiano" aria-label="Statuto Albertino e Costituzione">
-                <div class="card__icon gradient-amber"><i class="fas fa-scale-balanced"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Storia & Educazione civica</p>
-                    <h3>Statuto Albertino & Costituzione</h3>
-                    <p>Confronto interattivo tra lo Statuto Albertino e la Costituzione italiana.</p>
-                </div>
-                <a class="card__link" href="StatutoAlbertino-Costituzione.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="italiano cbt comprensione lettura prova simulatore" aria-label="Allenamento prove CBT">
-                <div class="card__icon gradient-sky"><i class="fas fa-laptop"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Italiano</p>
-                    <h3>Allenamento prove CBT</h3>
-                    <p>Simulatore CBT per la classe seconda superiore con testo, domande e monitoraggio dei punteggi.</p>
-                </div>
-                <a class="card__link" href="allenamento-prove-cbt.html">Apri pagina</a>
-            </article>
-
-            
-            <article class="card" data-tags="italiano cbt simulatore prove piattaforma test esercizi" aria-label="Simulatore prove CBT">
-                <div class="card__icon gradient-indigo"><i class="fas fa-display"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Italiano</p>
-                    <h3>Simulatore prove CBT</h3>
-                    <p>Piattaforma esterna per esercitarsi con prove CBT, domande interattive e ambiente di simulazione.</p>
-                </div>
-                <a class="card__link" href="https://simulatore-cbt-piattaforma-776942943363.us-west1.run.app/" target="_blank" rel="noopener noreferrer">Apri app</a>
-            </article>
-            <article class="card" data-tags="chimica legami teoria laboratorio" aria-label="Legami chimici interattivi">
-                <div class="card__icon gradient-lime"><i class="fas fa-atom"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Chimica</p>
-                    <h3>Legami chimici</h3>
-                    <p>Approfondimento con esempi e attività in React su legami ionici, covalenti e metallici.</p>
-                </div>
-                <a class="card__link" href="legami-chimici.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="chimica atomi ioni teoria base" aria-label="Atomi e ioni">
-                <div class="card__icon gradient-sand"><i class="fas fa-circle-nodes"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Chimica</p>
-                    <h3>Atomi e ioni</h3>
-                    <p>Ripasso guidato su struttura atomica, ioni e isotopi con schede riepilogative.</p>
-                </div>
-                <a class="card__link" href="1.html">Apri pagina</a>
-            </article>
-
-            <article class="card" data-tags="chimica offline esperimenti simulazioni" aria-label="Chimica interattiva offline">
-                <div class="card__icon gradient-sea"><i class="fas fa-flask"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Chimica</p>
-                    <h3>Chimica interattiva (offline)</h3>
-                    <p>Mini laboratorio senza connessione con esercizi e visualizzazioni dedicate alla chimica.</p>
-                </div>
-                <a class="card__link" href="2.html">Apri pagina</a>
-            </article>
-            <article class="card" data-tags="economia macroeconomia consumo risparmio propensione marginale retta geogebra y mx q" aria-label="Retta e propensione al consumo">
-                <div class="card__icon gradient-sky"><i class="fas fa-chart-line"></i></div>
-                <div class="card__body">
-                    <p class="eyebrow">Economia</p>
-                    <h3>Retta e propensione al consumo</h3>
-                    <p>App interattiva sulla funzione del consumo: propensione marginale, risparmio/debito e collegamento con y = mx + q.</p>
-                </div>
-                <a class="card__link" href="economia-consumo-retta/index.html">Apri app</a>
-            </article>
-        </div>
+            <div class="empty-state" id="empty-state" hidden>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <h3>Nessuna risorsa trovata</h3>
+                <p>Prova un'altra parola o cambia categoria.</p>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
-        <div>
-            <p class="eyebrow">Suggerimento</p>
-            <p class="subtitle">Aggiungi questa pagina ai preferiti: resterà l'accesso rapido a tutte le risorse, anche dopo aver creato nuove mappe mentali.</p>
-        </div>
-        <a class="btn ghost" href="#top"><i class="fas fa-arrow-up"></i> Torna su</a>
+        <p>Le risorse possono aprirsi su GitHub Pages, Google AI Studio o in una pagina HTML dedicata.</p>
+        <a href="#top" aria-label="Torna all'inizio" title="Torna all'inizio">
+            <i class="fa-solid fa-arrow-up"></i>
+        </a>
     </footer>
 
     <script>
-        const searchInput = document.getElementById('search-input');
-        const cards = Array.from(document.querySelectorAll('.card'));
+        const resources = [
+            {
+                title: "Learning Companion",
+                category: "Accessibilit\u00e0",
+                source: "App pubblica",
+                icon: "fa-brain",
+                url: "https://learning-companion-552441125436.us-west1.run.app",
+                description: "Attivit\u00e0 guidate per attenzione, memoria di lavoro, sequenze temporali e narrazione."
+            },
+            {
+                title: "LeggoChiaro",
+                category: "Accessibilit\u00e0",
+                source: "Google AI Studio",
+                icon: "fa-book-open-reader",
+                url: "https://aistudio.google.com/apps/fd21b03d-dcd5-4ffc-9ad1-90740c2e4b74?showPreview=true&showAssistant=true",
+                description: "Lettura facilitata con sintesi vocale, alto contrasto e impaginazione personalizzabile."
+            },
+            {
+                title: "Scratch Buddy",
+                category: "Accessibilit\u00e0",
+                source: "Google AI Studio",
+                icon: "fa-code",
+                url: "https://aistudio.google.com/apps/189adeaa-929b-4687-9d91-ee23e3186b1b?showPreview=true&showAssistant=true",
+                description: "Tutor visuale per imparare Scratch attraverso istruzioni brevi e sequenziali."
+            },
+            {
+                title: "Simulatore di studio",
+                category: "Accessibilit\u00e0",
+                source: "Google AI Studio",
+                icon: "fa-person-chalkboard",
+                url: "https://aistudio.google.com/apps/4a240d61-0f1b-4949-9c89-67e009ef3b18?showPreview=true&showAssistant=true",
+                description: "Allenamento individuale con esercizi graduati di italiano, matematica e inglese."
+            },
+            {
+                title: "Macchina da scrivere simbolica CAA",
+                category: "Accessibilit\u00e0",
+                source: "GitHub Pages",
+                icon: "fa-keyboard",
+                url: "https://vitopalumbopodcast.github.io/typewriterCAA/",
+                description: "Costruisce frasi con parole, immagini e sintesi vocale, anche senza servizi esterni."
+            },
+            {
+                title: "SocioClass",
+                category: "Accessibilit\u00e0",
+                source: "Google AI Studio",
+                icon: "fa-people-group",
+                url: "https://aistudio.google.com/apps/6f8135e4-3161-45c0-9293-1da4adf49114?showPreview=true&showAssistant=true",
+                description: "Crea sociogrammi e aiuta a leggere relazioni e dinamiche all'interno di un gruppo."
+            },
+            {
+                title: "Flashcards Portable",
+                category: "Italiano e lingue",
+                source: "GitHub Pages",
+                icon: "fa-clone",
+                url: "https://vitopalumbopodcast.github.io/Flashcards/",
+                description: "Flashcard illustrate, studio e quiz con database portatile gestito nel browser."
+            },
+            {
+                title: "Latino inclusivo",
+                category: "Italiano e lingue",
+                source: "Google AI Studio",
+                icon: "fa-landmark",
+                url: "https://aistudio.google.com/apps/f30fbed3-1dae-4c9b-81d0-3ea1ebdb53b5?showPreview=true&showAssistant=true",
+                description: "Casi e declinazioni spiegati attraverso ruoli logici e associazioni visuali."
+            },
+            {
+                title: "Analisi logica facile",
+                category: "Italiano e lingue",
+                source: "App pubblica",
+                icon: "fa-shapes",
+                url: "https://service-9-analisi-logica-facile-776942943363.us-west1.run.app",
+                description: "Percorso visuale e graduale per riconoscere le funzioni logiche della frase."
+            },
+            {
+                title: "Analisi verbale",
+                category: "Italiano e lingue",
+                source: "App pubblica",
+                icon: "fa-spell-check",
+                url: "https://analisi-verbale-mangiare-776942943363.us-west1.run.app",
+                description: "Scheda interattiva e stampabile su modi, tempi e forme del verbo."
+            },
+            {
+                title: "Analisi grammaticale",
+                category: "Italiano e lingue",
+                source: "Pagina HTML",
+                icon: "fa-language",
+                url: "analisi_grammaticale.html",
+                description: "Attivit\u00e0 per individuare e classificare le parti del discorso."
+            },
+            {
+                title: "Fonetica",
+                category: "Italiano e lingue",
+                source: "Pagina HTML",
+                icon: "fa-wave-square",
+                url: "fonetica.html",
+                description: "Tabella interattiva per esplorare suoni, accenti e regole di pronuncia."
+            },
+            {
+                title: "Sentence Builder",
+                category: "Italiano e lingue",
+                source: "Pagina HTML",
+                icon: "fa-comment-dots",
+                url: "sentence-builder.html",
+                description: "Costruzione guidata di frasi inglesi scegliendo soggetti, verbi e complementi."
+            },
+            {
+                title: "Classroom Vocabulary",
+                category: "Italiano e lingue",
+                source: "Pagina HTML",
+                icon: "fa-school",
+                url: "English/ClassroomVocabulary.html",
+                description: "Vocabolario visuale dei principali oggetti e termini dell'ambiente scolastico."
+            },
+            {
+                title: "English StepByStep",
+                category: "Italiano e lingue",
+                source: "Google AI Studio",
+                icon: "fa-person-walking",
+                url: "https://aistudio.google.com/apps/a5e85663-f515-40c9-bc68-546f398bf0bc?showPreview=true&showAssistant=true",
+                description: "Percorso multisensoriale di inglese con movimento, fonetica e supporti visuali."
+            },
+            {
+                title: "Formal Letter Anatomy",
+                category: "Italiano e lingue",
+                source: "Google AI Studio",
+                icon: "fa-envelope-open-text",
+                url: "https://aistudio.google.com/apps/49400f7f-4af6-44b3-b058-40f9b41a7a8d?showPreview=true&showAssistant=true",
+                description: "Analisi guidata della struttura e del lessico di una lettera formale in inglese."
+            },
+            {
+                title: "Imperatif Master",
+                category: "Italiano e lingue",
+                source: "GitHub Pages",
+                icon: "fa-comments",
+                url: "https://vitopalumbopodcast.github.io/FRANCESE/",
+                description: "Esercizi interattivi per comprendere e usare l'imperativo francese."
+            },
+            {
+                title: "VerboInContesto",
+                category: "Italiano e lingue",
+                source: "Google AI Studio",
+                icon: "fa-message",
+                url: "https://aistudio.google.com/apps/106db73b-7272-4275-8864-6638f0182162?showPreview=true&showAssistant=true",
+                description: "Studio dei verbi italiani attraverso situazioni, intenzioni e tempi comunicativi."
+            },
+            {
+                title: "Compendio di analisi letteraria",
+                category: "Italiano e lingue",
+                source: "Google AI Studio",
+                icon: "fa-feather-pointed",
+                url: "https://aistudio.google.com/apps/32df283c-7847-4faf-ac36-aa13d0ac5c3d?showPreview=true&showAssistant=true",
+                description: "Metrica, testo poetico ed epica raccolti in un ambiente di consultazione interattivo."
+            },
+            {
+                title: "Virgilio: il poeta di Roma",
+                category: "Italiano e lingue",
+                source: "Google AI Studio",
+                icon: "fa-scroll",
+                url: "https://aistudio.google.com/apps/drive/1AFDUYbOXNS4RTFI8PyjTLj2-MBi5tPpq?showPreview=true&showAssistant=true",
+                description: "Percorso interattivo sulla vita, le opere e il contesto storico di Virgilio."
+            },
+            {
+                title: "Atlante geostorico interattivo",
+                category: "Storia e diritto",
+                source: "GitHub Pages",
+                icon: "fa-earth-europe",
+                url: "https://vitopalumbopodcast.github.io/Geostoria/",
+                description: "Mappa e linea del tempo con civilt\u00e0, territori, colonizzazioni ed eventi."
+            },
+            {
+                title: "Atlante evolutivo dei saperi",
+                category: "Storia e diritto",
+                source: "GitHub Pages",
+                icon: "fa-route",
+                url: "https://vitopalumbopodcast.github.io/Geostory/",
+                description: "Esplorazione interdisciplinare dell'evoluzione storica delle idee e dei saperi."
+            },
+            {
+                title: "Timeline d'Italia",
+                category: "Storia e diritto",
+                source: "GitHub Pages",
+                icon: "fa-timeline",
+                url: "https://vitopalumbopodcast.github.io/Timeline/",
+                description: "Linea del tempo navigabile della storia italiana dall'Ottocento a oggi."
+            },
+            {
+                title: "Timeline Map",
+                category: "Storia e diritto",
+                source: "GitHub Pages",
+                icon: "fa-map-location-dot",
+                url: "https://vitopalumbopodcast.github.io/History/",
+                description: "Eventi storici collegati alla cronologia e alla loro posizione geografica."
+            },
+            {
+                title: "Statuto Albertino e Costituzione",
+                category: "Storia e diritto",
+                source: "Pagina HTML",
+                icon: "fa-scale-balanced",
+                url: "StatutoAlbertino-Costituzione.html",
+                description: "Confronto interattivo tra lo Statuto Albertino e la Costituzione italiana."
+            },
+            {
+                title: "Diritto facile",
+                category: "Storia e diritto",
+                source: "Google AI Studio",
+                icon: "fa-gavel",
+                url: "https://aistudio.google.com/apps/0100e79b-ed17-462d-a379-87ae80c1d249?showPreview=true&showAssistant=true",
+                description: "Spiegazioni, scenari e attivit\u00e0 su istituzioni, cittadinanza e principali aree del diritto."
+            },
+            {
+                title: "Laboratorio di economia e diritto",
+                category: "Storia e diritto",
+                source: "Google AI Studio",
+                icon: "fa-building-columns",
+                url: "https://aistudio.google.com/apps/c87f700e-c1f8-4cca-8f21-8a0ec955e3eb?showPreview=true&showAssistant=true",
+                description: "Raccolta di mini-attivit\u00e0 per economia, diritto ed educazione civica."
+            },
+            {
+                title: "Iter Legis",
+                category: "Storia e diritto",
+                source: "Pagina HTML",
+                icon: "fa-code-branch",
+                url: "iter-legis.html",
+                description: "Diagramma interattivo delle fasi e delle decisioni del procedimento legislativo."
+            },
+            {
+                title: "Immunita parlamentare",
+                category: "Storia e diritto",
+                source: "Pagina HTML",
+                icon: "fa-shield-halved",
+                url: "Immunita-parlamentare-mindmap.html",
+                description: "Mappa visuale per comprendere garanzie, limiti e finalit\u00e0 dell'immunit\u00e0 parlamentare."
+            },
+            {
+                title: "Atene: percorso inclusivo",
+                category: "Storia e diritto",
+                source: "Archivio HTML",
+                icon: "fa-landmark-dome",
+                url: "https://drive.google.com/file/d/1UYcWmqfzMSzQ6RljhY849zA8LXJU067g/view",
+                description: "Materiale visuale sulla polis ateniese, le istituzioni e la partecipazione politica."
+            },
+            {
+                title: "La tirannide",
+                category: "Storia e diritto",
+                source: "Archivio HTML",
+                icon: "fa-crown",
+                url: "https://drive.google.com/file/d/1GtDa6JeptNvBJ6vQOde_aJHk8V4sMOVQ/view",
+                description: "Percorso semplificato per comprendere origine e caratteristiche della tirannide."
+            },
+            {
+                title: "MathSolver Pro",
+                category: "Matematica ed economia",
+                source: "Google AI Studio",
+                icon: "fa-square-root-variable",
+                url: "https://aistudio.google.com/apps/8a08d3bf-c822-4918-abb1-f4d2fe8de547?showPreview=true&showAssistant=true",
+                description: "Risoluzione matematica guidata passo dopo passo, con suggerimenti ed esercizi."
+            },
+            {
+                title: "GeoLinear",
+                category: "Matematica ed economia",
+                source: "GitHub Pages",
+                icon: "fa-chart-line",
+                url: "https://vitopalumbopodcast.github.io/Matematica/",
+                description: "Esplorazione della retta nel piano cartesiano con parametri e grafico dinamico."
+            },
+            {
+                title: "Allenatore di equazioni e disequazioni",
+                category: "Matematica ed economia",
+                source: "GitHub Pages",
+                icon: "fa-calculator",
+                url: "https://vitopalumbopodcast.github.io/EspressioniMatematiche/",
+                description: "Esercizi guidati e progressivi su equazioni e disequazioni."
+            },
+            {
+                title: "Retta e propensione al consumo",
+                category: "Matematica ed economia",
+                source: "Pagina HTML",
+                icon: "fa-coins",
+                url: "economia-consumo-retta/index.html",
+                description: "Collega la funzione del consumo alla retta, al risparmio e alla propensione marginale."
+            },
+            {
+                title: "Imparo l'euro",
+                category: "Matematica ed economia",
+                source: "App pubblica",
+                icon: "fa-euro-sign",
+                url: "https://service-23-imparo-l-euro-552441125436.us-west1.run.app",
+                description: "Esercizi visuali su denaro, budget, acquisti e calcolo del resto."
+            },
+            {
+                title: "Distributore automatico",
+                category: "Matematica ed economia",
+                source: "App pubblica",
+                icon: "fa-cart-shopping",
+                url: "https://service-4-distributore-automatico-552441125436.us-west1.run.app",
+                description: "Simulazione accessibile di scelta, pagamento e resto durante un acquisto."
+            },
+            {
+                title: "Insiemistica",
+                category: "Matematica ed economia",
+                source: "Pagina HTML",
+                icon: "fa-circle-nodes",
+                url: "insiemistica.html",
+                description: "Esercizi interattivi di logica, teoria degli insiemi e conteggio."
+            },
+            {
+                title: "Distanza e punto medio",
+                category: "Matematica ed economia",
+                source: "Google AI Studio",
+                icon: "fa-ruler-combined",
+                url: "https://aistudio.google.com/apps/drive/1EGjSd1ceWH8WdZvn2l3p3PLJpDNbdMwb?showPreview=true&showAssistant=true",
+                description: "Geometria analitica con formule, grafici e verifica visuale delle costruzioni."
+            },
+            {
+                title: "Tavola periodica interattiva",
+                category: "Scienze",
+                source: "GitHub Pages",
+                icon: "fa-atom",
+                url: "https://vitopalumbopodcast.github.io/TavolaPeriodica/",
+                description: "Consultazione degli elementi e studio visuale della struttura atomica."
+            },
+            {
+                title: "Legami chimici",
+                category: "Scienze",
+                source: "Pagina HTML",
+                icon: "fa-link",
+                url: "legami-chimici.html",
+                description: "Esempi e attivit\u00e0 su legami ionici, covalenti e metallici."
+            },
+            {
+                title: "Chimica interattiva",
+                category: "Scienze",
+                source: "Pagina HTML",
+                icon: "fa-flask-vial",
+                url: "2.html",
+                description: "Laboratorio consultabile anche offline con esercizi e visualizzazioni di chimica."
+            },
+            {
+                title: "I superpoteri dell'acqua",
+                category: "Scienze",
+                source: "Google AI Studio",
+                icon: "fa-droplet",
+                url: "https://aistudio.google.com/apps/drive/1uOn15kTL8PQ9egZOXKaDdP7cCgIcaHMw?showPreview=true&showAssistant=true",
+                description: "Atomi, polarit\u00e0, legami e propriet\u00e0 dell'acqua spiegati con visualizzazioni."
+            },
+            {
+                title: "Il ciclo dell'acqua",
+                category: "Scienze",
+                source: "Archivio HTML",
+                icon: "fa-cloud-rain",
+                url: "https://drive.google.com/file/d/1m69RhcxD0Gqf4V8YZeC0SQVKM3JHIi3q/view",
+                description: "Percorso visuale sulle fasi del ciclo dell'acqua e i loro collegamenti."
+            },
+            {
+                title: "InvalsiAI",
+                category: "Verifiche e strumenti",
+                source: "GitHub Pages",
+                icon: "fa-display",
+                url: "https://vitopalumbopodcast.github.io/Invalsi/",
+                description: "Simulatore CBT con prove interattive e gestione dei risultati."
+            },
+            {
+                title: "Quiz del milionario",
+                category: "Verifiche e strumenti",
+                source: "GitHub Pages",
+                icon: "fa-circle-question",
+                url: "https://vitopalumbopodcast.github.io/milionario/",
+                description: "Quiz a scelta multipla adattabile a contenuti e discipline differenti."
+            },
+            {
+                title: "Generatore di mappe mentali",
+                category: "Verifiche e strumenti",
+                source: "Pagina HTML",
+                icon: "fa-diagram-project",
+                url: "MAP/index.html",
+                description: "Editor completo con layout multipli, collegamenti, icone, salvataggio ed esportazione."
+            },
+            {
+                title: "Diagramma di flusso AI",
+                category: "Verifiche e strumenti",
+                source: "Google AI Studio",
+                icon: "fa-sitemap",
+                url: "https://aistudio.google.com/apps/321def3c-8871-4e47-8df8-3aed18484213?showPreview=true&showAssistant=true",
+                description: "Crea processi, algoritmi e flussi decisionali con disposizione automatica dei nodi."
+            }
+        ];
 
-        function filterCards() {
-            const query = searchInput.value.toLowerCase();
-            cards.forEach(card => {
-                const text = card.innerText.toLowerCase();
-                card.style.display = text.includes(query) ? 'flex' : 'none';
+        const categoryIcons = {
+            "Tutte": "fa-border-all",
+            "Accessibilit\u00e0": "fa-universal-access",
+            "Italiano e lingue": "fa-language",
+            "Storia e diritto": "fa-landmark",
+            "Matematica ed economia": "fa-chart-line",
+            "Scienze": "fa-flask",
+            "Verifiche e strumenti": "fa-screwdriver-wrench"
+        };
+
+        const grid = document.getElementById("resource-grid");
+        const searchInput = document.getElementById("search-input");
+        const clearSearch = document.getElementById("clear-search");
+        const resetFilters = document.getElementById("reset-filters");
+        const filters = document.getElementById("category-filters");
+        const resultCount = document.getElementById("result-count");
+        const totalCount = document.getElementById("total-count");
+        const emptyState = document.getElementById("empty-state");
+        let activeCategory = "Tutte";
+
+        const normalize = value => value
+            .toLocaleLowerCase("it")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+
+        function createFilters() {
+            Object.keys(categoryIcons).forEach(category => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "filter-chip";
+                button.dataset.category = category;
+                button.setAttribute("aria-pressed", category === activeCategory ? "true" : "false");
+                button.innerHTML = `<i class="fa-solid ${categoryIcons[category]}"></i><span>${category}</span>`;
+                button.addEventListener("click", () => {
+                    activeCategory = category;
+                    document.querySelectorAll(".filter-chip").forEach(chip => {
+                        chip.setAttribute("aria-pressed", String(chip.dataset.category === category));
+                    });
+                    render();
+                });
+                filters.appendChild(button);
             });
         }
 
-        searchInput.addEventListener('input', filterCards);
+        function createCard(resource) {
+            const external = /^https?:\/\//.test(resource.url);
+            const sourceClass = resource.source === "Google AI Studio" ? "source-ai" :
+                resource.source === "GitHub Pages" ? "source-github" :
+                resource.source === "App pubblica" ? "source-public" : "source-html";
+            const article = document.createElement("article");
+            article.className = "card";
+            article.innerHTML = `
+                <div class="card__top">
+                    <span class="card__icon"><i class="fa-solid ${resource.icon}"></i></span>
+                    <span class="source ${sourceClass}">${resource.source}</span>
+                </div>
+                <div class="card__body">
+                    <p class="card__category">${resource.category}</p>
+                    <h3>${resource.title}</h3>
+                    <p>${resource.description}</p>
+                </div>
+                <a class="card__link" href="${resource.url}"${external ? ' target="_blank" rel="noopener noreferrer"' : ""}>
+                    Apri risorsa
+                    <i class="fa-solid ${external ? "fa-arrow-up-right-from-square" : "fa-arrow-right"}"></i>
+                </a>`;
+            return article;
+        }
+
+        function render() {
+            const query = normalize(searchInput.value.trim());
+            const visible = resources.filter(resource => {
+                const inCategory = activeCategory === "Tutte" || resource.category === activeCategory;
+                const haystack = normalize(`${resource.title} ${resource.category} ${resource.description} ${resource.source}`);
+                return inCategory && (!query || haystack.includes(query));
+            });
+
+            grid.replaceChildren(...visible.map(createCard));
+            resultCount.textContent = `${visible.length} ${visible.length === 1 ? "risorsa" : "risorse"}`;
+            clearSearch.classList.toggle("is-visible", Boolean(searchInput.value));
+            resetFilters.classList.toggle("is-visible", activeCategory !== "Tutte" || Boolean(searchInput.value));
+            emptyState.hidden = visible.length !== 0;
+        }
+
+        function resetAll() {
+            activeCategory = "Tutte";
+            searchInput.value = "";
+            document.querySelectorAll(".filter-chip").forEach(chip => {
+                chip.setAttribute("aria-pressed", String(chip.dataset.category === "Tutte"));
+            });
+            render();
+            searchInput.focus();
+        }
+
+        searchInput.addEventListener("input", render);
+        clearSearch.addEventListener("click", () => {
+            searchInput.value = "";
+            render();
+            searchInput.focus();
+        });
+        resetFilters.addEventListener("click", resetAll);
+
+        totalCount.textContent = resources.length;
+        createFilters();
+        render();
     </script>
 </body>
 </html>
