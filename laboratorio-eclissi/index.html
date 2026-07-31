@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laboratorio interattivo sul sistema Terra-Luna-Sole e sulle condizioni necessarie per le eclissi.">
+    <title>Laboratorio Terra-Luna-Sole</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <a class="brand" href="../" aria-label="Torna alla biblioteca delle app">
+            <span class="brand-mark" aria-hidden="true">TLS</span>
+            <span>
+                <strong>Laboratorio Terra-Luna-Sole</strong>
+                <small>Orbita lunare ed eclissi</small>
+            </span>
+        </a>
+        <div class="model-status">Modello visuale in scala compressa</div>
+    </header>
+
+    <main class="lab-shell">
+        <section class="lab-toolbar" aria-label="Controlli rapidi della simulazione">
+            <button type="button" class="primary-button" id="play-button" aria-pressed="false">Avvia orbita</button>
+            <button type="button" class="tool-button" data-preset="ordinary">Configurazione ordinaria</button>
+            <button type="button" class="tool-button" data-preset="solar">Eclissi solare</button>
+            <button type="button" class="tool-button" data-preset="lunar">Eclissi lunare</button>
+            <button type="button" class="tool-button" id="reset-button">Ripristina</button>
+        </section>
+
+        <div class="lab-grid">
+            <section class="simulation-panel" aria-labelledby="simulation-title">
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">Vista dall'alto</p>
+                        <h1 id="simulation-title">Sistema Terra-Luna-Sole</h1>
+                    </div>
+                    <div class="legend" aria-label="Legenda">
+                        <span><i class="legend-swatch sun"></i>Sole</span>
+                        <span><i class="legend-swatch earth"></i>Terra</span>
+                        <span><i class="legend-swatch moon"></i>Luna</span>
+                        <span><i class="legend-swatch shadow"></i>Ombra</span>
+                    </div>
+                </div>
+                <div class="canvas-wrap">
+                    <canvas id="space-canvas" width="960" height="540" role="img" aria-label="Vista dall'alto del sistema Terra-Luna-Sole"></canvas>
+                </div>
+            </section>
+
+            <aside class="controls-panel" aria-labelledby="controls-title">
+                <div class="panel-heading compact">
+                    <div>
+                        <p class="eyebrow">Parametri</p>
+                        <h2 id="controls-title">Modifica il sistema</h2>
+                    </div>
+                </div>
+
+                <label class="slider-control" for="phase-slider">
+                    <span><strong>Posizione della Luna</strong><output id="phase-output">42&deg;</output></span>
+                    <input id="phase-slider" type="range" min="0" max="360" step="1" value="42">
+                    <small id="phase-name">Falce crescente</small>
+                </label>
+
+                <label class="slider-control" for="inclination-slider">
+                    <span><strong>Inclinazione orbitale</strong><output id="inclination-output">5,1&deg;</output></span>
+                    <input id="inclination-slider" type="range" min="0" max="10" step="0.1" value="5.1">
+                    <small>Valore reale medio: circa 5,1&deg;</small>
+                </label>
+
+                <label class="slider-control" for="node-slider">
+                    <span><strong>Orientamento dei nodi</strong><output id="node-output">20&deg;</output></span>
+                    <input id="node-slider" type="range" min="0" max="360" step="1" value="20">
+                    <small>Ruota i punti in cui l'orbita attraversa l'eclittica</small>
+                </label>
+
+                <label class="slider-control" for="distance-slider">
+                    <span><strong>Distanza Terra-Luna</strong><output id="distance-output">384.400 km</output></span>
+                    <input id="distance-slider" type="range" min="356000" max="406000" step="100" value="384400">
+                    <small>La distanza modifica la dimensione apparente della Luna</small>
+                </label>
+
+                <label class="slider-control" for="speed-slider">
+                    <span><strong>Velocit&agrave; animazione</strong><output id="speed-output">12&deg;/s</output></span>
+                    <input id="speed-slider" type="range" min="2" max="30" step="1" value="12">
+                    <small>Non modifica il risultato fisico</small>
+                </label>
+
+                <label class="toggle-control">
+                    <input id="shadow-toggle" type="checkbox" checked>
+                    <span>Mostra i coni d'ombra</span>
+                </label>
+                <label class="toggle-control">
+                    <input id="label-toggle" type="checkbox" checked>
+                    <span>Mostra le etichette</span>
+                </label>
+            </aside>
+        </div>
+
+        <section class="feedback-panel" id="feedback-panel" aria-labelledby="feedback-title" aria-live="polite">
+            <div class="feedback-symbol" id="feedback-symbol" aria-hidden="true">i</div>
+            <div>
+                <p class="eyebrow">Feedback in tempo reale</p>
+                <h2 id="feedback-title">Configurazione senza eclissi</h2>
+                <p id="feedback-text">La Luna non &egrave; allineata con il Sole e la Terra.</p>
+            </div>
+            <dl class="live-values">
+                <div><dt>Fase</dt><dd id="live-phase">Falce crescente</dd></div>
+                <div><dt>Latitudine orbitale</dt><dd id="live-latitude">0,0&deg;</dd></div>
+                <div><dt>Distanza dal nodo</dt><dd id="live-node-distance">0,0&deg;</dd></div>
+                <div><dt>Diametro apparente Luna</dt><dd id="live-moon-size">0,00&deg;</dd></div>
+            </dl>
+        </section>
+
+        <section class="profile-panel" aria-labelledby="profile-title">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Vista di profilo</p>
+                    <h2 id="profile-title">Orbita lunare ed eclittica</h2>
+                    <p>L'altezza &egrave; amplificata per rendere visibile l'inclinazione di pochi gradi.</p>
+                </div>
+                <div class="node-key"><span>Nodo ascendente</span><span>Nodo discendente</span></div>
+            </div>
+            <div class="profile-canvas-wrap">
+                <canvas id="profile-canvas" width="960" height="250" role="img" aria-label="Vista di profilo dell'orbita lunare inclinata rispetto all'eclittica"></canvas>
+            </div>
+        </section>
+
+        <section class="observation-band" aria-labelledby="observation-title">
+            <div>
+                <p class="eyebrow">Laboratorio</p>
+                <h2 id="observation-title">Tracce per l'osservazione</h2>
+            </div>
+            <ol>
+                <li>Porta la Luna nuova lontano da un nodo e osserva perch&eacute; l'eclissi non avviene.</li>
+                <li>Mantieni la Luna piena e ruota i nodi fino a entrare nel cono d'ombra terrestre.</li>
+                <li>Confronta una Luna vicina e una lontana durante l'allineamento con il Sole.</li>
+            </ol>
+            <p class="assessment-note">Il laboratorio restituisce descrizioni fisiche dell'azione. Non assegna voti, livelli o giudizi.</p>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
