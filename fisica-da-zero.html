@@ -96,7 +96,7 @@ function bindRoutes(){document.querySelectorAll('[data-lesson]').forEach(b=>b.ad
 function renderPowerPlace(){
  const digits=['0','0','0','0','3','6','0','0','0','0','0'];
  $('main').innerHTML=`<section class="power-place-page" aria-labelledby="power-place-title"><h1 id="power-place-title">La virgola si muove</h1><p class="power-place-lead">Le cifre <strong>3</strong> e <strong>6</strong> restano ferme nelle loro caselle. Muovi soltanto la virgola.</p><div class="power-fixed-expression"><span class="fixed-coefficient">3,6</span> × 10<sup id="power-place-exponent">0</sup></div><div class="power-place-track" aria-hidden="true">${digits.map((digit,i)=>`<span class="place-cell ${i===4||i===5?'significant':''}">${digit}</span>`).join('')}<span id="moving-comma" class="moving-comma">,</span></div><div class="power-place-controls"><label for="power-place-slider">Esponente: <output id="power-place-output">0</output></label><input id="power-place-slider" type="range" min="-4" max="4" step="1" value="0"><p id="power-place-result" class="power-place-result" role="status" aria-live="polite"></p><p id="power-place-note" class="power-place-note"></p></div><div class="actions"><button id="power-place-continue" class="primary">Continua alla spiegazione delle potenze →</button></div></section>`;
- const update=()=>{const n=Number($('power-place-slider').value),pos=5+n,value=3.6*10**n;$('power-place-output').textContent=String(n).replace('-','−');$('power-place-exponent').textContent=String(n).replace('-','−');$('moving-comma').style.left=`${pos/11*100}%`;$('power-place-result').innerHTML=`3,6 × ${power(n)} = ${fmt(value)}`;$('power-place-note').textContent=n<0?`Esponente negativo: la virgola va a sinistra di ${Math.abs(n)} posizione${Math.abs(n)===1?'':'i'}. Ogni passo divide per 10.`:n>0?`Esponente positivo: la virgola va a destra di ${n} posizione${n===1?'':'i'}. Ogni passo moltiplica per 10.`:'Esponente zero: la virgola resta tra 3 e 6. Il valore rimane 3,6.';};
+ const update=()=>{const n=Number($('power-place-slider').value),pos=5+n,value=3.6*10**n;$('power-place-output').textContent=String(n).replace('-','−');$('power-place-exponent').textContent=String(n).replace('-','−');$('moving-comma').style.left=`${pos/11*100}%`;$('power-place-result').innerHTML=`3,6 × ${power(n)} = ${fmt(value)}`;$('power-place-note').textContent=n<0?`Esponente negativo: la virgola va a sinistra di ${Math.abs(n)} posizion${Math.abs(n)===1?'e':'i'}. Ogni passo divide per 10.`:n>0?`Esponente positivo: la virgola va a destra di ${n} posizion${n===1?'e':'i'}. Ogni passo moltiplica per 10.`:'Esponente zero: la virgola resta tra 3 e 6. Il valore rimane 3,6.';};
  $('power-place-slider').addEventListener('input',update);$('power-place-continue').addEventListener('click',()=>{state.powerPlaceSeen=true;state.stage='teach';show('lesson');});update();
 }
 function renderHome(){
@@ -427,4 +427,5 @@ show('home',false);
 </script>
 </body>
 </html>
+
 
