@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Volti, emozioni e stati d'animo: un percorso guidato e accessibile di scienze umane.">
+  <title>Emozioni in volto · Scienze umane</title>
+  <link rel="stylesheet" href="style.css?v=1"><script src="app.js?v=1" defer></script>
+</head>
+<body>
+  <a class="skip" href="#contenuto">Vai all’attività</a>
+  <header><a class="brand" href="./"><span class="brand-face" aria-hidden="true">☺</span><span>Emozioni in volto<small>SCIENZE UMANE</small></span></a><button id="preferences" aria-expanded="false" aria-controls="settings">Personalizza</button></header>
+  <section id="settings" hidden aria-label="Personalizza il percorso">
+    <label>Volti <select id="style"><option value="stylized">Illustrati</option><option value="realisticTeen">Ragazzi</option><option value="realistic">Adulti</option><option value="icon">Icone</option></select></label>
+    <label>Percorso <select id="level"><option value="base">Le 6 emozioni di base</option><option value="all">Emozioni e stati d’animo</option></select></label>
+    <label>Risposte negli esercizi <select id="choices"><option value="2">2 risposte</option><option value="3">3 risposte</option></select></label>
+    <label><input id="large" type="checkbox"> Testo più grande</label>
+    <p>Inizia con pochi volti. Puoi cambiare queste scelte quando vuoi.</p>
+  </section>
+  <nav aria-label="Scegli un’attività"><button data-view="discover" aria-current="page">Scopri i volti</button><button data-view="recognize">Riconosci</button><button data-view="situations">Le situazioni</button><button data-view="lesson">La lezione</button><button data-view="feel">Come mi sento</button></nav>
+  <main id="contenuto" tabindex="-1"></main>
+  <footer><a href="../">Torna alle app didattiche</a><span>Un passo alla volta. Puoi ascoltare, riprovare e fare una pausa.</span></footer>
+  <p id="speech-status" class="sr" role="status"></p>
+</body></html>
+
