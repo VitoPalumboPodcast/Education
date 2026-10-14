@@ -10,3 +10,4 @@ La sintesi distingue emozione, stato d’animo e sentimento. Le sei emozioni son
 
 Non richiede account, API, Firebase o strumenti di IA. La lettura italiana usa la sintesi vocale disponibile sul dispositivo. Tutto il codice e le immagini sono serviti da GitHub Pages. Per avviare un’anteprima, usare un qualsiasi server statico nella cartella del progetto.
 
+Le 14 icone a colori derivano da OpenMoji 17.0.0 (HfG Schwäbisch Gmünd, Benedikt Groß, Daniel Utz, studenti e collaboratori), CC BY-SA 4.0. Sono state modificate solo le palette dei volti; gli adattamenti mantengono la licenza CC BY-SA 4.0. Crediti e provenienza sono in `crediti.html` e `icons/SOURCES.json`; testo della licenza in `icons/LICENSE-OpenMoji.txt`. I colori sono una convenzione dell’app, non una classificazione universale delle emozioni. `tools/download-icons.mjs` riproduce il recupero e le modifiche.

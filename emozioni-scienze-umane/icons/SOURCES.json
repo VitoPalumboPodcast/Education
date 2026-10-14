@@ -1,0 +1,123 @@
+{
+  "project": "OpenMoji",
+  "version": "17.0.0",
+  "authors": "HfG Schwäbisch Gmünd, Benedikt Groß, Daniel Utz, students and contributors",
+  "website": "https://openmoji.org/",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "adaptationsLicense": "CC BY-SA 4.0",
+  "icons": [
+    {
+      "id": "happy",
+      "label": "Gioia",
+      "unicode": "1F603",
+      "color": "#F9D55C",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F603.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "sad",
+      "label": "Tristezza",
+      "unicode": "1F622",
+      "color": "#79B4E1",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F622.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "angry",
+      "label": "Rabbia",
+      "unicode": "1F620",
+      "color": "#F07872",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F620.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "scared",
+      "label": "Paura",
+      "unicode": "1F628",
+      "color": "#B99AE5",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F628.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "disgusted",
+      "label": "Disgusto",
+      "unicode": "1F922",
+      "color": "#94C96F",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F922.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "surprised",
+      "label": "Sorpresa",
+      "unicode": "1F632",
+      "color": "#FDB578",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F632.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "calm",
+      "label": "Calma",
+      "unicode": "1F60C",
+      "color": "#81D0C3",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F60C.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "worried",
+      "label": "Preoccupazione",
+      "unicode": "1F61F",
+      "color": "#D8A3B6",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F61F.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "bored",
+      "label": "Noia",
+      "unicode": "1F611",
+      "color": "#B3BCC7",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F611.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "excited",
+      "label": "Entusiasmo",
+      "unicode": "1F929",
+      "color": "#F2BA55",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F929.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "nervous",
+      "label": "Tensione",
+      "unicode": "1F62C",
+      "color": "#CEB5EA",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F62C.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "embarrassed",
+      "label": "Vergogna",
+      "unicode": "1F633",
+      "color": "#EDABC2",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F633.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "proud",
+      "label": "Orgoglio",
+      "unicode": "1F60A",
+      "color": "#DEAF79",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F60A.svg",
+      "modified": "Face palette recoloured for this educational app."
+    },
+    {
+      "id": "disappointed",
+      "label": "Delusione",
+      "unicode": "1F61E",
+      "color": "#A5B6DB",
+      "source": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/17.0.0/color/svg/1F61E.svg",
+      "modified": "Face palette recoloured for this educational app."
+    }
+  ]
+}
