@@ -4,6 +4,10 @@ Copia autonoma italiana di Feelings Flashcards Lab, adattata al materiale di lez
 
 Percorso iniziale: sei emozioni di base; percorso esteso: 14 emozioni e stati emotivi. Sono disponibili 42 immagini di volti (illustrazioni, ragazzi, adulti) e icone vettoriali. Nessuna immagine di oggetti o animali.
 
+«Ascolta la pagina» legge solo il contenuto didattico principale della sezione attuale. Nei singoli argomenti della lezione legge spiegazioni, esempi e componenti, escludendo pulsanti, istruzioni di navigazione, domande e risposte del quiz. «Ascolta la domanda» legge separatamente la domanda e le opzioni.
+
+Gli argomenti della lezione hanno immagini dei volti e semplici schemi vettoriali: funzioni delle emozioni, emozione/stato d’animo/sentimento, sei emozioni, vergogna e orgoglio, quattro componenti, pensiero ed emozioni nelle scelte, e ascolto della persona. I volti seguono lo stile scelto in «Personalizza». Gli schemi illustrati sono originali dell’app.
+
 Attività: esplorazione guidata dei volti, riconoscimento con 2 o 3 risposte, situazioni quotidiane, sette argomenti di lezione con domande, scelta libera di come ci si sente. Nessun timer, nessuna classifica, possibilità di ascoltare e riprovare. La scelta personale non viene registrata; solo le preferenze di visualizzazione sono salvate nel browser.
 
 La sintesi distingue emozione, stato d’animo e sentimento. Le sei emozioni sono presentate come il modello studiato a lezione. Le espressioni facciali sono indizi, non strumenti per stabilire con certezza cosa prova una persona. Gli esempi sulle situazioni ammettono vissuti differenti.
