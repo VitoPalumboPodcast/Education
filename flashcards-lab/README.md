@@ -6,6 +6,8 @@
 
 Versione indipendente da Google AI Studio, Firebase e account Google.
 
+La libreria recuperata il 14 ottobre 2026 contiene 102 file immagine originali, con 103 associazioni a 58 parole. I 78 termini includono anche parole rappresentate da icone. I file sono in `images/` e le associazioni fra parole e stili sono in `images.json`, ospitati su GitHub Pages.
+
 ## Come funziona
 
 - L'app è una SPA React/Vite statica, pubblicabile su GitHub Pages.
@@ -28,17 +30,4 @@ pnpm build
 
 Per GitHub Pages, pubblicare la cartella `dist` tramite GitHub Actions o Pages da branch.
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/0f2ac31b-95a2-4997-8718-c3e040056259
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Non occorrono chiavi API. Le varianti mancanti nella libreria originale usano un'immagine disponibile o un'icona.

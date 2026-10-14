@@ -1,0 +1,337 @@
+{
+  "happy": {
+    "userId": "library",
+    "wordId": "happy",
+    "stylizedUrl": "./images/happy-stylized.jpg",
+    "realisticUrl": "./images/happy-realistic.jpg",
+    "realisticTeenUrl": "./images/happy-realisticTeen.jpg",
+    "customUrl": "./images/happy-custom.jpg"
+  },
+  "sad": {
+    "userId": "library",
+    "wordId": "sad",
+    "stylizedUrl": "./images/sad-stylized.jpg",
+    "realisticUrl": "./images/sad-realistic.jpg",
+    "realisticTeenUrl": "./images/sad-realisticTeen.jpg",
+    "customUrl": "./images/sad-custom.jpg"
+  },
+  "angry": {
+    "userId": "library",
+    "wordId": "angry",
+    "stylizedUrl": "./images/angry-stylized.jpg",
+    "realisticUrl": "./images/angry-realistic.jpg",
+    "realisticTeenUrl": "./images/angry-realisticTeen.jpg",
+    "customUrl": "./images/angry-custom.jpg"
+  },
+  "scared": {
+    "userId": "library",
+    "wordId": "scared",
+    "stylizedUrl": "./images/scared-stylized.jpg",
+    "realisticUrl": "./images/scared-realistic.jpg",
+    "realisticTeenUrl": "./images/scared-realisticTeen.jpg",
+    "customUrl": "./images/scared-custom.jpg"
+  },
+  "afraid": {
+    "userId": "library",
+    "wordId": "afraid",
+    "stylizedUrl": "./images/afraid-stylized.jpg",
+    "realisticUrl": "./images/afraid-realistic.jpg",
+    "realisticTeenUrl": "./images/afraid-realisticTeen.jpg",
+    "customUrl": "./images/afraid-custom.jpg"
+  },
+  "tired": {
+    "userId": "library",
+    "wordId": "tired",
+    "stylizedUrl": "./images/tired-stylized.jpg",
+    "realisticUrl": "./images/tired-realistic.jpg",
+    "realisticTeenUrl": "./images/tired-realisticTeen.jpg",
+    "customUrl": "./images/tired-custom.jpg"
+  },
+  "sleepy": {
+    "userId": "library",
+    "wordId": "sleepy",
+    "stylizedUrl": "./images/sleepy-stylized.jpg",
+    "realisticUrl": "./images/sleepy-realistic.jpg",
+    "realisticTeenUrl": "./images/sleepy-realisticTeen.jpg",
+    "customUrl": "./images/sleepy-custom.jpg"
+  },
+  "surprised": {
+    "userId": "library",
+    "wordId": "surprised",
+    "stylizedUrl": "./images/surprised-stylized.jpg",
+    "realisticUrl": "./images/surprised-realistic.jpg",
+    "realisticTeenUrl": "./images/surprised-realisticTeen.jpg",
+    "customUrl": "./images/surprised-custom.jpg"
+  },
+  "calm": {
+    "userId": "library",
+    "wordId": "calm",
+    "stylizedUrl": "./images/calm-stylized.jpg",
+    "realisticUrl": "./images/calm-realistic.jpg",
+    "realisticTeenUrl": "./images/calm-realisticTeen.jpg"
+  },
+  "confused": {
+    "userId": "library",
+    "wordId": "confused",
+    "stylizedUrl": "./images/confused-stylized.jpg",
+    "realisticUrl": "./images/confused-realistic.jpg",
+    "realisticTeenUrl": "./images/confused-realisticTeen.jpg"
+  },
+  "worried": {
+    "userId": "library",
+    "wordId": "worried",
+    "stylizedUrl": "./images/worried-stylized.jpg",
+    "realisticUrl": "./images/worried-realistic.jpg",
+    "realisticTeenUrl": "./images/worried-realisticTeen.jpg"
+  },
+  "proud": {
+    "userId": "library",
+    "wordId": "proud",
+    "stylizedUrl": "./images/proud-stylized.jpg",
+    "realisticUrl": "./images/proud-realistic.jpg",
+    "realisticTeenUrl": "./images/proud-realisticTeen.jpg"
+  },
+  "bored": {
+    "userId": "library",
+    "wordId": "bored",
+    "stylizedUrl": "./images/bored-stylized.jpg",
+    "realisticUrl": "./images/bored-realistic.jpg",
+    "realisticTeenUrl": "./images/bored-realisticTeen.jpg"
+  },
+  "disgusted": {
+    "userId": "library",
+    "wordId": "disgusted",
+    "stylizedUrl": "./images/disgusted-stylized.jpg",
+    "realisticUrl": "./images/disgusted-realistic.jpg",
+    "realisticTeenUrl": "./images/disgusted-realisticTeen.jpg"
+  },
+  "excited": {
+    "userId": "library",
+    "wordId": "excited",
+    "stylizedUrl": "./images/excited-stylized.jpg",
+    "realisticUrl": "./images/excited-realistic.jpg",
+    "realisticTeenUrl": "./images/excited-realisticTeen.jpg",
+    "customUrl": "./images/happy-custom.jpg"
+  },
+  "nervous": {
+    "userId": "library",
+    "wordId": "nervous",
+    "stylizedUrl": "./images/nervous-stylized.jpg",
+    "realisticUrl": "./images/nervous-realistic.jpg",
+    "realisticTeenUrl": "./images/nervous-realisticTeen.jpg"
+  },
+  "embarrassed": {
+    "userId": "library",
+    "wordId": "embarrassed",
+    "stylizedUrl": "./images/embarrassed-stylized.jpg",
+    "realisticUrl": "./images/embarrassed-realistic.jpg",
+    "realisticTeenUrl": "./images/embarrassed-realisticTeen.jpg"
+  },
+  "disappointed": {
+    "userId": "library",
+    "wordId": "disappointed",
+    "stylizedUrl": "./images/disappointed-stylized.jpg",
+    "realisticUrl": "./images/disappointed-realistic.jpg",
+    "realisticTeenUrl": "./images/disappointed-realisticTeen.jpg"
+  },
+  "head": {
+    "userId": "library",
+    "wordId": "head",
+    "customUrl": "./images/head-custom.jpg"
+  },
+  "hand": {
+    "userId": "library",
+    "wordId": "hand",
+    "customUrl": "./images/hand-custom.jpg"
+  },
+  "nose": {
+    "userId": "library",
+    "wordId": "nose",
+    "customUrl": "./images/nose-custom.jpg"
+  },
+  "mouth": {
+    "userId": "library",
+    "wordId": "mouth",
+    "customUrl": "./images/mouth-custom.jpg"
+  },
+  "ear": {
+    "userId": "library",
+    "wordId": "ear",
+    "customUrl": "./images/ear-custom.jpg"
+  },
+  "eat": {
+    "userId": "library",
+    "wordId": "eat",
+    "customUrl": "./images/eat-custom.jpg"
+  },
+  "drink": {
+    "userId": "library",
+    "wordId": "drink",
+    "customUrl": "./images/drink-custom.jpg"
+  },
+  "bread": {
+    "userId": "library",
+    "wordId": "bread",
+    "customUrl": "./images/bread-custom.jpg"
+  },
+  "pizza": {
+    "userId": "library",
+    "wordId": "pizza",
+    "customUrl": "./images/pizza-custom.jpg"
+  },
+  "fruit": {
+    "userId": "library",
+    "wordId": "fruit",
+    "customUrl": "./images/fruit-custom.jpg"
+  },
+  "cat": {
+    "userId": "library",
+    "wordId": "cat",
+    "customUrl": "./images/cat-custom.jpg"
+  },
+  "dog": {
+    "userId": "library",
+    "wordId": "dog",
+    "customUrl": "./images/dog-custom.jpg"
+  },
+  "lion": {
+    "userId": "library",
+    "wordId": "lion",
+    "customUrl": "./images/lion-custom.jpg"
+  },
+  "elephant": {
+    "userId": "library",
+    "wordId": "elephant",
+    "customUrl": "./images/elephant-custom.jpg"
+  },
+  "bird": {
+    "userId": "library",
+    "wordId": "bird",
+    "customUrl": "./images/bird-custom.jpg"
+  },
+  "fish": {
+    "userId": "library",
+    "wordId": "fish",
+    "customUrl": "./images/fish-custom.jpg"
+  },
+  "monkey": {
+    "userId": "library",
+    "wordId": "monkey",
+    "customUrl": "./images/monkey-custom.jpg"
+  },
+  "rabbit": {
+    "userId": "library",
+    "wordId": "rabbit",
+    "customUrl": "./images/rabbit-custom.jpg"
+  },
+  "turtle": {
+    "userId": "library",
+    "wordId": "turtle",
+    "customUrl": "./images/turtle-custom.jpg"
+  },
+  "bear": {
+    "userId": "library",
+    "wordId": "bear",
+    "customUrl": "./images/bear-custom.jpg"
+  },
+  "tiger": {
+    "userId": "library",
+    "wordId": "tiger",
+    "customUrl": "./images/tiger-custom.jpg"
+  },
+  "giraffe": {
+    "userId": "library",
+    "wordId": "giraffe",
+    "customUrl": "./images/giraffe-custom.jpg"
+  },
+  "zebra": {
+    "userId": "library",
+    "wordId": "zebra",
+    "customUrl": "./images/zebra-custom.jpg"
+  },
+  "horse": {
+    "userId": "library",
+    "wordId": "horse",
+    "customUrl": "./images/horse-custom.jpg"
+  },
+  "cow": {
+    "userId": "library",
+    "wordId": "cow",
+    "customUrl": "./images/cow-custom.jpg"
+  },
+  "pig": {
+    "userId": "library",
+    "wordId": "pig",
+    "customUrl": "./images/pig-custom.jpg"
+  },
+  "sheep": {
+    "userId": "library",
+    "wordId": "sheep",
+    "customUrl": "./images/sheep-custom.jpg"
+  },
+  "chicken": {
+    "userId": "library",
+    "wordId": "chicken",
+    "customUrl": "./images/chicken-custom.jpg"
+  },
+  "apple": {
+    "userId": "library",
+    "wordId": "apple",
+    "customUrl": "./images/apple-custom.jpg"
+  },
+  "house": {
+    "userId": "library",
+    "wordId": "house",
+    "customUrl": "./images/house-custom.jpg"
+  },
+  "car": {
+    "userId": "library",
+    "wordId": "car",
+    "customUrl": "./images/car-custom.jpg"
+  },
+  "book": {
+    "userId": "library",
+    "wordId": "book",
+    "customUrl": "./images/book-custom.jpg"
+  },
+  "chair": {
+    "userId": "library",
+    "wordId": "chair",
+    "customUrl": "./images/chair-custom.jpg"
+  },
+  "clock": {
+    "userId": "library",
+    "wordId": "clock",
+    "customUrl": "./images/clock-custom.jpg"
+  },
+  "shoes": {
+    "userId": "library",
+    "wordId": "shoes",
+    "customUrl": "./images/shoes-custom.jpg"
+  },
+  "key": {
+    "userId": "library",
+    "wordId": "key",
+    "customUrl": "./images/key-custom.jpg"
+  },
+  "pen": {
+    "userId": "library",
+    "wordId": "pen",
+    "customUrl": "./images/pen-custom.jpg"
+  },
+  "window": {
+    "userId": "library",
+    "wordId": "window",
+    "customUrl": "./images/window-custom.jpg"
+  },
+  "door": {
+    "userId": "library",
+    "wordId": "door",
+    "customUrl": "./images/door-custom.jpg"
+  },
+  "smartphone": {
+    "userId": "library",
+    "wordId": "smartphone",
+    "customUrl": "./images/smartphone-custom.jpg"
+  }
+}
