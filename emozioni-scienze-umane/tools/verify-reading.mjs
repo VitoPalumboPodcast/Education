@@ -5,6 +5,7 @@ const elements=new Map();
 const control=()=>({value:'',checked:false,innerText:'UN PASSO ALLA VOLTA. Ascolta la pagina. Continua. Testo di servizio.',classList:{toggle(){}},querySelectorAll:()=>[],addEventListener(){},setAttribute(){},focus(){}});
 const spoken=[];let click;
 const context=vm.createContext({console,localStorage:{getItem:()=>null},window:{speechSynthesis:{}},speechSynthesis:{cancel(){},getVoices:()=>[],speak:u=>spoken.push(u.text)},SpeechSynthesisUtterance:class{constructor(text){this.text=text;}},document:{getElementById(id){if(!elements.has(id))elements.set(id,control());return elements.get(id);},documentElement:{classList:{toggle(){}}},querySelectorAll:()=>[],addEventListener(type,fn){if(type==='click')click=fn;}}});
+vm.runInContext(fs.readFileSync(new URL('../emotions-data.js',import.meta.url),'utf8'),context);
 vm.runInContext(fs.readFileSync(new URL('../app.js',import.meta.url),'utf8'),context);
 function readPage(){spoken.length=0;click({target:{closest:()=>({dataset:{action:'read'}})}});assert.equal(spoken.length,1);assert.doesNotMatch(spoken[0],/UN PASSO ALLA VOLTA|Ascolta la pagina|Testo di servizio|Continua|Tutti gli argomenti/);return spoken[0];}
 assert.match(readPage(),/^Gioia\./);

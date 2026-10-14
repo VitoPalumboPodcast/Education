@@ -1,5 +1,9 @@
 # Emozioni in volto · Scienze umane
 
+## Carte A4
+
+La pagina `stampa.html`, raggiungibile da «Stampa A4», prepara i set da 6 o 14 emozioni. Si possono scegliere icone a colori, illustrazioni, ragazzi o adulti, con 6, 4 o 1 carta per foglio. Nomi e linee di ritaglio sono facoltativi. I fogli sono A4 verticali con margini di 10 mm e paginazione esplicita; il pulsante di stampa si attiva dopo il caricamento di tutte le immagini. Dal pannello del browser si può stampare oppure salvare un PDF. Per mantenere il formato usare scala 100%, carta A4 e disattivare intestazioni e piè di pagina del browser.
+
 Copia autonoma italiana di Feelings Flashcards Lab, adattata al materiale di lezione fornito dal docente, “La Mente Emozionale: Natura, Funzioni e Dimensioni dell’Affettività Umana”.
 
 Percorso iniziale: sei emozioni di base; percorso esteso: 14 emozioni e stati emotivi. Sono disponibili 42 immagini di volti (illustrazioni, ragazzi, adulti) e icone vettoriali. Nessuna immagine di oggetti o animali.
