@@ -19,6 +19,7 @@ button{border:1px solid var(--line);background:white;color:var(--ink);border-rad
 .download-page .maincol>section:not(#downloadLanding),.download-page .sidebar,.download-page .headright{display:none!important}.download-page .layout{display:block;max-width:740px}.download-page #downloadLanding{padding:32px}.download-page #downloadLanding[hidden]{display:none}
 .scene-frame:has(.bundled-art){background:#fcf7ed}.bundled-art{inset:auto 0 0;height:80%;width:100%;object-fit:contain}.scene-frame:has(.bundled-art) .speech{max-height:38%;overflow:auto}.scene-tint{background:linear-gradient(180deg,transparent 80%,#101e2a25)}@media(max-width:530px){.scene-frame:has(.bundled-art){aspect-ratio:4/3}.bundled-art{height:68%}.scene-frame:has(.bundled-art) .speech{max-height:40%}}
 @media(max-width:530px){.headinner{flex-wrap:wrap;gap:8px}.brand{flex:1 1 100%;gap:8px}.brand p{display:none}.brandmark{width:30px;height:30px;border-radius:10px;font-size:.85rem}.brand h1{font-size:1.1rem}.headright{margin-left:auto}.scene-frame:has(.bundled-art) .speech:not(.previous){width:90%;--speech-x:5%!important;max-height:44%;min-height:0;padding:9px 12px}.scene-frame:has(.bundled-art) .spoken{font-size:clamp(.95rem,4vw,1.1rem);line-height:1.25}.scene-frame:has(.bundled-art) .who{font-size:.62rem}.settings-open .sidebar>.sidepanel:first-child .field{display:flex;width:100%;padding-right:0}}
+.scene-frame:has(.bundled-art) .speech:after{display:none}
 .scene-back{object-position:center}.settings-open #qr{background:white;padding:10px;width:220px;border-radius:12px}.scene-frame{background:#f7f5ed}@media(max-width:530px){.scene-frame{aspect-ratio:16/10}.speech{width:46%;max-height:59%;overflow:auto}.speech.spoken{line-height:1.2}}
 </style>
 </head>
@@ -87,6 +88,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 'use strict';
 (()=>{
 const $=id=>document.getElementById(id);
+const pristineSource='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
 const STARTER=[
  {id:'pen',title:'A pen, please',desc:'Chiedere e prestare un oggetto in classe',goal:'Chiedere una penna, ascoltare una risposta e ringraziare.',preset:'classroom',names:['Studente A','Studente B'],lines:[
   {side:'left',text:'A pen, please.',it:'Una penna, per favore.',hint:'A pen…'},
@@ -202,7 +204,7 @@ $('copyLogBtn').addEventListener('click',copyObs);$('clearLogBtn').addEventListe
 if(canPlayVoice()){updateVoiceList();speechSynthesis.addEventListener?.('voiceschanged',updateVoiceList);}else{$('voiceWarning').hidden=false;}
 scenes.forEach(s=>{if(s.artKey===undefined)s.artKey=defaultArt(s)});updateSelector();renderScene();renderObs();$('makeQr').click();
 
-const pristineSource='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+
 $('roleQuick').hidden=true;
 $('language').addEventListener('change',()=>{const i=scenes.findIndex(s=>(s.lang||'en')===$('language').value);if(i>=0)chooseScene(i);else{scenes.push(sanitize({lang:$('language').value,title:'Nuovo dialogo',lines:[{text:'…'}]}));chooseScene(scenes.length-1)}});
 $('editArtwork').addEventListener('change',e=>{current().artKey=e.target.value;current().bgData='';backdrop();noteEditor('Illustrazione aggiornata. Le immagini incluse restano disponibili nella copia locale.');});
