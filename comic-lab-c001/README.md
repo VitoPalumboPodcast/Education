@@ -15,7 +15,9 @@ Le modifiche restano nel dispositivo: usare “Salva nel browser” oppure scari
 
 ## Voci e funzionamento offline
 
-Le voci disponibili dipendono da sistema e browser. Le due voci si scelgono separatamente. Le preferenze maschile/femminile riconoscono alcune voci comuni dal nome; la Web Speech API non espone un genere standard. Per altre voci selezionarle per nome e ascoltarle. In assenza della preferenza viene usata una voce disponibile della lingua scelta.
+Le voci disponibili dipendono da sistema e browser. Per ciascun personaggio ci sono filtri Maschile, Femminile, Non classificata e Tutte le voci, un elenco con etichette e un pulsante Prova voce. Il browser non espone un genere standard: alcune voci sono riconosciute dal nome, le altre si possono etichettare dopo l’ascolto. Le etichette confermate si salvano sul dispositivo. Se nessuna voce corrisponde al filtro, la riproduzione si ferma e lo segnala, senza sostituirla con una voce dell’altro tipo. Il tono non viene modificato per simulare un genere.
+
+Durante i cambi di turno, automatici o manuali, si vede solo il fumetto corrente. Il fumetto precedente viene nascosto e svuotato.
 
 Per parlare offline servono voci locali installate. Alcune voci richiedono Internet. Il testo e le illustrazioni del file scaricato restano disponibili offline.
 
@@ -26,3 +28,4 @@ Le otto immagini di progetto sono in assets/ e sono anche incorporate in index.h
 QRCode.js 1.0.0 di David Shim, licenza MIT: libreria inclusa nell’HTML con intestazione conservata.
 
 Verifiche automatiche: sintassi JavaScript, 28 scene, filtri per lingua, lingua della sintesi vocale, modalità di pratica e impostazioni, esportazione e riapertura autonoma, mantenimento delle illustrazioni e delle scelte, esclusione delle immagini degli utenti, escaping dei testi e validazione degli URL QR.
+
