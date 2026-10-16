@@ -14,7 +14,7 @@ Two teenage friends planning a Saturday cinema trip, standing outside a small ci
 
 ### assets/cafe.jpg
 
-Two teenagers at a small school café table, a sandwich and a bottle of water between them. One is offering the water to the other.
+Alex, a teenage boy customer on the left, orders a sandwich and a bottle of water at the café counter. Sam, a teenage girl server in an apron, stands behind the counter on the right. The sandwich and unopened bottle wait on the server side; neither has been handed over.
 
 ### assets/gaming.jpg
 
@@ -61,3 +61,5 @@ Scene: Two teenage students at a simple classroom desk showing their own differe
 
 Use case: illustration-story. Asset: landscape 16:9 background for an accessible language-learning comic app for adolescents aged 15–16. One original clean editorial comic illustration. Exactly two fictional teenage classmates, boy on left, girl on right, conversing with each other, natural teen proportions and casual clothes, friendly clear expressions. Clean dark teal outlines, soft flat cream, muted teal, terracotta and pale blue colours. Simple uncluttered school environment and soft daylight. Knee-up or waist-up composition; upper third mostly blank cream wall for dialogue bubbles overlaid by app. Keep the teaching objects large and immediately recognizable in the lower central area. No written text, speech bubbles, lettering, logos, watermark, extra people, collage or multiple panels.
 Scene: Two teenage classmates reflecting on how to use their study time in a simple quiet classroom. A LARGE SIMPLE ANALOG WALL CLOCK with clear hour and minute hands, tick marks but NO numerals or words is visible between and slightly above them. The boy on the left gestures towards his own wristwatch; the girl on the right looks attentively at him. On the desk between them lies a small tidy stack of three plain gold-coloured coins with no currency symbol or inscription, as a gentle visual metaphor for 'Time is money'. No transfer, buying or payment. Keep clock, wristwatch and coins unmistakable and environment sparse.
+
+
