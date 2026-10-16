@@ -45,6 +45,7 @@ button{border:1px solid var(--line);background:white;color:var(--ink);border-rad
 .level-picker{background:#eaf4f6;border:1px solid #b7d8de;border-radius:11px;padding:8px 10px}.level-picker label{color:#145f6a}.level-picker select{font-weight:750}#editLevelHelp{margin:0 0 10px;padding:8px 10px;background:#f0f7f8;border-radius:9px}
 #focusToolbar #fsExit{background:#fff0e9;border-color:#d79879;color:#74361e;font-weight:850}.stage-focus #focusToolbar #fsExit span{display:inline!important;font-size:.8rem}@media(max-width:650px){.stage-focus #focusToolbar #fsPrev,.stage-focus #focusToolbar #fsNext{display:none}.stage-focus #focusToolbar #fsExit{max-width:81px;min-width:72px;flex:1 0 72px}.stage-focus #focusToolbar #fsExit b{font-size:1.05rem}}
 #focusStatus.mic-active{background:#e4f5eb;color:#155b3e}.stage-focus #focusToolbar #fsDone{background:#e8f5f5;border-color:#9bc9ce}
+.reset-local-box{margin-top:20px;padding:14px;border:1px solid #dfb4a5;border-radius:12px;background:#fff6f2}.reset-local-box h3{color:#833b28;margin:0 0 5px}.reset-local-box .note{margin:6px 0 11px;color:#6e4b43}.reset-local-box button{background:#fff;border-color:#be755f;color:#8b3927;font-weight:800}.reset-local-box button:hover{background:#fae4dc}.reset-local-box #resetLocalStatus{color:#8b3927;font-weight:700}
 </style>
 </head>
 <body>
@@ -101,6 +102,7 @@ button{border:1px solid var(--line);background:white;color:var(--ink);border-rad
    <input id="showPrevCheck" type="checkbox" hidden disabled><p class="note">Appare solo il fumetto del turno corrente. Quando cambia personaggio, il fumetto precedente scompare.</p>
    <p class="note">La traduzione appare solo su richiesta. Nella modalità «Meno aiuti», il testo del proprio turno parte nascosto.</p>
    <div class="inlinewarn" id="voiceWarning" hidden>Nessuna voce disponibile per questa lingua. Il dialogo scritto resta utilizzabile; controlla le voci del dispositivo.</div>
+   <div class="reset-local-box"><h3>Ripristino</h3><p class="note">Elimina dialoghi, audio aggiunti e impostazioni salvati da Comic Lab in questo browser. Nella copia scaricata ripristina i contenuti inclusi in quel file HTML.</p><button id="resetLocalBtn" type="button" class="small danger">Cancella dati locali e ripristina</button><p id="resetLocalStatus" class="note" role="status" hidden></p></div>
   </section>
  <section class="panel sidepanel settings-only"><h3>Porta l’app con te</h3><button class="primary" id="downloadApp">↓ Scarica app locale</button><p class="note">Un solo file HTML con le scene attuali e le tredici illustrazioni originali incluse. Le immagini caricate sono sempre escluse. Le voci offline dipendono dal dispositivo.</p><div class="field"><label for="downloadUrl">Link al file HTML pubblicato</label><input type="url" id="downloadUrl" value="https://vitopalumbopodcast.github.io/Education/comic-lab-c001/?download=1" placeholder="https://scuola.it/comic-lab-c001.html"></div><button id="makeQr">Crea QR per il download</button><div id="qr" style="margin-top:16px"></div><p class="note" id="qrStatus" role="status">Il QR apre la pagina pubblica dell’app: da Impostazioni puoi scaricare la copia locale, con le illustrazioni incluse e senza immagini caricate dagli utenti.</p></section>
  </aside>
@@ -454,6 +456,16 @@ async function exportMedia(kind){if(mediaExportBusy)return;mediaExportBusy=true;
  }catch(e){noteEditor(e.message||'Esportazione non riuscita.');}finally{if(audioContext)await audioContext.close().catch(()=>{});mediaExportBusy=false;}}
 $('exportAudioBtn').addEventListener('click',()=>exportMedia('audio'));
 $('exportVideoBtn').addEventListener('click',()=>exportMedia('video'));
+
+
+function resetLocalComicLab(){
+ if(!window.confirm('Cancellare dialoghi, audio aggiunti e impostazioni di Comic Lab salvati in questo browser? Le modifiche non esportate andranno perse.'))return;
+ try{
+  for(const key of [storeKey,storeKey+'-settings',storeKey+'-gaming-live-v1','comic-character-voices-v1','comic-voice-labels-v1'])localStorage.removeItem(key);
+ }catch(e){$('resetLocalStatus').textContent='Non riesco a cancellare i dati locali: controlla le autorizzazioni del browser.';$('resetLocalStatus').hidden=false;return;}
+ allStop();location.reload();
+}
+$('resetLocalBtn').addEventListener('click',resetLocalComicLab);
 
 // Debug-facing state for local browser regression tests (read only).
 Object.defineProperty(window,'__comicLabStatus',{get:()=>({scene:current().title,mode,lineIndex,active,teacher,scenes:scenes.length,observations:obs.length})});
