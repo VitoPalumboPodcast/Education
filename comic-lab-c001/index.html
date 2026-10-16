@@ -44,6 +44,7 @@ button{border:1px solid var(--line);background:white;color:var(--ink);border-rad
 .karaoke-toggle.is-on{background:#fff1b8!important;border-color:#b97816!important;color:#513400!important}.spoken .karaoke-word{border-radius:5px;padding:0 1px;margin:0 -1px}.spoken .karaoke-word.karaoke-current{background:#ffe07a;color:#102c43;box-shadow:0 0 0 2px #d29420}#karaokeToggle{white-space:nowrap}@media(max-width:650px){.topctrl #karaokeToggle{order:3}}
 .level-picker{background:#eaf4f6;border:1px solid #b7d8de;border-radius:11px;padding:8px 10px}.level-picker label{color:#145f6a}.level-picker select{font-weight:750}#editLevelHelp{margin:0 0 10px;padding:8px 10px;background:#f0f7f8;border-radius:9px}
 #focusToolbar #fsExit{background:#fff0e9;border-color:#d79879;color:#74361e;font-weight:850}.stage-focus #focusToolbar #fsExit span{display:inline!important;font-size:.8rem}@media(max-width:650px){.stage-focus #focusToolbar #fsPrev,.stage-focus #focusToolbar #fsNext{display:none}.stage-focus #focusToolbar #fsExit{max-width:81px;min-width:72px;flex:1 0 72px}.stage-focus #focusToolbar #fsExit b{font-size:1.05rem}}
+#focusStatus.mic-active{background:#e4f5eb;color:#155b3e}.stage-focus #focusToolbar #fsDone{background:#e8f5f5;border-color:#9bc9ce}
 </style>
 </head>
 <body>
@@ -203,7 +204,7 @@ function backgroundSvg(type){const pal={classroom:['#d5e7ed','#f3efdf','#9cafa4'
  return `<svg class="scene-backsvg" role="img" aria-label="Scena illustrata: due studenti ai lati" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wall" x2="0" y2="1"><stop stop-color="${pal[0]}"/><stop offset="1" stop-color="${pal[1]}"/></linearGradient></defs><rect width="1200" height="675" fill="url(#wall)"/><rect y="505" width="1200" height="170" fill="${pal[2]}" opacity=".75"/><rect x="24" y="30" width="160" height="175" rx="8" fill="#eaf3f5" stroke="#a5bbc4" stroke-width="12"/><path d="M100 37V196M30 112H178" stroke="#bbd0d8" stroke-width="7"/>${extra}${human(214,'#294e6a',1)}${human(982,'#8b5c56',-1)}<rect y="665" width="1200" height="10" fill="#7f9d95"/></svg>`;}
 function backdrop(){const s=current();const el=$('backdrop');el.replaceChildren();const art=BUILTIN_ART[s.artKey];if(s.bgData||art){const im=document.createElement('img');im.src=s.bgData||art.src;im.className=s.bgData?'scene-back':'scene-back bundled-art';im.alt=s.bgData?'Immagine caricata per questa scena':art.alt;el.append(im);}else{el.innerHTML=backgroundSvg(s.preset);}}
 function stopSound(){speechToken++;stopKaraokePlayback();stopRecorded();try{speechSynthesis.cancel()}catch(e){}paused=false;$('playState').textContent='Pronto'}
-function allStop(){active=false;finishing=false;if(nextTimer){clearTimeout(nextTimer);nextTimer=null;}stopSound();}
+function allStop(){stopRoleMic();active=false;finishing=false;if(nextTimer){clearTimeout(nextTimer);nextTimer=null;}stopSound();}
 function status(t,warning=false){$('focusStatus').textContent=t;$('focusStatus').hidden=!warning;$('audioStatus').textContent=t;$('audioStatus').classList.toggle('warn',warning)}
 function currentLearnerTurn(){return mode!=='listen' && currentLine().side===$('roleSelect').value}
 function canPlayVoice(){return typeof window.speechSynthesis!=='undefined' && typeof window.SpeechSynthesisUtterance!=='undefined'}
@@ -252,9 +253,50 @@ function speak(text,side,cb){if(customClip(text,side)){playRecorded(text,side,cb
  if(found&&found.localService===false&&navigator.onLine===false){active=false;renderControl();status('Questa voce richiede Internet. Nelle Impostazioni scegli due voci sul dispositivo per continuare offline.',true);return;}if(found){utter.voice=found;utter.lang=found.lang;}utter.onboundary=e=>{if(token===speechToken&&(!e.name||e.name==='word')&&Number.isFinite(e.charIndex))karaokeAtChar(e.charIndex);};utter.onend=()=>{if(token!==speechToken)return;heldUtterance=null;stopKaraokePlayback();if(cb)cb();else{$('playState').textContent='Pronto';}};utter.onerror=e=>{if(token!==speechToken)return;stopKaraokePlayback();status(found?.localService===false?'Voce online non disponibile. Verifica Internet o scegli un’altra voce nelle Impostazioni.':'Riproduzione non riuscita. Puoi riprovare o cambiare voce.',true);active=false;renderControl();};
  try{speechSynthesis.speak(utter);$('playState').textContent='Voce in riproduzione';}catch(e){status('Il browser non ha avviato la voce.',true);active=false;renderControl();}
 }
-function speechDone(){if(!active)return;if(lineIndex<current().lines.length-1){lineIndex++;resetReveals();renderLine();if(nextTimer)clearTimeout(nextTimer);nextTimer=setTimeout(()=>{nextTimer=null;if(active&&!paused)autoTurn();},250);}else{active=false;finishing=true;renderControl();status('Dialogo terminato. Puoi ripetere o interpretare un personaggio.');$('playState').textContent='Fine dialogo';}}
-function autoTurn(){if(!active||paused)return;renderControl();if(currentLearnerTurn()){$('playState').textContent='Tocca a te';status('È il tuo turno: pronuncia la battuta, poi premi «Ho parlato» per ascoltare la risposta.');return;}status('Ascolta la battuta del personaggio.');speak(currentLine().text,currentLine().side,speechDone);}
-function setMode(next){mode=next;allStop();lineIndex=0;resetReveals();document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));$('modeDescription').textContent=mode==='listen'?'Ascolta lo scambio, una battuta alla volta.':mode==='role'?'Interpreta uno dei personaggi: la voce si ferma quando tocca a te.':'Prova a dire la battuta senza leggere il testo; puoi chiedere aiuto.';$('showTextCheck').checked=mode!=='reduced';renderLine();status('Premi «Inizia» per cominciare.');}
+function speechDone(){stopRoleListening();if(!active)return;if(lineIndex<current().lines.length-1){lineIndex++;resetReveals();renderLine();if(nextTimer)clearTimeout(nextTimer);nextTimer=setTimeout(()=>{nextTimer=null;if(active&&!paused)autoTurn();},250);}else{active=false;finishing=true;renderControl();stopRoleMic();status('Dialogo terminato. Puoi ripetere o interpretare un personaggio.');$('playState').textContent='Fine dialogo';}}
+function autoTurn(){if(!active||paused)return;renderControl();if(currentLearnerTurn()){$('playState').textContent='Tocca a te';startRoleListening();return;}status('Ascolta la battuta del personaggio.');speak(currentLine().text,currentLine().side,speechDone);}
+
+let roleMic=null,roleMicFrame=0,roleMicGeneration=0,roleMicFailure='';
+function stopRoleListening(){if(roleMicFrame){cancelAnimationFrame(roleMicFrame);roleMicFrame=0;}if(roleMic)roleMic.listening=false;}
+function stopRoleMic(){roleMicGeneration++;stopRoleListening();if(roleMic){roleMic.stream.getTracks().forEach(track=>track.stop());roleMic.context.close().catch(()=>{});roleMic=null;}}
+function roleMicStatus(message,warning=false){status(message,warning);$('focusStatus').hidden=false;$('focusStatus').classList.toggle('mic-active',!warning);}
+async function ensureRoleMic(){
+ if(roleMic)return true;
+ if(!navigator.mediaDevices?.getUserMedia){roleMicFailure='Microfono non disponibile qui. Puoi continuare con «Ho parlato».';return false;}
+ const Context=window.AudioContext||window.webkitAudioContext;
+ if(!Context){roleMicFailure='Ascolto del microfono non supportato. Puoi continuare con «Ho parlato».';return false;}
+ const generation=++roleMicGeneration,context=new Context();let stream;
+ try{
+  await context.resume();
+  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+  if(generation!==roleMicGeneration){stream.getTracks().forEach(track=>track.stop());await context.close();return false;}
+  const source=context.createMediaStreamSource(stream),analyser=context.createAnalyser();analyser.fftSize=1024;analyser.smoothingTimeConstant=.25;source.connect(analyser);
+  roleMic={context,stream,source,analyser,data:new Float32Array(analyser.fftSize),listening:false};roleMicFailure='';
+  stream.getAudioTracks().forEach(track=>track.addEventListener('ended',()=>{if(roleMic?.stream===stream){stopRoleMic();roleMicFailure='Il microfono si è scollegato. Puoi continuare con «Ho parlato».';if(active&&currentLearnerTurn())roleMicStatus(roleMicFailure,true);}}));
+  return true;
+ }catch(e){stream?.getTracks().forEach(track=>track.stop());await context.close().catch(()=>{});roleMicFailure=e?.name==='NotAllowedError'||e?.name==='PermissionDeniedError'?'Permesso microfono negato. Puoi continuare con «Ho parlato».':'Microfono non disponibile. Puoi continuare con «Ho parlato».';return false;}
+}
+function startRoleListening(){
+ stopRoleListening();if(!active||paused||!currentLearnerTurn())return;
+ if(!roleMic){roleMicStatus(roleMicFailure||'Microfono non disponibile. Puoi continuare con «Ho parlato».',true);return;}
+ const mic=roleMic,started=performance.now();let noise=.003,voicedAt=0,lastVoice=0,hasSpoken=false,lastMessage=0;
+ mic.listening=true;roleMicStatus('🎙 Preparo il microfono… attendi il segnale per parlare.');
+ const tick=()=>{
+  if(!mic.listening||roleMic!==mic||!active||paused||!currentLearnerTurn()){stopRoleListening();return;}
+  mic.analyser.getFloatTimeDomainData(mic.data);let sum=0;for(const sample of mic.data)sum+=sample*sample;const rms=Math.sqrt(sum/mic.data.length),now=performance.now();
+  if(now-started<450){noise=noise*.92+rms*.08;roleMicFrame=requestAnimationFrame(tick);return;}
+  if(!lastMessage){lastMessage=now;roleMicStatus('🎙 Microfono in ascolto: parla; dopo una breve pausa ascolterai la risposta.');}
+  const threshold=Math.max(.009,Math.min(.07,noise*3.2));
+  if(rms>threshold){if(!voicedAt)voicedAt=now;lastVoice=now;if(!hasSpoken&&now-voicedAt>=170){hasSpoken=true;roleMicStatus('🎙 Ti ascolto… la battuta avanzerà quando fai una pausa.');}}
+  else{voicedAt=0;if(!hasSpoken)noise=noise*.995+rms*.005;}
+  if(hasSpoken&&now-lastVoice>=850){stopRoleListening();speechDone();return;}
+  if(!hasSpoken&&now-started>16000&&now-lastMessage>16000){lastMessage=now;roleMicStatus('Non sento ancora la voce. Parla oppure premi «Ho parlato».',true);}
+  roleMicFrame=requestAnimationFrame(tick);
+ };
+ roleMicFrame=requestAnimationFrame(tick);
+}
+
+function setMode(next){mode=next;allStop();lineIndex=0;resetReveals();document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));$('modeDescription').textContent=mode==='listen'?'Ascolta lo scambio, una battuta alla volta.':mode==='role'?'Interpreta un personaggio: il microfono rileva voce e pause senza registrarle.':'Pronuncia la battuta senza leggere: il microfono rileva voce e pause senza registrarle.';$('showTextCheck').checked=mode!=='reduced';renderLine();status('Premi «Inizia» per cominciare.');}
 function resetReveals(){showTranslation=false;showHint=false;showForcedText=false;wasHelpUsed=false;$('translationReveal').hidden=true;$('hintReveal').hidden=true;$('translationBtn').textContent='Mostra traduzione'}
 
 let karaokeEnabled=false,karaokeWords=[],karaokeActive=-1,karaokeClip=null,karaokeFrame=0;
@@ -279,7 +321,7 @@ async function enterFocusMode(){setDialogMenu(false);$('focusStatus').hidden=tru
 function closeFocusMode(){setFocusMode(false);if(document.fullscreenElement===$('stagePanel')&&document.exitFullscreen){const result=document.exitFullscreen();result?.catch(()=>{});}$('fullscreenBtn').focus();}
 $('fullscreenBtn').addEventListener('click',enterFocusMode);
 $('fsExit').addEventListener('click',closeFocusMode);
-$('fsRestart').addEventListener('click',()=>{allStop();lineIndex=0;resetReveals();renderLine();active=true;autoTurn();renderControl();});
+$('fsRestart').addEventListener('click',()=>{allStop();lineIndex=0;resetReveals();renderLine();$('playBtn').click();});
 $('fsPrev').addEventListener('click',()=>$('prevBtn').click());
 $('fsNext').addEventListener('click',()=>$('nextBtn').click());
 $('fsRepeat').addEventListener('click',()=>{$('repeatBtn').click();syncFocusControls();});
@@ -310,16 +352,16 @@ function renderObs(){$('logList').replaceChildren();obs.forEach(o=>{const li=doc
 // Stage and mode buttons
 $('sceneSelector').addEventListener('change',e=>chooseScene(Number(e.target.value)));$('levelSelect').addEventListener('change',e=>switchLevel(e.target.value));$('nextSceneBtn').addEventListener('click',chooseNextScene);$('fsNextScene').addEventListener('click',chooseNextScene);$('editSceneSelector').addEventListener('change',e=>chooseScene(Number(e.target.value)));
 for(const b of document.querySelectorAll('[data-mode]'))b.addEventListener('click',()=>setMode(b.dataset.mode));
-$('playBtn').addEventListener('click',()=>{if(active){allStop();renderControl();status('Riproduzione interrotta.');return;}if(finishing){lineIndex=0;finishing=false;resetReveals();renderLine();}active=true;autoTurn();renderControl();});
-$('pauseBtn').addEventListener('click',()=>{if(!active)return;if(recordedPlaying&&sceneAudio){if(paused){paused=false;sceneAudio.play()?.catch(()=>{paused=true;renderControl();status('Tocca Riprendi per riavviare l’audio.',true);});$('playState').textContent='Ripresa';}else{paused=true;sceneAudio.pause();$('playState').textContent='In pausa';status('Dialogo in pausa. Premi Riprendi per continuare.');}renderControl();return;}if(paused){paused=false;try{speechSynthesis.resume()}catch(e){}$('playState').textContent='Ripresa';if(!speechSynthesis.speaking&&!currentLearnerTurn()){if(nextTimer){clearTimeout(nextTimer);nextTimer=null;}autoTurn();}}else{paused=true;try{speechSynthesis.pause()}catch(e){}$('playState').textContent='In pausa';status('Dialogo in pausa. Premi «Riprendi» per continuare.');}renderControl();});
+$('playBtn').addEventListener('click',async()=>{if(active){allStop();renderControl();status('Riproduzione interrotta.');return;}if(finishing){lineIndex=0;finishing=false;resetReveals();renderLine();}const requestedScene=sceneIndex,requestedMode=mode;if(mode!=='listen'&&navigator.mediaDevices?.getUserMedia){$('playBtn').disabled=true;status('Consenti il microfono per avanzare quando smetti di parlare.');try{await ensureRoleMic();}finally{$('playBtn').disabled=false;}if(sceneIndex!==requestedScene||mode!==requestedMode)return;}active=true;autoTurn();renderControl();});
+$('pauseBtn').addEventListener('click',()=>{if(!active)return;if(recordedPlaying&&sceneAudio){if(paused){paused=false;sceneAudio.play()?.catch(()=>{paused=true;renderControl();status('Tocca Riprendi per riavviare l’audio.',true);});$('playState').textContent='Ripresa';}else{paused=true;sceneAudio.pause();$('playState').textContent='In pausa';status('Dialogo in pausa. Premi Riprendi per continuare.');}renderControl();return;}if(paused){paused=false;try{speechSynthesis.resume()}catch(e){}$('playState').textContent='Ripresa';if(!speechSynthesis.speaking&&!currentLearnerTurn()){if(nextTimer){clearTimeout(nextTimer);nextTimer=null;}autoTurn();}}else{paused=true;try{speechSynthesis.pause()}catch(e){}$('playState').textContent='In pausa';status('Dialogo in pausa. Premi «Riprendi» per continuare.');}renderControl();if(paused)stopRoleListening();else if(currentLearnerTurn())startRoleListening();});
 $('prevBtn').addEventListener('click',()=>navigate(-1));$('nextBtn').addEventListener('click',()=>navigate(1));
-$('repeatBtn').addEventListener('click',()=>{const wasActive=active;active=false;speak(currentLine().text,currentLine().side,()=>{if(wasActive && !currentLearnerTurn()){active=true;speechDone();}else{status('Puoi riascoltare o continuare.');renderControl();}});});
-$('modelBtn').addEventListener('click',()=>{wasHelpUsed=true;const resume=active;active=false;speak(currentLine().text,currentLine().side,()=>{active=resume;status('Ora prova a pronunciare la battuta.');renderControl();});});
+$('repeatBtn').addEventListener('click',()=>{stopRoleListening();status('Ascolta la battuta, poi riprendi a parlare.');const wasActive=active;active=false;speak(currentLine().text,currentLine().side,()=>{if(wasActive && !currentLearnerTurn()){active=true;speechDone();}else{active=wasActive&&currentLearnerTurn();status('Puoi riascoltare o continuare.');renderControl();if(active)startRoleListening();}});});
+$('modelBtn').addEventListener('click',()=>{stopRoleListening();status('Ascolta il modello, poi riprendi a parlare.');wasHelpUsed=true;const resume=active;active=false;speak(currentLine().text,currentLine().side,()=>{active=resume;status('Ora prova a pronunciare la battuta.');renderControl();if(active)startRoleListening();});});
 $('doneBtn').addEventListener('click',()=>{if(!currentLearnerTurn()||paused)return;if(!active)active=true;speechDone();});
 $('hintBtn').addEventListener('click',()=>{showHint=!showHint;if(showHint)wasHelpUsed=true;renderControl();});
 $('textBtn').addEventListener('click',()=>{showForcedText=!showForcedText;if(showForcedText)wasHelpUsed=true;renderLine();});
 $('translationBtn').addEventListener('click',()=>{showTranslation=!showTranslation;if(showTranslation)wasHelpUsed=true;$('translationBtn').textContent=showTranslation?'Nascondi traduzione':'Mostra traduzione';renderControl();});
-$('roleSelect').addEventListener('change',()=>{allStop();renderLine();status('Ruolo aggiornato. Premi «Inizia».');});
+$('roleSelect').addEventListener('change',()=>{allStop();renderLine();status('Ruolo aggiornato. Premi «Inizia» e consenti il microfono per l’avanzamento automatico.');});
 $('showTextCheck').addEventListener('change',()=>renderLine());
 $('showPrevCheck').addEventListener('change',()=>{renderLine();status('Visualizzazione dei fumetti aggiornata.');});
 $('rateSlider').addEventListener('input',e=>$('rateValue').textContent=Number(e.target.value).toFixed(2).replace('.',',')+'×');
