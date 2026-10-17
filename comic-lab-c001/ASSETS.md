@@ -1,6 +1,6 @@
 # Illustrazioni originali
 
-Dodici illustrazioni create il 15 ottobre 2026 e una nuova scena di gioco ricavata il 16 ottobre 2026 dal provino originale, con lo strumento integrato ImageGen. Nessuna foto di persone reali usata come riferimento. Le prime dodici immagini sono incorporate nell’app come JPEG ottimizzati; la nuova immagine di gioco è incorporata come PNG.
+Create il 15 ottobre 2026 con lo strumento integrato ImageGen, una generazione per scena. Nessuna foto di persone reali usata come riferimento. Output PNG originali conservati nel progetto locale, copie JPEG ottimizzate a 1280 px per l’app.
 
 ## Prompt comune
 
@@ -19,12 +19,6 @@ A teenage boy customer on the left, orders a sandwich and a bottle of water at t
 ### assets/gaming.jpg
 
 Two teenage classmates in a school corridor with backpacks, discussing their plan to play an online game after school at six. No controllers or game in progress.
-
-### assets/gaming-playing.png
-
-Creata il 16 ottobre 2026 con ImageGen integrato, usando come riferimento il riquadro in basso a sinistra di `art-preview-1.png`. Illustrazione orizzontale di Jack a sinistra ed Emma a destra, seduti con due controller davanti a uno schermo che mostra un castello oltre una cascata. È associata al nuovo dialogo «Playing the game / Giochiamo insieme / On joue ensemble», ambientato durante la partita. L’immagine del corridoio scolastico resta al dialogo in cui i ragazzi organizzano la partita dopo scuola.
-
-Prompt finale: “Use ONLY the lower-left panel of the reference contact sheet. Enlarge it into one clean wide landscape illustration. Preserve the teenage boy on the left in a rust hoodie and the girl on the right in a green sweater, each holding a controller and playing together before a fantasy game screen. Keep the warm clean illustrated style, calm upper area for app speech bubbles, and no other people, text, logos or watermarks.” Modalità: strumento integrato ImageGen.
 
 ### assets/classroom.jpg
 
@@ -68,5 +62,14 @@ Scene: Two teenage students at a simple classroom desk showing their own differe
 Use case: illustration-story. Asset: landscape 16:9 background for an accessible language-learning comic app for adolescents aged 15–16. One original clean editorial comic illustration. Exactly two fictional teenage classmates, boy on left, girl on right, conversing with each other, natural teen proportions and casual clothes, friendly clear expressions. Clean dark teal outlines, soft flat cream, muted teal, terracotta and pale blue colours. Simple uncluttered school environment and soft daylight. Knee-up or waist-up composition; upper third mostly blank cream wall for dialogue bubbles overlaid by app. Keep the teaching objects large and immediately recognizable in the lower central area. No written text, speech bubbles, lettering, logos, watermark, extra people, collage or multiple panels.
 Scene: Two teenage classmates reflecting on how to use their study time in a simple quiet classroom. A LARGE SIMPLE ANALOG WALL CLOCK with clear hour and minute hands, tick marks but NO numerals or words is visible between and slightly above them. The boy on the left gestures towards his own wristwatch; the girl on the right looks attentively at him. On the desk between them lies a small tidy stack of three plain gold-coloured coins with no currency symbol or inscription, as a gentle visual metaphor for 'Time is money'. No transfer, buying or payment. Keep clock, wristwatch and coins unmistakable and environment sparse.
 
+## Partita ai videogiochi
 
+### assets/gaming-playing.png
 
+Due adolescenti giocano insieme davanti a uno schermo, ciascuno con il proprio controller. Ambiente semplice, senza testo o fumetti, con spazio superiore per le battute.
+
+## Acquisto della felpa con la commessa
+
+### assets/shopping-clerk.jpg
+
+Nuova illustrazione creata il 17 ottobre 2026 con ImageGen usando shopping.jpg come riferimento di stile. Prompt finale: Use case illustration-story; 16:9 language-learning comic for ages 15–16; new clothing-shop scene with a male teenage customer holding a plain teal hoodie on the left and a young adult female shop assistant behind a checkout counter on the right; apron and blank name badge make their roles clear; clean editorial comic linework, cream background, muted teal and terracotta, blank upper wall for speech bubbles; no tote bag, text, logos, additional people or panels.
