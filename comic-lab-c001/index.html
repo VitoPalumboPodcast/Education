@@ -116,6 +116,20 @@ body.settings-open{background:#f6f1e9}
 .stage-focus #studentChooser,.stage-focus #advancedOptions,.stage-focus .settings-only{display:none!important}
 .download-page #studentChooser,.download-page #advancedOptions,.download-page .settings-only{display:none!important}
 @media(max-width:650px){body:not(.settings-open) #workspaceIntro{display:none}#studentChooser{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px;padding:12px}#studentChooser h3{order:-1}#studentChooser .field:has(#language){order:0}#studentChooser .field:has(#levelSelect){order:1}#studentChooser .field:has(#sceneSelector){order:2;grid-column:1/-1}#studentChooser .rolepill{order:3}#studentChooser .field select{width:100%}}
+
+/* Point each bubble at the speaking student in the bundled pen illustration. */
+@media(min-width:531px){
+ .pen-request-scene .speech.left:not(.previous){--speech-x:16%!important}
+ .pen-request-scene .speech.right:not(.previous){--speech-x:40%!important}
+ .stage-focus .pen-request-scene .speech.left:not(.previous){--speech-x:12%!important}
+ .stage-focus .pen-request-scene .speech.right:not(.previous){--speech-x:45%!important}
+}
+@media(max-width:530px){
+ .pen-request-scene .speech.left:not(.previous),.pen-request-scene .speech.right:not(.previous){--speech-x:5%!important}
+}
+@media(orientation:portrait){
+ .stage-focus .pen-request-scene .speech:not(.previous){top:max(6%,calc(50% - 33vw))!important}
+}
 </style>
 </head>
 <body>
@@ -444,7 +458,9 @@ function startKaraokeClip(clip){karaokeClip=clip?.words?.length?clip:null;if(kar
 function toggleKaraoke(){karaokeEnabled=!karaokeEnabled;for(const id of ['karaokeToggle','fsKaraoke']){$(id).setAttribute('aria-pressed',String(karaokeEnabled));$(id).classList.toggle('is-on',karaokeEnabled);$(id).title=karaokeEnabled?'Disattiva karaoke':'Evidenzia le parole';} $('fsKaraoke').setAttribute('aria-label',karaokeEnabled?'Disattiva karaoke':'Attiva karaoke');if(!karaokeEnabled){if(karaokeFrame){cancelAnimationFrame(karaokeFrame);karaokeFrame=0;}karaokeWord(-1);$('bubbleText').textContent=$('bubbleText').textContent;}else{renderKaraokeText();if(recordedPlaying&&karaokeClip)karaokeTick();}status(karaokeEnabled?'Karaoke attivo: la parola pronunciata si illumina quando l’audio fornisce i tempi.':'Karaoke disattivato.');}
 $('karaokeToggle').addEventListener('click',toggleKaraoke);$('fsKaraoke').addEventListener('click',toggleKaraoke);
 
-function renderLine(){updateSpeakerVoiceNames();const s=current(),l=currentLine();const bubble=$('bubble');bubble.className='speech '+l.side;bubble.style.setProperty('--speech-x',(l.side==='left'?s.pos.leftX:s.pos.rightX)+'%');bubble.style.setProperty('--speech-y',(l.side==='left'?s.pos.leftY:s.pos.rightY)+'%');$('speakerLabel').textContent=l.side==='left'?s.names[0]:s.names[1];const ghost=$('previousBubble');ghost.hidden=true;$('previousWho').textContent='';$('previousText').textContent='';bubble.hidden=false;const hide=currentLearnerTurn()&&(!$('showTextCheck').checked||mode==='reduced')&&!showForcedText;$('bubbleText').textContent=hide?'Adesso parla tu':l.text;$('bubbleText').className=hide?'hiddenwords':'spoken';renderKaraokeText();$('nameLeft').classList.toggle('active',l.side==='left');$('nameRight').classList.toggle('active',l.side==='right');$('stepCounter').textContent=`${lineIndex+1} / ${s.lines.length}`;$('translationText').textContent=l.it||'Traduzione non inserita.';$('hintText').textContent=l.hint||'Ascolta il modello se ne hai bisogno.';$('logTurn').textContent=`Battuta ${lineIndex+1} · ${l.side==='left'?s.names[0]:s.names[1]}`;renderControl();}
+function renderLine(){updateSpeakerVoiceNames();const s=current(),l=currentLine();
+ const defaultPenArt=/^pen(?:-(?:it|fr))?$/.test(s.id)&&s.artKey==='pen-request'&&!s.bgData&&s.pos.leftX===5&&s.pos.rightX===53&&s.pos.leftY===6&&s.pos.rightY===6;
+ $('sceneFrame').classList.toggle('pen-request-scene',defaultPenArt);const bubble=$('bubble');bubble.className='speech '+l.side;bubble.style.setProperty('--speech-x',(l.side==='left'?s.pos.leftX:s.pos.rightX)+'%');bubble.style.setProperty('--speech-y',(l.side==='left'?s.pos.leftY:s.pos.rightY)+'%');$('speakerLabel').textContent=l.side==='left'?s.names[0]:s.names[1];const ghost=$('previousBubble');ghost.hidden=true;$('previousWho').textContent='';$('previousText').textContent='';bubble.hidden=false;const hide=currentLearnerTurn()&&(!$('showTextCheck').checked||mode==='reduced')&&!showForcedText;$('bubbleText').textContent=hide?'Adesso parla tu':l.text;$('bubbleText').className=hide?'hiddenwords':'spoken';renderKaraokeText();$('nameLeft').classList.toggle('active',l.side==='left');$('nameRight').classList.toggle('active',l.side==='right');$('stepCounter').textContent=`${lineIndex+1} / ${s.lines.length}`;$('translationText').textContent=l.it||'Traduzione non inserita.';$('hintText').textContent=l.hint||'Ascolta il modello se ne hai bisogno.';$('logTurn').textContent=`Battuta ${lineIndex+1} · ${l.side==='left'?s.names[0]:s.names[1]}`;renderControl();}
 
 let focusMode=false;
 function syncFocusControls(){const learner=currentLearnerTurn();$('focusCounter').textContent=(lineIndex+1)+' / '+current().lines.length;$('fsPrev').disabled=lineIndex===0;$('fsNext').disabled=lineIndex>=current().lines.length-1;$('fsDone').hidden=!learner;const label=active?(paused?'Riprendi':'Pausa'):'Avvia';$('fsToggleIcon').textContent=active&&!paused?'Ⅱ':'▶';$('fsToggleText').textContent=label;$('fsToggle').setAttribute('aria-label',label);$('fsToggle').title=label;}
