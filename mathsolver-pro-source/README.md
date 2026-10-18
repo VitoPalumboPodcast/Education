@@ -8,6 +8,9 @@ Il nuovo capitolo propone una spiegazione della forma normale, del discriminante
 
 In **Con i clic** si seleziona ogni coefficiente numerico nell'equazione e poi la lettera corrispondente nella formula risolutiva. Anche delta, radici, somma e prodotto si scelgono con pulsanti. **Scrivendo** conserva l'inserimento numerico originale. Cambiare modalità ricomincia l'esercizio corrente dal primo passaggio.
 
+Le formule del capitolo usano il carattere matematico serif dell'app. Le frazioni mostrate nella teoria, nella formula interattiva, nelle risposte e nel riepilogo hanno numeratore e denominatore separati da una barra orizzontale.
+
 La versione pubblica usa la sintesi vocale del browser. Non richiede chiavi API.
+
 
 
