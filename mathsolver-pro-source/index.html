@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MathSolver Pro Interattivo</title>
+  <!-- Google Fonts: Inter per UI, Lora per Math -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Mobile Drag and Drop Polyfill -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0/default.css">
+  <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0/scroll-behaviour.min.js"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Lora', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        enableMenu: false
+      }
+    };
+    
+    // Inizializzazione Polyfill Drag and Drop per Mobile
+    window.addEventListener('load', function() {
+      if (typeof MobileDragDrop !== 'undefined') {
+        MobileDragDrop.polyfill({
+          dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride,
+          // Rende il drag più immediato su touch
+          iterationInterval: 20
+        });
+        
+        // BLOCCA lo scorrimento della pagina quando si trascina un elemento matematico
+        document.addEventListener('touchmove', function(e) {
+          if (e.target.closest('.monomio-box')) {
+            e.preventDefault();
+          }
+        }, { passive: false });
+      }
+    });
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      overscroll-behavior-y: contain;
+      -webkit-tap-highlight-color: transparent;
+      /* Evita selezioni di testo non volute su tablet */
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    
+    mjx-container {
+      color: #0f172a !important; 
+      pointer-events: none !important;
+    }
+
+    /* Stile per l'elemento che viene trascinato (la ghost image del polyfill) */
+    .dnd-poly-dragged {
+      opacity: 0.9 !important;
+      background: white !important;
+      border: 3px solid #4f46e5 !important;
+      border-radius: 1rem !important;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+      transform: scale(1.1) !important;
+      z-index: 10000 !important;
+      pointer-events: none !important;
+    }
+
+    .monomio-box {
+      touch-action: none !important;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    .drop-target-hover {
+      background-color: rgba(79, 70, 229, 0.1) !important;
+      border: 2px dashed #4f46e5 !important;
+      transform: scale(1.02);
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-slide-in {
+      animation: slideIn 0.3s ease-out forwards;
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "chart.js": "https://esm.sh/chart.js@^4.5.1"
+  }
+}
+</script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
+
