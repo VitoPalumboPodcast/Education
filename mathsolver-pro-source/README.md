@@ -8,9 +8,12 @@ Il nuovo capitolo propone una spiegazione della forma normale, del discriminante
 
 In **Con i clic** si seleziona ogni coefficiente numerico nell'equazione e poi la lettera corrispondente nella formula risolutiva. Anche delta, radici, somma e prodotto si scelgono con pulsanti. **Scrivendo** conserva l'inserimento numerico originale. Cambiare modalità ricomincia l'esercizio corrente dal primo passaggio.
 
+L'abbinamento dei coefficienti procede nell'ordine a, b, c: ogni coppia numero-lettera si completa prima di attivare la successiva. Il discriminante si calcola in tre verifiche separate: b², 4ac, poi Δ = b² − 4ac. Questa sequenza vale in entrambe le modalità.
+
 Le formule del capitolo usano il carattere matematico serif dell'app. Le frazioni mostrate nella teoria, nella formula interattiva, nelle risposte e nel riepilogo hanno numeratore e denominatore separati da una barra orizzontale.
 
 La versione pubblica usa la sintesi vocale del browser. Non richiede chiavi API.
+
 
 
 
