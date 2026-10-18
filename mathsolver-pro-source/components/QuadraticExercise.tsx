@@ -31,6 +31,16 @@ const equal = (text: string, expected: number) => {
   return n !== null && Math.abs(n - expected) < 0.0001;
 };
 const fmt = (n: number) => Number.isInteger(n) ? String(n) : String(Number(n.toFixed(4)));
+const fraction = (n: number) => {
+  if (Number.isInteger(n)) return String(n);
+  for (let den = 2; den <= 24; den++) {
+    const num = Math.round(n * den);
+    if (Math.abs(n - num / den) < 0.000001) return `${num}/${den}`;
+  }
+  return fmt(n);
+};
+const options = (correct: number, distractors: number[]) =>
+  [...new Set([correct, ...distractors])].filter(Number.isFinite).sort((a, b) => a - b);
 const signed = (n: number, suffix = '') => n < 0 ? ` − ${Math.abs(n)}${suffix}` : ` + ${n}${suffix}`;
 const polynomial = ({ a, b, c }: Example) => `${a === 1 ? '' : a === -1 ? '−' : a}x²${b === 0 ? '' : signed(b, 'x')}${c === 0 ? '' : signed(c)} = 0`;
 
@@ -38,15 +48,30 @@ const QuadraticExercise: React.FC<{ difficulty: Difficulty; onComplete: () => vo
   const [tab, setTab] = useState<'study' | 'practice'>('study');
   const [index, setIndex] = useState(0);
   const [stage, setStage] = useState(0);
+  const [mode, setMode] = useState<'click' | 'write'>('click');
+  const [selectedCoefficient, setSelectedCoefficient] = useState<number | null>(null);
+  const [matchedCoefficients, setMatchedCoefficients] = useState<boolean[]>([false, false, false]);
   const [values, setValues] = useState<string[]>(Array(9).fill(''));
   const [message, setMessage] = useState('');
   const example = EXAMPLES[difficulty][index % EXAMPLES[difficulty].length];
   const delta = example.b ** 2 - 4 * example.a * example.c;
   const roots = useMemo(() => delta < 0 ? [] : [(-example.b - Math.sqrt(delta)) / (2 * example.a), (-example.b + Math.sqrt(delta)) / (2 * example.a)].sort((x, y) => x - y), [example, delta]);
 
-  const next = () => { setIndex(i => i + 1); setStage(0); setValues(Array(9).fill('')); setMessage(''); };
+  const reset = () => { setStage(0); setValues(Array(9).fill('')); setSelectedCoefficient(null); setMatchedCoefficients([false, false, false]); setMessage(''); };
+  const next = () => { setIndex(i => i + 1); reset(); };
+  const changeMode = (chosen: 'click' | 'write') => { setMode(chosen); reset(); };
   const update = (position: number, value: string) => setValues(old => old.map((v, i) => i === position ? value : v));
   const advance = () => { setMessage('Corretto! Prosegui con il passaggio successivo.'); setStage(s => s + 1); };
+  const matchCoefficient = (target: number) => {
+    if (selectedCoefficient === null) { setMessage('Seleziona prima un coefficiente numerico nell’equazione.'); return; }
+    if (selectedCoefficient !== target) { setMessage(`Non è la lettera giusta. Riprova: il numero selezionato è il coefficiente di ${['x²', 'x', 'termine noto'][selectedCoefficient]}.`); return; }
+    const matched = matchedCoefficients.map((done, i) => i === target ? true : done);
+    setMatchedCoefficients(matched);
+    update(target, String([example.a, example.b, example.c][target]));
+    setSelectedCoefficient(null);
+    if (matched.every(Boolean)) advance();
+    else setMessage('Abbinamento corretto. Seleziona un altro numero nell’equazione.');
+  };
   const check = () => {
     if (stage === 0) {
       if ([example.a, example.b, example.c].every((n, i) => equal(values[i], n))) advance();
@@ -71,6 +96,9 @@ const QuadraticExercise: React.FC<{ difficulty: Difficulty; onComplete: () => vo
     }
   };
   const input = (position: number, label: string) => <label className="flex flex-col gap-2 text-sm font-bold text-slate-700" key={position}>{label}<input inputMode="decimal" aria-label={label} value={values[position] || ''} onChange={e => update(position, e.target.value)} className="w-32 max-w-full rounded-xl border-2 border-slate-200 px-3 py-2 text-lg focus:border-indigo-500 outline-none" placeholder="numero o frazione" /></label>;
+  const choose = (position: number, label: string, choices: number[]) => <fieldset className="space-y-2" key={position}><legend className="font-bold">{label}</legend><div className="flex flex-wrap gap-2">{choices.map(value => <button type="button" key={value} onClick={() => update(position, fraction(value))} aria-pressed={equal(values[position] || '', value)} className={`min-w-16 rounded-xl border-2 px-4 py-2 font-bold ${equal(values[position] || '', value) ? 'border-indigo-600 bg-indigo-50 text-indigo-800' : 'border-slate-200 hover:border-indigo-300'}`}>{fraction(value)}</button>)}</div></fieldset>;
+  const coefficient = (position: number, label: string) => <button type="button" key={position} onClick={() => { setSelectedCoefficient(position); setMessage(`Hai scelto ${label.replace('−', '-')} come coefficiente. Ora scegli la lettera corrispondente nella formula.`); }} disabled={matchedCoefficients[position]} aria-pressed={selectedCoefficient === position} className={`rounded-xl border-2 px-3 py-2 font-black ${matchedCoefficients[position] ? 'border-emerald-500 bg-emerald-50 text-emerald-800' : selectedCoefficient === position ? 'border-indigo-600 bg-indigo-50' : 'border-slate-300 hover:border-indigo-400'}`}>{label}</button>;
+  const symbol = (position: number) => <button type="button" onClick={() => matchCoefficient(position)} aria-label={`Abbina al coefficiente ${['a', 'b', 'c'][position]}`} className={`mx-0.5 rounded-md border-b-2 px-1 font-black ${matchedCoefficients[position] ? 'border-emerald-500 text-emerald-700' : 'border-indigo-500 text-indigo-700 hover:bg-indigo-50'}`}>{matchedCoefficients[position] ? `(${[example.a, example.b, example.c][position]})` : ['a', 'b', 'c'][position]}</button>;
 
   return <div className="max-w-5xl mx-auto space-y-7 text-slate-800">
     <div><p className="text-xs font-black uppercase tracking-widest text-indigo-600">Nuovo capitolo · Matematica 3G</p><h2 className="text-3xl md:text-4xl font-black mt-2">Equazioni di secondo grado</h2><p className="text-slate-600 mt-2">Dalla forma ax² + bx + c = 0 alle radici, con esercizi guidati passo per passo.</p></div>
@@ -82,15 +110,16 @@ const QuadraticExercise: React.FC<{ difficulty: Difficulty; onComplete: () => vo
       <section className="rounded-2xl bg-violet-50 p-6"><h3 className="text-xl font-black">4. Controlla con Viète</h3><p className="mt-3 text-xl font-bold">x₁ + x₂ = −b/a<br />x₁ · x₂ = c/a</p><p className="mt-2">Per 6x² − 10x + 3 = 0: somma = 5/3 e prodotto = 1/2. Le formule valgono anche se la radice è doppia; per radici reali richiedi Δ ≥ 0.</p></section>
       <section className="rounded-2xl bg-slate-50 p-6 md:col-span-2"><h3 className="text-xl font-black">Perché funziona la formula?</h3><p className="mt-3">Dividi ax² + bx + c = 0 per a, poi aggiungi (b/2a)² a entrambi i membri. Ottieni <strong>(x + b/2a)² = (b² − 4ac)/(4a²)</strong>. Estraendo la radice con entrambi i segni e isolando x si ottiene la formula generale.</p><p className="mt-2 text-sm text-slate-600">Controllo finale: segni dei coefficienti, parentesi attorno a b negativo, Δ, denominatore 2a, due radici separate.</p></section>
     </div> : <div className="rounded-2xl border border-slate-200 p-5 md:p-8 space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-sm font-bold text-indigo-600">{example.note}</p><p className="text-2xl md:text-3xl font-black mt-1">{polynomial(example)}</p></div><button onClick={next} className="rounded-xl border border-indigo-300 px-4 py-2 font-bold text-indigo-700">Nuovo esercizio</button></div>
+      <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-sm font-bold text-indigo-600">{example.note}</p>{mode === 'write' && <p className="text-2xl md:text-3xl font-black mt-1">{polynomial(example)}</p>}</div><button onClick={next} className="rounded-xl border border-indigo-300 px-4 py-2 font-bold text-indigo-700">Nuovo esercizio</button></div>
+      <div className="flex flex-wrap items-center gap-2"><span className="mr-2 text-sm font-bold">Come vuoi risolvere?</span><button type="button" onClick={() => changeMode('click')} aria-pressed={mode === 'click'} className={`rounded-xl px-4 py-2 font-bold ${mode === 'click' ? 'bg-indigo-600 text-white' : 'bg-slate-100'}`}>Con i clic</button><button type="button" onClick={() => changeMode('write')} aria-pressed={mode === 'write'} className={`rounded-xl px-4 py-2 font-bold ${mode === 'write' ? 'bg-indigo-600 text-white' : 'bg-slate-100'}`}>Scrivendo</button></div>
       <p className="text-sm font-semibold text-slate-500">Passaggio {Math.min(stage + 1, 5)} di 5</p>
-      {stage === 0 && <div><h3 className="text-lg font-black mb-4">1. Individua a, b e c</h3><div className="flex flex-wrap gap-4">{input(0, 'a')}{input(1, 'b')}{input(2, 'c')}</div></div>}
-      {stage === 1 && <div><h3 className="text-lg font-black mb-4">2. Calcola Δ = b² − 4ac</h3>{input(3, 'Valore di Δ')}</div>}
+      {stage === 0 && (mode === 'click' ? <div className="space-y-5"><h3 className="text-lg font-black">1. Abbina i numeri alle lettere della formula</h3><p className="text-slate-600">Tocca un numero nell’equazione, poi la sua lettera nella formula. I coefficienti 1 e 0 sono mostrati anche quando normalmente si sottintendono.</p><div className="flex flex-wrap items-center gap-2 rounded-2xl bg-slate-50 p-4 text-xl" aria-label="Equazione con coefficienti selezionabili">{coefficient(0, String(example.a))}<span>x²</span>{coefficient(1, example.b < 0 ? `− ${Math.abs(example.b)}` : `+ ${example.b}`)}<span>x</span>{coefficient(2, example.c < 0 ? `− ${Math.abs(example.c)}` : `+ ${example.c}`)}<span>= 0</span></div><div className="rounded-2xl bg-indigo-50 p-4"><p className="mb-2 text-sm font-bold">Formula risolutiva · scegli a, b o c</p><div className="flex flex-wrap items-center text-xl font-bold">x = (−{symbol(1)} ± √({symbol(1)}² − 4 · {symbol(0)} · {symbol(2)})) / (2 · {symbol(0)})</div></div><p className="text-sm text-slate-600">Abbinamenti: {matchedCoefficients.filter(Boolean).length} di 3</p></div> : <div><h3 className="text-lg font-black mb-4">1. Individua a, b e c</h3><div className="flex flex-wrap gap-4">{input(0, 'a')}{input(1, 'b')}{input(2, 'c')}</div></div>)}
+      {stage === 1 && <div><h3 className="text-lg font-black mb-4">2. Calcola Δ = b² − 4ac</h3><p className="mb-4 text-slate-600">Δ = ({example.b})² − 4 · ({example.a}) · ({example.c})</p>{mode === 'click' ? choose(3, 'Scegli il valore di Δ', options(delta, [example.b ** 2, 4 * example.a * example.c, example.b ** 2 + 4 * example.a * example.c, delta + 1])) : input(3, 'Valore di Δ')}</div>}
       {stage === 2 && <div><h3 className="text-lg font-black mb-4">3. Qual è il segno di Δ?</h3><div className="flex flex-wrap gap-3">{[['positive','Δ > 0 · due radici'],['zero','Δ = 0 · radice doppia'],['negative','Δ < 0 · nessuna radice reale']].map(([value,label]) => <button key={value} onClick={() => update(4,value)} aria-pressed={values[4] === value} className={`rounded-xl border-2 px-4 py-2 font-bold ${values[4] === value ? 'border-indigo-600 bg-indigo-50' : 'border-slate-200'}`}>{label}</button>)}</div></div>}
-      {stage === 3 && delta >= 0 && <div><h3 className="text-lg font-black mb-4">4. Applica x = (−b ± √Δ)/(2a)</h3><div className="flex flex-wrap gap-4">{input(5, 'Prima radice')}{delta > 0 && input(6, 'Seconda radice')}</div></div>}
+      {stage === 3 && delta >= 0 && <div><h3 className="text-lg font-black mb-4">4. Applica x = (−b ± √Δ)/(2a)</h3><p className="mb-4 text-slate-600">x = (−({example.b}) ± √{delta}) / (2 · {example.a})</p><div className="flex flex-wrap gap-6">{mode === 'click' ? choose(5, 'Prima radice', options(roots[0], [roots[1], roots[0] - 1, roots[0] + 1, -example.b / example.a])) : input(5, 'Prima radice')}{delta > 0 && (mode === 'click' ? choose(6, 'Seconda radice', options(roots[1], [roots[0], roots[1] - 1, roots[1] + 1, -example.b / example.a])) : input(6, 'Seconda radice'))}</div></div>}
       {stage === 3 && delta < 0 && <div><h3 className="text-lg font-black">4. Concludi</h3><p>Poiché Δ &lt; 0, la radice quadrata non è reale. L’equazione non ha soluzioni in ℝ.</p></div>}
-      {stage === 4 && <div><h3 className="text-lg font-black mb-4">5. Verifica somma e prodotto</h3><div className="flex flex-wrap gap-4">{input(7, 'Somma x₁ + x₂')}{input(8, 'Prodotto x₁ · x₂')}</div></div>}
-      {stage < 5 ? <button onClick={check} className="rounded-xl bg-indigo-600 px-6 py-3 font-black text-white hover:bg-indigo-700">Verifica passaggio</button> : <div className="rounded-xl bg-emerald-50 p-5"><strong>Ottimo lavoro!</strong> {delta < 0 ? 'Nessuna soluzione reale.' : `Radici: ${roots.map(fmt).join(' e ')}. Somma: ${fmt(-example.b / example.a)}. Prodotto: ${fmt(example.c / example.a)}.`} <button onClick={next} className="ml-3 font-bold text-indigo-700 underline">Prossimo esercizio</button></div>}
+      {stage === 4 && <div><h3 className="text-lg font-black mb-4">5. Verifica somma e prodotto</h3><p className="mb-4 text-slate-600">Somma = −b/a · Prodotto = c/a</p><div className="flex flex-wrap gap-6">{mode === 'click' ? choose(7, 'Somma x₁ + x₂', options(-example.b / example.a, [example.b / example.a, -example.b, -example.b / example.a + 1])) : input(7, 'Somma x₁ + x₂')}{mode === 'click' ? choose(8, 'Prodotto x₁ · x₂', options(example.c / example.a, [-example.c / example.a, example.c, example.c / example.a + 1])) : input(8, 'Prodotto x₁ · x₂')}</div></div>}
+      {stage < 5 ? (stage === 0 && mode === 'click' ? null : <button onClick={check} className="rounded-xl bg-indigo-600 px-6 py-3 font-black text-white hover:bg-indigo-700">Verifica passaggio</button>) : <div className="rounded-xl bg-emerald-50 p-5"><strong>Ottimo lavoro!</strong> {delta < 0 ? 'Nessuna soluzione reale.' : `Radici: ${roots.map(fraction).join(' e ')}. Somma: ${fraction(-example.b / example.a)}. Prodotto: ${fraction(example.c / example.a)}.`} <button onClick={next} className="ml-3 font-bold text-indigo-700 underline">Prossimo esercizio</button></div>}
       {message && stage < 5 && <p role="status" className="rounded-xl bg-slate-50 p-3 font-semibold">{message}</p>}
     </div>}
   </div>;

@@ -6,5 +6,8 @@ La cartella `../mathsolver-pro/` contiene la versione statica pubblicata dalla b
 
 Il nuovo capitolo propone una spiegazione della forma normale, del discriminante, della formula risolutiva, del completamento del quadrato e delle relazioni di Viète. Gli esercizi guidano a identificare i coefficienti, calcolare delta, scegliere il caso corretto, trovare le radici e verificare somma e prodotto. La difficoltà alta include anche delta nullo, negativo ed equazioni spurie.
 
+In **Con i clic** si seleziona ogni coefficiente numerico nell'equazione e poi la lettera corrispondente nella formula risolutiva. Anche delta, radici, somma e prodotto si scelgono con pulsanti. **Scrivendo** conserva l'inserimento numerico originale. Cambiare modalità ricomincia l'esercizio corrente dal primo passaggio.
+
 La versione pubblica usa la sintesi vocale del browser. Non richiede chiavi API.
+
 
