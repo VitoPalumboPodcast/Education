@@ -24,7 +24,7 @@ import QuadraticExercise from './components/QuadraticExercise';
  */
 const App: React.FC = () => {
   const [problem, setProblem] = useState<MathProblem | null>(null);
-  const [problemType, setProblemType] = useState<ProblemType>(ProblemType.EQUATION);
+  const [problemType, setProblemType] = useState<ProblemType>(ProblemType.QUADRATIC_EQUATION);
   const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.EASY);
   const [solvingMode] = useState<SolvingMode>(SolvingMode.INTERACTIVE);
   const [voiceMessage, setVoiceMessage] = useState<string>('');

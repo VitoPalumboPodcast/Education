@@ -9,8 +9,8 @@ interface ProblemSelectorProps {
 
 const ProblemSelector: React.FC<ProblemSelectorProps> = ({ onSelect, currentType }) => {
   const types = [
-    { id: ProblemType.EQUATION, label: 'Equazioni', icon: '∑' },
     { id: ProblemType.QUADRATIC_EQUATION, label: 'Equazioni 2° grado', icon: 'x²' },
+    { id: ProblemType.EQUATION, label: 'Equazioni', icon: '∑' },
     { id: ProblemType.INEQUALITY, label: 'Disequazioni', icon: '≶' },
     { id: ProblemType.FRACTIONAL_INEQUALITY, label: 'Diseq. Fratte (Visual)', icon: '👁️' },
     { id: ProblemType.FRACTIONAL_INEQUALITY_CLASSIC, label: 'Diseq. Fratte (Classic)', icon: '📝' },
