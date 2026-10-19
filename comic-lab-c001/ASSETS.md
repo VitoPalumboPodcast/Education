@@ -89,3 +89,9 @@ Creata il 19 ottobre 2026 con ImageGen modificando project.jpg: Jack ed Emma al 
 ### assets/cafe-crisps.jpg
 
 Creata il 19 ottobre 2026 con ImageGen modificando cafe.jpg: Jack mostra una moneta da due euro; Emma è dietro il bancone e due pacchetti di patatine restano sul suo lato, prima dell’acquisto. Nessuna scritta o fumetto. Originale: art-originals/cafe-crisps.png.
+
+## Merende a scuola
+
+### assets/school-snacks.jpg
+
+Creata il 19 ottobre 2026 con ImageGen modificando classroom.jpg: Jack ed Emma sono seduti a scuola davanti al contenitore aperto di Jack, che contiene ancora un panino e una banana. Nessuno mangia o tiene in mano le merende. Spazio libero in alto per i fumetti. Originale: art-originals/school-snacks.png.
