@@ -15,6 +15,7 @@ export interface PoemData {
   rhymeType?: string;
   stanzaType?: string;
   quiz?: QuizQuestion[];
+  glossary?: { term: string; definition: string }[];
 }
 
 export type SyllableType = 'normal' | 'accented' | 'sinalefe' | 'dialefe' | 'dieresi' | 'sineresi';

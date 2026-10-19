@@ -295,6 +295,51 @@ ad affrontare tanti affanni. Così profonda (è) forse l'ira negli animi celesti
     stanzaType: "Strofa unica"
   },
   {
+    title: "Novembre",
+    author: "Giovanni Pascoli",
+    year: "1891 · Myricae",
+    text: `Gemmea l’aria, il sole così chiaro
+che tu ricerchi gli albicocchi in fiore,
+e del prunalbo l’odorino amaro
+senti nel cuore...
+
+Ma secco è il pruno, e le stecchite piante
+di nere trame segnano il sereno,
+e vuoto il cielo, e cavo al piè sonante
+sembra il terreno.
+
+Silenzio, intorno: solo, alle ventate,
+odi lontano, da giardini ed orti,
+di foglie un cader fragile. È l’estate,
+fredda, dei morti.`,
+    rhymeScheme: ["A", "B", "A", "B", "C", "D", "C", "D", "E", "F", "E", "F"],
+    rhymeType: "Rime alternate (ABAB CDCD EFEF)",
+    stanzaType: "Tre quartine: tre endecasillabi e un quinario ciascuna",
+    glossary: [
+      { term: "Gemmea", definition: "limpida, trasparente." },
+      { term: "Prunalbo", definition: "biancospino, arbusto dai fiori bianchi." },
+      { term: "Pruno", definition: "qui, il biancospino." },
+      { term: "Sereno", definition: "cielo azzurro e limpido." },
+      { term: "Vuoto", definition: "senza uccelli." },
+      { term: "Piè", definition: "piede." },
+      { term: "Ventate", definition: "colpi di vento." }
+    ],
+    quiz: [
+      {
+        question: "Quale contrasto costruisce la poesia?",
+        options: ["Tra città e campagna", "Tra l’apparenza primaverile e la realtà autunnale", "Tra giorno e notte", "Tra mare e montagna"],
+        correctAnswerIndex: 1,
+        explanation: "La luce iniziale fa pensare alla primavera; i rami secchi e le foglie che cadono rivelano invece l’autunno."
+      },
+      {
+        question: "A che cosa allude «l’estate, fredda, dei morti»?",
+        options: ["A una nevicata estiva", "A una festa di primavera", "Al tepore di novembre vicino alla commemorazione dei defunti", "A una tempesta improvvisa"],
+        correctAnswerIndex: 2,
+        explanation: "L’espressione richiama l’estate di San Martino e, insieme, il periodo della commemorazione dei defunti."
+      }
+    ]
+  },
+  {
     title: "Il tuono",
     author: "Giovanni Pascoli",
     year: "1903",
@@ -799,6 +844,20 @@ const App: React.FC = () => {
                 </div>
               </section>
 
+              {currentPoem.glossary && (
+                <section className="bg-white border border-stone-200 p-6 md:p-8 rounded-3xl">
+                  <h3 className="text-xs font-bold text-amber-800 uppercase tracking-widest mb-4">Parole utili</h3>
+                  <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+                    {currentPoem.glossary.map(({ term, definition }) => (
+                      <div key={term} className="border-b border-stone-100 pb-2">
+                        <dt className="inline font-semibold text-stone-800">{term}: </dt>
+                        <dd className="inline text-stone-600">{definition}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
+              )}
+
               <section className="grid md:grid-cols-2 gap-6">
                 <div className="bg-amber-50 border border-amber-100 p-8 rounded-3xl">
                   <h4 className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-4">Analisi Letteraria</h4>
@@ -878,7 +937,7 @@ const App: React.FC = () => {
                       
                       <div className="flex gap-4 items-center pt-4 border-t border-stone-100">
                         <span className="px-3 py-1 bg-amber-600 text-white text-[10px] font-bold rounded-full uppercase">{verseAnalysis.meter}</span>
-                        <span className="text-stone-400 text-xs">{verseAnalysis.scansion?.length} sillabe</span>
+                        <span className="text-stone-400 text-xs">{verseAnalysis.syllables ?? verseAnalysis.scansion?.length} sillabe</span>
                       </div>
                       
                       <p className="text-stone-700 text-sm leading-relaxed italic bg-amber-50/50 p-4 rounded-xl border border-amber-100">

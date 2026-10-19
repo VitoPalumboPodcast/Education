@@ -2,6 +2,10 @@
 import { VerseAnalysis } from '../types';
 
 export const STATIC_ANALYSIS: Record<string, { explanation: string; style: string }> = {
+  "Novembre": {
+    explanation: "La prima strofa suggerisce una primavera luminosa: l'aria limpida e il sole fanno cercare fiori e profumi. La seconda smentisce quell'impressione con rami secchi, cielo vuoto e terreno che risuona sotto i passi. Nell'ultima strofa il silenzio è interrotto soltanto dal cadere delle foglie. L'espressione finale, «l'estate, fredda, dei morti», accosta il tepore ingannevole di novembre al ricordo dei defunti.\n\nIN PAROLE SEMPLICI: Sembra una bella giornata di primavera, ma è autunno. La natura appare senza vita e il poeta pensa alla morte.",
+    style: "Tre quartine di endecasillabi chiuse da un quinario. Le rime sono alternate in ogni strofa (ABAB CDCD EFEF). Antitesi, immagini sensoriali e pause segnano il passaggio dall'illusione primaverile alla realtà autunnale."
+  },
   "Veglia": {
     explanation: "Scritta in trincea durante la Prima Guerra Mondiale, la poesia esprime un attaccamento disperato alla vita che scaturisce dall'esperienza diretta, brutale e prolungata con la morte del compagno.\n\nIN PAROLE SEMPLICI: Il poeta sta prestando servizio in guerra. Passa una notte intera vicino a un suo compagno, colpito e ucciso in modo terribile. Vedere tutto questo orrore non gli toglie la speranza, ma gli fa capire ancora di più quanto è bella la vita, tanto da spingerlo a scrivere lettere d'amore proprio in quel momento doloroso.",
     style: "Versi liberi, brevissimi (spesso singole parole), privi di punteggiatura. L'uso dei participi passati e la frantumazione del verso isolano le parole, caricandole di un peso drammatico ed essenziale."
@@ -41,6 +45,20 @@ export const STATIC_ANALYSIS: Record<string, { explanation: string; style: strin
 };
 
 export const METRIC_REGISTRY: Record<string, VerseAnalysis[]> = {
+  "Novembre": [
+    { verse: "Gemmea l’aria, il sole così chiaro", meter: "Endecasillabo", syllables: 11, accents: [], figuresOfSpeech: ["Immagine visiva"], meaning: "L'aria limpida e il sole chiaro creano l'illusione di una giornata primaverile." },
+    { verse: "che tu ricerchi gli albicocchi in fiore,", meter: "Endecasillabo", syllables: 11, accents: [], figuresOfSpeech: ["Enjambement"], meaning: "La luce induce a cercare gli albicocchi fioriti, benché sia novembre." },
+    { verse: "e del prunalbo l’odorino amaro", meter: "Endecasillabo", syllables: 11, accents: [], figuresOfSpeech: ["Immagine olfattiva", "Enjambement"], meaning: "Il poeta immagina il profumo, leggermente amaro, del biancospino." },
+    { verse: "senti nel cuore...", meter: "Quinario", syllables: 5, accents: [], figuresOfSpeech: ["Puntini di sospensione"], meaning: "Quel profumo è evocato dalla memoria e dall'immaginazione, non dalla realtà presente." },
+    { verse: "Ma secco è il pruno, e le stecchite piante", meter: "Endecasillabo", syllables: 11, accents: [], figuresOfSpeech: ["Antitesi", "Enjambement"], meaning: "La congiunzione «Ma» rompe l'illusione: il biancospino e le altre piante sono secchi." },
+    { verse: "di nere trame segnano il sereno,", meter: "Endecasillabo", syllables: 11, accents: [], figuresOfSpeech: ["Metafora", "Contrasto cromatico"], meaning: "I rami spogli formano trame nere contro il cielo limpido." },
+    { verse: "e vuoto il cielo, e cavo al piè sonante", meter: "Endecasillabo", syllables: 11, accents: [], figuresOfSpeech: ["Immagine uditiva", "Enjambement"], meaning: "Il cielo è senza uccelli; il terreno sembra vuoto e risuona sotto i passi." },
+    { verse: "sembra il terreno.", meter: "Quinario", syllables: 5, accents: [], figuresOfSpeech: [], meaning: "Il suono dei passi completa la sensazione di vuoto e aridità." },
+    { verse: "Silenzio, intorno: solo, alle ventate,", meter: "Endecasillabo", syllables: 11, accents: [], figuresOfSpeech: ["Pausa", "Immagine uditiva"], meaning: "Attorno domina il silenzio, interrotto soltanto quando soffia il vento." },
+    { verse: "odi lontano, da giardini ed orti,", meter: "Endecasillabo", syllables: 11, accents: [], figuresOfSpeech: ["Enjambement"], meaning: "Il rumore arriva da lontani giardini e orti." },
+    { verse: "di foglie un cader fragile. È l’estate,", meter: "Endecasillabo", syllables: 11, accents: [], figuresOfSpeech: ["Immagine uditiva", "Ossimoro"], meaning: "Si ode il lieve cadere delle foglie; la parola «estate» crea un contrasto con l'autunno." },
+    { verse: "fredda, dei morti.", meter: "Quinario", syllables: 5, accents: [], figuresOfSpeech: ["Ossimoro"], meaning: "L'«estate» di novembre è fredda e associata alla commemorazione dei defunti." }
+  ],
   "Veglia": [
     {
       verse: "Un'intera nottata",
