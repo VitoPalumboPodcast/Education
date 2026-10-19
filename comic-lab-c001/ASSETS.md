@@ -73,3 +73,13 @@ Due adolescenti giocano insieme davanti a uno schermo, ciascuno con il proprio c
 ### assets/shopping-clerk.jpg
 
 Nuova illustrazione creata il 17 ottobre 2026 con ImageGen usando shopping.jpg come riferimento di stile. Prompt finale: Use case illustration-story; 16:9 language-learning comic for ages 15–16; new clothing-shop scene with a male teenage customer holding a plain teal hoodie on the left and a young adult female shop assistant behind a checkout counter on the right; apron and blank name badge make their roles clear; clean editorial comic linework, cream background, muted teal and terracotta, blank upper wall for speech bubbles; no tote bag, text, logos, additional people or panels.
+
+## Gruppi per to be e to have
+
+### assets/grammar-be-group.jpg
+
+Creata il 19 ottobre 2026 con ImageGen modificando classroom.jpg: Jack ed Emma in primo piano, Leo e Maya a un secondo banco più indietro, entrambi riconoscibili, in un’aula pulita con spazio superiore per i fumetti. Nessun testo o altro personaggio. Originale: art-originals/grammar-be-group.png.
+
+### assets/grammar-have-group.jpg
+
+Creata il 19 ottobre 2026 con ImageGen modificando project.jpg: Jack ed Emma al tavolo di biblioteca in primo piano; Leo con il proprio portatile e Maya con quaderno e fogli a un tavolo più indietro. I quattro studenti restano distinguibili e lo sfondo superiore è libero per i fumetti. Nessun testo o altro personaggio. Originale: art-originals/grammar-have-group.png.
