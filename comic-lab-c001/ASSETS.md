@@ -83,3 +83,9 @@ Creata il 19 ottobre 2026 con ImageGen modificando classroom.jpg: Jack ed Emma i
 ### assets/grammar-have-group.jpg
 
 Creata il 19 ottobre 2026 con ImageGen modificando project.jpg: Jack ed Emma al tavolo di biblioteca in primo piano; Leo con il proprio portatile e Maya con quaderno e fogli a un tavolo più indietro. I quattro studenti restano distinguibili e lo sfondo superiore è libero per i fumetti. Nessun testo o altro personaggio. Originale: art-originals/grammar-have-group.png.
+
+## Patatine al bar
+
+### assets/cafe-crisps.jpg
+
+Creata il 19 ottobre 2026 con ImageGen modificando cafe.jpg: Jack mostra una moneta da due euro; Emma è dietro il bancone e due pacchetti di patatine restano sul suo lato, prima dell’acquisto. Nessuna scritta o fumetto. Originale: art-originals/cafe-crisps.png.
