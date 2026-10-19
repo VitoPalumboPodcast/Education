@@ -116,7 +116,8 @@ const QuadraticExercise: React.FC<{ difficulty: Difficulty; onComplete: () => vo
   const [selectedCoefficient, setSelectedCoefficient] = useState<number | null>(null);
   const [matchedSymbols, setMatchedSymbols] = useState<boolean[]>(Array(FORMULA_COEFFICIENTS.length).fill(false));
   const [deltaStep, setDeltaStep] = useState(0);
-  const [values, setValues] = useState<string[]>(Array(11).fill(''));
+  const [rootStep, setRootStep] = useState(0);
+  const [values, setValues] = useState<string[]>(Array(18).fill(''));
   const [message, setMessage] = useState('');
   const example = EXAMPLES[difficulty][index % EXAMPLES[difficulty].length];
   const delta = example.b ** 2 - 4 * example.a * example.c;
@@ -130,8 +131,22 @@ const QuadraticExercise: React.FC<{ difficulty: Difficulty; onComplete: () => vo
     options(delta, [square + product, square, product, delta - 1, delta + 1]),
   ];
   const roots = useMemo(() => delta < 0 ? [] : [(-example.b - Math.sqrt(delta)) / (2 * example.a), (-example.b + Math.sqrt(delta)) / (2 * example.a)].sort((x, y) => x - y), [example, delta]);
+  const minusB = -example.b;
+  const sqrtDelta = Math.sqrt(Math.max(0, delta));
+  const denominator = 2 * example.a;
+  const plusNumerator = minusB + sqrtDelta;
+  const minusNumerator = minusB - sqrtDelta;
+  const rootCalculations = [
+    { label: 'Opposto di b', formula: <>−b = −({example.b}) = ?</>, answer: minusB, position: 11, choices: options(minusB, [example.b, minusB - 1, minusB + 1]) },
+    { label: 'Radice del delta', formula: <>√Δ = √{delta} = ?</>, answer: sqrtDelta, position: 12, choices: options(sqrtDelta, [delta, -sqrtDelta, sqrtDelta + 1, sqrtDelta + 2]) },
+    { label: 'Denominatore', formula: <>2a = 2 · ({example.a}) = ?</>, answer: denominator, position: 13, choices: options(denominator, [example.a, -denominator, denominator - 1, denominator + 1]) },
+    { label: 'Numeratore con +', formula: <>−b + √Δ = {minusB} + {sqrtDelta} = ?</>, answer: plusNumerator, position: 14, choices: options(plusNumerator, [minusNumerator, minusB, plusNumerator - 1, plusNumerator + 1]) },
+    { label: 'Radice con +', formula: <>x₊ = <MathFraction top={plusNumerator} bottom={denominator} /> = ?</>, answer: plusNumerator / denominator, position: 5, choices: options(plusNumerator / denominator, [minusNumerator / denominator, plusNumerator, (plusNumerator + 1) / denominator]) },
+    { label: 'Numeratore con −', formula: <>−b − √Δ = {minusB} − {sqrtDelta} = ?</>, answer: minusNumerator, position: 15, choices: options(minusNumerator, [plusNumerator, minusB, minusNumerator - 1, minusNumerator + 1]) },
+    { label: 'Radice con −', formula: <>x₋ = <MathFraction top={minusNumerator} bottom={denominator} /> = ?</>, answer: minusNumerator / denominator, position: 6, choices: options(minusNumerator / denominator, [plusNumerator / denominator, minusNumerator, (minusNumerator + 1) / denominator]) },
+  ];
 
-  const reset = () => { setStage(0); setDeltaStep(0); setValues(Array(11).fill('')); setSelectedCoefficient(null); setMatchedSymbols(Array(FORMULA_COEFFICIENTS.length).fill(false)); setMessage(''); };
+  const reset = () => { setStage(0); setDeltaStep(0); setRootStep(0); setValues(Array(18).fill('')); setSelectedCoefficient(null); setMatchedSymbols(Array(FORMULA_COEFFICIENTS.length).fill(false)); setMessage(''); };
   const next = () => { setIndex(i => i + 1); reset(); };
   const changeMode = (chosen: 'click' | 'write') => { setMode(chosen); reset(); };
   const changeActivity = (chosen: 'completa' | GuidedKind) => { setActivity(chosen); reset(); };
@@ -168,11 +183,11 @@ const QuadraticExercise: React.FC<{ difficulty: Difficulty; onComplete: () => vo
       if (values[4] === sign) advance();
       else setMessage('Il segno di Δ determina quante soluzioni reali ci sono.');
     } else if (stage === 3 && delta >= 0) {
-      const ok = delta === 0 ? equal(values[5], roots[0]) :
-        (equal(values[5], roots[0]) && equal(values[6], roots[1])) ||
-        (equal(values[5], roots[1]) && equal(values[6], roots[0]));
-      if (ok) advance();
-      else setMessage('Usa la formula risolutiva: il numeratore è meno b più o meno la radice di delta; il denominatore è due volte a. Accetto frazioni e le radici in qualsiasi ordine.');
+      const current = rootCalculations[rootStep];
+      if (equal(values[current.position], current.answer)) {
+        if (rootStep === rootCalculations.length - 1) advance();
+        else { setRootStep(step => step + 1); setMessage('Corretto. Continua con il calcolo successivo.'); }
+      } else setMessage('Controlla il calcolo e il segno, poi riprova.');
     } else if ((stage === 3 && delta < 0) || (stage === 4 && delta >= 0)) {
       if (delta < 0 || (equal(values[7], -example.b / example.a) && equal(values[8], example.c / example.a))) {
         setStage(5); setMessage('Esercizio completato!'); onComplete();
@@ -212,7 +227,7 @@ const QuadraticExercise: React.FC<{ difficulty: Difficulty; onComplete: () => vo
       {stage === 1 && mode === 'click' && <section className="mx-auto max-w-3xl space-y-4 text-left" aria-label="Coefficienti abbinati nel passaggio precedente"><h3 className="text-xl font-black">1. Coefficienti inseriti</h3>{coefficientBoard}</section>}
       {stage === 1 && <div className="mx-auto max-w-3xl space-y-5 text-left"><h3 className="text-xl font-black">2. Calcola <span className="font-serif italic">Δ = b² − 4ac</span></h3><p className="text-sm font-bold text-indigo-700">Calcolo {deltaStep + 1} di 3</p>{deltaStep > 0 && <p className="font-serif italic text-4xl text-emerald-800">b² = <MathValue value={fraction(square)} /></p>}{deltaStep > 1 && <p className="font-serif italic text-4xl text-emerald-800">4ac = <MathValue value={fraction(product)} /></p>}{deltaStep === 0 && <p className="text-5xl font-serif italic">b² = ({example.b})² = ?</p>}{deltaStep === 1 && <p className="text-5xl font-serif italic">4ac = 4 · ({example.a}) · ({example.c}) = ?</p>}{deltaStep === 2 && <p className="text-5xl font-serif italic">Δ = b² − 4ac = {square} − ({product}) = ?</p>}{mode === 'click' ? choose(deltaPositions[deltaStep], ['Scegli b²', 'Scegli 4ac', 'Scegli Δ'][deltaStep], deltaChoices[deltaStep]) : input(deltaPositions[deltaStep], ['Valore di b²', 'Valore di 4ac', 'Valore di Δ'][deltaStep])}</div>}
       {stage === 2 && <div className="mx-auto max-w-3xl space-y-5 text-left"><h3 className="text-xl font-black">3. Qual è il segno di Δ?</h3><div className="rounded-2xl bg-indigo-50 p-5"><p className="font-bold text-indigo-800">Il calcolo appena svolto</p><div className="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-2xl font-serif italic"><span>b² = {square}</span><span>4ac = {product}</span></div><p className="mt-3 text-4xl font-serif italic font-bold">Δ = {square} − ({product}) = <span className="text-indigo-700">{delta}</span></p><p className="mt-3 font-semibold">Confronta il valore di Δ con 0, poi scegli qui sotto.</p></div><div className="flex flex-wrap gap-3">{[['positive','Δ > 0 · due radici'],['zero','Δ = 0 · radice doppia'],['negative','Δ < 0 · nessuna radice reale']].map(([value,label]) => <button key={value} onClick={() => update(4,value)} aria-pressed={values[4] === value} className={`rounded-xl border-2 px-4 py-3 text-lg font-bold ${values[4] === value ? 'border-indigo-600 bg-indigo-50' : 'border-slate-200'}`}>{label}</button>)}</div></div>}
-      {stage === 3 && delta >= 0 && <div><h3 className="text-lg font-black mb-4">4. Applica la formula risolutiva</h3><p className="mb-4 flex flex-wrap items-center gap-2 text-4xl font-serif italic text-slate-700">x = <MathFraction top={<>−({example.b}) ± √{delta}</>} bottom={<>2 · ({example.a})</>} /></p><div className="flex flex-wrap gap-6">{mode === 'click' ? choose(5, 'Prima radice', options(roots[0], [roots[1], roots[0] - 1, roots[0] + 1, -example.b / example.a])) : input(5, 'Prima radice')}{delta > 0 && (mode === 'click' ? choose(6, 'Seconda radice', options(roots[1], [roots[0], roots[1] - 1, roots[1] + 1, -example.b / example.a])) : input(6, 'Seconda radice'))}</div></div>}
+      {stage === 3 && delta >= 0 && <div className="mx-auto max-w-3xl space-y-5 text-left"><h3 className="text-xl font-black">4. Applica la formula risolutiva</h3><p className="flex flex-wrap items-center gap-2 text-4xl font-serif italic text-slate-700 md:text-5xl">x = <MathFraction top={<>−({example.b}) ± √{delta}</>} bottom={<>2 · ({example.a})</>} /></p><p className="text-sm font-bold text-indigo-700">Calcolo {rootStep + 1} di {rootCalculations.length}</p>{rootStep > 0 && <div className="space-y-2 rounded-2xl bg-emerald-50 p-4">{rootCalculations.slice(0, rootStep).map(calculation => <p key={calculation.position} className="flex flex-wrap items-center gap-2 font-serif italic text-3xl text-emerald-800 md:text-4xl"><span>{calculation.label}:</span><MathValue value={fraction(calculation.answer)} /></p>)}</div>}<div className="space-y-4"><p className="font-serif italic text-4xl md:text-5xl">{rootCalculations[rootStep].formula}</p>{mode === 'click' ? choose(rootCalculations[rootStep].position, rootCalculations[rootStep].label, rootCalculations[rootStep].choices) : input(rootCalculations[rootStep].position, rootCalculations[rootStep].label)}</div></div>}
       {stage === 3 && delta < 0 && <div><h3 className="text-lg font-black">4. Concludi</h3><p>Poiché Δ &lt; 0, la radice quadrata non è reale. L’equazione non ha soluzioni in ℝ.</p></div>}
       {stage === 4 && <div><h3 className="text-lg font-black mb-4">5. Verifica somma e prodotto</h3><div className="mb-4 flex flex-wrap items-center gap-5 text-4xl font-serif italic text-slate-700"><span className="inline-flex items-center gap-1">Somma = <MathFraction top={<>−b</>} bottom={<>a</>} /></span><span className="inline-flex items-center gap-1">Prodotto = <MathFraction top={<>c</>} bottom={<>a</>} /></span></div><div className="flex flex-wrap gap-6">{mode === 'click' ? choose(7, 'Somma x₁ + x₂', options(-example.b / example.a, [example.b / example.a, -example.b, -example.b / example.a + 1])) : input(7, 'Somma x₁ + x₂')}{mode === 'click' ? choose(8, 'Prodotto x₁ · x₂', options(example.c / example.a, [-example.c / example.a, example.c, example.c / example.a + 1])) : input(8, 'Prodotto x₁ · x₂')}</div></div>}
       {stage < 5 ? (stage === 0 && mode === 'click' ? null : <button onClick={check} className="rounded-xl bg-indigo-600 px-6 py-3 font-black text-white hover:bg-indigo-700">Verifica passaggio</button>) : <div className="rounded-xl bg-emerald-50 p-5"><strong>Ottimo lavoro!</strong> {delta < 0 ? 'Nessuna soluzione reale.' : <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 font-serif italic text-lg"><span>Radici: {roots.map((root, i) => <span key={i} className="mr-3 inline-flex items-center gap-1">x<sub>{i + 1}</sub> = <MathValue value={fraction(root)} /></span>)}</span><span className="inline-flex items-center gap-1">Somma = <MathValue value={fraction(-example.b / example.a)} /></span><span className="inline-flex items-center gap-1">Prodotto = <MathValue value={fraction(example.c / example.a)} /></span></div>} <button onClick={next} className="mt-2 font-bold text-indigo-700 underline">Prossimo esercizio</button></div>}
