@@ -95,3 +95,7 @@ Creata il 19 ottobre 2026 con ImageGen modificando cafe.jpg: Jack mostra una mon
 ### assets/school-snacks.jpg
 
 Creata il 19 ottobre 2026 con ImageGen modificando classroom.jpg: Jack ed Emma sono seduti a scuola davanti al contenitore aperto di Jack, che contiene ancora un panino e una banana. Nessuno mangia o tiene in mano le merende. Spazio libero in alto per i fumetti. Originale: art-originals/school-snacks.png.
+
+## Sequenza della penna
+
+Nove nuove illustrazioni create il 19 ottobre 2026 con ImageGen, mantenendo lo stile della scena originale pen-request.jpg: Jack a sinistra in felpa verde acqua, Emma a destra in maglia terracotta, aula pulita e spazio libero nella parte alta per i fumetti. Le immagini illustrano l’offerta della penna, il ringraziamento, la risposta, la promessa di restituirla, la penna di riserva, l’astuccio dimenticato e la scrittura durante la lezione. Due ulteriori immagini sono dedicate alle prime battute latine, nelle quali Emma mostra di avere la penna prima che Jack la chieda. File: assets/pen-02-offer.jpg, pen-03-thanks.jpg, pen-04-welcome.jpg, pen-05-return.jpg, pen-06-spare.jpg, pen-07-forgot-case.jpg, pen-08-whole-lesson.jpg, pen-la-02-has.jpg e pen-la-03-ask.jpg. Gli originali PNG sono in art-originals/.
