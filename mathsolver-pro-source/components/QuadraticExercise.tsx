@@ -61,25 +61,27 @@ const MathValue: React.FC<{ value: string }> = ({ value }) => {
 const FORMULA_COEFFICIENTS = [1, 1, 0, 2, 0] as const;
 
 type GuidedKind = 'pura' | 'spuria' | 'monomia' | 'nota';
-const GUIDED: Record<GuidedKind, { title: string; equation: string; a: number; b: number; c: number; steps: { prompt: string; formula: React.ReactNode; answer: number; choices: number[] }[] }> = {
-  pura: { title: 'Equazione pura', equation: '3x² − 12 = 0', a: 3, b: 0, c: -12, steps: [
-    { prompt: 'Porta il termine noto a destra', formula: <>3x² = ?</>, answer: 12, choices: [-12, 3, 12, 36] },
-    { prompt: 'Dividi per il coefficiente di x²', formula: <>x² = <MathFraction top={12} bottom={3} /> = ?</>, answer: 4, choices: [3, 4, 9, 12] },
-    { prompt: 'Estrai la radice: le soluzioni sono + e −', formula: <>x = ±√4 = ± ?</>, answer: 2, choices: [-2, 2, 4, 16] },
+type GuidedStep = { prompt: string; formula: React.ReactNode; completed: React.ReactNode; answer: number; choices: number[] };
+type GuidedExercise = { title: string; equation: string; general: string; rule?: React.ReactNode; source: React.ReactNode; a: number; b: number; c: number; roots: [number, number]; steps: GuidedStep[] };
+const GUIDED: Record<GuidedKind, GuidedExercise> = {
+  pura: { title: 'Equazione pura', equation: '3x² − 12 = 0', general: 'ax² + c = 0', rule: <>ax² = −c</>, source: <>x = ±√4</>, a: 3, b: 0, c: -12, roots: [2, -2], steps: [
+    { prompt: 'Porta −12 a destra', formula: <>3x² = ?</>, completed: <>3x² = 12</>, answer: 12, choices: [-12, 3, 12, 36] },
+    { prompt: 'Dividi per 3', formula: <>x² = <MathFraction top={12} bottom={3} /> = ?</>, completed: <>x² = <MathFraction top={12} bottom={3} /> = 4</>, answer: 4, choices: [3, 4, 9, 12] },
+    { prompt: 'Calcola √4', formula: <>√4 = ?</>, completed: <>√4 = 2 → x = ±2</>, answer: 2, choices: [-2, 2, 4, 16] },
   ] },
-  spuria: { title: 'Equazione spuria', equation: 'x² − 5x = 0', a: 1, b: -5, c: 0, steps: [
-    { prompt: 'Raccogli x a fattor comune', formula: <>x(x − ?) = 0</>, answer: 5, choices: [-5, 0, 1, 5] },
-    { prompt: 'Il primo fattore è zero: x = ?', formula: <>x(x − 5) = 0 → x = ? oppure x − 5 = 0</>, answer: 0, choices: [-5, 0, 1, 5] },
-    { prompt: 'Risolvi il secondo fattore', formula: <>x − 5 = 0 → x = ?</>, answer: 5, choices: [-5, 0, 1, 5] },
+  spuria: { title: 'Equazione spuria', equation: 'x² − 5x = 0', general: 'ax² + bx = 0', rule: <>x(ax + b) = 0</>, source: <>x(x − 5) = 0</>, a: 1, b: -5, c: 0, roots: [0, 5], steps: [
+    { prompt: 'Raccogli x', formula: <>x(x − ?) = 0</>, completed: <>x(x − 5) = 0</>, answer: 5, choices: [-5, 0, 1, 5] },
+    { prompt: 'Il primo fattore è zero', formula: <>x = ?</>, completed: <>x = 0</>, answer: 0, choices: [-5, 0, 1, 5] },
+    { prompt: 'Il secondo fattore è zero', formula: <>x − 5 = 0 → x = ?</>, completed: <>x − 5 = 0 → x = 5</>, answer: 5, choices: [-5, 0, 1, 5] },
   ] },
-  monomia: { title: 'Equazione monomia', equation: '4x² = 0', a: 4, b: 0, c: 0, steps: [
-    { prompt: 'Dividi per 4', formula: <>x² = ?</>, answer: 0, choices: [-4, 0, 1, 4] },
-    { prompt: 'Trova la radice doppia', formula: <>x = ?</>, answer: 0, choices: [-2, 0, 2, 4] },
+  monomia: { title: 'Equazione monomia', equation: '4x² = 0', general: 'ax² = 0', source: <>x² = 0</>, a: 4, b: 0, c: 0, roots: [0, 0], steps: [
+    { prompt: 'Dividi per 4', formula: <>x² = <MathFraction top={0} bottom={4} /> = ?</>, completed: <>x² = <MathFraction top={0} bottom={4} /> = 0</>, answer: 0, choices: [-4, 0, 1, 4] },
+    { prompt: 'Calcola √0', formula: <>√0 = ?</>, completed: <>√0 = 0 → radice doppia</>, answer: 0, choices: [-2, 0, 2, 4] },
   ] },
-  nota: { title: 'Una radice è già nota', equation: 'x² − 8x + 15 = 0; x₁ = 3', a: 1, b: -8, c: 15, steps: [
-    { prompt: 'Calcola la somma delle radici', formula: <>x₁ + x₂ = <MathFraction top={<>−b</>} bottom={<>a</>} /> = ?</>, answer: 8, choices: [-8, 3, 8, 15] },
-    { prompt: 'Sostituisci la radice nota', formula: <>3 + x₂ = 8 → x₂ = ?</>, answer: 5, choices: [3, 5, 8, 11] },
-    { prompt: 'Controlla con il prodotto', formula: <>x₁ · x₂ = <MathFraction top={<>c</>} bottom={<>a</>} /> = ?</>, answer: 15, choices: [5, 8, 12, 15] },
+  nota: { title: 'Una radice è già nota', equation: 'x² − 8x + 15 = 0; x₁ = 3', general: 'ax² + bx + c = 0', rule: <>x₁ + x₂ = <MathFraction top={<>−b</>} bottom={<>a</>} /></>, source: <>x₁ + x₂ = 8</>, a: 1, b: -8, c: 15, roots: [3, 5], steps: [
+    { prompt: 'Cambia il segno di −8', formula: <>−(−8) = ?</>, completed: <>−(−8) = 8</>, answer: 8, choices: [-8, 3, 8, 15] },
+    { prompt: 'Calcola la somma delle radici', formula: <>x₁ + x₂ = <MathFraction top={8} bottom={1} /> = ?</>, completed: <>x₁ + x₂ = <MathFraction top={8} bottom={1} /> = 8</>, answer: 8, choices: [3, 5, 8, 15] },
+    { prompt: 'Trova la seconda radice', formula: <>3 + x₂ = 8 → x₂ = ?</>, completed: <>3 + x₂ = 8 → x₂ = 5</>, answer: 5, choices: [3, 5, 8, 11] },
   ] },
 };
 
@@ -91,18 +93,26 @@ const GuidedQuadratic: React.FC<{ kind: GuidedKind; mode: 'click' | 'write'; onC
   const [message, setMessage] = useState('');
   const complete = step >= exercise.steps.length;
   const checkType = (selected: string) => {
-    if (selected === (kind === 'nota' ? 'completa' : kind)) { setTypeDone(true); setMessage('Tipo corretto. Ora svolgi un passaggio alla volta.'); }
-    else setMessage('Osserva i termini presenti: b è davanti a x, c è il termine senza x.');
+    if (selected === (kind === 'nota' ? 'completa' : kind)) { setTypeDone(true); setMessage('Corretto. Prosegui con i calcoli.'); }
+    else setMessage('Osserva quali termini con x sono presenti.');
   };
   const checkStep = () => {
     if (!equal(answer, exercise.steps[step].answer)) { setMessage('Controlla il calcolo e il segno, poi riprova.'); return; }
-    setAnswer(''); setMessage('Passaggio corretto.');
+    setAnswer(''); setMessage('Corretto.');
     if (step === exercise.steps.length - 1) onComplete();
     setStep(old => old + 1);
   };
+  const branchStart = kind === 'pura' || kind === 'nota' ? 2 : 1;
+  const leftBranch = kind === 'pura' ? <>x₁ = +√4</> : kind === 'spuria' ? <>x = 0</> : kind === 'monomia' ? <>x₁ = +√0</> : <>x₁ = 3</>;
+  const rightBranch = kind === 'pura' ? <>x₂ = −√4</> : kind === 'spuria' ? <>x − 5 = 0</> : kind === 'monomia' ? <>x₂ = −√0</> : <>x₂ = 8 − 3</>;
+  const leftSolved = kind === 'nota' || (kind === 'spuria' ? step >= 2 : complete);
+  const rightSolved = complete;
   return <div className="mx-auto max-w-3xl space-y-5 text-left">
-    <div className="sticky top-0 z-10 mx-auto max-w-3xl rounded-xl border border-indigo-200 bg-white/95 p-4 text-left shadow-sm backdrop-blur"><p className="text-sm font-bold text-indigo-600">{exercise.title} · Equazione da risolvere</p><p className="mt-1 font-serif italic text-4xl font-bold">{exercise.equation}</p></div>
-    {!typeDone ? <div className="space-y-3"><h3 className="text-lg font-black">1. Riconosci il tipo di equazione</h3><p className="font-serif italic text-2xl">a = {exercise.a}, b = {exercise.b}, c = {exercise.c}</p><div className="flex flex-wrap gap-2">{(['completa', 'pura', 'spuria', 'monomia'] as const).map(type => <button type="button" key={type} onClick={() => checkType(type)} className="rounded-xl border-2 border-slate-200 px-4 py-2 font-bold capitalize hover:border-indigo-400">{type}</button>)}</div></div> : complete ? <div className="rounded-xl bg-emerald-50 p-5"><strong>Esercizio completato!</strong><p className="mt-2 font-serif italic text-2xl">{kind === 'pura' ? 'x₁ = 2, x₂ = −2' : kind === 'spuria' ? 'x₁ = 0, x₂ = 5' : kind === 'monomia' ? 'x₁ = x₂ = 0' : 'x₁ = 3, x₂ = 5'}</p></div> : <div className="space-y-4"><p className="text-sm font-bold text-indigo-700">Calcolo {step + 1} di {exercise.steps.length}</p><h3 className="text-lg font-black">{exercise.steps[step].prompt}</h3><p className="flex flex-wrap items-center gap-2 font-serif italic text-3xl">{exercise.steps[step].formula}</p>{mode === 'click' ? <div className="flex flex-wrap gap-2">{exercise.steps[step].choices.map(value => <button type="button" key={value} onClick={() => setAnswer(String(value))} aria-pressed={equal(answer, value)} className={`min-w-20 min-h-16 rounded-xl border-2 px-5 py-3 text-3xl font-serif italic font-bold ${equal(answer, value) ? 'border-indigo-600 bg-indigo-50' : 'border-slate-200'}`}>{value}</button>)}</div> : <input inputMode="decimal" aria-label="Risposta del passaggio" value={answer} onChange={event => setAnswer(event.target.value)} className="w-40 rounded-xl border-2 border-slate-200 px-3 py-2 text-2xl font-serif italic" placeholder="Risposta" />}<button type="button" onClick={checkStep} className="rounded-xl bg-indigo-600 px-6 py-3 font-black text-white">Verifica passaggio</button></div>}
+    <div className="sticky top-0 z-10 rounded-xl border border-indigo-200 bg-white/95 p-4 shadow-sm backdrop-blur"><p className="text-sm font-bold text-indigo-600">{exercise.title} · Equazione da risolvere</p><p className="mt-1 font-serif italic text-4xl font-bold">{exercise.equation}</p></div>
+    {!typeDone ? <div className="space-y-4"><h3 className="text-xl font-black">1. Riconosci il tipo di equazione</h3><p className="font-serif italic text-4xl">ax² + bx + c = 0</p><div className="flex flex-wrap gap-2">{(['completa', 'pura', 'spuria', 'monomia'] as const).map(type => <button type="button" key={type} onClick={() => checkType(type)} className="min-h-14 rounded-xl border-2 border-slate-200 px-4 py-2 text-lg font-bold capitalize hover:border-indigo-400">{type}</button>)}</div></div> : <>
+      <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5" aria-label="Passaggi già svolti"><h3 className="mb-4 text-lg font-black">Passaggi già svolti</h3><div className="space-y-3 font-serif italic text-3xl leading-relaxed md:text-4xl"><p>{exercise.general}</p><p className="flex flex-wrap gap-x-5"><span>a = {exercise.a}</span><span>b = {exercise.b}</span><span>c = {exercise.c}</span></p>{exercise.rule && <p className="flex flex-wrap items-center gap-2">{exercise.rule}</p>}{exercise.steps.slice(0, step).map((calculation, index) => <p key={index} className="flex flex-wrap items-center gap-2 text-emerald-800">{calculation.completed}</p>)}{step >= branchStart && <div className="border-t border-slate-200 pt-3"><p className="text-center">{exercise.source}</p><svg viewBox="0 0 100 32" preserveAspectRatio="none" className="mt-2 h-10 w-full text-emerald-700" aria-hidden="true"><path d="M50 0 L25 32 M50 0 L75 32" fill="none" stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" /></svg><div className="grid grid-cols-2 gap-2 md:gap-4"><div className="min-w-0 rounded-xl border-2 border-emerald-200 bg-white p-2 text-center md:p-4"><p className="text-2xl">{leftBranch}</p>{leftSolved && <p className="mt-2 font-bold text-emerald-800">x₁ = <MathValue value={fraction(exercise.roots[0])} /></p>}</div><div className="min-w-0 rounded-xl border-2 border-emerald-200 bg-white p-2 text-center md:p-4"><p className="text-2xl">{rightBranch}</p>{rightSolved && <p className="mt-2 font-bold text-emerald-800">x₂ = <MathValue value={fraction(exercise.roots[1])} /></p>}</div></div></div>}</div></section>
+      {complete ? <section className="rounded-2xl border-2 border-emerald-500 bg-emerald-50 p-6" aria-label="Soluzioni dell'equazione"><h3 className="text-xl font-black text-emerald-900">Soluzioni dell’equazione</h3><p className="mt-4 text-center font-serif italic text-3xl">{exercise.source}</p><svg viewBox="0 0 100 32" preserveAspectRatio="none" className="mt-2 h-10 w-full text-emerald-700" aria-hidden="true"><path d="M50 0 L25 32 M50 0 L75 32" fill="none" stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" /></svg><div className="grid grid-cols-2 gap-3"><div className="rounded-2xl bg-white p-3 text-center shadow-sm"><p className="text-sm font-bold text-emerald-800">Prima soluzione</p><p className="mt-2 font-serif italic text-4xl font-bold md:text-5xl">x₁ = <MathValue value={fraction(exercise.roots[0])} /></p></div><div className="rounded-2xl bg-white p-3 text-center shadow-sm"><p className="text-sm font-bold text-emerald-800">Seconda soluzione</p><p className="mt-2 font-serif italic text-4xl font-bold md:text-5xl">x₂ = <MathValue value={fraction(exercise.roots[1])} /></p></div></div>{exercise.roots[0] === exercise.roots[1] && <p className="mt-3 font-bold text-emerald-900">Le due soluzioni coincidono: radice doppia.</p>}</section> : <div className="space-y-4"><p className="text-sm font-bold text-indigo-700">Calcolo {step + 1} di {exercise.steps.length}</p><h3 className="text-xl font-black">{exercise.steps[step].prompt}</h3><p className="flex flex-wrap items-center gap-2 font-serif italic text-4xl md:text-5xl">{exercise.steps[step].formula}</p>{mode === 'click' ? <div className="flex flex-wrap gap-2">{exercise.steps[step].choices.map(value => <button type="button" key={value} onClick={() => setAnswer(String(value))} aria-pressed={equal(answer, value)} className={`min-h-20 min-w-24 rounded-xl border-2 px-5 py-3 font-serif italic text-4xl font-bold ${equal(answer, value) ? 'border-indigo-600 bg-indigo-50' : 'border-slate-200'}`}><MathValue value={fraction(value)} /></button>)}</div> : <input inputMode="decimal" aria-label="Risposta del passaggio" value={answer} onChange={event => setAnswer(event.target.value)} className="w-44 rounded-xl border-2 border-slate-200 px-3 py-3 font-serif italic text-3xl" placeholder="Risposta" />}<button type="button" onClick={checkStep} className="rounded-xl bg-indigo-600 px-6 py-3 font-black text-white">Verifica passaggio</button></div>}
+    </>}
     {message && !complete && <p role="status" className="rounded-xl bg-slate-50 p-3 font-semibold">{message}</p>}
   </div>;
 };
