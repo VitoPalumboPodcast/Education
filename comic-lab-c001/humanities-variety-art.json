@@ -1,0 +1,58 @@
+[
+  {
+    "key": "father-son",
+    "label": "Papà Paolo e Matteo · messaggi dal parcheggio",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for an app used by students ages 15-16. Clean polished editorial comic linework, gently shaded, warm cream backgrounds, muted teal and terracotta accents, believable age differences and diverse appearances. A split scene, clearly divided into two distinct locations: LEFT a 45-year-old father Paolo with short dark hair, short beard and navy shirt, seated in a PARKED car, engine off, holding smartphone with both hands. RIGHT his 16-year-old son Matteo, curly brown hair, green hoodie and backpack, outside a driving-school doorway looking at his own phone. Neither is driving. Show both faces, distinct adult and teenager. Upper third blank pale wall/sky. Composition: exactly two interlocutors, first on LEFT half, second on RIGHT half; faces below top 35% so app speech bubbles will not cover them; both faces and hands readable, simple uncluttered environment. No speech bubbles, captions, words, logos, watermarks or extra panels. The illustration must depict this concrete scene, not a worksheet or infographic.",
+    "original": "art-originals/hu-father-son.png",
+    "asset": "assets/hu-father-son.jpg"
+  },
+  {
+    "key": "grandmother",
+    "label": "Nonna Teresa e Giulia · un biglietto su carta",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for an app used by students ages 15-16. Clean polished editorial comic linework, gently shaded, warm cream backgrounds, muted teal and terracotta accents, believable age differences and diverse appearances. LEFT an elderly grandmother Teresa with short silver hair, glasses and a lavender cardigan. RIGHT teenage granddaughter Giulia with dark bob haircut and mustard sweater. They sit at a tidy kitchen table with a small hand-written NOTE represented by blank paper, pen, lunchbox and a single apple. Grandmother points to the note while Giulia listens. Upper third empty pale kitchen wall. Composition: exactly two interlocutors, first on LEFT half, second on RIGHT half; faces below top 35% so app speech bubbles will not cover them; both faces and hands readable, simple uncluttered environment. No speech bubbles, captions, words, logos, watermarks or extra panels. The illustration must depict this concrete scene, not a worksheet or infographic.",
+    "original": "art-originals/hu-grandmother.png",
+    "asset": "assets/hu-grandmother.jpg"
+  },
+  {
+    "key": "teacher",
+    "label": "Professoressa Rinaldi e Amir · comunicare in classe",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for an app used by students ages 15-16. Clean polished editorial comic linework, gently shaded, warm cream backgrounds, muted teal and terracotta accents, believable age differences and diverse appearances. LEFT teenage boy Amir with short curly black hair, medium brown skin and light blue sweatshirt, sitting at a school desk with notebook. RIGHT adult female teacher Rinaldi, about 45, shoulder-length chestnut hair, glasses and dark green blazer, standing gently alongside. A small round SCHOOL BELL mounted on wall near doorway in the middle distance. Empty whiteboard and a closed laptop on desk. Upper third empty pale wall. Composition: exactly two interlocutors, first on LEFT half, second on RIGHT half; faces below top 35% so app speech bubbles will not cover them; both faces and hands readable, simple uncluttered environment. No speech bubbles, captions, words, logos, watermarks or extra panels. The illustration must depict this concrete scene, not a worksheet or infographic.",
+    "original": "art-originals/hu-teacher.png",
+    "asset": "assets/hu-teacher.jpg"
+  },
+  {
+    "key": "station",
+    "label": "Davide e signora Rosa · annuncio in stazione",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for an app used by students ages 15-16. Clean polished editorial comic linework, gently shaded, warm cream backgrounds, muted teal and terracotta accents, believable age differences and diverse appearances. LEFT 16-year-old boy Davide with straight dark hair and rust jacket, backpack. RIGHT older female traveller Rosa, about 60, grey wavy hair, blue coat, holding a small suitcase. They stand on a safe train station concourse, looking toward an overhead loudspeaker and a simple platform sign showing ONLY numeral 3. A train distant behind platform barrier. Upper third mostly blank sky/light station wall. Composition: exactly two interlocutors, first on LEFT half, second on RIGHT half; faces below top 35% so app speech bubbles will not cover them; both faces and hands readable, simple uncluttered environment. No speech bubbles, captions, words, logos, watermarks or extra panels. The illustration must depict this concrete scene, not a worksheet or infographic.",
+    "original": "art-originals/hu-station.png",
+    "asset": "assets/hu-station.jpg"
+  },
+  {
+    "key": "referee",
+    "label": "Arbitro Marco e capitana Sofia · il fischio",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for an app used by students ages 15-16. Clean polished editorial comic linework, gently shaded, warm cream backgrounds, muted teal and terracotta accents, believable age differences and diverse appearances. LEFT adult male sports referee Marco, short dark hair, clean-shaven, black-and-white striped shirt, holding a whistle near chest. RIGHT 16-year-old female team captain Sofia, dark ponytail, green sports jersey, holding a basketball at waist. School gym, court lines on floor, one distant basket, exactly two people. Upper third blank cream gym wall. Composition: exactly two interlocutors, first on LEFT half, second on RIGHT half; faces below top 35% so app speech bubbles will not cover them; both faces and hands readable, simple uncluttered environment. No speech bubbles, captions, words, logos, watermarks or extra panels. The illustration must depict this concrete scene, not a worksheet or infographic.",
+    "original": "art-originals/hu-referee.png",
+    "asset": "assets/hu-referee.jpg"
+  },
+  {
+    "key": "street",
+    "label": "Nicolò e Amina · semaforo e cartello",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for an app used by students ages 15-16. Clean polished editorial comic linework, gently shaded, warm cream backgrounds, muted teal and terracotta accents, believable age differences and diverse appearances. LEFT teenage boy Nicolo with wavy blond hair and blue jacket, RIGHT teenage girl Amina with dark brown skin, black braids and yellow jacket. They stand safely on pavement several steps BEFORE a zebra crossing. Behind at centre a simple traffic signal with red illuminated circle above dark amber and green circles, facing the crossing, no text. Small clear NO SMOKING pictogram mounted on a nearby public building wall on right. No cigarettes in use, no cars near them. Upper third pale uncluttered sky/wall. Composition: exactly two interlocutors, first on LEFT half, second on RIGHT half; faces below top 35% so app speech bubbles will not cover them; both faces and hands readable, simple uncluttered environment. No speech bubbles, captions, words, logos, watermarks or extra panels. The illustration must depict this concrete scene, not a worksheet or infographic.",
+    "original": "art-originals/hu-street.png",
+    "asset": "assets/hu-street.jpg"
+  },
+  {
+    "key": "family",
+    "label": "Roberto e Chiara · accordi nella famiglia ricostituita",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for an app used by students ages 15-16. Clean polished editorial comic linework, gently shaded, warm cream backgrounds, muted teal and terracotta accents, believable age differences and diverse appearances. LEFT adult father Roberto, 40s, dark wavy hair, light stubble, blue checked shirt. RIGHT 16-year-old daughter Chiara, red curly shoulder-length hair and teal sweater. At a home kitchen table with a paper weekly planner (blank boxes, no words), pencil, three empty mugs. A third family member is NOT depicted; they discuss arrangements. Faces thoughtful and calm, open hands. Upper third blank pale wall. Composition: exactly two interlocutors, first on LEFT half, second on RIGHT half; faces below top 35% so app speech bubbles will not cover them; both faces and hands readable, simple uncluttered environment. No speech bubbles, captions, words, logos, watermarks or extra panels. The illustration must depict this concrete scene, not a worksheet or infographic.",
+    "original": "art-originals/hu-family.png",
+    "asset": "assets/hu-family.jpg"
+  },
+  {
+    "key": "library-poster",
+    "label": "Tommaso ed Elena · leggere una pubblicità",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for an app used by students ages 15-16. Clean polished editorial comic linework, gently shaded, warm cream backgrounds, muted teal and terracotta accents, believable age differences and diverse appearances. LEFT teenage boy Tommaso, short auburn hair, round glasses and burgundy hoodie, RIGHT teenage girl Elena, short black hair, blue cardigan. They stand at school library entrance examining a large poster with a friendly DOG silhouette and small donation bowl, no words. Girl points at poster, boy has open questioning hand. One bookshelf lower background. Upper third blank pale wall for overlays. Composition: exactly two interlocutors, first on LEFT half, second on RIGHT half; faces below top 35% so app speech bubbles will not cover them; both faces and hands readable, simple uncluttered environment. No speech bubbles, captions, words, logos, watermarks or extra panels. The illustration must depict this concrete scene, not a worksheet or infographic.",
+    "original": "art-originals/hu-library-poster.png",
+    "asset": "assets/hu-library-poster.jpg"
+  }
+]

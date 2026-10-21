@@ -1,6 +1,6 @@
 # Scienze Umane · Laboratori di comunicazione e pragmatica
 
-30 scene originali per adolescenti di 15–16 anni. Luca è a sinistra; Sara è a destra. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
+42 scene originali per adolescenti di 15–16 anni. I nomi e i ruoli cambiano con la scena: il primo personaggio è a sinistra, il secondo a destra. Le prime 30 scene hanno Luca e Sara; le successive introducono altri interlocutori. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
 
 I quattro livelli delle lingue restano nel percorso Lingue. In Scienze Umane si lavora sullo stesso episodio attraverso compiti progressivi, senza rendere artificialmente il lessico più difficile.
 
@@ -995,3 +995,403 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 **Metti in scena e trasforma:** Attribuite a due personaggi fittizi motivazioni diverse per la stessa azione e scrivete le domande necessarie per conoscerle.
 
 **Guida alla discussione:** Non dividere gli studenti in tipi fissi o giudicare moralmente le motivazioni. La stessa attività può essere sostenuta da ragioni diverse.
+
+## 31 · Papà scrive: dove ci vediamo?
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Distinguere le persone dai ruoli comunicativi e verificare un riferimento spaziale.
+
+**Vignetta:** Paolo è fermo in un’auto parcheggiata. Matteo è appena uscito dalla scuola guida. Si scrivono dai rispettivi telefoni.
+
+**Illustrazione:** assets/hu-father-son.jpg
+
+![31 · Papà scrive: dove ci vediamo?](assets/hu-father-son.jpg)
+
+1. **Papà Paolo:** Ci vediamo al parcheggio dietro l’incrocio dove ti ho lasciato.
+2. **Matteo:** Ok. Intendi quello vicino alla farmacia o quello davanti al parco?
+3. **Papà Paolo:** Quello vicino alla farmacia. Sono fermo accanto all’ingresso pedonale.
+4. **Matteo:** Ho capito. Sto arrivando a piedi dalla scuola guida.
+5. **Papà Paolo:** Ti aspetto qui, senza spostare la macchina.
+6. **Matteo:** Ti vedo. Metto via il telefono e raggiungo l’ingresso.
+
+**Osserva**
+
+- Chi è il mittente del primo messaggio? Chi lo è della risposta?
+- Quale indicazione iniziale può riferirsi a due luoghi diversi?
+
+**Interpreta e verifica**
+
+- Cambiare telefono cambia il mittente di un messaggio già inviato?
+- La risposta “Ok” garantirebbe da sola di aver capito il luogo?
+
+**Metti in scena e trasforma:** Disegnate la stessa chat vista dai due telefoni. Mantenete autori e ordine dei messaggi; spiegate perché i lati sullo schermo possono cambiare.
+
+**Guida alla discussione:** Paolo e Matteo restano le stesse persone. Nel primo messaggio Paolo è mittente, nella risposta lo è Matteo. Il colore o il lato della bolla dipende dall’interfaccia e non definisce il ruolo. La richiesta di precisazione verifica il referente.
+
+## 32 · Il vocale: una parola coperta dal rumore
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Segnalare una ricezione incompleta e scegliere un mezzo più adatto.
+
+**Vignetta:** Paolo, fermo nell’auto parcheggiata, invia un vocale. Matteo lo ascolta fuori dalla scuola guida, dove c’è rumore.
+
+**Illustrazione:** assets/hu-father-son.jpg
+
+![32 · Il vocale: una parola coperta dal rumore](assets/hu-father-son.jpg)
+
+1. **Papà Paolo:** Sono al parcheggio vicino alla farmacia. Ti aspetto all’ingresso pedonale. _Nella recitazione simulate un rumore breve sulla parola “farmacia”, senza alzare il volume._
+2. **Matteo:** Ho sentito “parcheggio”, ma il nome del posto non si capisce. Puoi scriverlo?
+3. **Papà Paolo:** Certo: farmacia, ingresso pedonale. Ti mando anche il punto sulla mappa.
+4. **Matteo:** Adesso il testo è chiaro. La mappa indica lo stesso parcheggio.
+5. **Papà Paolo:** Bene. Il primo vocale da solo non bastava.
+6. **Matteo:** Sì. Ho chiesto di ripetere invece di indovinare.
+
+**Osserva**
+
+- Quale parte del messaggio Matteo dice di non aver ricevuto bene?
+- Come cambiano codice e modalità quando Paolo scrive?
+
+**Interpreta e verifica**
+
+- Il rumore è la stessa cosa che non conoscere una parola?
+- Perché una conferma precisa è più utile di “Ho capito” se resta un dubbio?
+
+**Metti in scena e trasforma:** Confrontate una versione solo vocale e una con conferma scritta. Il rumore si simula nella recitazione, non è aggiunto all’audio incluso.
+
+**Guida alla discussione:** Il codice linguistico rimane italiano; cambia la modalità orale/scritta e l’accesso al messaggio. Una mappa introduce anche segni grafici. Non dedurre la comprensione dal solo stato “ascoltato”.
+
+## 33 · Un biglietto sul tavolo
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Riconoscere il canale cartaceo e gli impliciti di un messaggio quotidiano.
+
+**Vignetta:** Teresa e la nipote Giulia parlano in cucina. Sul tavolo ci sono il contenitore della merenda, una mela e il biglietto della nonna.
+
+**Illustrazione:** assets/hu-grandmother.jpg
+
+![33 · Un biglietto sul tavolo](assets/hu-grandmother.jpg)
+
+1. **Nonna Teresa:** Sul biglietto ho scritto: “La merenda è sul tavolo. Buono studio!”.
+2. **Giulia:** Pensavo fosse un ordine di mangiarla subito.
+3. **Nonna Teresa:** Volevo dirti dove trovarla, non quando mangiarla.
+4. **Giulia:** Allora posso tenerla per la pausa delle quattro?
+5. **Nonna Teresa:** Certo. Aggiungo: “Per la tua pausa, quando preferisci”.
+6. **Giulia:** Così il messaggio è più chiaro. Grazie, nonna.
+
+**Osserva**
+
+- Chi ha scritto il biglietto e per chi?
+- Quali parole del biglietto sono diverse dalle spiegazioni dette a voce?
+
+**Interpreta e verifica**
+
+- Informare della presenza della merenda equivale a ordinare di mangiarla?
+- Quale aggiunta chiarisce l’intenzione senza cambiare la merenda?
+
+**Metti in scena e trasforma:** Scrivete un biglietto informativo e uno con una richiesta esplicita. Scambiateli e confrontate le interpretazioni.
+
+**Guida alla discussione:** Nel dialogo il canale è acustico; nel biglietto è visivo e cartaceo. Il supporto carta non è il codice, che qui è l’italiano scritto.
+
+## 34 · Suona la campanella: che cosa significa?
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Interpretare un segnale convenzionale in relazione al contesto.
+
+**Vignetta:** Amir e la professoressa Rinaldi sono in aula. Si vede la campanella vicino alla porta.
+
+**Illustrazione:** assets/hu-teacher.jpg
+
+![34 · Suona la campanella: che cosa significa?](assets/hu-teacher.jpg)
+
+1. **Amir:** È suonata la campanella. La scuola è finita?
+2. **Prof.ssa Rinaldi:** Non ancora. A quest’ora segnala il cambio di lezione.
+3. **Amir:** Quindi lo stesso suono non vuol dire sempre “andiamo a casa”.
+4. **Prof.ssa Rinaldi:** Esatto. Per capirlo usiamo anche l’orario e le regole della scuola.
+5. **Amir:** Controllo l’orario: adesso abbiamo il laboratorio.
+6. **Prof.ssa Rinaldi:** Bene. Raccogliamo il materiale e raggiungiamo il laboratorio insieme.
+
+**Osserva**
+
+- Quale interpretazione propone Amir?
+- Quale informazione aggiunge l’insegnante?
+
+**Interpreta e verifica**
+
+- Il suono da solo permette sempre di sapere quale attività inizia?
+- In un’altra scuola le convenzioni potrebbero essere diverse?
+
+**Metti in scena e trasforma:** Inventate due contesti con la stessa campanella e significati diversi. Indicate il destinatario collettivo.
+
+**Guida alla discussione:** Distinguere l’istituzione che organizza il segnale dal dispositivo che lo emette materialmente. La campanella non usa parole ma un codice convenzionale.
+
+## 35 · L’email senza allegato
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Confrontare mittente, destinatario, messaggio e supporto in un’email scolastica.
+
+**Vignetta:** Amir e la professoressa controllano una consegna al banco. Il portatile è sul tavolo.
+
+**Illustrazione:** assets/hu-teacher.jpg
+
+![35 · L’email senza allegato](assets/hu-teacher.jpg)
+
+1. **Amir:** Professoressa, le ho mandato l’email: “Ecco la presentazione in allegato”.
+2. **Prof.ssa Rinaldi:** L’email è arrivata, ma non vedo nessun file allegato.
+3. **Amir:** Ho scritto il messaggio, però ho dimenticato di aggiungere il documento.
+4. **Prof.ssa Rinaldi:** Il testo annuncia un contenuto che al momento non ho ricevuto.
+5. **Amir:** Invio una nuova email con il file e un oggetto preciso: “Presentazione laboratorio”.
+6. **Prof.ssa Rinaldi:** Adesso il file c’è. Ti rispondo per confermare la ricezione.
+
+**Osserva**
+
+- Che cosa è arrivato e che cosa manca?
+- Quando risponde la professoressa, quale ruolo assume?
+
+**Interpreta e verifica**
+
+- Inviare un testo che nomina un file significa aver trasmesso anche il file?
+- Quale feedback verifica la ricezione del documento?
+
+**Metti in scena e trasforma:** Preparate una finta email con oggetto, destinatario, testo e allegato rappresentato su carta. Non usate indirizzi reali.
+
+**Guida alla discussione:** La conversazione mostrata è in presenza. Il laboratorio analizza separatamente l’email citata. La conferma di ricezione non coincide con una valutazione positiva del lavoro.
+
+## 36 · L’annuncio al binario tre
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Riconoscere un destinatario collettivo e integrare informazioni sonore e visive.
+
+**Vignetta:** Davide e una viaggiatrice, Rosa, sono nell’atrio della stazione. Si vedono un altoparlante e il numero del binario.
+
+**Illustrazione:** assets/hu-station.jpg
+
+![36 · L’annuncio al binario tre](assets/hu-station.jpg)
+
+1. **Davide:** L’altoparlante ha annunciato: “Il treno è in arrivo al binario tre”.
+2. **Signora Rosa:** Era l’annuncio per il nostro treno o per un altro?
+3. **Davide:** Non ho sentito il numero del treno. Controlliamo il tabellone.
+4. **Signora Rosa:** Qui il nostro treno risulta al binario tre. Controllo anche la destinazione.
+5. **Davide:** Coincidono numero e destinazione. Adesso abbiamo verificato.
+6. **Signora Rosa:** Bene. Seguiamo le indicazioni senza basarci soltanto sulla prima frase.
+
+**Osserva**
+
+- A chi è rivolto l’annuncio, oltre ai due interlocutori?
+- Quali dati verificano sul tabellone?
+
+**Interpreta e verifica**
+
+- La frase isolata basta a identificare un treno preciso?
+- Come si completano canale sonoro e supporto visivo?
+
+**Metti in scena e trasforma:** Simulate un annuncio completo e uno incompleto. Gli ascoltatori devono formulare una domanda utile.
+
+**Guida alla discussione:** L’altoparlante è lo strumento di diffusione; il mittente organizzativo è il servizio della stazione. La scena non riproduce annunci reali.
+
+## 37 · Il fischio non è una parola
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Distinguere codice non verbale, canale sonoro e regola condivisa.
+
+**Vignetta:** L’arbitro Marco e la capitana Sofia sono in palestra. Lui tiene il fischietto, lei il pallone.
+
+**Illustrazione:** assets/hu-referee.jpg
+
+![37 · Il fischio non è una parola](assets/hu-referee.jpg)
+
+1. **Arbitro Marco:** Ho fischiato: fermiamo il gioco un momento.
+2. **Sofia:** Avevo sentito il suono, ma non avevo capito il motivo.
+3. **Arbitro Marco:** La palla era uscita. Ora indico da dove si riprende.
+4. **Sofia:** Quindi il fischio interrompe il gioco e il gesto aggiunge un’informazione.
+5. **Arbitro Marco:** Sì. Le regole condivise ci aiutano a interpretarli.
+6. **Sofia:** Lo ricordo anche alla squadra: prima osserviamo, poi riprendiamo.
+
+**Osserva**
+
+- Quale informazione porta il fischio e quale aggiunge il gesto?
+- Chi riceve il segnale oltre a Sofia?
+
+**Interpreta e verifica**
+
+- Un suono può comunicare anche senza una lingua parlata?
+- Che cosa occorre condividere per capirlo?
+
+**Metti in scena e trasforma:** Create un piccolo codice di tre segnali per un gioco. Spiegate le convenzioni prima della simulazione.
+
+**Guida alla discussione:** Non confondere non verbale con non sonoro: un fischio è sonoro ma non è una parola. Gli audio inclusi leggono il dialogo; il fischio si può simulare durante la recitazione.
+
+## 38 · Il rosso comunica anche senza parole
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Individuare un codice visivo convenzionale e un destinatario collettivo.
+
+**Vignetta:** Nicolò e Amina aspettano sul marciapiede prima delle strisce. Il semaforo visibile è rosso.
+
+**Illustrazione:** assets/hu-street.jpg
+
+![38 · Il rosso comunica anche senza parole](assets/hu-street.jpg)
+
+1. **Nicolò:** Il semaforo è rosso. Aspettiamo qui.
+2. **Amina:** Non c’è una frase scritta, ma il segnale ci dà un’indicazione.
+3. **Nicolò:** Il rosso significa che dobbiamo fermarci.
+4. **Amina:** Lo capiamo perché conosciamo la convenzione dei colori.
+5. **Nicolò:** Quindi il colore fa parte del codice e la luce rende visibile il segnale.
+6. **Amina:** Sì. Il destinatario non è una sola persona: riguarda chi deve attraversare.
+
+**Osserva**
+
+- Quale segnale vedono i personaggi?
+- Qual è la differenza fra il colore convenzionale e il mezzo che lo rende percepibile?
+
+**Interpreta e verifica**
+
+- Il dispositivo è una persona che parla?
+- Perché è utile distinguere l’ente che comunica dal dispositivo usato?
+
+**Metti in scena e trasforma:** Rappresentate il segnale su carta e indicate codice, canale e destinatari. Confrontatelo con un messaggio vocale.
+
+**Guida alla discussione:** La scena analizza il segnale e non sostituisce le regole della circolazione. Un dispositivo può trasmettere una comunicazione predisposta da un’istituzione.
+
+## 39 · A chi parla questo cartello?
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Leggere un simbolo pubblico e riconoscere il destinatario non nominato.
+
+**Vignetta:** Sul muro dell’edificio vicino al marciapiede è visibile un cartello con il simbolo del divieto di fumo.
+
+**Illustrazione:** assets/hu-street.jpg
+
+![39 · A chi parla questo cartello?](assets/hu-street.jpg)
+
+1. **Nicolò:** Guarda il simbolo sul muro: una sigaretta barrata.
+2. **Amina:** Indica che in quel luogo è vietato fumare.
+3. **Nicolò:** Non c’è scritto il nome di un destinatario. A chi si rivolge?
+4. **Amina:** Alle persone che entrano o si trovano nell’area indicata.
+5. **Nicolò:** Il simbolo riassume una regola senza una lunga spiegazione.
+6. **Amina:** E per capire dove vale guardiamo anche dove è collocato.
+
+**Osserva**
+
+- Quali elementi grafici permettono di riconoscere il divieto?
+- Il destinatario è nominato oppure definito dalla situazione?
+
+**Interpreta e verifica**
+
+- Il simbolo e il cartello sono la stessa cosa di codice e canale?
+- Perché la posizione del cartello contribuisce a interpretarlo?
+
+**Metti in scena e trasforma:** Inventate un cartello per uno spazio scolastico e chiedete a un altro gruppo che cosa capisce.
+
+**Guida alla discussione:** Distinguere il significato convenzionale del simbolo dal supporto materiale su cui appare. Non occorre che il destinatario sia chiamato per nome.
+
+## 40 · Nella nostra famiglia: chiedere prima
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Negoziare ruoli e accordi nella vita di una famiglia ricostituita senza presupporli.
+
+**Vignetta:** Roberto e sua figlia Chiara discutono in cucina davanti a un programma settimanale. Elena è la nuova compagna di Roberto e non è presente.
+
+**Illustrazione:** assets/hu-family.jpg
+
+![40 · Nella nostra famiglia: chiedere prima](assets/hu-family.jpg)
+
+1. **Roberto:** Domani viene Elena a prenderti dopo scuola.
+2. **Chiara:** Lo sapevi già tu, ma io non ne avevo ancora parlato con lei.
+3. **Roberto:** Hai ragione: l’ho deciso senza chiederti come ti organizzavi.
+4. **Chiara:** Mi va bene parlarne, ma vorrei sapere prima chi arriva e dove ci vediamo.
+5. **Roberto:** Lo concordiamo con Elena e poi lo scriviamo sul programma.
+6. **Chiara:** Così abbiamo un accordo chiaro e non dobbiamo indovinare.
+
+**Osserva**
+
+- Quale decisione Roberto presenta come già presa?
+- Quale bisogno esprime Chiara senza giudicare Elena?
+
+**Interpreta e verifica**
+
+- Condividere una casa significa avere automaticamente gli stessi accordi?
+- Quali persone devono essere coinvolte nella conferma?
+
+**Metti in scena e trasforma:** Create una scena fittizia in cui nonno, zia o un altro adulto aiuta nell’organizzazione. Formulate l’accordo con chi, dove e quando.
+
+**Guida alla discussione:** Le forme familiari non determinano la qualità della comunicazione. La scena mette a fuoco accordi e ascolto, senza classificare famiglie come migliori o peggiori e senza riprendere casi di cronaca.
+
+## 41 · Il manifesto vuole convincerci
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Confrontare scopo informativo e persuasivo, immagini e parole.
+
+**Vignetta:** Tommaso ed Elena osservano un manifesto con il disegno di un cane all’ingresso della biblioteca. La classe sta preparando una raccolta solidale.
+
+**Illustrazione:** assets/hu-library-poster.jpg
+
+![41 · Il manifesto vuole convincerci](assets/hu-library-poster.jpg)
+
+1. **Tommaso:** Il cane sul manifesto mi fa venire voglia di partecipare.
+2. **Elena:** L’immagine attira l’attenzione. Ma che cosa ci viene chiesto di fare?
+3. **Tommaso:** Il testo della proposta dice di portare coperte pulite venerdì, qui a scuola.
+4. **Elena:** Queste informazioni spiegano l’azione concreta, oltre a suscitare un’emozione.
+5. **Tommaso:** Prima di condividere controllo chi organizza e a chi vanno i materiali.
+6. **Elena:** Poi possiamo creare un messaggio chiaro, con un’immagine e indicazioni verificabili.
+
+**Osserva**
+
+- Quale effetto dell’immagine riferisce Tommaso?
+- Quali informazioni rendono concreta la richiesta?
+
+**Interpreta e verifica**
+
+- Provare un’emozione dimostra da solo che una proposta è affidabile?
+- Che cosa occorre verificare prima di condividerla?
+
+**Metti in scena e trasforma:** Progettate un manifesto fittizio con mittente riconoscibile, scopo, destinatari e istruzioni chiare.
+
+**Guida alla discussione:** L’immagine proposta non riproduce una campagna reale. Distinguere l’effetto riferito da un personaggio da un effetto garantito su tutti i destinatari.
+
+## 42 · “Aprito”: una regola da scoprire
+
+**Percorso:** 5 · Famiglia, scuola e vita quotidiana
+
+**Obiettivo:** Usare un esempio fittizio per distinguere osservazione e spiegazioni dello sviluppo linguistico.
+
+**Vignetta:** Amir e la professoressa discutono in aula un esempio inventato di linguaggio infantile, scritto sul quaderno.
+
+**Illustrazione:** assets/hu-teacher.jpg
+
+![42 · “Aprito”: una regola da scoprire](assets/hu-teacher.jpg)
+
+1. **Amir:** Nel nostro esempio il bambino dice “ho aprito”. Ha soltanto copiato una parola?
+2. **Prof.ssa Rinaldi:** Potrebbe aver applicato una regola a una forma che invece è irregolare.
+3. **Amir:** Come “finito”: allora prova “aprito”, anche se gli adulti dicono “aperto”.
+4. **Prof.ssa Rinaldi:** È una possibile iperregolarizzazione. Un esempio da osservare, non una diagnosi.
+5. **Amir:** Quindi confrontiamo ciò che sente, ciò che produce e come usa le regole.
+6. **Prof.ssa Rinaldi:** Sì. Studiamo anche le diverse teorie, senza pensare che un solo episodio le dimostri tutte.
+
+**Osserva**
+
+- Qual è la forma prodotta nel caso inventato?
+- Quale regolarità potrebbe aver usato il bambino?
+
+**Interpreta e verifica**
+
+- Ripetere ciò che si sente e costruire una regola sono la stessa spiegazione?
+- Un singolo episodio permette di valutare lo sviluppo di una persona?
+
+**Metti in scena e trasforma:** Confrontate due ipotesi: apprendimento tramite modelli e rinforzi; predisposizione alla costruzione di regole. Cercate domande che ciascuna ipotesi suggerisce.
+
+**Guida alla discussione:** Il resoconto di lezione suggerisce il confronto Skinner–Chomsky. Presentarlo come confronto storico di spiegazioni, non come diagnosi o prova conclusiva. Non assegnare età rigide né interpretare la fluidità di parola come misura dell’intelligenza.
+
+## Estensione dai materiali di classe
+
+Dodici nuovi episodi fittizi ispirati alle schede sulla comunicazione, al percorso padre–figlio, al tema delle forme familiari e al resoconto sul linguaggio. Nessun dato personale degli studenti o caso di cronaca è riportato. Otto illustrazioni originali aggiuntive. Per ogni segnale citato nel dialogo il laboratorio distingue i sei elementi del segnale da quelli della conversazione corrente. Le schede originali restano materiali di riferimento, senza essere pubblicate integralmente.

@@ -101,8 +101,12 @@ Creata il 19 ottobre 2026 con ImageGen modificando classroom.jpg: Jack ed Emma s
 Nove nuove illustrazioni create il 19 ottobre 2026 con ImageGen, mantenendo lo stile della scena originale pen-request.jpg: Jack a sinistra in felpa verde acqua, Emma a destra in maglia terracotta, aula pulita e spazio libero nella parte alta per i fumetti. Le immagini illustrano l’offerta della penna, il ringraziamento, la risposta, la promessa di restituirla, la penna di riserva, l’astuccio dimenticato e la scrittura durante la lezione. Due ulteriori immagini sono dedicate alle prime battute latine, nelle quali Emma mostra di avere la penna prima che Jack la chieda. File: assets/pen-02-offer.jpg, pen-03-thanks.jpg, pen-04-welcome.jpg, pen-05-return.jpg, pen-06-spare.jpg, pen-07-forgot-case.jpg, pen-08-whole-lesson.jpg, pen-la-02-has.jpg e pen-la-03-ask.jpg. Gli originali PNG sono in art-originals/.
 
 
-## Scienze Umane: 14 illustrazioni originali
+## Scienze Umane: prime 14 illustrazioni originali
 
 Create il 21 ottobre 2026 con lo strumento integrato ImageGen, una generazione distinta per ciascuna immagine. classroom.jpg è stato usato come riferimento di stile e identità dei personaggi. Luca rimane a sinistra, Sara a destra. Sfondi semplici, parte superiore libera, nessun testo incorporato. Le scene di chat e vocali mostrano due ambienti separati; le scene di gruppo distinguono interlocutori e altri presenti. Originali PNG in art-originals/; JPEG ottimizzati in assets/hu-*.jpg.
 
 Il documento SCIENZE-UMANE-SCENE.md raccoglie tutti i dialoghi, le illustrazioni associate e le attività. I prompt finali sono nel file humanities-art-prompts.json, con indicazione dello strumento utilizzato.
+
+## Scienze Umane: altri personaggi e contesti
+
+Otto nuove illustrazioni originali create con lo strumento integrato ImageGen, una generazione per asset. Personaggi fittizi, nessuna fotografia degli studenti utilizzata. Padri, figlio, nonna, nipote, insegnante, studente, viaggiatrice, arbitro, capitana e nuovi compagni; ambienti domestici, scuola, stazione, palestra e strada. Originali PNG in art-originals/hu-*.png; JPEG ottimizzati a 1280 px in assets/. Prompt completi e corrispondenze dei file in humanities-variety-art.json. Il file locale di lavorazione conserva anche i percorsi delle generazioni; la copia pubblicata omette tali percorsi.
