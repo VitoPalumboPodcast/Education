@@ -1,0 +1,11 @@
+/* Adapt the HTML image dimensions to the card width without cropping the scene. */
+.face,
+.lesson-image .face,
+.affect-card > img {
+  height: auto;
+  object-fit: contain;
+}
+
+.affect-card > img {
+  aspect-ratio: auto;
+}
