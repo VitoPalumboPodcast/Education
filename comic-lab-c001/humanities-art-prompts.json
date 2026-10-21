@@ -1,0 +1,91 @@
+{
+  "tool": "Built-in ImageGen",
+  "date": "2026-10-21",
+  "reference": "assets/classroom.jpg",
+  "images": [
+    {
+      "key": "sports",
+      "original": "art-originals/hu-sports.png",
+      "asset": "assets/hu-sports.jpg",
+      "prompt": "Use case: illustration-story. Create ONE NEW original landscape 16:9 scene background for a school comic about communication for ages 15-16. Reference image is ONLY for character identities and visual style. Luca is the teen boy on the LEFT in teal hoodie, Sara is the teen girl on the RIGHT with long brown hair and terracotta sweater; keep them easily recognizable. Crisp clean editorial comic illustration, warm cream background, muted teal and terracotta, simple uncluttered setting. Upper 30 percent is empty pale wall for app speech bubbles; faces and hands in lower two thirds. Scene: Luca and Sara stand facing each other in a quiet school corridor near a gym entrance. Luca holds a small plain paper notice with a simple basketball drawing (no text); he points toward the gym doorway while Sara listens attentively. Exactly two people. No text, letters, speech bubbles, captions, logos or watermarks. Show both faces clearly."
+    },
+    {
+      "key": "chat",
+      "original": "art-originals/hu-chat.png",
+      "asset": "assets/hu-chat.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. A SINGLE wide scene divided vertically into two separate home locations, Luca seated LEFT at his tidy desk using a smartphone, Sara seated RIGHT at her own desk using her smartphone. Both glance toward their phones with mildly uncertain expressions. A thin vertical cream gutter clearly separates the two homes. The devices have blank screens, seen obliquely not closeups. Calm realistic emotional ambiguity. Exactly two people."
+    },
+    {
+      "key": "voice",
+      "original": "art-originals/hu-voice.png",
+      "asset": "assets/hu-voice.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. A SINGLE wide scene divided vertically into two locations: LEFT Luca outdoors by a bus stop, holding smartphone near his mouth to send a voice note; a distant bus and a small vehicle silhouette indicate noisy surroundings. RIGHT Sara in a quiet room holds phone near her ear, eyebrows slightly raised, other hand cupped toward the phone, trying to hear. Thin vertical cream gutter separates locations. No headphones, no additional people."
+    },
+    {
+      "key": "window",
+      "original": "art-originals/hu-window.png",
+      "asset": "assets/hu-window.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. Luca sits at a classroom desk on LEFT, Sara sits at adjacent desk on RIGHT. An OPEN WINDOW beside Luca has curtains gently blowing inward. Sara folds her arms around herself and looks toward the window, visibly chilly but not exaggerated; Luca listens with one open hand. Two notebooks. Show the window gap clearly. Exactly two people."
+    },
+    {
+      "key": "silence",
+      "original": "art-originals/hu-silence.png",
+      "asset": "assets/hu-silence.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. Quiet school cafeteria with two seats and a table. Luca on left has just invited Sara to sit, one hand open toward the empty chair. Sara on right stands with backpack, looking down and away, shoulders slightly drawn in, lips CLOSED. Her silence is ambiguous, she is neither angry nor smiling. Exactly two characters. No food needed."
+    },
+    {
+      "key": "warm",
+      "original": "art-originals/hu-warm.png",
+      "asset": "assets/hu-warm.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. Classroom desk with one open notebook. Luca left leans slightly toward Sara, hands relaxed open, gentle supportive smile, a listening posture with eye contact. Sara right has a pencil, pauses over her notebook and looks back thoughtfully. Warm attentive expression. Exactly two people, no phones."
+    },
+    {
+      "key": "impatient",
+      "original": "art-originals/hu-impatient.png",
+      "asset": "assets/hu-impatient.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. Classroom desk with a half-finished exercise notebook. Luca on left folds his arms and glances at a plain wristwatch, eyebrows drawn, mouth slightly open as if impatiently asking a question. Sara on right with pencil above notebook looks back uncertainly. Clear but subtle impatience, no aggression, no smiling. Exactly two people."
+    },
+    {
+      "key": "surprise",
+      "original": "art-originals/hu-surprise.png",
+      "asset": "assets/hu-surprise.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. Classroom desk with a completed exercise notebook in front of Sara RIGHT, who sits upright holding her pencil and looks back at Luca. Luca LEFT has raised eyebrows, open hand and a mildly surprised warm expression while looking at Sara's completed notebook. Surprise rather than mockery. Exactly two people."
+    },
+    {
+      "key": "noise",
+      "original": "art-originals/hu-noise.png",
+      "asset": "assets/hu-noise.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. School corridor beside an open gym entrance, a distant basketball and gym equipment behind the doorway, no background people. Luca LEFT is speaking toward Sara RIGHT, leaning slightly closer. Sara cups one hand by her ear and raises her brows to signal she cannot hear him well. Show only two characters and an uncluttered corridor. No typography or sound effect lettering."
+    },
+    {
+      "key": "addressee",
+      "original": "art-originals/hu-addressee.png",
+      "asset": "assets/hu-addressee.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. Bright classroom. Main boy Luca on LEFT, main girl Sara on RIGHT. Luca looks down toward a notebook as he asks something, while Sara gestures gently toward herself with a questioning expression. A THIRD clearly distinct teenage boy with short black hair and blue shirt stands smaller and further back in the CENTER, beside another desk. Exactly THREE people, main two prominent, background boy distinct. No phones."
+    },
+    {
+      "key": "conflict",
+      "original": "art-originals/hu-conflict.png",
+      "asset": "assets/hu-conflict.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. Luca LEFT and Sara RIGHT sit at a classroom desk with two notebooks. Luca looks frustrated, brows drawn, one hand raised mid-sentence but NOT threatening. Sara looks concerned and assertive, one open hand gently indicating a pause. Both seated at equal level, a realistic mild disagreement, no violence or smiling. Exactly two people."
+    },
+    {
+      "key": "listen",
+      "original": "art-originals/hu-listen.png",
+      "asset": "assets/hu-listen.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. Quiet school library with one table and two chairs. Luca LEFT listens with relaxed hands and attentive eye contact, mouth closed and no broad smile. Sara RIGHT speaks about a disappointment, shoulders slightly lowered, hand on her notebook, thoughtful rather than crying. Both faces visible, empathetic interaction without touch. Exactly two people."
+    },
+    {
+      "key": "group",
+      "original": "art-originals/hu-group.png",
+      "asset": "assets/hu-group.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. Quiet classroom. Luca LEFT and Sara RIGHT in foreground. Sara looks uncertain and gestures gently toward a small group behind them; Luca listens and looks concerned, not angry. In the lower middle background are exactly TWO other classmates, a black-haired teenage boy and a short-haired teenage girl working together at a separate table with a laptop, not looking mocking or hostile. Exactly four people. Main pair remains visually dominant."
+    },
+    {
+      "key": "greeting",
+      "original": "art-originals/hu-greeting.png",
+      "asset": "assets/hu-greeting.jpg",
+      "prompt": "Use case: illustration-story. ONE original clean landscape 16:9 background for an educational comic on communication, ages 15-16. The reference is only for visual style and character identity: Luca, teen boy short brown hair teal hoodie on LEFT; Sara, teen girl long brown hair terracotta sweater on RIGHT. Keep identities and gender consistent. Crisp editorial comic linework, muted teal terracotta and cream, soft daylight, uncluttered environment, clearly readable faces and hand gestures. Upper 30% blank pale wall for dialogue overlay. No text, lettering, speech bubbles, logos, watermarks. School entrance with simple cream wall and a small bench. Luca LEFT greets Sara RIGHT with arms slightly open, stopping at a respectful distance without touching. Sara smiles gently and raises ONE hand in a wave, palm visible, expressing a preference for a wave. Friendly mutual respect, natural bodies, no hug actually taking place. Exactly two people."
+    }
+  ]
+}
