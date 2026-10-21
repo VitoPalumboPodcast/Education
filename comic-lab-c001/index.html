@@ -150,6 +150,15 @@ body:not(.settings-open):not(.download-page) .settings-only{order:4}
 .frame-field{border-top:1px solid #e7d9bf;margin-top:9px;padding-top:10px;display:grid;gap:7px}.frame-field label{font-weight:750;font-size:.85rem}.frame-field select,.frame-field input{max-width:100%;width:100%}.frame-field .frame-state{font-size:.8rem;color:#506277}.frame-field button{justify-self:start}
 @media(max-width:530px){.course-dialogue-scene:has(.bundled-art) .speech.left:not(.previous){--speech-x:0%!important}.course-dialogue-scene:has(.bundled-art) .speech.right:not(.previous){--speech-x:10%!important}}
 @media(max-width:530px){.italian-parity-scene:has(.bundled-art) .speech.left:not(.previous){--speech-x:0%!important}.italian-parity-scene:has(.bundled-art) .speech.right:not(.previous){--speech-x:10%!important}}
+
+.pair-choice{width:max-content;max-width:100%;padding:7px 10px;margin:0 0 6px;border:1px solid #b9dce0;border-radius:11px;background:#ecf8f8;color:#155766;font-weight:700;cursor:pointer}
+.scene-frame.pair-bubbles .speech{width:47%!important;top:5%!important;min-width:0!important}
+.scene-frame.pair-bubbles .speech.left{--speech-x:2%!important}
+.scene-frame.pair-bubbles .speech.right{--speech-x:51%!important}
+.scene-frame.pair-bubbles .speech.previous:not([hidden]){display:block!important;opacity:.82;filter:none;transform:none;pointer-events:auto}
+.scene-frame.pair-bubbles .speech-content{max-height:none!important;overflow:visible!important}
+.scene-frame.pair-bubbles .speech .spoken{font-size:clamp(.8rem,1.8vw,1.35rem);line-height:1.2}
+@media(max-width:530px){.scene-frame.pair-bubbles .speech-content{padding:8px 9px}.scene-frame.pair-bubbles .speech .spoken{font-size:clamp(.75rem,3vw,.94rem)}}
 </style>
 </head>
 <body>
@@ -163,9 +172,9 @@ body:not(.settings-open):not(.download-page) .settings-only{order:4}
   <section class="panel sidepanel" id="studentChooser" aria-label="Scegli il dialogo"><h3>Scegli il dialogo</h3><div class="field"><label for="language">Lingua da praticare</label><select id="language"><option value="en">English</option><option value="it">Italiano</option><option value="fr">Français</option><option value="la">Latino · voce italiana</option></select></div><div class="field"><label for="sceneSelector">Scena</label><select id="sceneSelector"></select></div><div class="field level-picker"><label for="levelSelect">Livello del dialogo</label><select id="levelSelect"><option value="zero">Livello 0 · prime parole</option><option value="base">Base</option><option value="intermediate">Intermedio</option><option value="advanced">Avanzato</option></select></div><div class="rolepill"><b>Obiettivo:</b> <span id="goalText"></span></div></section>
   <section class="panel" id="stagePanel" aria-label="Scena e dialogo">
    <div class="stagehead"><div><span class="eyebrow" id="stageEyebrow">SCENA INTERATTIVA</span><h2 id="sceneTitle">A pen, please</h2><div class="subline" id="sceneDesc">Due compagni in classe</div></div><span class="progress" id="stepCounter">1 / 4</span></div>
-   <div class="scene-frame" id="sceneFrame"><div id="backdrop" class="scene-back"></div><div class="scene-tint"></div><div class="speech previous" id="previousBubble" aria-hidden="true" hidden><span class="who" id="previousWho"></span><span class="spoken" id="previousText"></span></div><div class="speech" id="bubble" aria-live="polite"><div class="speech-content"><span class="who" id="speakerLabel">A sinistra</span><span class="spoken" id="bubbleText">A pen, please.</span></div></div><span class="speaker-name left" id="nameLeft">Jack</span><span class="speaker-name right" id="nameRight">Emma</span></div>
+   <div class="scene-frame" id="sceneFrame"><div id="backdrop" class="scene-back"></div><div class="scene-tint"></div><div class="speech previous" id="previousBubble" aria-hidden="true" hidden><div class="speech-content"><span class="who" id="previousWho"></span><span class="spoken" id="previousText"></span></div></div><div class="speech" id="bubble" aria-live="polite"><div class="speech-content"><span class="who" id="speakerLabel">A sinistra</span><span class="spoken" id="bubbleText">A pen, please.</span></div></div><span class="speaker-name left" id="nameLeft">Jack</span><span class="speaker-name right" id="nameRight">Emma</span></div>
    <div class="stagefooter"><div class="scene-view-tools"><button id="fullscreenBtn" class="small" title="Ingrandisci la scena a tutto schermo">⛶ Tutto schermo</button></div><div id="focusToolbar" aria-label="Comandi della scena" role="group"><span id="focusCounter" class="progress"></span><button id="fsRestart" aria-label="Ricomincia" title="Ricomincia"><b aria-hidden="true">↺</b><span>Ricomincia</span></button><button id="fsPrev" aria-label="Indietro" title="Indietro"><b aria-hidden="true">←</b><span>Indietro</span></button><button id="fsToggle" class="primary" aria-label="Avvia" title="Avvia"><b id="fsToggleIcon" aria-hidden="true">▶</b><span id="fsToggleText">Avvia</span></button><button id="fsKaraoke" class="karaoke-toggle" type="button" aria-label="Attiva karaoke" aria-pressed="false" title="Evidenzia le parole"><b aria-hidden="true">♪</b><span>Karaoke</span></button><button id="fsRepeat" aria-label="Ripeti" title="Ripeti"><b aria-hidden="true">🔊</b><span>Ripeti</span></button><button id="fsDone" aria-label="Ho parlato" title="Ho parlato"><b aria-hidden="true">✓</b><span>Ho parlato</span></button><button id="fsNext" aria-label="Avanti" title="Avanti"><b aria-hidden="true">→</b><span>Avanti</span></button><button id="fsNextScene" class="scene-skip" aria-label="Scena successiva" title="Passa al dialogo seguente nell’elenco"><b aria-hidden="true">⏭</b><span>Scena successiva</span></button><button id="fsExit" aria-label="Esci da tutto schermo" title="Esci da tutto schermo"><b aria-hidden="true">⤡</b><span>Esci</span></button></div><p id="focusStatus" class="inlinewarn" role="status" hidden></p>
-    <div class="modebox" role="group" aria-label="Modalità"><button data-mode="listen" aria-pressed="true">① Guardo e ascolto</button><button data-mode="role" aria-pressed="false">② Tocca a me</button><button data-mode="reduced" aria-pressed="false">③ Meno aiuti</button></div>
+    <label class="checkrow pair-choice" for="pairBubblesCheck"><input id="pairBubblesCheck" type="checkbox"> Mostra due fumetti insieme</label><div class="modebox" role="group" aria-label="Modalità"><button data-mode="listen" aria-pressed="true">① Guardo e ascolto</button><button data-mode="role" aria-pressed="false">② Tocca a me</button><button data-mode="reduced" aria-pressed="false">③ Meno aiuti</button></div>
     <div class="rolequick" id="roleQuick"><label for="roleSelect">Interpreto</label><select id="roleSelect"><option value="left">Personaggio a sinistra</option><option value="right">Personaggio a destra</option></select></div>
     <div class="topctrl"><span class="note" id="modeDescription">Ascolta lo scambio, una battuta alla volta.</span><button id="karaokeToggle" class="small karaoke-toggle" type="button" aria-pressed="false" title="Evidenzia le parole mentre vengono pronunciate">♪ Karaoke</button><span class="progress" id="playState">Pronto</span></div>
     <div class="buttonbar"><button id="prevBtn" aria-label="Battuta precedente">← Indietro</button><button id="playBtn" class="primary">▶ Inizia</button><button id="pauseBtn" disabled>Ⅱ Pausa</button><button id="repeatBtn">🔊 Ripeti</button><button id="nextBtn">Avanti →</button><button id="nextSceneBtn" class="scene-skip" title="Passa al dialogo seguente nell’elenco">⏭ Scena successiva</button></div>
@@ -551,7 +560,8 @@ function scheduleSpeechFit(){if(typeof requestAnimationFrame==='function')reques
 function fitSpeechBubble(){
  const frame=$('sceneFrame'),bubble=$('bubble'),content=bubble.querySelector('.speech-content'),words=$('bubbleText');
  if(!content||bubble.hidden)return;
- frame.style.minHeight='';words.style.fontSize='';
+ frame.style.minHeight='';words.style.fontSize='';const companion=$('previousBubble');const companionWords=$('previousText');companionWords.style.fontSize='';
+ if(frame.classList.contains('pair-bubbles')){const fullscreen=document.body.classList.contains('stage-focus'),limit=frame.clientHeight*(fullscreen?.38:.43);let largest=0;for(const box of [bubble,companion]){const inner=box.querySelector('.speech-content'),spoken=box.querySelector('.spoken,.hiddenwords');if(!inner||!spoken)continue;const initial=parseFloat(getComputedStyle(spoken).fontSize);for(let size=initial;size>=12;size-=.5){spoken.style.fontSize=size+'px';if(inner.scrollHeight<=limit+1)break;}largest=Math.max(largest,inner.scrollHeight);}if(!fullscreen&&largest>limit)frame.style.minHeight=Math.ceil(largest/.43)+'px';return;}
  const fullscreen=document.body.classList.contains('stage-focus');
  let limit=frame.clientHeight*(fullscreen?.42:.48);
  const original=parseFloat(getComputedStyle(words).fontSize);
@@ -564,9 +574,28 @@ function fitSpeechBubble(){
  }
 }
 window.addEventListener?.('resize',scheduleSpeechFit);
+
+function renderPairedBubbles(){
+ const frame=$('sceneFrame'),ghost=$('previousBubble'),lines=current().lines,currentLine=lines[lineIndex];
+ const first=lineIndex%2===0?lineIndex:lineIndex-1,otherIndex=first===lineIndex?first+1:first;
+ const other=lines[otherIndex],show=$('pairBubblesCheck').checked&&other&&other.side!==currentLine.side;
+ frame.classList.toggle('pair-bubbles',!!show);
+ ghost.hidden=!show;
+ if(!show){ghost.setAttribute('aria-hidden','true');return;}
+ ghost.className='speech previous '+other.side;
+ ghost.style.setProperty('--speech-x',other.side==='left'?'2%':'51%');
+ ghost.style.setProperty('--speech-y','5%');
+ $('bubble').style.setProperty('--speech-x',currentLine.side==='left'?'2%':'51%');
+ $('bubble').style.setProperty('--speech-y','5%');
+ $('previousWho').textContent=other.side==='left'?current().names[0]:current().names[1];
+ const learnerHidden=mode!=='listen'&&other.side===$('roleSelect').value&&(!$('showTextCheck').checked||mode==='reduced')&&!showForcedText;
+ $('previousText').textContent=learnerHidden?'Adesso parla tu':other.text;
+ $('previousText').className=learnerHidden?'hiddenwords':'spoken';
+ ghost.setAttribute('aria-hidden','false');
+}
 function renderLine(){updateSpeakerVoiceNames();const s=current(),l=currentLine();$('sceneFrame').classList.toggle('course-dialogue-scene',s.id.startsWith('course-'));$('sceneFrame').classList.toggle('italian-parity-scene',['intro-it','have-it','time-it'].includes(s.id));backdrop();
  const defaultPenArt=/^pen(?:-(?:it|fr))?$/.test(s.id)&&s.artKey==='pen-request'&&!s.bgData&&s.pos.leftX===5&&s.pos.rightX===53&&s.pos.leftY===6&&s.pos.rightY===6;
- $('sceneFrame').classList.toggle('pen-request-scene',defaultPenArt);const bubble=$('bubble');bubble.className='speech '+l.side;bubble.style.setProperty('--speech-x',(l.side==='left'?s.pos.leftX:s.pos.rightX)+'%');bubble.style.setProperty('--speech-y',(l.side==='left'?s.pos.leftY:s.pos.rightY)+'%');$('speakerLabel').textContent=l.side==='left'?s.names[0]:s.names[1];const ghost=$('previousBubble');ghost.hidden=true;$('previousWho').textContent='';$('previousText').textContent='';bubble.hidden=false;const hide=currentLearnerTurn()&&(!$('showTextCheck').checked||mode==='reduced')&&!showForcedText;$('bubbleText').textContent=hide?'Adesso parla tu':l.text;$('bubbleText').className=hide?'hiddenwords':'spoken';renderKaraokeText();$('nameLeft').classList.toggle('active',l.side==='left');$('nameRight').classList.toggle('active',l.side==='right');$('stepCounter').textContent=`${lineIndex+1} / ${s.lines.length}`;$('translationText').textContent=l.it||'Traduzione non inserita.';$('hintText').textContent=l.hint||'Ascolta il modello se ne hai bisogno.';$('logTurn').textContent=`Battuta ${lineIndex+1} · ${l.side==='left'?s.names[0]:s.names[1]}`;renderControl();scheduleSpeechFit();}
+ $('sceneFrame').classList.toggle('pen-request-scene',defaultPenArt);const bubble=$('bubble');bubble.className='speech '+l.side;bubble.style.setProperty('--speech-x',(l.side==='left'?s.pos.leftX:s.pos.rightX)+'%');bubble.style.setProperty('--speech-y',(l.side==='left'?s.pos.leftY:s.pos.rightY)+'%');$('speakerLabel').textContent=l.side==='left'?s.names[0]:s.names[1];const ghost=$('previousBubble');ghost.hidden=true;$('previousWho').textContent='';$('previousText').textContent='';bubble.hidden=false;const hide=currentLearnerTurn()&&(!$('showTextCheck').checked||mode==='reduced')&&!showForcedText;$('bubbleText').textContent=hide?'Adesso parla tu':l.text;$('bubbleText').className=hide?'hiddenwords':'spoken';renderKaraokeText();$('nameLeft').classList.toggle('active',l.side==='left');$('nameRight').classList.toggle('active',l.side==='right');$('stepCounter').textContent=`${lineIndex+1} / ${s.lines.length}`;$('translationText').textContent=l.it||'Traduzione non inserita.';$('hintText').textContent=l.hint||'Ascolta il modello se ne hai bisogno.';$('logTurn').textContent=`Battuta ${lineIndex+1} · ${l.side==='left'?s.names[0]:s.names[1]}`;renderControl();renderPairedBubbles();scheduleSpeechFit();}
 
 let focusMode=false;
 function syncFocusControls(){const learner=currentLearnerTurn();$('focusCounter').textContent=(lineIndex+1)+' / '+current().lines.length;$('fsPrev').disabled=lineIndex===0;$('fsNext').disabled=lineIndex>=current().lines.length-1;$('fsDone').hidden=!learner;const label=active?(paused?'Riprendi':'Pausa'):'Avvia';$('fsToggleIcon').textContent=active&&!paused?'Ⅱ':'▶';$('fsToggleText').textContent=label;$('fsToggle').setAttribute('aria-label',label);$('fsToggle').title=label;}
@@ -598,8 +627,8 @@ function renderEditor(){const s=current();$('editLevelHelp').textContent='Stai m
 function noteEditor(t){$('editorStatus').textContent=t;$('editorStatus').hidden=false;}
 let hasUnsavedChanges=false;
 function markDirty(){hasUnsavedChanges=true;$('saveState').textContent='Modifiche da salvare';$('saveSettingsState').textContent='Modifiche da salvare';$('saveBar').classList.add('is-dirty');}
-function savedSettings(){return {audioEngine:$('audioEngine').value,voiceSource:$('voiceSource').value,rate:Number($('rateSlider').value),showText:$('showTextCheck').checked,showPrev:$('showPrevCheck').checked,genderLeft:$('genderLeft').value,genderRight:$('genderRight').value,voiceAssignments,voiceLabels};}
-function restoreSettings(){try{const saved=JSON.parse(localStorage.getItem(storeKey+'-settings')||'null');if(!saved||typeof saved!=='object')return;if(['recorded','device'].includes(saved.audioEngine))$('audioEngine').value=saved.audioEngine;if(['','online','local'].includes(saved.voiceSource))$('voiceSource').value=saved.voiceSource;if(Number.isFinite(saved.rate)&&saved.rate>=.6&&saved.rate<=1.2){$('rateSlider').value=String(saved.rate);$('rateValue').textContent=saved.rate.toFixed(2).replace('.',',')+'×';}if(typeof saved.showText==='boolean')$('showTextCheck').checked=saved.showText;if(typeof saved.showPrev==='boolean')$('showPrevCheck').checked=saved.showPrev;for(const side of ['Left','Right'])if(['','male','female','unknown'].includes(saved['gender'+side]))$('gender'+side).value=saved['gender'+side];if(saved.voiceAssignments&&typeof saved.voiceAssignments==='object')Object.assign(voiceAssignments,saved.voiceAssignments);if(saved.voiceLabels&&typeof saved.voiceLabels==='object')Object.assign(voiceLabels,saved.voiceLabels);}catch{}}
+function savedSettings(){return {audioEngine:$('audioEngine').value,voiceSource:$('voiceSource').value,rate:Number($('rateSlider').value),showText:$('showTextCheck').checked,showPrev:$('showPrevCheck').checked,pairBubbles:$('pairBubblesCheck').checked,genderLeft:$('genderLeft').value,genderRight:$('genderRight').value,voiceAssignments,voiceLabels};}
+function restoreSettings(){try{const saved=JSON.parse(localStorage.getItem(storeKey+'-settings')||'null');if(!saved||typeof saved!=='object')return;if(['recorded','device'].includes(saved.audioEngine))$('audioEngine').value=saved.audioEngine;if(['','online','local'].includes(saved.voiceSource))$('voiceSource').value=saved.voiceSource;if(Number.isFinite(saved.rate)&&saved.rate>=.6&&saved.rate<=1.2){$('rateSlider').value=String(saved.rate);$('rateValue').textContent=saved.rate.toFixed(2).replace('.',',')+'×';}if(typeof saved.showText==='boolean')$('showTextCheck').checked=saved.showText;if(typeof saved.showPrev==='boolean')$('showPrevCheck').checked=saved.showPrev;if(typeof saved.pairBubbles==='boolean')$('pairBubblesCheck').checked=saved.pairBubbles;for(const side of ['Left','Right'])if(['','male','female','unknown'].includes(saved['gender'+side]))$('gender'+side).value=saved['gender'+side];if(saved.voiceAssignments&&typeof saved.voiceAssignments==='object')Object.assign(voiceAssignments,saved.voiceAssignments);if(saved.voiceLabels&&typeof saved.voiceLabels==='object')Object.assign(voiceLabels,saved.voiceLabels);}catch{}}
 function saveLocal(){try{localStorage.setItem(storeKey,JSON.stringify(scenes));localStorage.setItem(storeKey+'-settings',JSON.stringify(savedSettings()));hasUnsavedChanges=false;$('saveState').textContent='✓ Salvato in questo browser';$('saveSettingsState').textContent='✓ Salvato';$('saveBar').classList.remove('is-dirty');noteEditor('Dialoghi e impostazioni salvati in questo browser. Per portarli altrove scarica l’app locale.');}catch(e){markDirty();noteEditor('Impossibile salvare in questo browser (memoria piena o disabilitata). Riduci audio o immagini, oppure esporta la scena in JSON.')}}
 function downloadFile(content,name,mime){const a=document.createElement('a');const url=URL.createObjectURL(new Blob([content],{type:mime}));a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
 function exportScene(){const s=current();const payload={format:'EnglishComicLab-1',scene:s};downloadFile(JSON.stringify(payload,null,2),(s.title.replace(/[^a-z0-9_-]+/gi,'_')||'dialogo')+'.json','application/json');noteEditor('Scena esportata (immagine inclusa, se caricata).');}
@@ -620,7 +649,7 @@ $('textBtn').addEventListener('click',()=>{showForcedText=!showForcedText;if(sho
 $('translationBtn').addEventListener('click',()=>{showTranslation=!showTranslation;if(showTranslation)wasHelpUsed=true;$('translationBtn').textContent=showTranslation?'Nascondi traduzione':'Mostra traduzione';renderControl();});
 $('roleSelect').addEventListener('change',()=>{allStop();renderLine();status('Ruolo aggiornato. Premi «Inizia» e consenti il microfono per l’avanzamento automatico.');});
 $('showTextCheck').addEventListener('change',()=>renderLine());
-$('showPrevCheck').addEventListener('change',()=>{renderLine();status('Visualizzazione dei fumetti aggiornata.');});
+$('showPrevCheck').addEventListener('change',()=>{renderLine();status('Visualizzazione dei fumetti aggiornata.');});$('pairBubblesCheck').addEventListener('change',()=>{markDirty();renderLine();status($('pairBubblesCheck').checked?'Due fumetti visibili per ogni coppia di battute.':'Un fumetto alla volta.');});
 $('rateSlider').addEventListener('input',e=>$('rateValue').textContent=Number(e.target.value).toFixed(2).replace('.',',')+'×');
 function setTeacher(yes){teacher=yes;setDialogMenu(yes&&!(typeof matchMedia==='function'&&matchMedia('(max-width:800px)').matches));document.body.classList.toggle('settings-open',yes);$('teacherView').setAttribute('aria-pressed',String(yes));$('studentView').setAttribute('aria-pressed',String(!yes));$('editroot').hidden=!yes;$('advancedOptions').hidden=!yes;$('stageEyebrow').textContent=yes?'ANTEPRIMA DEL DIALOGO':'SCENA INTERATTIVA';if(yes)renderEditor();else if(typeof window.scrollTo==='function')window.scrollTo({top:0,behavior:'instant'});}
 $('teacherView').addEventListener('click',()=>setTeacher(true));$('studentView').addEventListener('click',()=>setTeacher(false));
@@ -790,9 +819,35 @@ function comicPdf(pages){const chunks=[],offsets=[0];let length=0;const add=byte
  }
  const start=length;write('xref\n0 '+offsets.length+'\n0000000000 65535 f \n');for(let i=1;i<offsets.length;i++)write(String(offsets[i]).padStart(10,'0')+' 00000 n \n');write('trailer\n<< /Size '+offsets.length+' /Root 1 0 R >>\nstartxref\n'+start+'\n%%EOF\n');return new Blob(chunks,{type:'application/pdf'});
 }
-async function exportComicPdf(){if(mediaExportBusy)return;mediaExportBusy=true;try{noteEditor('Preparo tutte le vignette del livello selezionato…');const s=current(),count=s.lines.length,cache=new Map(),panel=document.createElement('canvas'),page=document.createElement('canvas');panel.width=1280;panel.height=960;page.width=1240;page.height=1754;const panelCtx=panel.getContext('2d'),pageCtx=page.getContext('2d');if(!panelCtx||!pageCtx)throw Error('Canvas non disponibile per il PDF.');const pages=[];
- for(let start=0;start<count;start+=2){pageCtx.fillStyle='#edf3f4';pageCtx.fillRect(0,0,page.width,page.height);for(let slot=0;slot<2&&start+slot<count;slot++){const turn=start+slot,image=await mediaArtwork(turn,cache);drawMediaFrame(panelCtx,image,turn);const y=37+slot*840;pageCtx.fillStyle='#fff';pageCtx.fillRect(66,y-5,1108,835);pageCtx.drawImage(panel,70,y,1100,825);}pages.push(jpegBytes(page.toDataURL('image/jpeg',.87)));}
- saveMediaBlob(comicPdf(pages),mediaFilename('pdf'));noteEditor('Fumetto PDF scaricato: '+count+' vignette, due per pagina, livello '+s.activeLevel+'.');
+
+function comicWrap(ctx,text,maxWidth){const rows=[''];for(const word of String(text||'').split(/\s+/)){const at=rows.length-1,next=rows[at]?rows[at]+' '+word:word;if(ctx.measureText(next).width<=maxWidth||!rows[at])rows[at]=next;else rows.push(word);}return rows;}
+function comicPanelGroups(lines){const groups=[];for(let i=0;i<lines.length;){if(i+1<lines.length&&lines[i].side!==lines[i+1].side){groups.push([i,i+1]);i+=2;}else{groups.push([i]);i++;}}if(groups.length===1){const only=groups[0];if(only.length===2)return [[only[0]],[only[1]]];return [[],only];}return groups;}
+function drawComicPanel(ctx,scene,images,turns,x,y,w,h){
+ ctx.save();ctx.fillStyle='#fffdfa';ctx.fillRect(x,y,w,h);ctx.strokeStyle='#cddce2';ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,w-2,h-2);
+ ctx.fillStyle='#18384a';ctx.font='bold 23px system-ui,Arial,sans-serif';ctx.fillText(scene.title||'Dialogo',x+20,y+36,w-40);
+ const top=y+55,bubbleMax=Math.min(h*.35,235);
+ const balloons=turns.map(turn=>{const line=scene.lines[turn],left=line.side==='left',half=w/2,bx=x+(left?14:half+6),bw=half-20,maxText=bw-36,name=scene.names[left?0:1]||'';
+  let size=25,rows=[];for(;size>=13;size--){ctx.font='bold '+size+'px system-ui,Arial,sans-serif';rows=comicWrap(ctx,line.text,maxText);if(rows.length*size*1.22+50<=bubbleMax)break;}
+  const lineHeight=size*1.22,bh=Math.min(bubbleMax,Math.max(78,rows.length*lineHeight+49));return {left,bx,bw,name,size,rows,lineHeight,bh};});
+ const imageTop=top+Math.max(0,...balloons.map(b=>b.bh))+31,imageBottom=y+h-13;
+ ctx.fillStyle='#f3f4e9';ctx.fillRect(x+12,imageTop,w-24,imageBottom-imageTop);
+ const image=images[turns.at(-1)]||images[0];if(image){const iw=image.naturalWidth||image.width,ih=image.naturalHeight||image.height,scale=Math.min((w-24)/iw,(imageBottom-imageTop)/ih),dw=iw*scale,dh=ih*scale;ctx.drawImage(image,x+(w-dw)/2,imageTop+(imageBottom-imageTop-dh)/2,dw,dh);}
+ for(const {left,bx,bw,name,size,rows,lineHeight,bh} of balloons){
+  ctx.fillStyle='#ffffffed';ctx.strokeStyle='#bfd6db';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(bx,top,bw,bh,19);ctx.fill();ctx.stroke();
+  const tx=left?bx+Math.min(75,bw*.24):bx+bw-Math.min(75,bw*.24);ctx.fillStyle='#ffffffed';ctx.beginPath();ctx.moveTo(tx-15,top+bh-2);ctx.lineTo(tx+15,top+bh-2);ctx.lineTo(tx+(left?-6:6),top+bh+20);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#087481';ctx.font='bold 17px system-ui,Arial,sans-serif';ctx.fillText(name,bx+18,top+27,bw-36);
+  ctx.fillStyle='#152e40';ctx.font='bold '+size+'px system-ui,Arial,sans-serif';for(let row=0;row<rows.length;row++)ctx.fillText(rows[row],bx+18,top+57+row*lineHeight,bw-36);
+ }
+ ctx.restore();
+}
+async function exportComicPdf(){if(mediaExportBusy)return;mediaExportBusy=true;try{
+ noteEditor('Preparo il fumetto con due battute per vignetta…');const scene=current(),groups=comicPanelGroups(scene.lines),cache=new Map(),images=await Promise.all(scene.lines.map((_,i)=>mediaArtwork(i,cache)));
+ const page=document.createElement('canvas');page.width=1240;page.height=1754;const ctx=page.getContext('2d');if(!ctx)throw Error('Canvas non disponibile per il PDF.');const pages=[];
+ for(let at=0;at<groups.length;){const left=groups.length-at,count=left===3?3:2,slotHeight=(page.height-72-(count-1)*18)/count;ctx.fillStyle='#edf3f4';ctx.fillRect(0,0,page.width,page.height);
+  for(let slot=0;slot<count;slot++)drawComicPanel(ctx,scene,images,groups[at+slot],64,36+slot*(slotHeight+18),1112,slotHeight);
+  pages.push(jpegBytes(page.toDataURL('image/jpeg',.89)));at+=count;
+ }
+ saveMediaBlob(comicPdf(pages),mediaFilename('pdf'));noteEditor('Fumetto PDF scaricato: '+groups.length+' vignette, almeno due per pagina, livello '+scene.activeLevel+'.');
  }catch(err){noteEditor(err.message||'Non riesco a creare il PDF.')}finally{mediaExportBusy=false;}}
 $('exportComicBtn').addEventListener('click',exportComicPdf);
 
