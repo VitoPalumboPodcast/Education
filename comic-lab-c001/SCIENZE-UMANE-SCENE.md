@@ -1,6 +1,6 @@
 # Scienze Umane · Laboratori di comunicazione e pragmatica
 
-54 scene originali per adolescenti di 15–16 anni. I nomi e i ruoli cambiano con la scena: il primo personaggio è a sinistra, il secondo a destra. Le prime 30 scene hanno Luca e Sara; le successive introducono altri interlocutori. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
+62 scene originali per adolescenti di 15–16 anni. I nomi e i ruoli cambiano con la scena: il primo personaggio è a sinistra, il secondo a destra. Le prime 30 scene hanno Luca e Sara; le successive introducono altri interlocutori. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
 
 I quattro livelli delle lingue restano nel percorso Lingue. In Scienze Umane si lavora sullo stesso episodio attraverso compiti progressivi, senza rendere artificialmente il lessico più difficile.
 
@@ -2205,6 +2205,337 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Guida alla discussione:** La scena riguarda variazione del registro e adeguatezza al contesto, senza classificare un gruppo come linguisticamente inferiore. La richiesta di un esempio trasforma un giudizio generico in una proposta discutibile e verificabile.
 
+## 55 · Non rispondi: devo andare via?
+
+**Percorso:** 8 · Pragmatica, feedback e prossemica
+
+**Obiettivo:** Osservare l’effetto di una pausa senza scambiarla per un rifiuto certo.
+
+**Prima di osservare:** Primo assioma della pragmatica: «È impossibile non comunicare». In una situazione di interazione anche il silenzio può influenzare l’altro e assumere valore di messaggio. Questo non significa che ogni comportamento sia intenzionale o abbia un significato univoco. Luca interpreta la pausa e agisce; una domanda gli permette di verificare la propria lettura.
+
+**Vignetta:** Durante l’intervallo Luca invita Sara a sedersi. Sara resta in silenzio e guarda verso l’ingresso.
+
+**Illustrazione:** assets/hu-silence.jpg
+
+![55 · Non rispondi: devo andare via?](assets/hu-silence.jpg)
+
+
+> Durante l’intervallo Luca invita Sara a sedersi. Sara resta in silenzio e guarda verso l’ingresso.
+
+1. **Luca:** Ti va di sederti qui con noi?
+2. **Sara:** … _Pausa senza voce. Sara resta rivolta verso l’ingresso._
+3. **Luca:** Va bene, forse preferisci stare da sola. Mi sposto.
+4. **Sara:** Aspetta, cercavo Elena. Le ho tenuto un posto.
+5. **Luca:** Quando non hai risposto ho pensato che non mi volessi qui.
+6. **Sara:** Puoi restare. La prossima volta ti dico subito che sto aspettando lei.
+
+**Osserva**
+
+- Che cosa fa Sara durante la pausa?
+- Quale azione Luca decide in seguito alla propria interpretazione?
+
+**Interpreta e verifica**
+
+- Sara deve voler comunicare un rifiuto perché la pausa produca un effetto?
+- Quale domanda poteva fare Luca prima di spostarsi?
+
+**Metti in scena e trasforma:** Recitate la pausa con due contesti diversi. Chi osserva descrive il comportamento, propone due ipotesi e formula una domanda.
+
+**Collegamento con Scienze Umane · Primo assioma · silenzio · interpretazione:** Luca si prepara ad andare via dopo una pausa: anche l’assenza di parole ha orientato lo scambio. Sara chiarisce che aspettava Elena. La pragmatica studia questi effetti nel contesto; distingue il comportamento osservabile dall’intenzione che Luca gli attribuisce.
+
+**Guida alla discussione:** Il silenzio ha conseguenze nello scambio, ma non prova rifiuto. L’assioma riguarda il valore comunicativo del comportamento in interazione, non la capacità di leggere la mente.
+
+## 56 · Sei rimasto impassibile
+
+**Percorso:** 8 · Pragmatica, feedback e prossemica
+
+**Obiettivo:** Distinguere un’espressione osservata da un giudizio sull’interesse dell’altro.
+
+**Prima di osservare:** Il primo assioma include anche immobilità e impassibilità: chi è presente in un’interazione può essere interpretato dagli altri anche senza parlare o cambiare espressione. Un volto fermo non è una prova di indifferenza. L’immagine richiama il contesto di ascolto; la didascalia descrive il comportamento da mettere in scena.
+
+**Vignetta:** Luca racconta a Sara come è andata la prova. Durante il racconto Sara mantiene un’espressione ferma; il gesto va ricreato nella recitazione.
+
+**Illustrazione:** assets/hu-listen.jpg
+
+![56 · Sei rimasto impassibile](assets/hu-listen.jpg)
+
+
+> Luca racconta a Sara come è andata la prova. Durante il racconto Sara mantiene un’espressione ferma; il gesto va ricreato nella recitazione.
+
+1. **Luca:** Alla fine sono riuscito a presentare senza leggere tutto.
+2. **Sara:** Ti ascolto. Vai avanti.
+3. **Luca:** Non cambi espressione… ti sto annoiando?
+4. **Sara:** No, sto seguendo. Aspettavo che finissi per chiederti una cosa.
+5. **Luca:** Avevo preso il tuo silenzio per disinteresse.
+6. **Sara:** Mi interessa sapere come hai fatto a superare il blocco iniziale.
+
+**Osserva**
+
+- Quale comportamento Luca usa per ipotizzare disinteresse?
+- Quale domanda finale di Sara aggiunge un’informazione?
+
+**Interpreta e verifica**
+
+- Un volto fermo ha lo stesso significato per tutti?
+- Come verificare l’ascolto senza imporre a tutti lo stesso modo di mostrarlo?
+
+**Metti in scena e trasforma:** Raccontate un piccolo successo inventato. Provate diversi modi di ascoltare e chiedete al narratore che cosa ha percepito.
+
+**Collegamento con Scienze Umane · Primo assioma · corpo · impassibilità:** Sara resta presente mentre Luca interpreta il volto fermo come noia. Il successivo chiarimento mostra che l’impassibilità non annulla la comunicazione: entra nelle aspettative reciproche. La scena collega comportamento, attribuzione e verifica senza fissare una lettura universale della mimica.
+
+**Guida alla discussione:** Non prescrivere contatto visivo, sorriso o gestualità come prove necessarie dell’attenzione. Anche l’immobilità può essere interpretata, senza rivelare automaticamente uno stato interno.
+
+## 57 · Mi passi il quaderno? · Un favore
+
+**Percorso:** 8 · Pragmatica, feedback e prossemica
+
+**Obiettivo:** Distinguere la richiesta del quaderno dalla relazione proposta nel formularla.
+
+**Prima di osservare:** Il secondo assioma distingue contenuto e relazione: il modo di rivolgersi all’altro qualifica come interpretare le parole. Il 93%/7% non misura tutta la comunicazione: il 7/38/55 di Mehrabian riguarda esperimenti su sentimenti e atteggiamenti con indizi incongruenti (parole, voce e volto). Non assegna percentuali universali al significato né dimostra il secondo assioma.
+
+**Vignetta:** Sara sta finendo un esercizio. Luca aspetta e chiede il quaderno con voce calma e mano aperta: indicazioni da provare nella recitazione.
+
+**Illustrazione:** assets/hu-warm.jpg
+
+![57 · Mi passi il quaderno? · Un favore](assets/hu-warm.jpg)
+
+
+> Sara sta finendo un esercizio. Luca aspetta e chiede il quaderno con voce calma e mano aperta: indicazioni da provare nella recitazione.
+
+1. **Luca:** Mi passi il quaderno?
+2. **Sara:** Un momento, finisco questa riga.
+3. **Luca:** Certo, aspetto. Devo controllare un passaggio.
+4. **Sara:** Ecco. Avevo paura di dover cancellare subito quello che stavo scrivendo.
+5. **Luca:** No, mi serve solo per confrontare il risultato.
+6. **Sara:** Va bene. Poi guardiamo insieme dove i conti cambiano.
+
+**Osserva**
+
+- Qual è la richiesta concreta nella prima frase?
+- Come reagisce Luca alla richiesta di aspettare?
+
+**Interpreta e verifica**
+
+- Quale relazione suggerisce la disponibilità ad aspettare?
+- Che cosa cambia confrontando questa scena con “Mi passi il quaderno? · Un ordine”?
+
+**Metti in scena e trasforma:** Confrontate le due scene con la stessa prima frase. Tenete ferme le parole iniziali e cambiate ritmo, gesto e risposta al rinvio.
+
+**Collegamento con Scienze Umane · Secondo assioma · contenuto e relazione · metacomunicazione:** La richiesta riguarda un oggetto, ma Luca accetta di aspettare e propone un confronto insieme. Contenuto e relazione si intrecciano: le risposte aiutano Sara a capire come viene trattata. Il confronto con la scena successiva mantiene la stessa domanda iniziale e rende osservabile il diverso clima relazionale.
+
+**Guida alla discussione:** Contenuto: richiesta del quaderno. Relazione: qui il favore viene negoziato con disponibilità. Non attribuire una percentuale al peso del gesto. La voce sintetica è indicativa; verificate gli effetti attraverso la recitazione.
+
+## 58 · Mi passi il quaderno? · Un ordine
+
+**Percorso:** 8 · Pragmatica, feedback e prossemica
+
+**Obiettivo:** Riconoscere un problema relazionale anche quando il contenuto della richiesta è chiaro.
+
+**Prima di osservare:** Il secondo assioma distingue contenuto e relazione: il modo di rivolgersi all’altro qualifica come interpretare le parole. Il 93%/7% non misura tutta la comunicazione: il 7/38/55 di Mehrabian riguarda esperimenti su sentimenti e atteggiamenti con indizi incongruenti (parole, voce e volto). Non assegna percentuali universali al significato né dimostra il secondo assioma.
+
+**Vignetta:** Stesso esercizio, stessa richiesta iniziale. Questa volta Luca parla in modo brusco e tende subito la mano. La lettura espressiva va provata dal vivo.
+
+**Illustrazione:** assets/hu-impatient.jpg
+
+![58 · Mi passi il quaderno? · Un ordine](assets/hu-impatient.jpg)
+
+
+> Stesso esercizio, stessa richiesta iniziale. Questa volta Luca parla in modo brusco e tende subito la mano. La lettura espressiva va provata dal vivo.
+
+1. **Luca:** Mi passi il quaderno?
+2. **Sara:** Ho capito cosa ti serve, ma mi sembra che tu mi stia dando un ordine.
+3. **Luca:** Mi serve adesso, stiamo perdendo tempo.
+4. **Sara:** Posso passartelo. Vorrei però finire la riga ed essere trattata con calma.
+5. **Luca:** Hai ragione, sto scaricando su di te la fretta. Puoi darmelo quando hai finito?
+6. **Sara:** Sì, manca un attimo. Poi lo guardiamo.
+
+**Osserva**
+
+- Sara non capisce la richiesta oppure contesta come viene trattata?
+- Quale battuta parla del modo in cui i due stanno comunicando?
+
+**Interpreta e verifica**
+
+- Una frase grammaticalmente interrogativa è sempre percepita come un favore?
+- Come Luca cambia la relazione pur chiedendo ancora lo stesso oggetto?
+
+**Metti in scena e trasforma:** Recitate la riparazione e discutete quali indizi l’hanno resa credibile. Confrontate il contenuto prima e dopo.
+
+**Collegamento con Scienze Umane · Secondo assioma · relazione · riparazione · limiti del 93%/7%:** Sara sa quale oggetto Luca vuole, ma contesta l’imposizione percepita: la difficoltà riguarda la relazione. Luca riformula riconoscendo il tempo dell’altra. Questo rende concreto il secondo assioma senza usare il 93%/7% come formula universale: quelle proporzioni derivano da specifici esperimenti di Mehrabian.
+
+**Guida alla discussione:** La risposta di Sara esplicita la propria esperienza, non una lettura infallibile del tono. Parlare di come ci si rivolge all’altro è metacomunicazione. Il dato 93%/7% non è una legge generale né una misura del valore delle parole.
+
+## 59 · Non entra nello zaino
+
+**Percorso:** 8 · Pragmatica, feedback e prossemica
+
+**Obiettivo:** Seguire il ritorno del messaggio e una modifica concreta prodotta dalla risposta.
+
+**Prima di osservare:** Nel modello circolare il feedback ritorna a chi ha parlato e può modificare il messaggio successivo. Qui Sara segnala un ostacolo, Luca cambia la consegna e Sara verifica il nuovo accordo. Gli elementi di Jakobson aiutano ad analizzare ciascun atto; descrivere soltanto l’invio iniziale non basta a seguire l’intero scambio.
+
+**Modello e ambito:** Circolare · un ostacolo cambia il piano · Applicazione nella vita scolastica
+
+**Vignetta:** Nel corridoio Luca e Sara organizzano i materiali per il laboratorio. Una risposta di Sara fa cambiare il piano.
+
+**Illustrazione:** assets/hu-sports.jpg
+
+![59 · Non entra nello zaino](assets/hu-sports.jpg)
+
+
+> Nel corridoio Luca e Sara organizzano i materiali per il laboratorio. Una risposta di Sara fa cambiare il piano.
+
+1. **Luca:** Porta tu il cartellone domani.
+2. **Sara:** È troppo grande per il mio zaino e vengo in autobus.
+3. **Luca:** Allora lascialo a scuola. Porto io un tubo per arrotolarlo.
+4. **Sara:** Quindi lo lasciamo in aula oggi e domani lo prendiamo insieme?
+5. **Luca:** Sì, ci vediamo qui dieci minuti prima del laboratorio.
+6. **Sara:** Va bene. Metto un promemoria per arrivare prima.
+
+**Osserva**
+
+- Quale ostacolo Sara segnala a Luca?
+- Quale parte del piano Luca cambia dopo il feedback?
+
+**Interpreta e verifica**
+
+- Perché non basta dire che due persone si alternano?
+- Il feedback di Sara esprime disaccordo con il progetto o informazioni per adattarlo?
+
+**Metti in scena e trasforma:** Disegnate A → B → A. Evidenziate ostacolo, adattamento e verifica. Recitate poi una versione in cui il feedback non viene considerato.
+
+**Collegamento con Scienze Umane · Modello circolare · feedback · adattamento:** La difficoltà dello zaino non compare nel primo messaggio: emerge nella risposta. Luca usa questa informazione per cambiare l’organizzazione. La circolarità è quindi osservabile nell’effetto del ritorno sul seguito dello scambio, oltre che nell’alternanza fra chi parla e chi ascolta.
+
+**Guida alla discussione:** Il feedback è la risposta che torna e orienta il seguito, non soltanto una conferma positiva. Il modello lineare può isolare il primo invio; quello circolare rappresenta il ritorno e l’adattamento.
+
+## 60 · Un passo indietro, per favore
+
+**Percorso:** 8 · Pragmatica, feedback e prossemica
+
+**Obiettivo:** Osservare una distanza ravvicinata e negoziare lo spazio senza giudicare la persona.
+
+**Prima di osservare:** Hall distingue indicativamente zona intima (0–45 cm), personale (45 cm–1,2 m), sociale (1,2–3,6 m) e pubblica (oltre 3,6 m). Sono riferimenti descrittivi, non confini universali o prescrizioni: cultura, situazione, accessibilità e preferenze individuali contano. La distanza da sola non rivela la qualità di una relazione.
+
+**Vignetta:** Situazione da recitare: Luca si avvicina a circa 30 cm per guardare un foglio; Sara chiede spazio. L’illustrazione evoca l’incontro e non è una misura in scala.
+
+**Illustrazione:** assets/hu-greeting.jpg
+
+![60 · Un passo indietro, per favore](assets/hu-greeting.jpg)
+
+
+> Situazione da recitare: Luca si avvicina a circa 30 cm per guardare un foglio; Sara chiede spazio. L’illustrazione evoca l’incontro e non è una misura in scala.
+
+1. **Luca:** Fammi vedere il disegno. Mi avvicino un attimo.
+2. **Sara:** Puoi fare un passo indietro? Così sei troppo vicino per me.
+3. **Luca:** Certo. Volevo leggere la scritta piccola.
+4. **Sara:** Metto il foglio sul banco, così lo vediamo entrambi.
+
+> Luca arretra. Il foglio è appoggiato sul banco: la distanza viene concordata, senza bisogno di attribuire cattive intenzioni.
+
+5. **Luca:** Da qui va bene?
+6. **Sara:** Sì, grazie. Adesso posso indicarti il pezzo che volevo cambiare.
+
+**Osserva**
+
+- Quale richiesta sullo spazio formula Sara?
+- Quale alternativa permette di leggere senza avvicinarsi ancora?
+
+**Interpreta e verifica**
+
+- La zona intima implica automaticamente intimità affettiva?
+- Perché la preferenza dichiarata conta più di una distanza decisa dall’esterno?
+
+**Metti in scena e trasforma:** Usate sagome o segni sul pavimento per confrontare 30 cm e circa un metro. La partecipazione a distanza ravvicinata è facoltativa: si possono muovere soltanto gli oggetti.
+
+**Collegamento con Scienze Umane · Prossemica · zona intima e personale · preferenze:** Luca cerca di leggere; Sara chiede più spazio e propone il banco come supporto comune. La gestione della distanza modifica il modo di collaborare. La fascia intima di Hall descrive una prossimità indicativa: non autorizza il contatto e non dimostra da sola affetto, rifiuto o intenzione invadente.
+
+**Guida alla discussione:** 30 cm ricade nella fascia intima indicativa di Hall, ma vicinanza materiale e relazione intima non sono sinonimi. Rispettare la richiesta di spazio; non usare la recitazione per forzare il contatto.
+
+## 61 · Al banco informazioni
+
+**Percorso:** 8 · Pragmatica, feedback e prossemica
+
+**Obiettivo:** Confrontare distanza personale e sociale in rapporto a compito e riservatezza.
+
+**Prima di osservare:** Hall distingue indicativamente zona intima (0–45 cm), personale (45 cm–1,2 m), sociale (1,2–3,6 m) e pubblica (oltre 3,6 m). Sono riferimenti descrittivi, non confini universali o prescrizioni: cultura, situazione, accessibilità e preferenze individuali contano. La distanza da sola non rivela la qualità di una relazione.
+
+**Vignetta:** All’orientamento la docente risponde ad Amir da un banco. Per la recitazione si parte da circa due metri: l’immagine non è in scala.
+
+**Illustrazione:** assets/hu-teacher.jpg
+
+![61 · Al banco informazioni](assets/hu-teacher.jpg)
+
+
+> All’orientamento la docente risponde ad Amir da un banco. Per la recitazione si parte da circa due metri: l’immagine non è in scala.
+
+1. **Amir:** È qui che si chiede l’aula per il laboratorio?
+2. **Prof.ssa Rinaldi:** Sì, è al primo piano. Da qui riesci a leggere il cartello?
+3. **Amir:** Sì. Vorrei anche chiederle una cosa che riguarda la mia iscrizione.
+4. **Prof.ssa Rinaldi:** Per quella possiamo parlare al banco laterale, senza altre persone in attesa.
+
+> La docente propone uno spazio laterale. La riservatezza dipende anche da chi può ascoltare, non soltanto dai centimetri fra i parlanti.
+
+5. **Amir:** Grazie. Preferirei non dirla davanti a tutti.
+6. **Prof.ssa Rinaldi:** Va bene. Ci spostiamo e troviamo una posizione comoda per parlare.
+
+**Osserva**
+
+- Quale domanda può essere gestita dal banco pubblico?
+- Quale esigenza spinge a cambiare posizione?
+
+**Interpreta e verifica**
+
+- Due metri suggeriscono una relazione ostile oppure un’organizzazione del servizio?
+- Basta avvicinarsi per garantire riservatezza?
+
+**Metti in scena e trasforma:** Con sagome confrontate circa un metro e due metri: zona personale e sociale. Aggiungete un osservatore in attesa e riprogettate lo spazio per una domanda riservata.
+
+**Collegamento con Scienze Umane · Prossemica · zona personale e sociale · contesto:** Il banco organizza una richiesta di informazioni a distanza sociale. Quando cambia il contenuto della domanda, i personaggi cercano uno spazio più riservato. La prossemica studia proprio come spazio, attività e relazione interagiscono: la qualità dell’ascolto non si deduce dai soli centimetri.
+
+**Guida alla discussione:** Circa due metri rientrano nella zona sociale indicativa; un metro nella personale. Non confondere distanza fisica e distanza emotiva. Nessun obbligo di avvicinarsi per ricevere aiuto.
+
+## 62 · Dal palco alla domanda
+
+**Percorso:** 8 · Pragmatica, feedback e prossemica
+
+**Obiettivo:** Osservare come distanza pubblica e personale richiedano modi diversi di prendere la parola.
+
+**Prima di osservare:** Hall distingue indicativamente zona intima (0–45 cm), personale (45 cm–1,2 m), sociale (1,2–3,6 m) e pubblica (oltre 3,6 m). Sono riferimenti descrittivi, non confini universali o prescrizioni: cultura, situazione, accessibilità e preferenze individuali contano. La distanza da sola non rivela la qualità di una relazione.
+
+**Vignetta:** In aula magna la docente presenta il laboratorio a oltre quattro metri dalla prima fila. La scena si ricrea con sagome; l’immagine è un richiamo al contesto scolastico.
+
+**Illustrazione:** assets/hu-teacher.jpg
+
+![62 · Dal palco alla domanda](assets/hu-teacher.jpg)
+
+
+> In aula magna la docente presenta il laboratorio a oltre quattro metri dalla prima fila. La scena si ricrea con sagome; l’immagine è un richiamo al contesto scolastico.
+
+1. **Prof.ssa Rinaldi:** Il laboratorio comincia lunedì. Le iscrizioni aprono domani.
+2. **Amir:** Da qui in fondo non ho sentito l’orario.
+3. **Prof.ssa Rinaldi:** Grazie di averlo segnalato. Alle quattordici; lo mostro anche sullo schermo.
+4. **Amir:** Dopo posso chiederle se posso arrivare qualche minuto più tardi?
+
+> La docente distingue la risposta rivolta alla sala dal successivo colloquio individuale. Cambiano spazio, destinatari e gestione del turno.
+
+5. **Prof.ssa Rinaldi:** Sì, a fine incontro vieni al tavolo laterale e ne parliamo.
+6. **Amir:** D’accordo, aspetto che finisca la presentazione.
+
+**Osserva**
+
+- A chi è rivolto l’avviso iniziale?
+- Quale feedback modifica il modo di presentare l’orario?
+
+**Interpreta e verifica**
+
+- Perché distanza pubblica e tono di voce sono collegati alla situazione?
+- Passare a un colloquio individuale cambia necessariamente il ruolo della docente?
+
+**Metti in scena e trasforma:** Disponete sagome a 30 cm, un metro, due metri e quattro metri. Associate le quattro fasce indicative di Hall e inventate contesti diversi per ciascuna.
+
+**Collegamento con Scienze Umane · Prossemica · zona pubblica · feedback:** La docente parla alla sala, poi risponde alla difficoltà di ascolto di Amir aggiungendo l’orario sullo schermo. La distanza pubblica richiede una gestione della voce e del turno. Il successivo colloquio cambia la situazione comunicativa senza cancellare i ruoli e mostra che prossemica e feedback possono essere studiati insieme.
+
+**Guida alla discussione:** Oltre 3,6 m si parla indicativamente di zona pubblica. Il feedback rimane possibile anche a questa distanza. Non richiedere agli studenti di urlare né di esporre dati personali nella simulazione.
+
 ## Estensione dai materiali di classe
 
 Dodici nuovi episodi fittizi ispirati alle schede sulla comunicazione, al percorso padre–figlio, al tema delle forme familiari e al resoconto sul linguaggio. Nessun dato personale degli studenti o caso di cronaca è riportato. Otto illustrazioni originali aggiuntive. Per ogni segnale citato nel dialogo il laboratorio distingue i sei elementi del segnale da quelli della conversazione corrente. Le schede originali restano materiali di riferimento, senza essere pubblicate integralmente.
@@ -2213,7 +2544,17 @@ Dodici nuovi episodi fittizi ispirati alle schede sulla comunicazione, al percor
 
 Il confronto lineare/circolare riprende il percorso di classe. Transazionale e spirale sono approfondimenti; simmetria e complementarità sono configurazioni della relazione, non ulteriori percorsi del segnale. Le scene sono originali.
 
-- [Modelli lineare, interattivo e transazionale · testo universitario](https://opened.tesu.edu/umncommunication/chapter/1-2-the-communication-process/)
+- [Il processo della comunicazione · testo universitario](https://opened.tesu.edu/umncommunication/chapter/1-2-the-communication-process/)
 - [Watzlawick e Beavin · Some Formal Aspects of Communication (1967)](https://journals.sagepub.com/doi/10.1177/0002764201000802)
 - [Dean C. Barnlund · A Transactional Model of Communication (1970)](https://www.degruyterbrill.com/document/doi/10.1515/9783110878752.43/html)
 - [Frank E. X. Dance · A Helical Model of Communication, ristampa in Foundations of Communication Theory](https://www.worldradiohistory.com/BOOKSHELF-ARH/Commentary/Foundations-of-Communications-Theory-Sereno-Mortensen-1970.pdf)
+
+## Pragmatica, feedback e prossemica · scene 55–62
+
+Otto situazioni originali con illustrazioni del catalogo riutilizzate come richiamo al contesto. Posture e distanze specificate nelle didascalie sono indicazioni da recitare; le immagini non sono misure in scala.
+
+Fonti e approfondimenti:
+
+- [Watzlawick e Beavin, Some Formal Aspects of Communication (1967)](https://journals.sagepub.com/doi/10.1177/0002764201000802)
+- [Mehrabian: ambito e limiti delle proporzioni 7/38/55](https://www.kaaj.com/psych/smorder.html)
+- Edward T. Hall, The Hidden Dimension (1966): fasce indicative della distanza interpersonale. [Prossemica e variabilità culturale · MIT Press](https://thereader.mitpress.mit.edu/understanding-personal-space-proxemics/)
