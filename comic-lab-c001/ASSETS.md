@@ -118,3 +118,7 @@ Una nuova illustrazione creata con ImageGen, usando classroom.jpg come riferimen
 ## Gergo, meme e identità nel gruppo
 
 Cinque nuove illustrazioni originali create il 22 ottobre 2026 con lo strumento integrato ImageGen, una generazione distinta per ciascuna scena. Matteo e Giulia parlano in corridoio e dopo una presentazione; Davide e Sofia si scrivono da due stanze distinte; Riccardo e Amir discutono nel cortile con un orario del bus; Elena mostra un video alla professoressa Rinaldi nel laboratorio. I nomi, i lati e le voci corrispondono ai personaggi raffigurati. Sfondi semplici, spazio superiore per i fumetti, nessuna scritta incorporata. Originali art-originals/hu-slang-*.png, JPEG ottimizzati assets/hu-slang-*.jpg. Prompt finali e corrispondenze in humanities-slang-art.json; i percorsi di lavorazione sono omessi dalla copia pubblicata.
+
+## All about you · 22 ottobre 2026
+
+assets/all-about-you.jpg: illustrazione originale generata con ImageGen per le tre scene collegate nelle quattro lingue. Luca a sinistra, felpa verde acqua; Sara a destra, maglia terracotta. Conversazione al bar, pasta e quaderni sul tavolo, borsa con pattini a quattro ruote, casco e bastone da hockey su pista. Parte alta libera per i fumetti. Nessuna scritta generata. Originale: art-originals/all-about-you.png.
