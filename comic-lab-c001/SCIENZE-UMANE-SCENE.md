@@ -1,6 +1,6 @@
 # Scienze Umane · Laboratori di comunicazione e pragmatica
 
-62 scene originali per adolescenti di 15–16 anni. I nomi e i ruoli cambiano con la scena: il primo personaggio è a sinistra, il secondo a destra. Le prime 30 scene hanno Luca e Sara; le successive introducono altri interlocutori. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
+66 scene originali per adolescenti di 15–16 anni. I nomi e i ruoli cambiano con la scena: il primo personaggio è a sinistra, il secondo a destra. Le prime 30 scene hanno Luca e Sara; le successive introducono altri interlocutori. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
 
 I quattro livelli delle lingue restano nel percorso Lingue. In Scienze Umane si lavora sullo stesso episodio attraverso compiti progressivi, senza rendere artificialmente il lessico più difficile.
 
@@ -126,13 +126,13 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Guida alla discussione:** Il codice è l’italiano scritto. Il canale è la comunicazione digitale tramite dispositivi e rete; l’app di chat è lo strumento, non il codice linguistico.
 
-## 04 · Che cosa significa “asp”?
+## 04 · Che cosa significa “*asp*”?
 
 **Percorso:** 1 · Gli elementi della comunicazione
 
 **Obiettivo:** Riconoscere la necessità di condividere il codice e chiarire le abbreviazioni.
 
-**Prima di osservare:** Le abbreviazioni usate in chat devono avere un significato condiviso. Se una forma come “asp” non viene capita, si può chiedere di riscriverla per esteso.
+**Prima di osservare:** Le abbreviazioni usate in chat devono avere un significato condiviso. Se una forma come “*asp*” non viene capita, si può chiedere di riscriverla per esteso.
 
 **Vignetta:** Luca e Sara lavorano online alla presentazione. Luca si allontana dal computer.
 
@@ -143,9 +143,9 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 > Luca e Sara lavorano online alla presentazione. Luca si allontana dal computer.
 
-1. **Luca:** asp
+1. **Luca:** *asp*
 2. **Sara:** Che significa? Hai finito?
-3. **Luca:** No: “asp” vuol dire “aspetta”. Torno fra poco.
+3. **Luca:** No: “*asp*” vuol dire “aspetta”. Torno fra poco.
 4. **Sara:** Ah, non avevo capito. Ti aspetto.
 5. **Luca:** Dammi cinque minuti e riprendiamo.
 6. **Sara:** Va bene, intanto cerco l’ultima immagine.
@@ -162,7 +162,7 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Scegliete un’abbreviazione da chat, chiedete come viene interpretata e poi riscrivetela per esteso.
 
-**Collegamento con Scienze Umane · Codice condiviso · metacomunicazione:** Sara riceve “asp” ma non ne conosce il significato. Chiedere che cosa vuol dire è una comunicazione sul codice stesso: la scena mostra perché la trasmissione materiale non garantisce la comprensione e come una spiegazione ripari l’equivoco.
+**Collegamento con Scienze Umane · Codice condiviso · metacomunicazione:** Sara riceve “*asp*” ma non ne conosce il significato. Chiedere che cosa vuol dire è una comunicazione sul codice stesso: la scena mostra perché la trasmissione materiale non garantisce la comprensione e come una spiegazione ripari l’equivoco.
 
 **Guida alla discussione:** L’abbreviazione non è compresa da entrambi gli interlocutori. Chiedere il significato è una strategia comunicativa, non una colpa.
 
@@ -2005,9 +2005,9 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Guida alla discussione:** Non presentare complementarità come dominio necessario o valore minore di una persona. È un pattern relazionale, qui flessibile e con feedback. Simmetria e complementarità possono variare fra situazioni.
 
-## 50 · È spawnato in corridoio
+## 50 · È *spawnato* in corridoio
 
-**Percorso:** 7 · Gergo, meme e identità nel gruppo
+**Percorso:** 7 · Gergo, *meme* e identità nel gruppo
 
 **Obiettivo:** Riconoscere un uso figurato del gergo e riparare una mancata comprensione.
 
@@ -2022,7 +2022,7 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 > Durante l’intervallo, Matteo racconta a Giulia un incontro inatteso nel corridoio.
 
-1. **Matteo:** Poi è spawnato il prof dietro di me.
+1. **Matteo:** Poi è *spawnato* il prof dietro di me.
 2. **Giulia:** È… cosa?
 3. **Matteo:** È arrivato all’improvviso. Non l’avevo visto uscire dall’aula.
 4. **Giulia:** Ah! Pensavo stessi ancora parlando della partita di ieri.
@@ -2041,28 +2041,28 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Raccontate lo stesso imprevisto prima a un amico che conosce il termine, poi a chi non lo conosce. Il destinatario può chiedere chiarimenti.
 
-**Collegamento con Scienze Umane · Sociolinguistica · gergo · codice condiviso:** Matteo trasferisce “spawnare” dal gioco a un incontro a scuola; Giulia lo interpreta inizialmente in un altro contesto. La scena mostra come il lessico di gruppo possa richiedere una spiegazione e come la riformulazione ricostruisca il significato condiviso.
+**Collegamento con Scienze Umane · Sociolinguistica · gergo · codice condiviso:** Matteo trasferisce “*spawnare*” dal gioco a un incontro a scuola; Giulia lo interpreta inizialmente in un altro contesto. La scena mostra come il lessico di gruppo possa richiedere una spiegazione e come la riformulazione ricostruisca il significato condiviso.
 
-**Guida alla discussione:** “Spawnare” viene usato qui in senso figurato per un’apparizione inattesa. Giulia non è meno competente: inizialmente non condivide questo uso della parola. Chiedere e riformulare ripara l’equivoco.
+**Guida alla discussione:** “*Spawnare*” viene usato qui in senso figurato per un’apparizione inattesa. Giulia non è meno competente: inizialmente non condivide questo uso della parola. Chiedere e riformulare ripara l’equivoco.
 
-## 51 · Stai farmando aura?
+## 51 · Stai *farmando* *aura*?
 
-**Percorso:** 7 · Gergo, meme e identità nel gruppo
+**Percorso:** 7 · Gergo, *meme* e identità nel gruppo
 
 **Obiettivo:** Confrontare intenzione, interpretazione ed effetto di un commento sull’immagine sociale.
 
-**Prima di osservare:** Un commento sullo stile o sul prestigio di qualcuno può essere un apprezzamento o una presa in giro. La pragmatica studia come contesto, tono e relazione contribuiscano all’interpretazione. “Farmare aura” può richiamare la costruzione o l’esibizione di un’immagine carismatica; qui il senso del commento va chiarito nello scambio.
+**Prima di osservare:** Un commento sullo stile o sul prestigio di qualcuno può essere un apprezzamento o una presa in giro. La pragmatica studia come contesto, tono e relazione contribuiscano all’interpretazione. “*Farmare* *aura*” può richiamare la costruzione o l’esibizione di un’immagine carismatica; qui il senso del commento va chiarito nello scambio.
 
 **Vignetta:** Giulia ha appena risposto a una domanda durante la presentazione. Matteo le si avvicina con un sorriso.
 
-**Illustrazione:** assets/hu-slang-aura.jpg
+**Illustrazione:** assets/hu-slang-*aura*.jpg
 
 ![51 · Stai farmando aura?](assets/hu-slang-aura.jpg)
 
 
 > Giulia ha appena risposto a una domanda durante la presentazione. Matteo le si avvicina con un sorriso.
 
-1. **Matteo:** Stai farmando aura?
+1. **Matteo:** Stai *farmando* *aura*?
 2. **Giulia:** Mi stai prendendo in giro?
 3. **Matteo:** No, quella risposta davanti a tutti è stata fortissima.
 4. **Giulia:** Ah, dal tono mi sembrava il contrario.
@@ -2081,28 +2081,28 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Recitate la prima frase come apprezzamento e come ironia. Gli osservatori indicano gli indizi, poi formulano una domanda di verifica.
 
-**Collegamento con Scienze Umane · Pragmatica · immagine sociale · intenzione ed effetto:** Giulia percepisce possibile ironia in un commento che Matteo chiarisce come complimento. Il caso collega presentazione di sé e interpretazione relazionale: l’etichetta “aura” non misura il valore della persona né prova la sua intenzione di mettersi in mostra.
+**Collegamento con Scienze Umane · Pragmatica · immagine sociale · intenzione ed effetto:** Giulia percepisce possibile ironia in un commento che Matteo chiarisce come complimento. Il caso collega presentazione di sé e interpretazione relazionale: l’etichetta “*aura*” non misura il valore della persona né prova la sua intenzione di mettersi in mostra.
 
-**Guida alla discussione:** I “punti aura” non sono una misura oggettiva del valore di una persona. Il commento di Matteo non prova che Giulia abbia agito per apparire carismatica. Il chiarimento riguarda l’intenzione dichiarata e l’effetto ricevuto.
+**Guida alla discussione:** I “punti *aura*” non sono una misura oggettiva del valore di una persona. Il commento di Matteo non prova che Giulia abbia agito per apparire carismatica. Il chiarimento riguarda l’intenzione dichiarata e l’effetto ricevuto.
 
-## 52 · Il meme non dice tutto
+## 52 · Il *meme* non dice tutto
 
-**Percorso:** 7 · Gergo, meme e identità nel gruppo
+**Percorso:** 7 · Gergo, *meme* e identità nel gruppo
 
 **Obiettivo:** Individuare un riferimento implicito e chiedere chiarimenti in una comunicazione multimodale.
 
-**Prima di osservare:** Un meme richiama un’immagine o una situazione che non tutti conoscono allo stesso modo. Per interpretarlo servono riferimenti condivisi: il destinatario può attribuirgli un bersaglio o un’intenzione diversi da quelli previsti.
+**Prima di osservare:** Un *meme* richiama un’immagine o una situazione che non tutti conoscono allo stesso modo. Per interpretarlo servono riferimenti condivisi: il destinatario può attribuirgli un bersaglio o un’intenzione diversi da quelli previsti.
 
-**Vignetta:** Davide e Sofia sono a casa. Nella chat del compito Sofia ha appena inviato un meme con una faccia esasperata, senza altre parole.
+**Vignetta:** Davide e Sofia sono a casa. Nella chat del compito Sofia ha appena inviato un *meme* con una faccia esasperata, senza altre parole.
 
-**Illustrazione:** assets/hu-slang-meme.jpg
+**Illustrazione:** assets/hu-slang-*meme*.jpg
 
 ![52 · Il meme non dice tutto](assets/hu-slang-meme.jpg)
 
 
-> Davide e Sofia sono a casa. Nella chat del compito Sofia ha appena inviato un meme con una faccia esasperata, senza altre parole.
+> Davide e Sofia sono a casa. Nella chat del compito Sofia ha appena inviato un *meme* con una faccia esasperata, senza altre parole.
 
-1. **Davide:** Quel meme era per il grafico che ho fatto?
+1. **Davide:** Quel *meme* era per il grafico che ho fatto?
 2. **Sofia:** No! Era per la consegna: dobbiamo rifarlo per la terza volta.
 3. **Davide:** L’hai mandato subito dopo la mia foto. Sembrava una presa in giro.
 4. **Sofia:** Hai ragione, senza una frase non si capiva.
@@ -2111,38 +2111,38 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Osserva**
 
-- Il meme viene interpretato come riferito alla stessa cosa da entrambi?
+- Il *meme* viene interpretato come riferito alla stessa cosa da entrambi?
 - Quale successione di messaggi influenza Davide?
 
 **Interpreta e verifica**
 
 - Perché riconoscere l’immagine non basta per capire a chi o a che cosa si riferisce?
-- Quale frase Sofia avrebbe potuto aggiungere al meme?
+- Quale frase Sofia avrebbe potuto aggiungere al *meme*?
 
-**Metti in scena e trasforma:** Inventate su carta un meme semplice, senza usare persone reali. Accompagnatelo con due didascalie che cambino il riferimento e confrontate le interpretazioni.
+**Metti in scena e trasforma:** Inventate su carta un *meme* semplice, senza usare persone reali. Accompagnatelo con due didascalie che cambino il riferimento e confrontate le interpretazioni.
 
-**Collegamento con Scienze Umane · Comunicazione multimodale · impliciti · referente:** Davide attribuisce il meme al proprio lavoro, Sofia alla consegna. La scena mostra come immagini, successione dei messaggi e conoscenze condivise concorrano al significato; esplicitare il referente ripara un equivoco con effetti sulla relazione.
+**Collegamento con Scienze Umane · Comunicazione multimodale · impliciti · referente:** Davide attribuisce il *meme* al proprio lavoro, Sofia alla consegna. La scena mostra come immagini, successione dei messaggi e conoscenze condivise concorrano al significato; esplicitare il referente ripara un equivoco con effetti sulla relazione.
 
-**Guida alla discussione:** Il meme è descritto dalla didascalia, così l’attività non richiede di conoscere un contenuto virale. L’immagine e il testo contribuiscono insieme al significato. Il chiarimento specifica il referente e riconosce l’effetto sul destinatario.
+**Guida alla discussione:** Il *meme* è descritto dalla didascalia, così l’attività non richiede di conoscere un contenuto virale. L’immagine e il testo contribuiscono insieme al significato. Il chiarimento specifica il referente e riconosce l’effetto sul destinatario.
 
-## 53 · Non chiamarmi NPC
+## 53 · Non chiamarmi *NPC*
 
-**Percorso:** 7 · Gergo, meme e identità nel gruppo
+**Percorso:** 7 · Gergo, *meme* e identità nel gruppo
 
 **Obiettivo:** Riconoscere gli effetti di un’etichetta e distinguere lo scherzo dichiarato dall’esperienza del destinatario.
 
-**Prima di osservare:** Nel videogioco un NPC è un personaggio non controllato dal giocatore. Applicare questa etichetta a una persona può svalutarne iniziativa e individualità. La scena permette di osservare l’effetto relazionale di una battuta e la possibilità di esprimere un limite.
+**Prima di osservare:** Nel videogioco un *NPC* è un personaggio non controllato dal giocatore. Applicare questa etichetta a una persona può svalutarne iniziativa e individualità. La scena permette di osservare l’effetto relazionale di una battuta e la possibilità di esprimere un limite.
 
 **Vignetta:** Nel cortile Amir sta controllando l’orario del bus su un foglietto. Riccardo lo vede fermo vicino alla panchina.
 
-**Illustrazione:** assets/hu-slang-npc.jpg
+**Illustrazione:** assets/hu-slang-*npc*.jpg
 
 ![53 · Non chiamarmi NPC](assets/hu-slang-npc.jpg)
 
 
 > Nel cortile Amir sta controllando l’orario del bus su un foglietto. Riccardo lo vede fermo vicino alla panchina.
 
-1. **Riccardo:** Sei fermo lì da un sacco. Sembri un NPC.
+1. **Riccardo:** Sei fermo lì da un sacco. Sembri un *NPC*.
 2. **Amir:** Non chiamarmi così. Sto cercando il bus per tornare a casa.
 3. **Riccardo:** Era una battuta.
 4. **Amir:** A me non fa ridere. Sembra che tu mi consideri uno senza idee.
@@ -2163,11 +2163,11 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Collegamento con Scienze Umane · Psicologia sociale · etichettamento · riconoscimento:** Riccardo riduce un comportamento osservato a un’etichetta, mentre Amir ne spiega il motivo e pone un limite. Il caso permette di osservare come le parole influenzino riconoscimento e appartenenza e perché l’intenzione di scherzare non annulli l’effetto ricevuto.
 
-**Guida alla discussione:** L’episodio illustra etichettamento e riconoscimento dell’altro; non autorizza a classificare i compagni come NPC. La riconciliazione mostrata è una possibilità, non un obbligo di accettare lo scherzo o l’aiuto.
+**Guida alla discussione:** L’episodio illustra etichettamento e riconoscimento dell’altro; non autorizza a classificare i compagni come *NPC*. La riconciliazione mostrata è una possibilità, non un obbligo di accettare lo scherzo o l’aiuto.
 
 ## 54 · Dal gruppo alla professoressa
 
-**Percorso:** 7 · Gergo, meme e identità nel gruppo
+**Percorso:** 7 · Gergo, *meme* e identità nel gruppo
 
 **Obiettivo:** Adattare il registro all’interlocutore e spiegare un giudizio attraverso osservazioni concrete.
 
@@ -2182,7 +2182,7 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 > Nel laboratorio video, Elena mostra alla professoressa una bozza realizzata dal gruppo. Poco prima l’aveva commentata nella chat con i compagni.
 
-1. **Elena:** Nel gruppo ho scritto che questa apertura è un po’ cringe.
+1. **Elena:** Nel gruppo ho scritto che questa apertura è un po’ *cringe*.
 2. **Prof.ssa Rinaldi:** Quale parte cambieresti? Me la mostri?
 3. **Elena:** Qui recitiamo lo slogan tutti insieme. Sembra molto finto.
 4. **Prof.ssa Rinaldi:** Capisco. Come vorreste iniziare?
@@ -2536,6 +2536,166 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Guida alla discussione:** Oltre 3,6 m si parla indicativamente di zona pubblica. Il feedback rimane possibile anche a questa distanza. Non richiedere agli studenti di urlare né di esporre dati personali nella simulazione.
 
+## 63 · Papà, è un po’ *cringe*
+
+**Percorso:** 7 · Gergo, *meme* e identità nel gruppo
+
+**Obiettivo:** Distinguere un’etichetta rivolta a un adulto dalla descrizione del comportamento che ha creato imbarazzo.
+
+**Prima di osservare:** “*Cringe*” può esprimere imbarazzo per il comportamento altrui, anche quando riguarda un adulto. Il giudizio dipende da situazione, destinatari e relazione: non descrive una proprietà oggettiva della persona. La scena distingue la battuta sull’adulto dall’effetto vissuto e porta a una richiesta concreta.
+
+**Vignetta:** A casa, dopo un incontro a scuola, Matteo parla con suo padre. Stefano ha imitato un ballo visto online davanti agli amici del figlio.
+
+**Illustrazione:** assets/hu-slang-adult.jpg
+
+![63 · Papà, è un po’ cringe](assets/hu-slang-adult.jpg)
+
+
+> A casa, dopo un incontro a scuola, Matteo parla con suo padre. Stefano ha imitato un ballo visto online davanti agli amici del figlio.
+
+1. **Matteo:** Papà, quando hai fatto quel ballo davanti ai miei amici eri un po’ *cringe*.
+2. **Stefano · papà:** *Cringe*? Stai dicendo che ti vergogni di me?
+3. **Matteo:** Mi ha messo a disagio quel momento. Non sto dicendo che mi vergogno di te.
+4. **Stefano · papà:** Volevo scherzare con voi, ma forse non ho capito il momento.
+5. **Matteo:** La prossima volta chiedimi prima di coinvolgermi davanti a tutti.
+6. **Stefano · papà:** Va bene. E tu dimmi che cosa ti dà fastidio: così capisco meglio di una sola etichetta.
+
+**Osserva**
+
+- Che cosa giudica Matteo nella prima frase?
+- Quale interpretazione del padre viene poi precisata?
+
+**Interpreta e verifica**
+
+- La stessa battuta potrebbe avere effetti diversi in casa e davanti agli amici?
+- Che differenza c’è fra dire “sei *cringe*” e descrivere il momento che ha creato disagio?
+
+**Metti in scena e trasforma:** Recitate un adulto che usa un gergo non condiviso e un ragazzo che prova imbarazzo. Riscrivete il giudizio come osservazione e richiesta, senza imitare persone reali.
+
+**Collegamento con Scienze Umane · *Cringe* · generazioni · contenuto e relazione:** Matteo usa un termine del gruppo per commentare il padre; Stefano lo interpreta come rifiuto personale. Il chiarimento precisa il comportamento e formula un limite per le situazioni pubbliche. La scena collega gergo, identità generazionale e secondo assioma: una valutazione di un episodio può essere recepita come giudizio sulla relazione.
+
+**Guida alla discussione:** Non assumere che gli adulti siano per definizione imbarazzanti o incapaci di capire. Matteo distingue l’episodio dal valore del padre; Stefano riconosce l’effetto senza dover rinunciare al proprio modo di essere.
+
+## 64 · *Chill*: pausa o “non mi importa”?
+
+**Percorso:** 7 · Gergo, *meme* e identità nel gruppo
+
+**Obiettivo:** Confrontare un’intenzione rassicurante con l’effetto di sentirsi poco ascoltati.
+
+**Prima di osservare:** “*Chill*” può richiamare calma, rilassamento o un’atmosfera tranquilla. Nel dialogo può essere un invito a prendersi una pausa, ma può essere recepito come minimizzazione di un problema. Il significato condiviso si costruisce anche attraverso le risposte, non si ricava dal solo dizionario.
+
+**Vignetta:** Luca e Sara sono in aula dopo una prova della presentazione. Sara è preoccupata per una slide ancora incompleta.
+
+**Illustrazione:** assets/hu-warm.jpg
+
+![64 · Chill: pausa o “non mi importa”?](assets/hu-warm.jpg)
+
+
+> Luca e Sara sono in aula dopo una prova della presentazione. Sara è preoccupata per una slide ancora incompleta.
+
+1. **Luca:** Dai, *chill*. Facciamo una pausa di cinque minuti.
+2. **Sara:** Per te è facile: la tua parte è finita, la mia slide no.
+3. **Luca:** Non volevo dire che non mi importa. Ti vedo stanca e pensavo a una pausa.
+4. **Sara:** Detto così mi sembrava che stessi esagerando io.
+5. **Luca:** Capisco. Vuoi che ti aiuti prima con l’ultima immagine?
+6. **Sara:** Sì, grazie. Poi mi fermo volentieri anch’io.
+
+**Osserva**
+
+- Quale proposta concreta accompagna “*chill*”?
+- Come Sara interpreta inizialmente quella proposta?
+
+**Interpreta e verifica**
+
+- Rassicurare qualcuno significa sempre che si sentirà rassicurato?
+- Quale risposta di Luca mostra che il feedback ha cambiato la proposta?
+
+**Metti in scena e trasforma:** Recitate “*chill*” come invito amichevole e come liquidazione frettolosa. Chi ascolta descrive l’effetto e chiede ciò di cui ha bisogno.
+
+**Collegamento con Scienze Umane · *Chill* · intenzione ed effetto · feedback:** Luca propone una pausa per rassicurare Sara, ma lei sente sminuita la propria preoccupazione. La sua risposta torna a Luca come feedback e porta a un aiuto concreto. La pragmatica osserva questo passaggio fra significato previsto, interpretazione e adattamento dello scambio.
+
+**Guida alla discussione:** Il termine non ha un effetto automatico. La risposta di Sara rende visibile la distanza fra intenzione ed effetto; l’offerta di aiuto trasforma una rassicurazione generica in collaborazione.
+
+## 65 · “Mi hai *killato*”: chi, nel gioco?
+
+**Percorso:** 7 · Gergo, *meme* e identità nel gruppo
+
+**Obiettivo:** Precisare il referente di un’espressione gergale e confrontare un messaggio dentro e fuori contesto.
+
+**Prima di osservare:** “*Killare*”, dall’inglese “to kill”, è usato nel gergo dei videogiochi per eliminare un avversario o il suo personaggio. Il contesto e il referente aiutano a capire il messaggio: fuori dal gioco la stessa frase può essere interpretata diversamente. Qui non si rappresentano minacce reali né immagini violente.
+
+**Vignetta:** Luca e Sara giocano sullo stesso divano a un videogioco di fantasia. Dopo una mossa di Sara, il personaggio di Luca esce dal turno.
+
+**Illustrazione:** assets/gaming-playing.jpg
+
+![65 · “Mi hai killato”: chi, nel gioco?](assets/gaming-playing.jpg)
+
+
+> Luca e Sara giocano sullo stesso divano a un videogioco di fantasia. Dopo una mossa di Sara, il personaggio di Luca esce dal turno.
+
+1. **Luca:** Mi hai *killato* proprio alla fine!
+2. **Sara:** Intendi il tuo personaggio? Non pensavo di averti colpito.
+3. **Luca:** Sì, il mio personaggio è uscito dal turno. Posso rientrare al prossimo.
+4. **Sara:** Ah, guardavo il mio schermo e non avevo visto il tuo.
+5. **Luca:** Se scrivessi solo quella frase in chat, chi non gioca capirebbe che cosa è successo?
+6. **Sara:** Forse no. Meglio aggiungere: nel gioco hai eliminato il mio personaggio.
+
+**Osserva**
+
+- A chi si riferisce il pronome “mi” nella prima battuta?
+- Quali informazioni rendono esplicito il contesto nell’ultima frase?
+
+**Interpreta e verifica**
+
+- Perché conoscere le parole non basta se manca il referente?
+- La stessa frase inviata senza contesto può produrre un effetto diverso?
+
+**Metti in scena e trasforma:** Trasformate lo scambio in un messaggio per una persona che non conosce il videogioco. Mantenete il fatto e rendete esplicito il referente.
+
+**Collegamento con Scienze Umane · *Killare* · gergo del gaming · contesto e referente:** Luca usa “mi” per il proprio personaggio e Sara verifica a chi si riferisce. L’esempio mostra che il gergo del gaming presuppone un’attività e riferimenti condivisi. Spiegare che l’azione avviene nel gioco rende il messaggio interpretabile anche da chi non partecipa alla partita.
+
+**Guida alla discussione:** “*Killato*” riguarda il personaggio di fantasia e una regola del gioco. Non equiparare l’uso del termine a un’intenzione aggressiva reale; osservare invece codice condiviso, referente e possibile ambiguità.
+
+## 66 · *Friendzonato*: come racconto un rifiuto?
+
+**Percorso:** 7 · Gergo, *meme* e identità nel gruppo
+
+**Obiettivo:** Confrontare un’etichetta relazionale con i fatti dichiarati e riconoscere limiti e scelte personali.
+
+**Prima di osservare:** “*Friendzonare*” viene usato per raccontare una situazione in cui un interesse romantico non è ricambiato. La parola può presentare il rifiuto come una colpa dell’altro: occorre distinguere il dispiacere di chi racconta dalla libertà di chi non ricambia. Un’amicizia non promette una relazione sentimentale.
+
+**Vignetta:** Nel cortile Luca racconta a Sara un invito rivolto a Elena, che non è presente. Elena ha detto che desidera soltanto un’amicizia.
+
+**Illustrazione:** assets/hu-listen.jpg
+
+![66 · Friendzonato: come racconto un rifiuto?](assets/hu-listen.jpg)
+
+
+> Nel cortile Luca racconta a Sara un invito rivolto a Elena, che non è presente. Elena ha detto che desidera soltanto un’amicizia.
+
+1. **Luca:** Elena mi ha *friendzonato*. Pensavo che le piacessi.
+2. **Sara:** Che cosa ti ha detto, precisamente?
+3. **Luca:** Che sta bene con me come amico, ma non vuole uscire con me come coppia.
+4. **Sara:** Capisco che tu sia deluso. Però ti ha detto con chiarezza che cosa desidera.
+5. **Luca:** Sì. Non devo convincerla. Forse mi serve un po’ di tempo prima di rivederla.
+6. **Sara:** Puoi dirle che ti serve una pausa, rispettando la sua risposta e senza darle la colpa.
+
+**Osserva**
+
+- Quali sono le parole riferite di Elena e quale l’etichetta scelta da Luca?
+- Quale bisogno personale riconosce Luca alla fine?
+
+**Interpreta e verifica**
+
+- “Mi ha *friendzonato*” e “non ricambia il mio interesse” mettono in primo piano la stessa cosa?
+- Come si può riconoscere la delusione senza trasformarla in un diritto alla relazione?
+
+**Metti in scena e trasforma:** Inventate uno scambio in cui una persona non ricambia un interesse. Formulate una risposta chiara e un modo rispettoso per chiedere tempo, senza usare esperienze personali.
+
+**Collegamento con Scienze Umane · *Friendzonare* · cornice del racconto · limiti e reciprocità:** L’etichetta iniziale concentra l’attenzione su ciò che Luca sente di aver subito; la domanda di Sara riporta alle parole di Elena. La psicologia sociale e la pragmatica aiutano a distinguere fatti, vissuti e cornici del racconto, rispettando il bisogno di tempo di Luca e la scelta affettiva di Elena.
+
+**Guida alla discussione:** L’interesse romantico non è dovuto. Nessuno deve accettare un corteggiamento, promettere amicizia o continuare subito a frequentarsi. La scena riconosce il dispiacere e il bisogno di spazio, senza colpevolizzare Elena o proporre tecniche per farle cambiare idea.
+
 ## Estensione dai materiali di classe
 
 Dodici nuovi episodi fittizi ispirati alle schede sulla comunicazione, al percorso padre–figlio, al tema delle forme familiari e al resoconto sul linguaggio. Nessun dato personale degli studenti o caso di cronaca è riportato. Otto illustrazioni originali aggiuntive. Per ogni segnale citato nel dialogo il laboratorio distingue i sei elementi del segnale da quelli della conversazione corrente. Le schede originali restano materiali di riferimento, senza essere pubblicate integralmente.
@@ -2558,3 +2718,7 @@ Fonti e approfondimenti:
 - [Watzlawick e Beavin, Some Formal Aspects of Communication (1967)](https://journals.sagepub.com/doi/10.1177/0002764201000802)
 - [Mehrabian: ambito e limiti delle proporzioni 7/38/55](https://www.kaaj.com/psych/smorder.html)
 - Edward T. Hall, The Hidden Dimension (1966): fasce indicative della distanza interpersonale. [Prossemica e variabilità culturale · MIT Press](https://thereader.mitpress.mit.edu/understanding-personal-space-proxemics/)
+
+## Gergo e registri · nuove scene 63–66
+
+Cringe verso un adulto, chill, killare e friendzonare. Fonti lessicali: [cringe · Treccani](https://www.treccani.it/vocabolario/cringe_%28Neologismi%29/), [chill · Treccani](https://www.treccani.it/vocabolario/neo-chill_%28Neologismi%29/), [killare · Accademia della Crusca](https://accademiadellacrusca.it/it/contenuti/titolo/83), [friendzonare · Treccani](https://www.treccani.it/vocabolario/friendzonare_res-5585096e-89c3-11e8-a7cb-00271042e8d9_%28Neologismi%29/). I termini in corsivo sono esempi d’uso contestualizzati, non etichette da attribuire ai compagni.

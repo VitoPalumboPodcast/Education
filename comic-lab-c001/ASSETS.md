@@ -122,3 +122,7 @@ Cinque nuove illustrazioni originali create il 22 ottobre 2026 con lo strumento 
 ## All about you · 22 ottobre 2026
 
 assets/all-about-you.jpg: illustrazione originale generata con ImageGen per le tre scene collegate nelle quattro lingue. Luca a sinistra, felpa verde acqua; Sara a destra, maglia terracotta. Conversazione al bar, pasta e quaderni sul tavolo, borsa con pattini a quattro ruote, casco e bastone da hockey su pista. Parte alta libera per i fumetti. Nessuna scritta generata. Originale: art-originals/all-about-you.png.
+
+## Gergo: confronto con un adulto · 22 ottobre 2026
+
+assets/hu-slang-adult.jpg: illustrazione originale ImageGen. Matteo, sedici anni, felpa verde, a sinistra; padre Stefano, circa quarantacinque anni, camicia blu e capelli leggermente grigi, a destra. I due parlano al tavolo della cucina dopo un episodio che ha creato imbarazzo davanti agli amici. Parete superiore libera per i fumetti, nessun testo generato. Originale: art-originals/hu-slang-adult.png. Le altre tre nuove scene riusano hu-warm.jpg, gaming-playing.jpg e hu-listen.jpg.

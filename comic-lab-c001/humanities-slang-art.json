@@ -38,5 +38,13 @@
     "tool": "Built-in ImageGen",
     "original": "art-originals/hu-slang-register.png",
     "asset": "assets/hu-slang-register.jpg"
+  },
+  {
+    "key": "slang-adult",
+    "label": "Matteo e papà Stefano · imbarazzo e chiarimento",
+    "prompt": "Original educational comic: teenage Matteo on left, curly brown hair green hoodie, father Stefano on right about 45 slightly gray hair beard blue shirt. Calm kitchen conversation about embarrassment after parent imitated a dance in front of friends. Top 38 percent empty pale wall for speech balloons, no generated text.",
+    "tool": "Built-in ImageGen",
+    "original": "art-originals/hu-slang-adult.png",
+    "asset": "assets/hu-slang-adult.jpg"
   }
 ]
