@@ -1,0 +1,27 @@
+[
+  {
+    "key": "life-hockey",
+    "label": "Dopo una partita di hockey su pista: Jack a sinistra, Emma a destra, pattini a quattro ruote, bastone, pallina e casco.",
+    "tool": "Built-in ImageGen",
+    "composition": "Immagine orizzontale 3:2, stile fumetto didattico, parte alta libera per i fumetti, nessun testo generato.",
+    "original": "art-originals/life-hockey.png",
+    "asset": "assets/life-hockey.jpg",
+    "revision": "Pattini corretti con ImageGen: quattro ruote su due assi trasversali e puntale anteriore; prima versione conservata in art-originals/life-hockey-v1.png."
+  },
+  {
+    "key": "life-cooking",
+    "label": "Jack a sinistra ed Emma a destra preparano la pasta con pomodori e basilico in una cucina.",
+    "tool": "Built-in ImageGen",
+    "composition": "Immagine orizzontale 3:2, stile fumetto didattico, parte alta libera per i fumetti, nessun testo generato.",
+    "original": "art-originals/life-cooking.png",
+    "asset": "assets/life-cooking.jpg"
+  },
+  {
+    "key": "life-station",
+    "label": "Jack a sinistra ed Emma a destra controllano un biglietto e il tabellone in una stazione.",
+    "tool": "Built-in ImageGen",
+    "composition": "Immagine orizzontale 3:2, stile fumetto didattico, parte alta libera per i fumetti, nessun testo generato.",
+    "original": "art-originals/life-station.png",
+    "asset": "assets/life-station.jpg"
+  }
+]

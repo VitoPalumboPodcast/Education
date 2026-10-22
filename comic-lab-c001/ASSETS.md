@@ -126,3 +126,7 @@ assets/all-about-you.jpg: illustrazione originale generata con ImageGen per le t
 ## Gergo: confronto con un adulto · 22 ottobre 2026
 
 assets/hu-slang-adult.jpg: illustrazione originale ImageGen. Matteo, sedici anni, felpa verde, a sinistra; padre Stefano, circa quarantacinque anni, camicia blu e capelli leggermente grigi, a destra. I due parlano al tavolo della cucina dopo un episodio che ha creato imbarazzo davanti agli amici. Parete superiore libera per i fumetti, nessun testo generato. Originale: art-originals/hu-slang-adult.png. Le altre tre nuove scene riusano hu-warm.jpg, gaming-playing.jpg e hu-listen.jpg.
+
+## Real life · 22 ottobre 2026
+
+Tre nuove illustrazioni ImageGen in formato orizzontale 3:2, con parte alta libera per i fumetti: assets/life-hockey.jpg (conversazione dopo una partita di hockey su pista, pattini a quattro ruote su due assi, casco e bastone), assets/life-cooking.jpg (preparazione della pasta con pomodori e basilico), assets/life-station.jpg (controllo di biglietto e partenze in stazione). Ragazzo in felpa verde acqua a sinistra e ragazza in maglia terracotta a destra. Originali in art-originals/, metadati in real-life-art.json. La prima bozza della scena hockey è conservata in life-hockey-v1.png; la versione selezionata corregge i pattini con ImageGen.
