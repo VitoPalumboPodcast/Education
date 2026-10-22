@@ -1,0 +1,11 @@
+[
+  {
+    "key": "models-gesture",
+    "label": "Luca parla mentre Sara alza una mano",
+    "tool": "Built-in ImageGen",
+    "reference": "assets/classroom.jpg",
+    "prompt": "Use case: illustration-story. Create ONE NEW landscape 16:9 educational comic illustration for teenagers about simultaneous spoken and nonverbal communication. The reference image is ONLY visual style and character identities. Luca LEFT: teenage boy short brown hair teal hoodie. Sara RIGHT: teenage girl long brown hair terracotta sweater. Clean polished editorial comic linework, warm cream wall, uncluttered classroom table with two notebooks and one pencil. Luca is talking, one hand gently indicating a blank paper as he proposes something. AT THE SAME TIME Sara raises one open hand at shoulder level, a calm 'wait a moment' gesture, with gently questioning eyebrows; she is listening and has not spoken yet. Luca is looking at Sara's raised hand. Not a conflict, no angry faces. Both faces below upper 35% with pale empty wall above for speech bubbles. Exactly two people, clearly identifiable on left/right halves. No text, letters, captions, speech bubbles, logos, symbols or watermarks. Hands natural, open raised hand clearly visible.",
+    "original": "art-originals/hu-models-gesture.png",
+    "asset": "assets/hu-models-gesture.jpg"
+  }
+]

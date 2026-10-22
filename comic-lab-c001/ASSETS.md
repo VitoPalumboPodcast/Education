@@ -110,3 +110,7 @@ Il documento SCIENZE-UMANE-SCENE.md raccoglie tutti i dialoghi, le illustrazioni
 ## Scienze Umane: altri personaggi e contesti
 
 Otto nuove illustrazioni originali create con lo strumento integrato ImageGen, una generazione per asset. Personaggi fittizi, nessuna fotografia degli studenti utilizzata. Padri, figlio, nonna, nipote, insegnante, studente, viaggiatrice, arbitro, capitana e nuovi compagni; ambienti domestici, scuola, stazione, palestra e strada. Originali PNG in art-originals/hu-*.png; JPEG ottimizzati a 1280 px in assets/. Prompt completi e corrispondenze dei file in humanities-variety-art.json. Il file locale di lavorazione conserva anche i percorsi delle generazioni; la copia pubblicata omette tali percorsi.
+
+## Modelli della comunicazione: gesto simultaneo
+
+Una nuova illustrazione creata con ImageGen, usando classroom.jpg come riferimento di stile e identità: Luca parla a sinistra mentre Sara, a destra, alza una mano per chiedere una pausa. Mostra un segnale visivo ricevuto mentre l’altro parla, in un’aula semplice. Originale art-originals/hu-models-gesture.png; copia ottimizzata assets/hu-models-gesture.jpg. Prompt completo, strumento e riferimento in humanities-models-art.json. Gli altri nuovi episodi riutilizzano immagini incluse coerenti con i rispettivi interlocutori e ambienti.

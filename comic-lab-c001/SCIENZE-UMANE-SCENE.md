@@ -1,6 +1,6 @@
 # Scienze Umane · Laboratori di comunicazione e pragmatica
 
-42 scene originali per adolescenti di 15–16 anni. I nomi e i ruoli cambiano con la scena: il primo personaggio è a sinistra, il secondo a destra. Le prime 30 scene hanno Luca e Sara; le successive introducono altri interlocutori. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
+49 scene originali per adolescenti di 15–16 anni. I nomi e i ruoli cambiano con la scena: il primo personaggio è a sinistra, il secondo a destra. Le prime 30 scene hanno Luca e Sara; le successive introducono altri interlocutori. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
 
 I quattro livelli delle lingue restano nel percorso Lingue. In Scienze Umane si lavora sullo stesso episodio attraverso compiti progressivi, senza rendere artificialmente il lessico più difficile.
 
@@ -1620,6 +1620,302 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Guida alla discussione:** Il resoconto di lezione suggerisce il confronto Skinner–Chomsky. Presentarlo come confronto storico di spiegazioni, non come diagnosi o prova conclusiva. Non assegnare età rigide né interpretare la fluidità di parola come misura dell’intelligenza.
 
+## 43 · Un avviso a senso unico · Lineare
+
+**Percorso:** 6 · Percorsi del messaggio e relazioni
+
+**Obiettivo:** Riconoscere una trasmissione in un solo verso e ciò che non consente di verificare.
+
+**Prima di osservare:** Nel modello lineare osserviamo un invio da emittente a destinatario: A → B. In questa scena viene isolato soltanto l’avviso, senza una risposta osservata. I sei elementi di Jakobson aiutano ad analizzare l’atto; il modello lineare non esaurisce tutte le interazioni reali. Il silenzio di Amir non dimostra né comprensione né disaccordo. Confronta la scena successiva, con lo stesso avviso e il feedback.
+
+**Modello e ambito:** Lineare · un invio osservato · Confronto del percorso di classe
+
+**Vignetta:** La professoressa legge un avviso alla classe. Amir ascolta. In questo episodio non viene mostrata una risposta.
+
+**Illustrazione:** assets/hu-teacher.jpg
+
+![43 · Un avviso a senso unico · Lineare](assets/hu-teacher.jpg)
+
+
+> La professoressa legge un avviso alla classe. Amir ascolta. In questo episodio non viene mostrata una risposta.
+
+1. **Prof.ssa Rinaldi:** Domani ci vediamo in laboratorio alle due.
+2. **Prof.ssa Rinaldi:** Useremo i computer per preparare la presentazione.
+3. **Prof.ssa Rinaldi:** Portate il quaderno e il materiale del gruppo.
+4. **Prof.ssa Rinaldi:** L’attività durerà un’ora.
+
+**Osserva**
+
+- Chi invia tutte le battute? È mostrato un messaggio di ritorno?
+- L’avviso specifica quale laboratorio usare?
+
+**Interpreta e verifica**
+
+- Possiamo sapere se Amir ha capito quale laboratorio?
+- Che cosa cambierebbe se Amir potesse chiedere una precisazione?
+
+**Metti in scena e trasforma:** Confrontate l’avviso con la scena circolare successiva. Disegnate una sola freccia e segnate l’informazione che rimane incerta.
+
+**Guida alla discussione:** Questa è una comunicazione unidirezionale rappresentata per confronto, non un dialogo a due voci. L’assenza di risposta osservata non equivale a passività psicologica. Non leggere il silenzio come un sì. A destra parla sempre la professoressa.
+
+## 44 · Lo stesso avviso, con risposta · Circolare
+
+**Percorso:** 6 · Percorsi del messaggio e relazioni
+
+**Obiettivo:** Osservare una risposta che ritorna e cambia la formulazione del messaggio successivo.
+
+**Prima di osservare:** Nel modello circolare/interattivo il destinatario risponde e diventa emittente; l’altro riceve il feedback e può modificare la comunicazione: A → B → A. Non basta contare due persone: in questa scena la domanda di Amir fa aggiungere alla professoressa un’informazione mancante. La successiva riformulazione verifica luogo e orario.
+
+**Modello e ambito:** Circolare · risposta e adattamento · Confronto del percorso di classe
+
+**Vignetta:** Ripartiamo dallo stesso avviso. Questa volta Amir può chiedere quale laboratorio.
+
+**Illustrazione:** assets/hu-teacher.jpg
+
+![44 · Lo stesso avviso, con risposta · Circolare](assets/hu-teacher.jpg)
+
+
+> Ripartiamo dallo stesso avviso. Questa volta Amir può chiedere quale laboratorio.
+
+1. **Prof.ssa Rinaldi:** Domani ci vediamo in laboratorio alle due.
+2. **Amir:** In quello di scienze, al piano terra?
+3. **Prof.ssa Rinaldi:** No, in quello linguistico, al primo piano.
+4. **Amir:** Quindi domani alle quattordici, al primo piano, nel laboratorio linguistico?
+5. **Prof.ssa Rinaldi:** Esatto. Portate il quaderno e il materiale del gruppo.
+6. **Amir:** Bene, ora so dove andare. Avviso anche Marta.
+
+**Osserva**
+
+- Quale battuta di Amir torna alla professoressa come domanda?
+- Quale informazione la professoressa aggiunge in risposta?
+
+**Interpreta e verifica**
+
+- In che senso la risposta di Amir modifica lo scambio, invece di limitarsi ad ascoltare?
+- La riformulazione di Amir permette di verificare qualcosa che mancava nella scena lineare?
+
+**Metti in scena e trasforma:** Recitate prima l’avviso lineare, poi lo scambio circolare. Fermatevi dopo ogni battuta e invertite fisicamente la freccia fra i personaggi.
+
+**Guida alla discussione:** Prima parla la professoressa, poi Amir; la domanda sul laboratorio è feedback e produce una precisazione. Il ritorno non è una copia del messaggio iniziale: è una risposta che orienta quello successivo. Confronto diretto con la scena precedente.
+
+## 45 · Mentre parli, vedo il tuo gesto · Transazionale
+
+**Percorso:** 6 · Percorsi del messaggio e relazioni
+
+**Obiettivo:** Osservare segnali verbali e non verbali che si scambiano nello stesso momento.
+
+**Prima di osservare:** Approfondimento: il modello transazionale di Barnlund considera i partecipanti contemporaneamente emittenti e riceventi, dentro un contesto condiviso. Mentre Luca parla, riceve il gesto di Sara e modifica la proposta. Il fumetto e l’audio dividono le parole in battute per leggibilità: la contemporaneità è mostrata dall’immagine e dalla didascalia, non da due tracce vocali sovrapposte.
+
+**Modello e ambito:** Transazionale · segnali contemporanei · Approfondimento · Barnlund
+
+**Vignetta:** Mentre Luca propone un orario, Sara alza una mano. Luca vede il gesto prima che lei inizi a parlare.
+
+**Illustrazione:** assets/hu-models-gesture.jpg
+
+![45 · Mentre parli, vedo il tuo gesto · Transazionale](assets/hu-models-gesture.jpg)
+
+
+> Mentre Luca propone un orario, Sara alza una mano. Luca vede il gesto prima che lei inizi a parlare.
+
+1. **Luca:** Allora ci vediamo alle quattro… aspetta, volevi dirmi qualcosa?
+2. **Sara:** Sì, alle quattro ho l’allenamento.
+3. **Luca:** Ho visto la tua mano. Facciamo alle cinque e mezza?
+4. **Sara:** A quell’ora arrivo. Per te va bene?
+5. **Luca:** Sì. Possiamo cominciare dalla slide che manca.
+6. **Sara:** Perfetto, porto anche gli appunti.
+
+**Osserva**
+
+- Che cosa fa Sara mentre Luca sta ancora parlando?
+- Quale parte della prima battuta mostra che Luca ha già notato il gesto?
+
+**Interpreta e verifica**
+
+- Sara deve aspettare di parlare per inviare un segnale?
+- In che cosa questa contemporaneità differisce dalla semplice alternanza A poi B?
+
+**Metti in scena e trasforma:** Recitate la scena mantenendo il gesto durante la frase di Luca. Poi toglietelo e confrontate ciò che cambia.
+
+**Guida alla discussione:** La mano alzata qui viene interpretata e poi chiarita, non è un codice emotivo universale. Il modello transazionale non coincide con la sola sovrapposizione di parole: include segnali simultanei e costruzione dello scambio nel contesto. È un approfondimento rispetto al manuale.
+
+## 46 · Non ripartiamo da zero · Spirale
+
+**Percorso:** 6 · Percorsi del messaggio e relazioni
+
+**Obiettivo:** Riconoscere come la storia degli scambi costruisce riferimenti condivisi nel tempo.
+
+**Prima di osservare:** Approfondimento: nel modello a spirale o elicoidale di Dance gli scambi procedono nel tempo e sono influenzati da quelli precedenti. Non si ritorna esattamente al punto di partenza. Qui un primo equivoco e un appuntamento riuscito diventano una memoria condivisa: “come martedì” può essere capito perché ha una storia. La spirale non garantisce che ogni relazione migliori.
+
+**Modello e ambito:** Spirale · gli scambi hanno una storia · Approfondimento · Dance
+
+**Vignetta:** Lunedì. Primo appuntamento da concordare: il luogo non è ancora condiviso.
+
+**Illustrazione:** assets/hu-chat.jpg
+
+![46 · Non ripartiamo da zero · Spirale](assets/hu-chat.jpg)
+
+
+> Lunedì. Primo appuntamento da concordare: il luogo non è ancora condiviso.
+
+1. **Luca:** Ci vediamo lì domani?
+2. **Sara:** Dove e a che ora?
+
+> Martedì. Dopo la domanda del giorno prima, Luca indica luogo e orario.
+
+3. **Luca:** Alle sedici alla biblioteca, ingresso sul cortile.
+4. **Sara:** Perfetto, ti aspetto lì.
+
+> Venerdì. I due ricordano l’appuntamento riuscito di martedì.
+
+5. **Luca:** Per oggi facciamo come martedì?
+6. **Sara:** Sì: alle sedici, all’ingresso sul cortile.
+
+**Osserva**
+
+- Quale informazione manca nel primo scambio?
+- A quale esperienza condivisa si riferisce “come martedì”?
+
+**Interpreta e verifica**
+
+- Un nuovo scambio cancella quelli precedenti?
+- Perché “lì” è incerto lunedì, mentre “come martedì” può essere compreso venerdì?
+
+**Metti in scena e trasforma:** Aggiungete un quarto incontro: uno dei due cambia biblioteca. Mostrate perché anche un’abitudine condivisa può richiedere un nuovo chiarimento.
+
+**Guida alla discussione:** La spirale è una metafora del processo e della sua storia, non il percorso fisico del segnale. Non equivale a un miglioramento obbligatorio né a una successione universale di fasi. La didascalia segnala i giorni; le battute restano quotidiane.
+
+## 47 · Più insisti, meno rispondo · Circolo del conflitto
+
+**Percorso:** 6 · Percorsi del messaggio e relazioni
+
+**Obiettivo:** Riconoscere una sequenza di reazioni che si alimentano reciprocamente.
+
+**Prima di osservare:** Nella lettura circolare della pragmatica ogni reazione può diventare una condizione per quella successiva. I partecipanti possono collocare l’inizio del conflitto in punti diversi: è la punteggiatura della sequenza. Un circolo non è necessariamente positivo. Qui il problema è il reciproco rinforzo delle reazioni, non una nuova direzione geometrica del messaggio.
+
+**Modello e ambito:** Circolarità · il ciclo può alimentare il conflitto · Pragmatica · sequenze di interazione
+
+**Vignetta:** Luca ha inviato più messaggi a Sara durante l’allenamento. Quando si incontrano, discutono delle risposte mancate.
+
+**Illustrazione:** assets/hu-conflict.jpg
+
+![47 · Più insisti, meno rispondo · Circolo del conflitto](assets/hu-conflict.jpg)
+
+
+> Luca ha inviato più messaggi a Sara durante l’allenamento. Quando si incontrano, discutono delle risposte mancate.
+
+1. **Luca:** Ti scrivo di continuo perché non mi rispondi mai.
+2. **Sara:** E io rimando la risposta perché poi mi fai un interrogatorio.
+3. **Luca:** Ti chiedo che succede perché sparisci per ore!
+4. **Sara:** E più insisti, meno mi va di aprire la chat.
+
+> Luca interrompe la sequenza di accuse e propone un accordo concreto.
+
+5. **Luca:** Aspetta. Quando ti viene comodo rispondere?
+6. **Sara:** Dopo l’allenamento. Se leggo prima, posso dirti che ti scriverò più tardi.
+
+**Osserva**
+
+- Quale comportamento dell’altro ciascuno presenta come causa della propria reazione?
+- In quale battuta cambia il modo di affrontare il problema?
+
+**Interpreta e verifica**
+
+- I due racconti sull’inizio del conflitto coincidono?
+- Quale modifica concreta potrebbe interrompere la sequenza?
+
+**Metti in scena e trasforma:** Disegnate le due reazioni con frecce di ritorno. Sostituite una battuta con una domanda specifica, senza decidere prima chi ha iniziato.
+
+**Guida alla discussione:** Non confondere circolarità con colpa identica o responsabilità sempre uguale. La scena fittizia mostra un ciclo reciproco modificabile e non normalizza pressioni o obblighi di reperibilità.
+
+## 48 · Due compagni decidono insieme · Simmetrica
+
+**Percorso:** 6 · Percorsi del messaggio e relazioni
+
+**Obiettivo:** Riconoscere una relazione fra pari senza confonderla con l’assenza di differenze personali.
+
+**Prima di osservare:** Nella pragmatica di Palo Alto, simmetria e complementarità descrivono configurazioni della relazione, non nuovi percorsi del segnale. In uno scambio simmetrico i partecipanti si rapportano su un piano di parità. Questo può sostenere cooperazione o competizione: la simmetria non garantisce armonia.
+
+**Modello e ambito:** Simmetrica · relazione fra pari · Configurazione della relazione · non un nuovo percorso
+
+**Vignetta:** Luca e Sara preparano una presentazione. Nessuno dei due ha il ruolo di dirigere l’altro.
+
+**Illustrazione:** assets/project.jpg
+
+![48 · Due compagni decidono insieme · Simmetrica](assets/project.jpg)
+
+
+> Luca e Sara preparano una presentazione. Nessuno dei due ha il ruolo di dirigere l’altro.
+
+1. **Luca:** Io cercherei le immagini. Tu preferisci il testo?
+2. **Sara:** Vorrei provare anch’io a scegliere qualche immagine.
+3. **Luca:** Allora ne cerchiamo due a testa e poi decidiamo?
+4. **Sara:** Sì. Dopo possiamo dividere le parti da presentare.
+5. **Luca:** Io me la sento di fare l’inizio. A te andrebbe la conclusione?
+6. **Sara:** Va bene. Poi ci ascoltiamo e ci diamo una mano.
+
+**Osserva**
+
+- Chi propone le scelte e chi può modificarle?
+- Ci sono ordini accettati per un ruolo di autorità?
+
+**Interpreta e verifica**
+
+- Essere sullo stesso piano significa avere preferenze identiche?
+- Questo rapporto potrebbe diventare competitivo? Inventate una possibilità.
+
+**Metti in scena e trasforma:** Conservate il rapporto fra pari e recitate prima una negoziazione, poi una gara a chi decide. Confrontate gli effetti.
+
+**Guida alla discussione:** Il criterio è la definizione di parità nella relazione, non il numero uguale di battute. Questa categoria non sostituisce lineare/circolare: lo scambio qui è anche circolare.
+
+## 49 · Una guida e una richiesta · Complementare
+
+**Percorso:** 6 · Percorsi del messaggio e relazioni
+
+**Obiettivo:** Riconoscere ruoli differenti con possibilità di risposta, domanda e adattamento.
+
+**Prima di osservare:** In una relazione complementare i comportamenti si organizzano intorno a posizioni differenti, come insegnante e studente durante un’attività guidata. Ciò non implica inferiorità personale, assenza di feedback o obbedienza muta. Il dialogo può rimanere circolare: la richiesta dello studente modifica le indicazioni dell’insegnante.
+
+**Modello e ambito:** Complementare · ruoli differenti e feedback · Configurazione della relazione · non un nuovo percorso
+
+**Vignetta:** La professoressa assegna il lavoro. Amir chiede come adattarlo al materiale che ha già preparato.
+
+**Illustrazione:** assets/hu-teacher.jpg
+
+![49 · Una guida e una richiesta · Complementare](assets/hu-teacher.jpg)
+
+
+> La professoressa assegna il lavoro. Amir chiede come adattarlo al materiale che ha già preparato.
+
+1. **Prof.ssa Rinaldi:** Per domani prepara una breve presentazione con tre esempi.
+2. **Amir:** Posso usare la registrazione che ho già fatto?
+3. **Prof.ssa Rinaldi:** Sì, se spieghi a quale esempio si riferisce.
+4. **Amir:** Allora metto l’audio nella seconda slide. Vuole anche il testo?
+5. **Prof.ssa Rinaldi:** Bastano le parole chiave. Tieni il resto per l’esposizione.
+6. **Amir:** D’accordo. Le mostro una bozza prima di consegnare.
+
+**Osserva**
+
+- Quali responsabilità differenti hanno i due interlocutori?
+- La domanda di Amir cambia le indicazioni ricevute?
+
+**Interpreta e verifica**
+
+- Ruoli diversi impediscono di chiedere chiarimenti?
+- Perché “complementare” e “lineare” non sono sinonimi?
+
+**Metti in scena e trasforma:** Rappresentate la stessa organizzazione prima fra docente e studente, poi fra due compagni. Spiegate che cosa cambia nella relazione e che cosa resta nel percorso del messaggio.
+
+**Guida alla discussione:** Non presentare complementarità come dominio necessario o valore minore di una persona. È un pattern relazionale, qui flessibile e con feedback. Simmetria e complementarità possono variare fra situazioni.
+
 ## Estensione dai materiali di classe
 
 Dodici nuovi episodi fittizi ispirati alle schede sulla comunicazione, al percorso padre–figlio, al tema delle forme familiari e al resoconto sul linguaggio. Nessun dato personale degli studenti o caso di cronaca è riportato. Otto illustrazioni originali aggiuntive. Per ogni segnale citato nel dialogo il laboratorio distingue i sei elementi del segnale da quelli della conversazione corrente. Le schede originali restano materiali di riferimento, senza essere pubblicate integralmente.
+
+## Fonti per i modelli della comunicazione
+
+Il confronto lineare/circolare riprende il percorso di classe. Transazionale e spirale sono approfondimenti; simmetria e complementarità sono configurazioni della relazione, non ulteriori percorsi del segnale. Le scene sono originali.
+
+- [Modelli lineare, interattivo e transazionale · testo universitario](https://opened.tesu.edu/umncommunication/chapter/1-2-the-communication-process/)
+- [Watzlawick e Beavin · Some Formal Aspects of Communication (1967)](https://journals.sagepub.com/doi/10.1177/0002764201000802)
+- [Dean C. Barnlund · A Transactional Model of Communication (1970)](https://www.degruyterbrill.com/document/doi/10.1515/9783110878752.43/html)
+- [Frank E. X. Dance · A Helical Model of Communication, ristampa in Foundations of Communication Theory](https://www.worldradiohistory.com/BOOKSHELF-ARH/Commentary/Foundations-of-Communications-Theory-Sereno-Mortensen-1970.pdf)
