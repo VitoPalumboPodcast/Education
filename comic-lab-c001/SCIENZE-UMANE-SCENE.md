@@ -120,27 +120,27 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Guida alla discussione:** Il codice è l’italiano scritto. Il canale è la comunicazione digitale tramite dispositivi e rete; l’app di chat è lo strumento, non il codice linguistico.
 
-## 04 · Che cosa significa “BRB”?
+## 04 · Che cosa significa “asp”?
 
 **Percorso:** 1 · Gli elementi della comunicazione
 
 **Obiettivo:** Riconoscere la necessità di condividere il codice e chiarire le abbreviazioni.
 
-**Prima di osservare:** Per capire una sigla occorre conoscerne il significato convenzionale. Se una parte del codice non è condivisa, si può chiedere una spiegazione.
+**Prima di osservare:** Le abbreviazioni usate in chat devono avere un significato condiviso. Se una forma come “asp” non viene capita, si può chiedere di riscriverla per esteso.
 
 **Vignetta:** Luca e Sara lavorano online alla presentazione. Luca si allontana dal computer.
 
 **Illustrazione:** assets/hu-chat.jpg
 
-![04 · Che cosa significa “BRB”?](assets/hu-chat.jpg)
+![04 · Che cosa significa “asp”?](assets/hu-chat.jpg)
 
 
 > Luca e Sara lavorano online alla presentazione. Luca si allontana dal computer.
 
-1. **Luca:** BRB.
-2. **Sara:** Aspetta, che vuol dire? Hai finito?
-3. **Luca:** No, torno subito. Mi hanno chiamato dalla cucina.
-4. **Sara:** Ah! Pensavo stessi chiudendo tutto.
+1. **Luca:** asp
+2. **Sara:** Che significa? Hai finito?
+3. **Luca:** No: “asp” vuol dire “aspetta”. Torno fra poco.
+4. **Sara:** Ah, non avevo capito. Ti aspetto.
 5. **Luca:** Dammi cinque minuti e riprendiamo.
 6. **Sara:** Va bene, intanto cerco l’ultima immagine.
 
@@ -154,9 +154,9 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Perché ricevere un messaggio non basta per capirlo?
 - Quale chiarimento rende il codice più accessibile?
 
-**Metti in scena e trasforma:** Inventate una sigla, provate a comunicarla senza spiegarla, poi concordatene il significato.
+**Metti in scena e trasforma:** Scegliete un’abbreviazione da chat, chiedete come viene interpretata e poi riscrivetela per esteso.
 
-**Guida alla discussione:** La sigla è un codice convenzionale non condiviso dai due interlocutori. Chiedere il significato è una strategia comunicativa, non una colpa.
+**Guida alla discussione:** L’abbreviazione non è compresa da entrambi gli interlocutori. Chiedere il significato è una strategia comunicativa, non una colpa.
 
 ## 05 · “Lì”, ma dove?
 
