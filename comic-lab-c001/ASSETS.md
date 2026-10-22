@@ -114,3 +114,7 @@ Otto nuove illustrazioni originali create con lo strumento integrato ImageGen, u
 ## Modelli della comunicazione: gesto simultaneo
 
 Una nuova illustrazione creata con ImageGen, usando classroom.jpg come riferimento di stile e identità: Luca parla a sinistra mentre Sara, a destra, alza una mano per chiedere una pausa. Mostra un segnale visivo ricevuto mentre l’altro parla, in un’aula semplice. Originale art-originals/hu-models-gesture.png; copia ottimizzata assets/hu-models-gesture.jpg. Prompt completo, strumento e riferimento in humanities-models-art.json. Gli altri nuovi episodi riutilizzano immagini incluse coerenti con i rispettivi interlocutori e ambienti.
+
+## Gergo, meme e identità nel gruppo
+
+Cinque nuove illustrazioni originali create il 22 ottobre 2026 con lo strumento integrato ImageGen, una generazione distinta per ciascuna scena. Matteo e Giulia parlano in corridoio e dopo una presentazione; Davide e Sofia si scrivono da due stanze distinte; Riccardo e Amir discutono nel cortile con un orario del bus; Elena mostra un video alla professoressa Rinaldi nel laboratorio. I nomi, i lati e le voci corrispondono ai personaggi raffigurati. Sfondi semplici, spazio superiore per i fumetti, nessuna scritta incorporata. Originali art-originals/hu-slang-*.png, JPEG ottimizzati assets/hu-slang-*.jpg. Prompt finali e corrispondenze in humanities-slang-art.json; i percorsi di lavorazione sono omessi dalla copia pubblicata.

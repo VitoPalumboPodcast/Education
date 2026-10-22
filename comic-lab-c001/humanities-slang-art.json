@@ -1,0 +1,42 @@
+[
+  {
+    "key": "slang-spawn",
+    "label": "Matteo e Giulia · una parola dal gaming",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for ages 15–16. Polished clean editorial comic linework, softly shaded, warm cream, teal and terracotta colors. Two named interlocutors only, one in LEFT half and one in RIGHT half, faces entirely below the upper 38 percent: keep upper 38 percent simple empty pale wall or sky for app speech bubbles. Show expressive faces and natural hands. Environment simple, uncluttered. No speech bubbles, captions, text, logos, watermarks or panels. School corridor during break. LEFT Matteo, 16, short curly brown hair, green hoodie and backpack, gestures toward a half-open classroom door behind them; RIGHT Giulia, 16, dark bob haircut, mustard sweatshirt, holds notebook and listens with mild curiosity. No other people. The pair discuss how a teacher appeared unexpectedly; teacher is not in frame.",
+    "tool": "Built-in ImageGen",
+    "original": "art-originals/hu-slang-spawn.png",
+    "asset": "assets/hu-slang-spawn.jpg"
+  },
+  {
+    "key": "slang-aura",
+    "label": "Matteo e Giulia · complimento o ironia",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for ages 15–16. Polished clean editorial comic linework, softly shaded, warm cream, teal and terracotta colors. Two named interlocutors only, one in LEFT half and one in RIGHT half, faces entirely below the upper 38 percent: keep upper 38 percent simple empty pale wall or sky for app speech bubbles. Show expressive faces and natural hands. Environment simple, uncluttered. No speech bubbles, captions, text, logos, watermarks or panels. School presentation just finished. LEFT Matteo, 16, curly brown hair, green hoodie, relaxed and admiring, talks to RIGHT Giulia, 16, dark bob, mustard sweatshirt, holding a few presentation cards and initially uncertain about his comment. Blank whiteboard behind, a small tidy desk and closed laptop. Avoid theatrical arrogance or glamour effects.",
+    "tool": "Built-in ImageGen",
+    "original": "art-originals/hu-slang-aura.png",
+    "asset": "assets/hu-slang-aura.jpg"
+  },
+  {
+    "key": "slang-meme",
+    "label": "Davide e Sofia · un meme in chat",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for ages 15–16. Polished clean editorial comic linework, softly shaded, warm cream, teal and terracotta colors. Two named interlocutors only, one in LEFT half and one in RIGHT half, faces entirely below the upper 38 percent: keep upper 38 percent simple empty pale wall or sky for app speech bubbles. Show expressive faces and natural hands. Environment simple, uncluttered. No speech bubbles, captions, text, logos, watermarks or panels. Split composition showing two separate bedrooms divided in center, two teen friends messaging from different homes. LEFT Davide, 16, dark short hair, navy sweatshirt, holding phone, surprised and concerned. RIGHT Sofia, 16, brown ponytail, muted coral top, holding phone beside a desk with school notebook and a paper reference for homework. Phone screens blank tiny shapes only, no readable text, no specific branded meme. Keep upper 38 percent empty pale walls.",
+    "tool": "Built-in ImageGen",
+    "original": "art-originals/hu-slang-meme.png",
+    "asset": "assets/hu-slang-meme.jpg"
+  },
+  {
+    "key": "slang-npc",
+    "label": "Riccardo e Amir · l’effetto di un’etichetta",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for ages 15–16. Polished clean editorial comic linework, softly shaded, warm cream, teal and terracotta colors. Two named interlocutors only, one in LEFT half and one in RIGHT half, faces entirely below the upper 38 percent: keep upper 38 percent simple empty pale wall or sky for app speech bubbles. Show expressive faces and natural hands. Environment simple, uncluttered. No speech bubbles, captions, text, logos, watermarks or panels. School courtyard at break. LEFT Riccardo, 16, sandy short hair, muted blue hoodie, listening with thoughtful regret and open hands. RIGHT Amir, 16, medium brown skin, short curly dark hair, light beige sweatshirt, holding a small folded bus timetable with unreadable marks, calmly setting a boundary. A simple bench and distant school door. No robots, caricatures or humiliating posture.",
+    "tool": "Built-in ImageGen",
+    "original": "art-originals/hu-slang-npc.png",
+    "asset": "assets/hu-slang-npc.jpg"
+  },
+  {
+    "key": "slang-register",
+    "label": "Elena e la professoressa · cambiare registro",
+    "prompt": "Use case: illustration-story. Create ONE original landscape 16:9 educational comic background for ages 15–16. Polished clean editorial comic linework, softly shaded, warm cream, teal and terracotta colors. Two named interlocutors only, one in LEFT half and one in RIGHT half, faces entirely below the upper 38 percent: keep upper 38 percent simple empty pale wall or sky for app speech bubbles. Show expressive faces and natural hands. Environment simple, uncluttered. No speech bubbles, captions, text, logos, watermarks or panels. School media room. LEFT Elena, 16, curly dark shoulder-length hair, muted terracotta sweatshirt, holding a tablet with blank screen. RIGHT female teacher Rinaldi about45, chestnut shoulder-length hair, glasses, green blazer, listening. Between them a desk with small video camera on a mini tripod, a closed laptop and a blank storyboard. Collaborative respectful scene, simple empty pale wall upper38percent.",
+    "tool": "Built-in ImageGen",
+    "original": "art-originals/hu-slang-register.png",
+    "asset": "assets/hu-slang-register.jpg"
+  }
+]

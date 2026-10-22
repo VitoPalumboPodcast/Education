@@ -1,6 +1,6 @@
 # Scienze Umane · Laboratori di comunicazione e pragmatica
 
-49 scene originali per adolescenti di 15–16 anni. I nomi e i ruoli cambiano con la scena: il primo personaggio è a sinistra, il secondo a destra. Le prime 30 scene hanno Luca e Sara; le successive introducono altri interlocutori. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
+54 scene originali per adolescenti di 15–16 anni. I nomi e i ruoli cambiano con la scena: il primo personaggio è a sinistra, il secondo a destra. Le prime 30 scene hanno Luca e Sara; le successive introducono altri interlocutori. Ogni scena offre un dialogo completo, un contesto visivo e attività di osservazione, interpretazione e trasformazione. Le scene digitali sono simulazioni locali: non inviano messaggi e non usano account WhatsApp.
 
 I quattro livelli delle lingue restano nel percorso Lingue. In Scienze Umane si lavora sullo stesso episodio attraverso compiti progressivi, senza rendere artificialmente il lessico più difficile.
 
@@ -42,6 +42,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Rappresentate lo scambio e indicate i sei elementi prima nella battuta di Luca, poi nella risposta di Sara.
 
+**Collegamento con Scienze Umane · Elementi della comunicazione · scambio dei ruoli:** Luca comunica luogo e orario; Sara risponde e diventa a sua volta emittente. La scena permette di applicare i sei elementi della comunicazione a un episodio concreto e di distinguere le persone dai ruoli che assumono nello scambio.
+
 **Guida alla discussione:** Prima battuta: emittente Luca, destinataria Sara; messaggio sull’orario e sul luogo; codice italiano parlato; canale acustico attraverso l’aria; referente l’allenamento futuro. Non confondere la lingua utilizzata con il mezzo di trasmissione.
 
 ## 02 · Il corridoio è rumoroso
@@ -79,6 +81,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Perché spostarsi può essere più utile che ripetere allo stesso volume?
 
 **Metti in scena e trasforma:** Recitate una versione con rumore simulato e una in un luogo tranquillo. Non urlate: osservate come cambia la comprensione.
+
+**Collegamento con Scienze Umane · Canale · rumore · verifica della ricezione:** Sara sente un orario diverso perché il rumore copre la voce, pur condividendo la lingua di Luca. L’episodio distingue un ostacolo sul canale da un problema di codice e mostra la richiesta di ripetizione come strategia di verifica.
 
 **Guida alla discussione:** Il rumore ostacola la ricezione. Sara segnala ciò che non ha capito, anziché fingere di aver compreso.
 
@@ -118,6 +122,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Confrontate questa scena con “L’allenamento di domani”: riscrivete lo stesso avviso su carta.
 
+**Collegamento con Scienze Umane · Comunicazione mediata · codice e canale:** Il contenuto dell’avviso passa dalla conversazione alla chat: diventa rileggibile, mentre mancano gli indizi dell’intonazione. Il confronto aiuta a distinguere il codice linguistico dal mezzo e a osservare come il canale condizioni l’interpretazione.
+
 **Guida alla discussione:** Il codice è l’italiano scritto. Il canale è la comunicazione digitale tramite dispositivi e rete; l’app di chat è lo strumento, non il codice linguistico.
 
 ## 04 · Che cosa significa “asp”?
@@ -155,6 +161,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Quale chiarimento rende il codice più accessibile?
 
 **Metti in scena e trasforma:** Scegliete un’abbreviazione da chat, chiedete come viene interpretata e poi riscrivetela per esteso.
+
+**Collegamento con Scienze Umane · Codice condiviso · metacomunicazione:** Sara riceve “asp” ma non ne conosce il significato. Chiedere che cosa vuol dire è una comunicazione sul codice stesso: la scena mostra perché la trasmissione materiale non garantisce la comprensione e come una spiegazione ripari l’equivoco.
 
 **Guida alla discussione:** L’abbreviazione non è compresa da entrambi gli interlocutori. Chiedere il significato è una strategia comunicativa, non una colpa.
 
@@ -194,6 +202,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Create un appuntamento con riferimenti vaghi. Il destinatario deve fare le domande necessarie per renderlo preciso.
 
+**Collegamento con Scienze Umane · Contesto · deissi · conoscenze condivise:** “Lì” e “dopo” non individuano per entrambi lo stesso appuntamento. La pragmatica studia anche queste espressioni dipendenti dal contesto: specificare luogo e orario rende esplicite informazioni che Luca presumeva condivise.
+
 **Guida alla discussione:** Le parole deittiche, come lì e dopo, dipendono dal contesto. Non sono sempre sbagliate: diventano problematiche quando i riferimenti non sono condivisi.
 
 ## 06 · Parlavi con me?
@@ -231,6 +241,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Come possono collaborare sguardo e parole?
 
 **Metti in scena e trasforma:** Recitate la richiesta con e senza nome e contatto visivo. Scambiate il ruolo del terzo compagno.
+
+**Collegamento con Scienze Umane · Destinatario · indizi verbali e non verbali:** La richiesta può sembrare rivolta a più persone presenti. Nome e sguardo precisano la destinataria: la scena distingue chi sente il messaggio da chi è intenzionalmente interpellato e mostra la collaborazione fra parole e gesti.
 
 **Guida alla discussione:** Matteo è presente ma non è il destinatario della richiesta iniziale. Evitare di equiparare chiunque senta un messaggio al destinatario intenzionale.
 
@@ -270,6 +282,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Uno dà tre indicazioni; l’altro le riformula. Chi le ha date conferma o corregge.
 
+**Collegamento con Scienze Umane · Feedback · circolarità:** Sara riformula orario e luogo e Luca conferma. Le risposte ritornano all’emittente e orientano lo scambio: il caso rende osservabile la circolarità e la verifica della comprensione, che non coincide automaticamente con l’accordo.
+
 **Guida alla discussione:** I ruoli cambiano a ogni turno. Capire e accettare una proposta sono due cose diverse: il feedback può anche esprimere dissenso.
 
 ## 08 · “Fai come vuoi”
@@ -307,6 +321,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Come distingue Luca l’intenzione dall’effetto che ha prodotto?
 
 **Metti in scena e trasforma:** Fermatevi dopo “Fai come vuoi”. Proponete due interpretazioni e una domanda per verificarle.
+
+**Collegamento con Scienze Umane · Pragmatica · intenzione ed effetto:** Sara legge “Fai come vuoi” come fastidio, mentre Luca dichiara fiducia nella scelta. La scena confronta contenuto letterale, intenzione dichiarata ed effetto relazionale; il chiarimento evita di trattare la prima interpretazione come certezza.
 
 **Guida alla discussione:** Il chiarimento offre un’interpretazione dichiarata dal personaggio; prima del chiarimento lo studente non deve conoscere con certezza la sua intenzione.
 
@@ -346,6 +362,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Confrontate “Va bene.”, “Va bene!” e “Va bene! 😊”. Raccogliete interpretazioni diverse, poi scrivete una domanda di chiarimento.
 
+**Collegamento con Scienze Umane · Comunicazione digitale · convenzioni del gruppo:** Sara dà peso al punto e all’assenza di un’emoji perché conosce le abitudini di Luca. L’episodio mostra come segni scritti e aspettative condivise orientino l’interpretazione, senza costituire un dizionario universale delle emozioni.
+
 **Guida alla discussione:** Punteggiatura ed emoji orientano la lettura in relazione al contesto e alle abitudini; non costituiscono un dizionario certo delle intenzioni.
 
 ## 10 · Che cosa significa 👍?
@@ -383,6 +401,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Quando è utile sostituire un segno con una frase esplicita?
 
 **Metti in scena e trasforma:** Concordate un piccolo codice di tre simboli. Poi osservate che cosa accade quando lo usa una persona che non conosce l’accordo.
+
+**Collegamento con Scienze Umane · Segni convenzionali · codice condiviso:** Per Luca il pollice in su conferma la presenza, per Sara può significare soltanto “ricevuto”. È un caso di interpretazione dei segni: la stessa forma non assicura lo stesso significato, che viene verificato con una risposta esplicita.
 
 **Guida alla discussione:** Durante l’ascolto l’emoji viene descritta come “pollice in su”. La descrizione accessibile non sostituisce il simbolo visualizzato.
 
@@ -422,6 +442,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Scrivete tre spiegazioni compatibili con una mancata risposta e un messaggio che chieda chiarimenti senza accusare.
 
+**Collegamento con Scienze Umane · Attribuzione di intenzioni · relazione:** L’indicatore “letto” è un dato tecnico; il disinteresse è invece un’ipotesi di Sara. La psicologia sociale aiuta a distinguere osservazione e attribuzione: il seguito offre informazioni alternative sul comportamento di Luca.
+
 **Guida alla discussione:** L’indicatore non dimostra disponibilità, attenzione completa o intenzione di ignorare. Distinguere dato osservato e attribuzione.
 
 ## 12 · Nel vocale manca una parola
@@ -459,6 +481,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Quando conviene cambiare canale?
 
 **Metti in scena e trasforma:** Registrate un breve vocale e omettete una parola importante nella trascrizione. Il destinatario deve individuare che cosa chiedere.
+
+**Collegamento con Scienze Umane · Rumore · significato · riparazione:** La perdita del “non” rovescia la richiesta di Luca. L’episodio collega il modello della comunicazione alla pragmatica: un ostacolo nella ricezione cambia l’azione attesa, e chiedere conferma permette di riparare l’equivoco prima di agire.
 
 **Guida alla discussione:** La scena simula uno scambio di vocali; la voce dell’app resta pulita per accessibilità. Il rumore è descritto e rappresentato, non aggiunto a volume elevato.
 
@@ -504,6 +528,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Registrate due letture di “Quando vuoi”, poi chiedete agli ascoltatori di descrivere gli indizi percepiti prima di conoscere l’intenzione.
 
+**Collegamento con Scienze Umane · Paraverbale · interpretazione nel contesto:** Le parole restano uguali, mentre le letture proposte cambiano ritmo e tono. Il confronto mostra il contributo degli indizi vocali all’impressione del destinatario; l’intenzione resta da verificare e non si ricava con certezza dalla voce sintetica.
+
 **Guida alla discussione:** Gli audio sintetici forniscono letture indicative con ritmo diverso. Per lavorare sulle sfumature emotive usare la recitazione o MP3 registrati dai partecipanti; non attribuire etichette emotive certe a una voce.
 
 ## 14 · Ti siedi con noi?
@@ -542,6 +568,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Fermatevi sul silenzio. Ogni osservatore propone due ipotesi e indica quali informazioni mancano.
 
+**Collegamento con Scienze Umane · Comunicazione non verbale · silenzio:** Luca interpreta la pausa di Sara come rifiuto, poi scopre che cercava un’amica. La scena rende visibili gli effetti del silenzio nella relazione e la pluralità delle sue possibili spiegazioni, senza assegnargli un significato fisso.
+
 **Guida alla discussione:** Il silenzio produce effetti nell’interazione ma non comunica necessariamente un’intenzione consapevole o univoca. La pausa è riprodotta senza voce.
 
 ## 15 · Qui fa freddo
@@ -579,6 +607,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Quali indizi rendono plausibile questa lettura nella scena?
 
 **Metti in scena e trasforma:** Confrontate una richiesta diretta e una indiretta. Provate anche un contesto in cui la frase sia soltanto un’osservazione.
+
+**Collegamento con Scienze Umane · Pragmatica · richiesta indiretta:** Sara descrive il freddo ma intende anche chiedere di accostare la finestra; Luca coglie inizialmente solo la descrizione. Il caso distingue significato letterale e azione comunicativa suggerita dal contesto, poi resa esplicita.
 
 **Guida alla discussione:** Un’intenzione può essere suggerita dal contesto, ma deve restare verificabile attraverso lo scambio.
 
@@ -624,6 +654,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Recitate “Brava, davvero!” come apprezzamento e come possibile ironia. Gli osservatori motivano la lettura con indizi concreti.
 
+**Collegamento con Scienze Umane · Ironia · contesto · relazione:** La stessa espressione accompagna due momenti diversi: un lavoro completato e uno rimasto incompleto. La scena collega l’ironia al rapporto tra parole, situazione e tono, mostrando perché gli indizi vadano confrontati e il significato possa essere chiarito.
+
 **Guida alla discussione:** Il dialogo non presuppone che ogni studente riconosca automaticamente l’ironia. Accogliere letture diverse e usare il chiarimento.
 
 ## 17 · Una penna: rifiuto o spiegazione?
@@ -661,6 +693,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Come si può mantenere un rifiuto spiegandolo e rispettando l’altro?
 
 **Metti in scena e trasforma:** Scrivete tre versioni: un rifiuto brusco, uno spiegato e uno che propone un’alternativa. Confrontate gli effetti senza imporre un unico esito.
+
+**Collegamento con Scienze Umane · Contenuto e relazione · assertività:** Luca vive un “no” come rifiuto personale, mentre Sara sta usando l’unica penna. Il chiarimento distingue il limite concreto dal giudizio sul rapporto e permette una negoziazione: essere assertivi può includere il mantenimento di un rifiuto.
 
 **Guida alla discussione:** Essere assertivi non significa dire sempre sì. L’immagine mostra la penna ancora sul lato di Sara, coerentemente con il mancato prestito.
 
@@ -700,6 +734,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Disegnate due ingressi su una pianta semplice e scrivete un appuntamento comprensibile anche a un nuovo compagno.
 
+**Collegamento con Scienze Umane · Presupposti · contesto condiviso:** I personaggi danno per scontati ingressi diversi per lo stesso incontro. L’episodio riguarda le conoscenze presunte comuni: ricostruirle permette di capire l’equivoco senza attribuirlo automaticamente a disattenzione o cattiva volontà.
+
 **Guida alla discussione:** L’equivoco nasce da informazioni presunte condivise, non richiede un colpevole.
 
 ## 19 · Hai finito? · Ti offro aiuto
@@ -737,6 +773,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Come potresti chiedere se l’altro vuole aiutarti?
 
 **Metti in scena e trasforma:** Recitate la domanda con disponibilità, poi confrontatela con le altre due scene “Hai finito?”.
+
+**Collegamento con Scienze Umane · Pragmatica · funzione della domanda:** “Hai finito?” introduce qui un’offerta di aiuto, confermata dalla continuazione. La scena mostra che una forma interrogativa può svolgere funzioni diverse: il significato dell’intervento si ricostruisce nel contesto e nel seguito dello scambio.
 
 **Guida alla discussione:** La lettura vocale è indicativa. La disponibilità è confermata dalla continuazione del dialogo, non dedotta soltanto dal viso.
 
@@ -776,6 +814,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Recitate la domanda prima senza contesto, poi con la spiegazione dell’autobus. Confrontate le interpretazioni.
 
+**Collegamento con Scienze Umane · Paraverbale · aspettative · negoziazione:** La domanda “Hai finito?” viene percepita come pressione in una situazione di fretta. Esplicitare tempi e vincoli permette di discutere l’effetto ricevuto e negoziare un accordo, anziché attribuire intenzioni certe a una postura.
+
 **Guida alla discussione:** Non associare automaticamente braccia incrociate e ostilità. Gli indizi acquistano senso nel contesto e nel chiarimento.
 
 ## 21 · Hai finito? · Non me l’aspettavo
@@ -813,6 +853,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Quale domanda consente di verificare l’interpretazione?
 
 **Metti in scena e trasforma:** Confrontate le tre scene “Hai finito?” mantenendo identiche le prime parole e cambiando contesto e recitazione.
+
+**Collegamento con Scienze Umane · Interpretazione · sorpresa e attribuzione:** La stessa domanda viene letta come possibile sfiducia, mentre il personaggio dichiara sorpresa. La scena confronta esperienza del destinatario e intenzione dichiarata: una richiesta di chiarimento dà informazioni che il volto da solo non può garantire.
 
 **Guida alla discussione:** La scena offre un’interpretazione plausibile, chiarita dai personaggi. Non insegna a leggere con certezza le intenzioni dalle sopracciglia.
 
@@ -852,6 +894,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Rappresentate il circolo, poi sostituite una sola battuta con una proposta concreta di ascolto.
 
+**Collegamento con Scienze Umane · Pragmatica della relazione · circolarità del conflitto:** Ciascuno interpreta le proprie interruzioni come risposta all’altro. L’episodio mostra come le reazioni possano alimentarsi e come diverse ricostruzioni dell’inizio mantengano il conflitto; una regola concreta sui turni offre una possibilità di cambiamento.
+
 **Guida alla discussione:** Le parole sempre e mai possono estendere una critica al rapporto intero. Analizzare episodi e comportamenti specifici.
 
 ## 23 · Il gruppo era già fatto
@@ -889,6 +933,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Come si può riconoscere un’esperienza senza parlare al posto di chi la vive?
 
 **Metti in scena e trasforma:** Proponete due continuazioni: una difensiva e una che verifica presupposti e possibilità concrete.
+
+**Collegamento con Scienze Umane · Appartenenza · inclusione · intenzione ed effetto:** Un gruppo già formato viene vissuto come esclusione, anche se questa non era l’intenzione dichiarata. Il caso collega bisogno di appartenenza ed esperienza relazionale: ascoltare l’effetto sull’altro è parte della negoziazione, senza garantire un esito automatico.
 
 **Guida alla discussione:** Evitare di garantire un lieto fine automatico: il coinvolgimento richiede anche l’accordo del gruppo e il rispetto delle regole dell’attività.
 
@@ -928,6 +974,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Riscrivete la seconda battuta come richiesta di una pausa. Sara può mantenere un confine e offrire ascolto.
 
+**Collegamento con Scienze Umane · Emozioni · regolazione · responsabilità relazionale:** Il disagio nasce altrove ma una risposta brusca colpisce l’interlocutore presente. La scena aiuta a distinguere causa del vissuto e destinatario della reazione; riconoscerlo permette una riparazione senza giustificare il trattamento dell’altro.
+
 **Guida alla discussione:** La frustrazione non produce inevitabilmente aggressività. Il disagio può spiegare una reazione senza giustificare il trattamento dell’altro.
 
 ## 25 · Consigli o ascolto?
@@ -965,6 +1013,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Che cosa distingue una riformulazione da un’interpretazione imposta?
 
 **Metti in scena e trasforma:** Chi ascolta deve chiedere di che cosa l’altro ha bisogno e riformulare una frase, lasciando la possibilità di correggerla.
+
+**Collegamento con Scienze Umane · Ascolto · bisogni comunicativi · riformulazione:** Uno offre soluzioni mentre l’altra cerca ascolto. Chiedere di che cosa abbia bisogno e riformulare come domanda rende verificabile la comprensione: l’empatia è praticata nello scambio, senza pretendere di conoscere dall’esterno i sentimenti altrui.
 
 **Guida alla discussione:** La riformulazione si propone come verifica: “Se ho capito… È così?”. Non attribuire sentimenti o diagnosi dall’esterno.
 
@@ -1004,6 +1054,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Inventate tre contesti diversi di saluto. Spiegate come chiedere e rispettare le preferenze personali.
 
+**Collegamento con Scienze Umane · Norme sociali · differenze personali e culturali:** I personaggi chiariscono come preferiscono salutarsi. Il caso permette di osservare regole apprese e abitudini variabili, un tema antropologico: conoscere una preferenza individuale evita di trasformare una differenza in uno stereotipo culturale.
+
 **Guida alla discussione:** Le variazioni possono riguardare persone, famiglie, gruppi e contesti. Non assegnare comportamenti fissi a nazioni o culture.
 
 ## 27 · Quando posso prendere la parola?
@@ -1041,6 +1093,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Quale accordo rende più accessibile il confronto?
 
 **Metti in scena e trasforma:** Recitate una discussione con regole implicite diverse, poi concordate una modalità di turnazione.
+
+**Collegamento con Scienze Umane · Regole implicite · partecipazione:** Un diverso modo di aspettare il turno può essere scambiato per disinteresse. Rendere esplicite le regole della conversazione mostra come il contesto sociale organizzi la partecipazione e come un accordo possa renderla più accessibile.
 
 **Guida alla discussione:** Non trasformare una modalità comunicativa in un tratto personale fisso. Le regole possono essere negoziate.
 
@@ -1086,6 +1140,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Create tre brevi racconti fittizi distinguendo evento, durata, sensazioni corporee e parole del personaggio.
 
+**Collegamento con Scienze Umane · Psicologia degli affetti · durata e contesto:** I racconti distinguono una reazione a un evento, un affetto duraturo e un umore di fondo. L’attinenza riguarda la descrizione dell’esperienza nel tempo: servono parole e contesto della persona, non una classificazione ricavata da un’espressione facciale.
+
 **Guida alla discussione:** Usare i racconti come esempi didattici, senza diagnosi o richieste di confessioni personali. I confini delle esperienze reali possono essere meno netti degli esempi.
 
 ## 29 · Ho bisogno di una pausa
@@ -1123,6 +1179,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Come cambia lo scambio quando i bisogni vengono formulati esplicitamente?
 
 **Metti in scena e trasforma:** Inventate una negoziazione fra pausa, tempo e lavoro comune. Cercate un accordo concreto e verificabile.
+
+**Collegamento con Scienze Umane · Bisogni · obiettivi · negoziazione:** Durante la stessa attività emergono esigenze differenti, fra cui una pausa. La scena applica il tema psicologico dei bisogni alla vita quotidiana: dichiararli consente un accordo concreto, senza stabilire una gerarchia rigida valida per ogni persona.
 
 **Guida alla discussione:** I modelli dei bisogni sono strumenti di lettura, non una scala rigida da applicare a ogni persona. La scena non impone che un bisogno annulli tutti gli altri.
 
@@ -1162,6 +1220,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Attribuite a due personaggi fittizi motivazioni diverse per la stessa azione e scrivete le domande necessarie per conoscerle.
 
+**Collegamento con Scienze Umane · Motivazione intrinseca ed estrinseca:** I personaggi raccontano interesse per il contenuto e desiderio di ottenere un voto. Il confronto rende concrete due fonti della motivazione che possono coesistere: le ragioni si ricostruiscono ascoltando, senza dividere gli studenti in tipi fissi.
+
 **Guida alla discussione:** Non dividere gli studenti in tipi fissi o giudicare moralmente le motivazioni. La stessa attività può essere sostenuta da ragioni diverse.
 
 ## 31 · Papà scrive: dove ci vediamo?
@@ -1199,6 +1259,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - La risposta “Ok” garantirebbe da sola di aver capito il luogo?
 
 **Metti in scena e trasforma:** Disegnate la stessa chat vista dai due telefoni. Mantenete autori e ordine dei messaggi; spiegate perché i lati sullo schermo possono cambiare.
+
+**Collegamento con Scienze Umane · Ruoli comunicativi · feedback · referente:** Papà e Matteo restano le stesse persone, ma nella risposta si scambiano i ruoli di mittente e destinatario. La domanda sul parcheggio verifica il riferimento spaziale; il lato delle bolle sul telefono non definisce chi sia l’autore del messaggio.
 
 **Guida alla discussione:** Paolo e Matteo restano le stesse persone. Nel primo messaggio Paolo è mittente, nella risposta lo è Matteo. Il colore o il lato della bolla dipende dall’interfaccia e non definisce il ruolo. La richiesta di precisazione verifica il referente.
 
@@ -1238,6 +1300,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Confrontate una versione solo vocale e una con conferma scritta. Il rumore si simula nella recitazione, non è aggiunto all’audio incluso.
 
+**Collegamento con Scienze Umane · Canale · rumore · adattamento del messaggio:** Una parte del vocale non arriva chiaramente e il padre fornisce una conferma scritta. La scena distingue codice linguistico, modalità e mezzo, mostrando il feedback come risorsa per scegliere una forma più adatta alla situazione.
+
 **Guida alla discussione:** Il codice linguistico rimane italiano; cambia la modalità orale/scritta e l’accesso al messaggio. Una mappa introduce anche segni grafici. Non dedurre la comprensione dal solo stato “ascoltato”.
 
 ## 33 · Un biglietto sul tavolo
@@ -1275,6 +1339,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Come si potrebbe riscriverlo per evitare questo equivoco?
 
 **Metti in scena e trasforma:** Scrivete un biglietto informativo e uno con una richiesta esplicita. Scambiateli e confrontate le interpretazioni.
+
+**Collegamento con Scienze Umane · Ambiguità · impliciti · supporto del messaggio:** “Prendi la merenda” può essere inteso come mangiarla oppure portarla con sé. Il chiarimento esplora la pragmatica di una frase quotidiana; il confronto tra biglietto e conversazione distingue inoltre codice scritto, carta e voce.
 
 **Guida alla discussione:** Nel dialogo il canale è acustico; nel biglietto è visivo e cartaceo. Il supporto carta non è il codice, che qui è l’italiano scritto.
 
@@ -1314,6 +1380,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Inventate due contesti con la stessa campanella e significati diversi. Indicate il destinatario collettivo.
 
+**Collegamento con Scienze Umane · Codice convenzionale · istituzione e contesto:** Il suono della campanella richiama una regola dell’orario scolastico. Il caso mostra una comunicazione senza parole: significato del segnale, situazione e convenzione condivisa vanno collegati, distinguendo l’istituzione dal dispositivo materiale.
+
 **Guida alla discussione:** Distinguere l’istituzione che organizza il segnale dal dispositivo che lo emette materialmente. La campanella non usa parole ma un codice convenzionale.
 
 ## 35 · L’email senza allegato
@@ -1351,6 +1419,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Quale feedback verifica la ricezione del documento?
 
 **Metti in scena e trasforma:** Preparate una finta email con oggetto, destinatario, testo e allegato rappresentato su carta. Non usate indirizzi reali.
+
+**Collegamento con Scienze Umane · Intenzione · ricezione · feedback:** L’email annuncia un allegato che non è stato inviato. La scena distingue ciò che il mittente intende trasmettere da ciò che il destinatario riceve effettivamente; la risposta segnala il problema e permette di completare la comunicazione.
 
 **Guida alla discussione:** La conversazione mostrata è in presenza. Il laboratorio analizza separatamente l’email citata. La conferma di ricezione non coincide con una valutazione positiva del lavoro.
 
@@ -1390,6 +1460,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Simulate un annuncio completo e uno incompleto. Gli ascoltatori devono formulare una domanda utile.
 
+**Collegamento con Scienze Umane · Destinatario collettivo · verifica delle informazioni:** L’annuncio è rivolto a molti viaggiatori e viene confrontato con le indicazioni visibili. Il caso applica gli elementi della comunicazione a un servizio pubblico: fonte organizzativa, strumento, contenuto e destinatari hanno funzioni differenti.
+
 **Guida alla discussione:** L’altoparlante è lo strumento di diffusione; il mittente organizzativo è il servizio della stazione. La scena non riproduce annunci reali.
 
 ## 37 · Il fischio non è una parola
@@ -1427,6 +1499,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Che cosa occorre condividere per capirlo?
 
 **Metti in scena e trasforma:** Create un piccolo codice di tre segnali per un gioco. Spiegate le convenzioni prima della simulazione.
+
+**Collegamento con Scienze Umane · Comunicazione non verbale · segnale sonoro:** Il fischio richiama una regola del gioco pur non essendo una parola. La scena distingue verbale/non verbale da sonoro/visivo: il canale è acustico e il significato dipende dalle convenzioni e dal contesto sportivo.
 
 **Guida alla discussione:** Non confondere non verbale con non sonoro: un fischio è sonoro ma non è una parola. Gli audio inclusi leggono il dialogo; il fischio si può simulare durante la recitazione.
 
@@ -1466,6 +1540,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Rappresentate il segnale su carta e indicate codice, canale e destinatari. Confrontatelo con un messaggio vocale.
 
+**Collegamento con Scienze Umane · Segni visivi · convenzioni sociali:** Il rosso viene interpretato secondo un sistema di segni condiviso da chi usa la strada. L’episodio permette di distinguere codice visivo, segnale luminoso e destinatari, mostrando una comunicazione predisposta da un’istituzione.
+
 **Guida alla discussione:** La scena analizza il segnale e non sostituisce le regole della circolazione. Un dispositivo può trasmettere una comunicazione predisposta da un’istituzione.
 
 ## 39 · A chi parla questo cartello?
@@ -1503,6 +1579,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Perché la posizione del cartello contribuisce a interpretarlo?
 
 **Metti in scena e trasforma:** Inventate un cartello per uno spazio scolastico e chiedete a un altro gruppo che cosa capisce.
+
+**Collegamento con Scienze Umane · Simboli pubblici · destinatario implicito:** Il cartello non nomina i destinatari: si rivolge a chi si trova in quel luogo. Il caso collega interpretazione dei simboli e contesto sociale, distinguendo il significato convenzionale dal supporto su cui è rappresentato.
 
 **Guida alla discussione:** Distinguere il significato convenzionale del simbolo dal supporto materiale su cui appare. Non occorre che il destinatario sia chiamato per nome.
 
@@ -1542,6 +1620,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Create una scena fittizia in cui nonno, zia o un altro adulto aiuta nell’organizzazione. Formulate l’accordo con chi, dove e quando.
 
+**Collegamento con Scienze Umane · Ruoli familiari · norme · negoziazione:** L’accordo sul chiedere prima non è scontato per tutti i componenti della famiglia. La scena riguarda la costruzione di regole e ruoli nelle relazioni quotidiane; la forma familiare non determina di per sé la qualità dell’ascolto o della comunicazione.
+
 **Guida alla discussione:** Le forme familiari non determinano la qualità della comunicazione. La scena mette a fuoco accordi e ascolto, senza classificare famiglie come migliori o peggiori e senza riprendere casi di cronaca.
 
 ## 41 · Il manifesto vuole convincerci
@@ -1579,6 +1659,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Che cosa occorre verificare prima di condividerla?
 
 **Metti in scena e trasforma:** Progettate un manifesto fittizio con mittente riconoscibile, scopo, destinatari e istruzioni chiare.
+
+**Collegamento con Scienze Umane · Persuasione · immagini ed emozioni:** Il manifesto cerca di orientare un comportamento attraverso parole e immagini. L’analisi collega psicologia della persuasione e lettura critica dei media: occorre riconoscere chi propone il messaggio, quale azione chiede e quali effetti vengono soltanto ipotizzati.
 
 **Guida alla discussione:** L’immagine proposta non riproduce una campagna reale. Distinguere l’effetto riferito da un personaggio da un effetto garantito su tutti i destinatari.
 
@@ -1618,6 +1700,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Confrontate due ipotesi: apprendimento tramite modelli e rinforzi; predisposizione alla costruzione di regole. Cercate domande che ciascuna ipotesi suggerisce.
 
+**Collegamento con Scienze Umane · Sviluppo linguistico · iperregolarizzazione:** La forma “aprito” estende una regola a un verbo che fa eccezione. Il caso introduce il confronto tra imitazione e costruzione attiva di regole nello sviluppo del linguaggio, senza usare un singolo episodio come prova conclusiva di una teoria.
+
 **Guida alla discussione:** Il resoconto di lezione suggerisce il confronto Skinner–Chomsky. Presentarlo come confronto storico di spiegazioni, non come diagnosi o prova conclusiva. Non assegnare età rigide né interpretare la fluidità di parola come misura dell’intelligenza.
 
 ## 43 · Un avviso a senso unico · Lineare
@@ -1655,6 +1739,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Che cosa cambierebbe se Amir potesse chiedere una precisazione?
 
 **Metti in scena e trasforma:** Confrontate l’avviso con la scena circolare successiva. Disegnate una sola freccia e segnate l’informazione che rimane incerta.
+
+**Collegamento con Scienze Umane · Modello lineare · limiti della verifica:** L’avviso procede dalla docente alla classe senza una risposta mostrata. Il confronto isola la trasmissione in un verso e chiarisce ciò che non possiamo verificare: ascolto osservabile e comprensione non sono la stessa cosa.
 
 **Guida alla discussione:** Questa è una comunicazione unidirezionale rappresentata per confronto, non un dialogo a due voci. L’assenza di risposta osservata non equivale a passività psicologica. Non leggere il silenzio come un sì. A destra parla sempre la professoressa.
 
@@ -1696,6 +1782,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Recitate prima l’avviso lineare, poi lo scambio circolare. Fermatevi dopo ogni battuta e invertite fisicamente la freccia fra i personaggi.
 
+**Collegamento con Scienze Umane · Modello circolare · feedback e adattamento:** La domanda di Amir ritorna alla docente e le fa precisare il laboratorio. Non si tratta soltanto di alternare le voci: il feedback modifica il messaggio successivo e la riformulazione verifica un’informazione rimasta incerta nell’avviso lineare.
+
 **Guida alla discussione:** Prima parla la professoressa, poi Amir; la domanda sul laboratorio è feedback e produce una precisazione. Il ritorno non è una copia del messaggio iniziale: è una risposta che orienta quello successivo. Confronto diretto con la scena precedente.
 
 ## 45 · Mentre parli, vedo il tuo gesto · Transazionale
@@ -1735,6 +1823,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - In che cosa questa contemporaneità differisce dalla semplice alternanza A poi B?
 
 **Metti in scena e trasforma:** Recitate la scena mantenendo il gesto durante la frase di Luca. Poi toglietelo e confrontate ciò che cambia.
+
+**Collegamento con Scienze Umane · Modello transazionale · segnali simultanei:** Mentre Luca parla, il gesto di Sara gli fornisce un’informazione che modifica la proposta. La scena rende concreto il ruolo simultaneo dei partecipanti come emittenti e riceventi nel contesto; le battute separate servono alla leggibilità del fumetto.
 
 **Guida alla discussione:** La mano alzata qui viene interpretata e poi chiarita, non è un codice emotivo universale. Il modello transazionale non coincide con la sola sovrapposizione di parole: include segnali simultanei e costruzione dello scambio nel contesto. È un approfondimento rispetto al manuale.
 
@@ -1782,6 +1872,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Aggiungete un quarto incontro: uno dei due cambia biblioteca. Mostrate perché anche un’abitudine condivisa può richiedere un nuovo chiarimento.
 
+**Collegamento con Scienze Umane · Modello a spirale · storia della relazione:** L’appuntamento dei giorni precedenti rende comprensibile “come martedì”. La scena mostra come gli scambi costruiscano conoscenze comuni nel tempo: ogni incontro risente dei precedenti e non riparte da zero, senza implicare un miglioramento inevitabile.
+
 **Guida alla discussione:** La spirale è una metafora del processo e della sua storia, non il percorso fisico del segnale. Non equivale a un miglioramento obbligatorio né a una successione universale di fasi. La didascalia segnala i giorni; le battute restano quotidiane.
 
 ## 47 · Più insisti, meno rispondo · Circolo del conflitto
@@ -1825,6 +1917,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Disegnate le due reazioni con frecce di ritorno. Sostituite una battuta con una domanda specifica, senza decidere prima chi ha iniziato.
 
+**Collegamento con Scienze Umane · Circolarità · punteggiatura della sequenza:** Insistenza e ritardo nelle risposte si alimentano reciprocamente. La pragmatica permette di confrontare dove ciascuno colloca l’inizio del conflitto e di cercare una modifica concreta; riconoscere un ciclo non significa attribuire responsabilità identiche.
+
 **Guida alla discussione:** Non confondere circolarità con colpa identica o responsabilità sempre uguale. La scena fittizia mostra un ciclo reciproco modificabile e non normalizza pressioni o obblighi di reperibilità.
 
 ## 48 · Due compagni decidono insieme · Simmetrica
@@ -1864,6 +1958,8 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 - Questo rapporto potrebbe diventare competitivo? Inventate una possibilità.
 
 **Metti in scena e trasforma:** Conservate il rapporto fra pari e recitate prima una negoziazione, poi una gara a chi decide. Confrontate gli effetti.
+
+**Collegamento con Scienze Umane · Relazione simmetrica · cooperazione fra pari:** I compagni decidono insieme riconoscendosi una posizione di parità. La scena riguarda la configurazione della relazione, distinta dalla direzione del messaggio: uno scambio può essere sia simmetrico sia circolare, e la parità non garantisce assenza di conflitti.
 
 **Guida alla discussione:** Il criterio è la definizione di parità nella relazione, non il numero uguale di battute. Questa categoria non sostituisce lineare/circolare: lo scambio qui è anche circolare.
 
@@ -1905,7 +2001,209 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Metti in scena e trasforma:** Rappresentate la stessa organizzazione prima fra docente e studente, poi fra due compagni. Spiegate che cosa cambia nella relazione e che cosa resta nel percorso del messaggio.
 
+**Collegamento con Scienze Umane · Relazione complementare · differenza dei ruoli:** La docente guida il lavoro e Amir propone una modalità che modifica le indicazioni. Il caso mostra ruoli differenti con feedback: complementarità non equivale a inferiorità personale, obbedienza muta o comunicazione necessariamente lineare.
+
 **Guida alla discussione:** Non presentare complementarità come dominio necessario o valore minore di una persona. È un pattern relazionale, qui flessibile e con feedback. Simmetria e complementarità possono variare fra situazioni.
+
+## 50 · È spawnato in corridoio
+
+**Percorso:** 7 · Gergo, meme e identità nel gruppo
+
+**Obiettivo:** Riconoscere un uso figurato del gergo e riparare una mancata comprensione.
+
+**Prima di osservare:** Un gruppo può trasferire parole dei videogiochi alla vita quotidiana. Conoscere l’italiano non garantisce di conoscere ogni uso del gergo: chiedere una spiegazione permette di ricostruire un codice condiviso.
+
+**Vignetta:** Durante l’intervallo, Matteo racconta a Giulia un incontro inatteso nel corridoio.
+
+**Illustrazione:** assets/hu-slang-spawn.jpg
+
+![50 · È spawnato in corridoio](assets/hu-slang-spawn.jpg)
+
+
+> Durante l’intervallo, Matteo racconta a Giulia un incontro inatteso nel corridoio.
+
+1. **Matteo:** Poi è spawnato il prof dietro di me.
+2. **Giulia:** È… cosa?
+3. **Matteo:** È arrivato all’improvviso. Non l’avevo visto uscire dall’aula.
+4. **Giulia:** Ah! Pensavo stessi ancora parlando della partita di ieri.
+5. **Matteo:** No, della scuola. Mi sono girato e me lo sono trovato davanti.
+6. **Giulia:** Ora ho capito. Che cosa ti ha detto?
+
+**Osserva**
+
+- Quale parola Giulia non comprende?
+- Quale battuta mostra che Giulia pensava a un contesto diverso?
+
+**Interpreta e verifica**
+
+- Il messaggio era stato sentito ma non compreso: che cosa mancava?
+- Come cambia la comprensione quando Matteo racconta l’episodio con parole diverse?
+
+**Metti in scena e trasforma:** Raccontate lo stesso imprevisto prima a un amico che conosce il termine, poi a chi non lo conosce. Il destinatario può chiedere chiarimenti.
+
+**Collegamento con Scienze Umane · Sociolinguistica · gergo · codice condiviso:** Matteo trasferisce “spawnare” dal gioco a un incontro a scuola; Giulia lo interpreta inizialmente in un altro contesto. La scena mostra come il lessico di gruppo possa richiedere una spiegazione e come la riformulazione ricostruisca il significato condiviso.
+
+**Guida alla discussione:** “Spawnare” viene usato qui in senso figurato per un’apparizione inattesa. Giulia non è meno competente: inizialmente non condivide questo uso della parola. Chiedere e riformulare ripara l’equivoco.
+
+## 51 · Stai farmando aura?
+
+**Percorso:** 7 · Gergo, meme e identità nel gruppo
+
+**Obiettivo:** Confrontare intenzione, interpretazione ed effetto di un commento sull’immagine sociale.
+
+**Prima di osservare:** Un commento sullo stile o sul prestigio di qualcuno può essere un apprezzamento o una presa in giro. La pragmatica studia come contesto, tono e relazione contribuiscano all’interpretazione. “Farmare aura” può richiamare la costruzione o l’esibizione di un’immagine carismatica; qui il senso del commento va chiarito nello scambio.
+
+**Vignetta:** Giulia ha appena risposto a una domanda durante la presentazione. Matteo le si avvicina con un sorriso.
+
+**Illustrazione:** assets/hu-slang-aura.jpg
+
+![51 · Stai farmando aura?](assets/hu-slang-aura.jpg)
+
+
+> Giulia ha appena risposto a una domanda durante la presentazione. Matteo le si avvicina con un sorriso.
+
+1. **Matteo:** Stai farmando aura?
+2. **Giulia:** Mi stai prendendo in giro?
+3. **Matteo:** No, quella risposta davanti a tutti è stata fortissima.
+4. **Giulia:** Ah, dal tono mi sembrava il contrario.
+5. **Matteo:** Volevo farti un complimento. Io su quella domanda mi ero bloccato.
+6. **Giulia:** Grazie. Ero agitata, ma alla fine mi è venuto in mente l’esempio.
+
+**Osserva**
+
+- Quando emerge la differenza fra intenzione e interpretazione?
+- Quale fatto concreto Matteo cita per spiegare il suo commento?
+
+**Interpreta e verifica**
+
+- Prima del chiarimento, quali letture del commento erano possibili?
+- Possiamo sapere dalla sola risposta di Giulia se volesse mettersi in mostra?
+
+**Metti in scena e trasforma:** Recitate la prima frase come apprezzamento e come ironia. Gli osservatori indicano gli indizi, poi formulano una domanda di verifica.
+
+**Collegamento con Scienze Umane · Pragmatica · immagine sociale · intenzione ed effetto:** Giulia percepisce possibile ironia in un commento che Matteo chiarisce come complimento. Il caso collega presentazione di sé e interpretazione relazionale: l’etichetta “aura” non misura il valore della persona né prova la sua intenzione di mettersi in mostra.
+
+**Guida alla discussione:** I “punti aura” non sono una misura oggettiva del valore di una persona. Il commento di Matteo non prova che Giulia abbia agito per apparire carismatica. Il chiarimento riguarda l’intenzione dichiarata e l’effetto ricevuto.
+
+## 52 · Il meme non dice tutto
+
+**Percorso:** 7 · Gergo, meme e identità nel gruppo
+
+**Obiettivo:** Individuare un riferimento implicito e chiedere chiarimenti in una comunicazione multimodale.
+
+**Prima di osservare:** Un meme richiama un’immagine o una situazione che non tutti conoscono allo stesso modo. Per interpretarlo servono riferimenti condivisi: il destinatario può attribuirgli un bersaglio o un’intenzione diversi da quelli previsti.
+
+**Vignetta:** Davide e Sofia sono a casa. Nella chat del compito Sofia ha appena inviato un meme con una faccia esasperata, senza altre parole.
+
+**Illustrazione:** assets/hu-slang-meme.jpg
+
+![52 · Il meme non dice tutto](assets/hu-slang-meme.jpg)
+
+
+> Davide e Sofia sono a casa. Nella chat del compito Sofia ha appena inviato un meme con una faccia esasperata, senza altre parole.
+
+1. **Davide:** Quel meme era per il grafico che ho fatto?
+2. **Sofia:** No! Era per la consegna: dobbiamo rifarlo per la terza volta.
+3. **Davide:** L’hai mandato subito dopo la mia foto. Sembrava una presa in giro.
+4. **Sofia:** Hai ragione, senza una frase non si capiva.
+5. **Davide:** Pensavo che il mio lavoro ti facesse ridere.
+6. **Sofia:** Mi spiace. Il grafico va bene: dobbiamo solo usare i dati nuovi.
+
+**Osserva**
+
+- Il meme viene interpretato come riferito alla stessa cosa da entrambi?
+- Quale successione di messaggi influenza Davide?
+
+**Interpreta e verifica**
+
+- Perché riconoscere l’immagine non basta per capire a chi o a che cosa si riferisce?
+- Quale frase Sofia avrebbe potuto aggiungere al meme?
+
+**Metti in scena e trasforma:** Inventate su carta un meme semplice, senza usare persone reali. Accompagnatelo con due didascalie che cambino il riferimento e confrontate le interpretazioni.
+
+**Collegamento con Scienze Umane · Comunicazione multimodale · impliciti · referente:** Davide attribuisce il meme al proprio lavoro, Sofia alla consegna. La scena mostra come immagini, successione dei messaggi e conoscenze condivise concorrano al significato; esplicitare il referente ripara un equivoco con effetti sulla relazione.
+
+**Guida alla discussione:** Il meme è descritto dalla didascalia, così l’attività non richiede di conoscere un contenuto virale. L’immagine e il testo contribuiscono insieme al significato. Il chiarimento specifica il referente e riconosce l’effetto sul destinatario.
+
+## 53 · Non chiamarmi NPC
+
+**Percorso:** 7 · Gergo, meme e identità nel gruppo
+
+**Obiettivo:** Riconoscere gli effetti di un’etichetta e distinguere lo scherzo dichiarato dall’esperienza del destinatario.
+
+**Prima di osservare:** Nel videogioco un NPC è un personaggio non controllato dal giocatore. Applicare questa etichetta a una persona può svalutarne iniziativa e individualità. La scena permette di osservare l’effetto relazionale di una battuta e la possibilità di esprimere un limite.
+
+**Vignetta:** Nel cortile Amir sta controllando l’orario del bus su un foglietto. Riccardo lo vede fermo vicino alla panchina.
+
+**Illustrazione:** assets/hu-slang-npc.jpg
+
+![53 · Non chiamarmi NPC](assets/hu-slang-npc.jpg)
+
+
+> Nel cortile Amir sta controllando l’orario del bus su un foglietto. Riccardo lo vede fermo vicino alla panchina.
+
+1. **Riccardo:** Sei fermo lì da un sacco. Sembri un NPC.
+2. **Amir:** Non chiamarmi così. Sto cercando il bus per tornare a casa.
+3. **Riccardo:** Era una battuta.
+4. **Amir:** A me non fa ridere. Sembra che tu mi consideri uno senza idee.
+5. **Riccardo:** Scusa, non ci avevo pensato. Vuoi una mano con gli orari?
+6. **Amir:** Sì, guarda: questo passa dopo l’allenamento?
+
+**Osserva**
+
+- Quale informazione Riccardo non aveva quando ha fatto la battuta?
+- In che modo Amir esprime un limite?
+
+**Interpreta e verifica**
+
+- Dire “era una battuta” basta a cancellare l’effetto sull’altro?
+- Che cosa cambia quando Riccardo si scusa e propone un aiuto concreto?
+
+**Metti in scena e trasforma:** Riscrivete il primo commento descrivendo ciò che si vede senza etichettare la persona. Provate anche un finale in cui Amir preferisce cercare da solo.
+
+**Collegamento con Scienze Umane · Psicologia sociale · etichettamento · riconoscimento:** Riccardo riduce un comportamento osservato a un’etichetta, mentre Amir ne spiega il motivo e pone un limite. Il caso permette di osservare come le parole influenzino riconoscimento e appartenenza e perché l’intenzione di scherzare non annulli l’effetto ricevuto.
+
+**Guida alla discussione:** L’episodio illustra etichettamento e riconoscimento dell’altro; non autorizza a classificare i compagni come NPC. La riconciliazione mostrata è una possibilità, non un obbligo di accettare lo scherzo o l’aiuto.
+
+## 54 · Dal gruppo alla professoressa
+
+**Percorso:** 7 · Gergo, meme e identità nel gruppo
+
+**Obiettivo:** Adattare il registro all’interlocutore e spiegare un giudizio attraverso osservazioni concrete.
+
+**Prima di osservare:** La sociolinguistica osserva come il linguaggio vari con interlocutori, scopi e situazioni. Cambiare registro non significa rinnegare il linguaggio del gruppo: serve a rendere comprensibile il messaggio anche a chi non condivide gli stessi riferimenti.
+
+**Vignetta:** Nel laboratorio video, Elena mostra alla professoressa una bozza realizzata dal gruppo. Poco prima l’aveva commentata nella chat con i compagni.
+
+**Illustrazione:** assets/hu-slang-register.jpg
+
+![54 · Dal gruppo alla professoressa](assets/hu-slang-register.jpg)
+
+
+> Nel laboratorio video, Elena mostra alla professoressa una bozza realizzata dal gruppo. Poco prima l’aveva commentata nella chat con i compagni.
+
+1. **Elena:** Nel gruppo ho scritto che questa apertura è un po’ cringe.
+2. **Prof.ssa Rinaldi:** Quale parte cambieresti? Me la mostri?
+3. **Elena:** Qui recitiamo lo slogan tutti insieme. Sembra molto finto.
+4. **Prof.ssa Rinaldi:** Capisco. Come vorreste iniziare?
+5. **Elena:** Con una domanda fatta a un compagno, senza farlo recitare.
+6. **Prof.ssa Rinaldi:** Proviamo. Registrate le due versioni e confrontiamole.
+
+**Osserva**
+
+- Come Elena rende più preciso il giudizio iniziale?
+- La professoressa rifiuta la parola o chiede un esempio?
+
+**Interpreta e verifica**
+
+- Quali riferimenti potevano essere condivisi nella chat ma non nel laboratorio?
+- Perché descrivere una parte del video aiuta a discutere anche senza condividere il gergo?
+
+**Metti in scena e trasforma:** Esprimete lo stesso parere sul video in una chat fra amici e in una proposta al docente. Conservate il contenuto e confrontate le scelte linguistiche.
+
+**Collegamento con Scienze Umane · Sociolinguistica · registro · contesto e ruoli:** Elena passa dal giudizio sintetico della chat alla descrizione di una parte del video. La scena mostra l’adattamento del registro a destinatario e scopo: formulare osservazioni concrete facilita il confronto fra persone che non condividono tutto il lessico.
+
+**Guida alla discussione:** La scena riguarda variazione del registro e adeguatezza al contesto, senza classificare un gruppo come linguisticamente inferiore. La richiesta di un esempio trasforma un giudizio generico in una proposta discutibile e verificabile.
 
 ## Estensione dai materiali di classe
 
