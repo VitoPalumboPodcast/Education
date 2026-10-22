@@ -12,18 +12,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere i sei elementi in un atto comunicativo e lo scambio dei ruoli nella risposta.
 
-**Vignetta:** Nel corridoio della scuola Luca informa Sara dell’allenamento. Il foglio richiama l’attività sportiva.
+**Prima di osservare:** In uno scambio possiamo riconoscere chi invia il messaggio, chi lo riceve, che cosa comunica, il codice condiviso, il canale e ciò a cui si riferisce. Quando arriva una risposta, i ruoli possono invertirsi.
+
+**Vignetta:** Nel corridoio, dopo le lezioni. L’orario dell’allenamento è cambiato.
 
 **Illustrazione:** assets/hu-sports.jpg
 
 ![01 · L’allenamento di domani](assets/hu-sports.jpg)
 
+
+> Nel corridoio, dopo le lezioni. L’orario dell’allenamento è cambiato.
+
 1. **Luca:** Domani l’allenamento è alle tre, nella palestra della scuola.
 2. **Sara:** Alle tre? Pensavo alle quattro.
-3. **Luca:** L’orario è cambiato. L’avviso riguarda il nostro gruppo di basket.
-4. **Sara:** Quindi domani, alle quindici, nella palestra della scuola.
-5. **Luca:** Esatto. Ci vediamo davanti all’ingresso.
-6. **Sara:** Bene, adesso so dove e quando andare.
+3. **Luca:** Hanno cambiato l’orario. L’ho appena letto sull’avviso.
+4. **Sara:** Va bene. Ci troviamo davanti alla palestra?
+5. **Luca:** Sì, all’ingresso del cortile, poco prima delle tre.
+6. **Sara:** Perfetto. Avviso anche mia madre, così mi organizzo.
 
 **Osserva**
 
@@ -45,18 +50,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Distinguere un ostacolo sul canale da un problema di codice.
 
-**Vignetta:** Dal campo vicino arrivano rumori mentre Luca e Sara parlano.
+**Prima di osservare:** Il rumore può ostacolare la ricezione anche quando le persone conoscono la stessa lingua. Chiedere di ripetere e cambiare posto sono modi per controllare ciò che si è sentito.
+
+**Vignetta:** Vicino alla palestra arriva il rumore di una partita.
 
 **Illustrazione:** assets/hu-noise.jpg
 
 ![02 · Il corridoio è rumoroso](assets/hu-noise.jpg)
 
+
+> Vicino alla palestra arriva il rumore di una partita.
+
 1. **Luca:** L’allenamento è alle tre!
 2. **Sara:** Alle sei? Non ho sentito bene.
-3. **Luca:** C’è troppo rumore. Spostiamoci vicino alla porta.
-4. **Sara:** Qui ti sento. Puoi ripetere l’orario?
+3. **Luca:** Aspetta, qui c’è troppo rumore. Andiamo vicino alla porta.
+4. **Sara:** Ecco, adesso ti sento. A che ora?
 5. **Luca:** Alle tre del pomeriggio.
-6. **Sara:** Alle quindici, ho capito.
+6. **Sara:** Ah, alle tre! Allora riesco a venire.
 
 **Osserva**
 
@@ -78,18 +88,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Confrontare un messaggio orale con lo stesso contenuto scritto.
 
-**Vignetta:** Luca e Sara si trovano in case diverse e usano una chat simulata.
+**Prima di osservare:** Lo stesso contenuto può essere comunicato a voce o per iscritto. Cambiano il modo di riceverlo e gli indizi disponibili: un testo si può rileggere, ma non trasmette direttamente l’intonazione.
+
+**Vignetta:** Più tardi, nelle rispettive case. Luca scrive a Sara.
 
 **Illustrazione:** assets/hu-chat.jpg
 
 ![03 · Lo stesso avviso arriva in chat](assets/hu-chat.jpg)
 
-1. **Luca:** Domani l’allenamento è alle tre, nella palestra della scuola.
-2. **Sara:** Mi scrivi anche quale ingresso usiamo?
-3. **Luca:** Quello del cortile, vicino al campo.
-4. **Sara:** Perfetto. Quindi alle 15 all’ingresso del cortile.
-5. **Luca:** Sì. Ho scritto qui l’orario, così puoi rileggerlo.
-6. **Sara:** Grazie, ora ho tutte le informazioni.
+
+> Più tardi, nelle rispettive case. Luca scrive a Sara.
+
+1. **Luca:** Domani allenamento alle 15, nella palestra della scuola.
+2. **Sara:** Da quale ingresso entriamo?
+3. **Luca:** Dal cortile, vicino al campo.
+4. **Sara:** Ci vediamo lì cinque minuti prima?
+5. **Luca:** Sì, alle 14:55.
+6. **Sara:** Perfetto, me lo segno.
 
 **Osserva**
 
@@ -111,18 +126,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere la necessità di condividere il codice e chiarire le abbreviazioni.
 
-**Vignetta:** I due stanno lavorando a distanza e Luca usa un’abbreviazione che Sara non conosce.
+**Prima di osservare:** Per capire una sigla occorre conoscerne il significato convenzionale. Se una parte del codice non è condivisa, si può chiedere una spiegazione.
+
+**Vignetta:** Luca e Sara lavorano online alla presentazione. Luca si allontana dal computer.
 
 **Illustrazione:** assets/hu-chat.jpg
 
 ![04 · Che cosa significa “BRB”?](assets/hu-chat.jpg)
 
+
+> Luca e Sara lavorano online alla presentazione. Luca si allontana dal computer.
+
 1. **Luca:** BRB.
-2. **Sara:** Non conosco questa sigla. Hai finito il lavoro?
-3. **Luca:** No, significa “torno subito”. Mi allontano un momento.
-4. **Sara:** Ah, avevo pensato che stessi chiudendo la conversazione.
-5. **Luca:** Scrivo meglio: torno fra cinque minuti.
-6. **Sara:** Va bene, ti aspetto prima di continuare.
+2. **Sara:** Aspetta, che vuol dire? Hai finito?
+3. **Luca:** No, torno subito. Mi hanno chiamato dalla cucina.
+4. **Sara:** Ah! Pensavo stessi chiudendo tutto.
+5. **Luca:** Dammi cinque minuti e riprendiamo.
+6. **Sara:** Va bene, intanto cerco l’ultima immagine.
 
 **Osserva**
 
@@ -144,18 +164,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Ricostruire riferimenti di luogo e tempo attraverso informazioni condivise.
 
-**Vignetta:** La scuola ha un ingresso principale e un ingresso dal cortile.
+**Prima di osservare:** Parole come “lì” e “dopo” dipendono da informazioni condivise. Un riferimento poco preciso può essere chiarito indicando un luogo e un orario riconoscibili da entrambi.
+
+**Vignetta:** La scuola ha due ingressi: quello principale e il cancello del cortile.
 
 **Illustrazione:** assets/hu-sports.jpg
 
 ![05 · “Lì”, ma dove?](assets/hu-sports.jpg)
 
+
+> La scuola ha due ingressi: quello principale e il cancello del cortile.
+
 1. **Luca:** Ci vediamo lì dopo.
-2. **Sara:** Davanti alla palestra o all’ingresso della scuola?
-3. **Luca:** Intendevo l’ingresso del cortile.
-4. **Sara:** E “dopo” significa dopo le lezioni o prima dell’allenamento?
-5. **Luca:** Alle quattordici e cinquanta, davanti al cancello del cortile.
-6. **Sara:** Adesso è chiaro: quel cancello, alle quattordici e cinquanta.
+2. **Sara:** Dove? Davanti alla palestra?
+3. **Luca:** No, al cancello del cortile.
+4. **Sara:** Dopo le lezioni o prima dell’allenamento?
+5. **Luca:** Prima dell’allenamento, alle due e cinquanta.
+6. **Sara:** D’accordo, ti aspetto al cancello alle due e cinquanta.
 
 **Osserva**
 
@@ -177,18 +202,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere il destinatario e gli indizi con cui viene individuato.
 
-**Vignetta:** Sara è sulla destra; un altro compagno è più indietro. Luca formula una richiesta senza chiamare nessuno per nome.
+**Prima di osservare:** Chi sente un messaggio non è necessariamente il suo destinatario. Il nome, lo sguardo e il contesto possono aiutare a capire a chi è rivolta una richiesta.
+
+**Vignetta:** Sara è vicina al banco. Matteo è poco più indietro.
 
 **Illustrazione:** assets/hu-addressee.jpg
 
 ![06 · Parlavi con me?](assets/hu-addressee.jpg)
 
+
+> Sara è vicina al banco. Matteo è poco più indietro.
+
 1. **Luca:** Mi passi quel quaderno?
-2. **Sara:** Stai chiedendo a me o a Matteo?
-3. **Luca:** A te, Sara. Non ti avevo guardata mentre parlavo.
-4. **Sara:** Ora ho capito. Quello sul banco?
-5. **Luca:** Sì, proprio quello vicino a te.
-6. **Sara:** Eccolo. Chiamami per nome se ci sono altre persone.
+2. **Sara:** Dici a me o a Matteo?
+3. **Luca:** A te, Sara. Scusa, stavo guardando lo zaino.
+4. **Sara:** Questo qui sul banco?
+5. **Luca:** Sì, quello vicino al tuo astuccio.
+6. **Sara:** Tieni. Per un attimo non avevo capito.
 
 **Osserva**
 
@@ -210,18 +240,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Usare il feedback per controllare la comprensione e rendere visibile la circolarità.
 
-**Vignetta:** Sara verifica l’informazione ricevuta senza limitarsi a dire sì.
+**Prima di osservare:** Il feedback è la risposta che ritorna a chi ha comunicato. Riprendere con parole proprie un’informazione permette di controllare la comprensione; non significa necessariamente approvare una proposta.
+
+**Vignetta:** Sara deve organizzare il rientro dopo l’allenamento.
 
 **Illustrazione:** assets/hu-sports.jpg
 
 ![07 · Alle tre o alle quattro?](assets/hu-sports.jpg)
 
+
+> Sara deve organizzare il rientro dopo l’allenamento.
+
 1. **Luca:** Domani ci alleniamo alle tre.
-2. **Sara:** Per essere sicura: alle tre del pomeriggio?
+2. **Sara:** Alle tre del pomeriggio, giusto?
 3. **Luca:** Sì, alle quindici.
-4. **Sara:** E nella palestra della scuola, non al campo del quartiere?
-5. **Luca:** Esatto, nella palestra della scuola.
-6. **Sara:** Bene, ti confermo che ho capito.
+4. **Sara:** Nella palestra della scuola o al campo del quartiere?
+5. **Luca:** Nella palestra della scuola.
+6. **Sara:** Bene, allora prendo l’autobus delle due e mezza.
 
 **Osserva**
 
@@ -243,18 +278,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Distinguere intenzione dell’emittente, interpretazione ed effetto del messaggio.
 
-**Vignetta:** Sara e Luca lavorano alla stessa presentazione da case diverse.
+**Prima di osservare:** Nella chat mancano molti indizi vocali. Una risposta breve può essere interpretata diversamente dall’intenzione di chi la scrive: chiedere un chiarimento permette di confrontare le due letture.
+
+**Vignetta:** Da case diverse, Sara e Luca si scambiano messaggi sulla presentazione.
 
 **Illustrazione:** assets/hu-chat.jpg
 
 ![08 · “Fai come vuoi”](assets/hu-chat.jpg)
 
+
+> Da case diverse, Sara e Luca si scambiano messaggi sulla presentazione.
+
 1. **Sara:** Ho cambiato la prima slide. Va bene?
 2. **Luca:** Fai come vuoi.
 3. **Sara:** Potevi dirmelo se non eri d’accordo.
-4. **Luca:** Sono d’accordo! Intendevo che mi fido della tua scelta.
-5. **Sara:** Avevo letto la tua risposta come un segno di fastidio.
-6. **Luca:** Capisco. Scrivo meglio: la modifica mi piace, procedi pure.
+4. **Luca:** Ma sono d’accordo! Intendevo che mi fido di te.
+5. **Sara:** Ah, pensavo ti avesse dato fastidio.
+6. **Luca:** No, mi piace. Teniamo la tua versione.
 
 **Osserva**
 
@@ -276,18 +316,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Osservare il contributo di punteggiatura ed emoji senza assegnare significati universali.
 
-**Vignetta:** Sara nota la differenza fra risposte scritte in momenti diversi.
+**Prima di osservare:** Punteggiatura ed emoji possono orientare la lettura insieme alle abitudini dei partecipanti. Non hanno però un significato emotivo certo e uguale per tutti.
+
+**Vignetta:** Di solito Luca risponde con un punto esclamativo o una faccina. Questa volta scrive in fretta.
 
 **Illustrazione:** assets/hu-chat.jpg
 
 ![09 · “Va bene.” oppure “Va bene! 😊”](assets/hu-chat.jpg)
 
+
+> Di solito Luca risponde con un punto esclamativo o una faccina. Questa volta scrive in fretta.
+
 1. **Sara:** Usiamo questo titolo per la presentazione?
 2. **Luca:** Va bene.
-3. **Sara:** Sei arrabbiato? Di solito scrivi “Va bene!” con una faccina.
-4. **Luca:** No, stavo scrivendo in fretta. Il titolo mi piace.
-5. **Sara:** Ho dato molto peso al punto e all’assenza dell’emoji.
-6. **Luca:** Capisco. Ti confermo che sono d’accordo.
+3. **Sara:** Sei arrabbiato? Di solito metti una faccina.
+4. **Luca:** No, sto uscendo e ho scritto al volo. Il titolo mi piace.
+5. **Sara:** Ah, quel punto mi sembrava un po’ secco.
+6. **Luca:** Tranquilla 😊 Teniamolo!
 
 **Osserva**
 
@@ -309,18 +354,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Esplorare significati diversi dello stesso segno e chiedere una conferma esplicita.
 
-**Vignetta:** Sara propone un incontro e Luca risponde soltanto con un’emoji.
+**Prima di osservare:** Anche un’emoji richiede un significato sufficientemente condiviso. Lo stesso segno può essere usato come approvazione, conferma di lettura o assenso a una proposta.
+
+**Vignetta:** Sara propone un orario per provare la presentazione.
 
 **Illustrazione:** assets/hu-chat.jpg
 
 ![10 · Che cosa significa 👍?](assets/hu-chat.jpg)
 
+
+> Sara propone un orario per provare la presentazione.
+
 1. **Sara:** Vieni a provare la presentazione alle quattro?
 2. **Luca:** 👍
-3. **Sara:** Quindi vieni, oppure mi stai dicendo che hai letto?
-4. **Luca:** Intendevo che vengo. Per me quel simbolo è un sì.
-5. **Sara:** Io lo uso a volte solo per dire “ricevuto”.
-6. **Luca:** Allora lo scrivo: sì, ci sarò alle quattro.
+3. **Sara:** Quindi vieni? O volevi solo dire che hai letto?
+4. **Luca:** Vengo, sì!
+5. **Sara:** Te lo chiedo perché io a volte lo uso per dire “ricevuto”.
+6. **Luca:** Allora confermo: ci sono alle quattro.
 
 **Osserva**
 
@@ -342,18 +392,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Separare un indicatore tecnico dalle ipotesi sul comportamento e sulla relazione.
 
-**Vignetta:** La chat segnala che il messaggio è stato letto. Sara attende una risposta.
+**Prima di osservare:** Un indicatore tecnico di lettura non rivela da solo disponibilità o intenzioni. Distinguere il dato osservato dalle ipotesi sulla persona aiuta a evitare conclusioni affrettate.
+
+**Vignetta:** Il messaggio di Sara risulta letto, ma per un’ora non arriva risposta.
 
 **Illustrazione:** assets/hu-chat.jpg
 
 ![11 · Letto, ma senza risposta](assets/hu-chat.jpg)
 
+
+> Il messaggio di Sara risulta letto, ma per un’ora non arriva risposta.
+
 1. **Sara:** Hai letto il messaggio sul lavoro? Non mi hai risposto.
-2. **Luca:** Sì, l’ho aperto mentre stavo per uscire.
-3. **Sara:** Ho pensato che non volessi lavorare con me.
-4. **Luca:** Mi dispiace averti lasciata in dubbio. Non potevo rispondere con calma.
-5. **Sara:** La scritta “letto” mi ha fatto immaginare una ragione che non conoscevo.
-6. **Luca:** La prossima volta posso scrivere: ho letto, ti rispondo più tardi.
+2. **Luca:** Sì, l’ho aperto mentre uscivo. Poi non sono più riuscito a scriverti.
+3. **Sara:** Pensavo che non volessi farlo con me.
+4. **Luca:** No, certo che voglio! Mi serviva un momento per guardare il materiale.
+5. **Sara:** Allora dimmi tu quando possiamo sentirci.
+6. **Luca:** Dopo cena? Alle otto e mezza ci sono.
 
 **Osserva**
 
@@ -375,18 +430,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere informazioni mancanti in un messaggio vocale e riparare l’equivoco.
 
-**Vignetta:** Luca manda un vocale da una fermata rumorosa. Sara lo ascolta a casa.
+**Prima di osservare:** Perdere una sola parola può cambiare molto il senso di un messaggio. Una richiesta di conferma è particolarmente utile prima di agire su un’informazione incompleta.
+
+**Vignetta:** Luca ha inviato un vocale dalla fermata. Il traffico copriva una parte della frase.
 
 **Illustrazione:** assets/hu-voice.jpg
 
 ![12 · Nel vocale manca una parola](assets/hu-voice.jpg)
 
-1. **Luca:** Il mio vocale si sentiva bene?
-2. **Sara:** Ho sentito “stampare le slide”, ma il resto era coperto dal traffico.
-3. **Luca:** Dicevo: non stampare le slide, devo ancora correggerle.
-4. **Sara:** Allora avevo perso proprio il “non”. Ti chiedo conferma prima di stamparle.
-5. **Luca:** Grazie. Ti mando anche il messaggio scritto.
-6. **Sara:** Perfetto, aspetto la versione corretta.
+
+> Luca ha inviato un vocale dalla fermata. Il traffico copriva una parte della frase.
+
+1. **Luca:** Si sentiva il vocale che ti ho mandato?
+2. **Sara:** Ho capito “stampare le slide”. Il resto no.
+3. **Luca:** Dicevo di NON stamparle: devo ancora correggerle.
+4. **Sara:** Ah, allora aspetto! Stavo per andare in copisteria.
+5. **Luca:** Scusa, ti scrivo appena sono pronte.
+6. **Sara:** Grazie. Per fortuna te l’ho chiesto.
 
 **Osserva**
 
@@ -408,18 +468,29 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Confrontare letture della stessa frase e il ruolo del contesto nei vocali.
 
-**Vignetta:** I personaggi confrontano due possibili letture della stessa frase, senza cambiare le parole.
+**Prima di osservare:** Le stesse parole possono produrre impressioni diverse a seconda del tono e del momento. L’impressione di chi ascolta resta un’ipotesi da verificare nel seguito dello scambio.
+
+**Vignetta:** Nel pomeriggio Sara chiede con un messaggio quando può chiamare. Luca risponde con un vocale.
 
 **Illustrazione:** assets/hu-chat.jpg
 
 ![13 · Lo stesso messaggio, due letture](assets/hu-chat.jpg)
 
-1. **Luca:** Quando vuoi. _Prima lettura proposta: calma, disponibile, senza fretta._
-2. **Sara:** Lo sento come un invito a scegliere un momento comodo.
-3. **Luca:** Quando vuoi. _Seconda lettura proposta: più breve, impaziente. Provate a recitarla._
-4. **Sara:** Questa volta potrei sentirci impazienza. Ma chiederei se hai fretta.
-5. **Luca:** Possiamo usare le stesse parole e produrre impressioni diverse.
-6. **Sara:** E verificare l’intenzione, invece di indovinarla.
+
+> Nel pomeriggio Sara chiede con un messaggio quando può chiamare. Luca risponde con un vocale.
+
+1. **Luca:** Quando vuoi. _Prima lettura: calma, disponibile._
+2. **Sara:** Allora ti chiamo dopo cena, grazie.
+
+> Più tardi, Sara non è ancora riuscita a chiamare. Luca è alla fermata e sta arrivando il suo autobus.
+
+3. **Luca:** Quando vuoi. _Seconda lettura: più rapida. Luca deve salire sull’autobus._
+4. **Sara:** Hai fretta? Se adesso non puoi, rimandiamo.
+
+> Sara chiede se il momento è ancora adatto.
+
+5. **Luca:** Sì, sto salendo sull’autobus. Scusa, facciamo fra mezz’ora?
+6. **Sara:** Certo, chiamami tu quando arrivi.
 
 **Osserva**
 
@@ -441,18 +512,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Osservare il valore comunicativo del silenzio senza attribuirgli un significato unico.
 
-**Vignetta:** Luca indica un posto libero. Sara non risponde immediatamente e guarda altrove.
+**Prima di osservare:** Un silenzio può avere effetti nella relazione senza esprimere un’intenzione unica o consapevole. La sua interpretazione va collegata alla situazione e alle informazioni successive.
+
+**Vignetta:** Luca indica il posto libero accanto a sé. Sara guarda verso la porta.
 
 **Illustrazione:** assets/hu-silence.jpg
 
 ![14 · Ti siedi con noi?](assets/hu-silence.jpg)
 
+
+> Luca indica il posto libero accanto a sé. Sara guarda verso la porta.
+
 1. **Luca:** Ti siedi qui con me?
-2. **Sara:** … _Sara rimane in silenzio e guarda altrove. Osservate prima di interpretare._
-3. **Luca:** Ho pensato che non volessi. Preferisci stare da sola?
-4. **Sara:** Stavo cercando un’amica con lo sguardo. Non avevo risposto alla tua domanda.
-5. **Luca:** Vuoi che aspettiamo anche lei?
-6. **Sara:** Sì, grazie. Poi ci sediamo insieme.
+2. **Sara:** … _Sara resta in silenzio e cerca qualcuno con lo sguardo._
+3. **Luca:** Preferisci stare da sola?
+4. **Sara:** No, scusa. Cercavo Marta: dovevamo pranzare insieme.
+5. **Luca:** C’è posto anche per lei. La aspettiamo?
+6. **Sara:** Sì, grazie! Eccola, sta arrivando.
 
 **Osserva**
 
@@ -474,18 +550,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Distinguere contenuto letterale e possibile richiesta indiretta.
 
-**Vignetta:** Sara è vicina alla corrente d’aria e guarda la finestra. Luca inizialmente interpreta la frase alla lettera.
+**Prima di osservare:** Una frase può descrivere una situazione e suggerire anche una richiesta. Il contesto aiuta, ma l’altra persona potrebbe cogliere soltanto il significato letterale.
+
+**Vignetta:** La finestra è aperta. Sara è seduta vicino alla corrente d’aria.
 
 **Illustrazione:** assets/hu-window.jpg
 
 ![15 · Qui fa freddo](assets/hu-window.jpg)
 
+
+> La finestra è aperta. Sara è seduta vicino alla corrente d’aria.
+
 1. **Sara:** Qui fa freddo.
-2. **Luca:** Io sto bene con la felpa.
-3. **Sara:** Intendevo chiederti se puoi chiudere un po’ la finestra.
-4. **Luca:** Ah, pensavo fosse soltanto un commento sulla temperatura.
-5. **Sara:** Non avevo formulato la richiesta in modo esplicito.
-6. **Luca:** La accosto. Dimmi se così va meglio.
+2. **Luca:** Io con la felpa sto bene.
+3. **Sara:** Puoi accostare la finestra? L’aria mi arriva proprio addosso.
+4. **Luca:** Ah, certo. Pensavo fosse solo un commento.
+5. **Sara:** Grazie. Già così va meglio.
+6. **Luca:** Dimmi se vuoi chiuderla del tutto.
 
 **Osserva**
 
@@ -507,18 +588,29 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Confrontare apprezzamento e possibile ironia in relazione alla situazione.
 
-**Vignetta:** Sara ha completato il lavoro; poi i personaggi immaginano un contesto diverso per la stessa frase.
+**Prima di osservare:** Nell’ironia le parole possono essere in contrasto con la situazione e con l’intonazione. Non tutti riconoscono gli stessi indizi: è possibile chiedere chiarimenti o esprimere l’effetto ricevuto.
+
+**Vignetta:** Sara ha appena sistemato tutte le slide. Luca guarda il lavoro completato.
 
 **Illustrazione:** assets/hu-surprise.jpg
 
 ![16 · Brava, davvero!](assets/hu-surprise.jpg)
 
+
+> Sara ha appena sistemato tutte le slide. Luca guarda il lavoro completato.
+
 1. **Luca:** Brava, davvero!
-2. **Sara:** Grazie, ho finalmente sistemato tutte le slide.
-3. **Luca:** Se lo dicessi davanti a un lavoro lasciato a metà, come potrebbe suonare?
-4. **Sara:** Potrei pensare che tu stia facendo dell’ironia.
-5. **Luca:** E il tono e lo sguardo potrebbero suggerire una lettura diversa.
-6. **Sara:** Per esserne sicura potrei chiedere: lo dici sul serio?
+2. **Sara:** Grazie! Finalmente le ho sistemate tutte.
+
+> Un altro pomeriggio. Una parte delle slide non è pronta e l’invio è previsto tra pochi minuti.
+
+3. **Luca:** Brava, davvero! _Secondo episodio: lettura ironica, di fronte al lavoro incompleto._
+4. **Sara:** Se è una battuta, non mi fa ridere. Mi manca ancora una slide.
+
+> Sara reagisce al commento di Luca.
+
+5. **Luca:** Scusa. Ti aiuto a finirla?
+6. **Sara:** Sì, scegli l’immagine mentre io sistemo il testo.
 
 **Osserva**
 
@@ -540,18 +632,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Confrontare rifiuto, attribuzione di intenzioni, negoziazione e riparazione.
 
-**Vignetta:** Luca ha dimenticato la penna. Sara ha solo quella che sta utilizzando.
+**Prima di osservare:** Un rifiuto breve può essere interpretato come rifiuto della persona. Chiarire il motivo e cercare alternative permette di distinguere il limite concreto dal giudizio sulla relazione.
+
+**Vignetta:** Luca cerca una penna. Sara sta usando l’unica che ha portato.
 
 **Illustrazione:** assets/pen-request.jpg
 
 ![17 · Una penna: rifiuto o spiegazione?](assets/pen-request.jpg)
 
+
+> Luca cerca una penna. Sara sta usando l’unica che ha portato.
+
 1. **Luca:** Mi presti la penna?
 2. **Sara:** No.
 3. **Luca:** Va bene, non ti chiederò più niente.
-4. **Sara:** Aspetta: ho soltanto questa e mi serve per scrivere.
-5. **Luca:** Avevo pensato che non volessi aiutarmi.
-6. **Sara:** Capisco. Avrei potuto spiegarmi meglio. Cerchiamo una penna di scorta?
+4. **Sara:** Aspetta, ho solo questa e devo finire l’esercizio.
+5. **Luca:** Ah, pensavo non volessi aiutarmi.
+6. **Sara:** Chiediamo a Matteo se ne ha una di scorta?
 
 **Osserva**
 
@@ -573,18 +670,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Rendere esplicite le informazioni che ciascuno presume condivise.
 
-**Vignetta:** Luca e Sara arrivano da ingressi diversi e ricostruiscono l’equivoco.
+**Prima di osservare:** Un’espressione apparentemente chiara può nascondere presupposti diversi. Ricostruire che cosa ciascuno dava per scontato permette di individuare l’origine di un equivoco.
+
+**Vignetta:** Dopo essersi cercati, Luca e Sara si ritrovano. Avevano aspettato davanti a ingressi diversi.
 
 **Illustrazione:** assets/hu-sports.jpg
 
 ![18 · Due ingressi, un appuntamento](assets/hu-sports.jpg)
 
-1. **Luca:** Ti ho aspettata davanti all’ingresso principale.
-2. **Sara:** Io ero al cancello del cortile. Pensavo intendessi quello.
-3. **Luca:** Avevo scritto soltanto “all’ingresso”.
-4. **Sara:** Per me l’ingresso abituale è quello del cortile.
-5. **Luca:** La prossima volta indichiamo il cancello e l’orario.
-6. **Sara:** Sì, e ci confermiamo il posto prima di partire.
+
+> Dopo essersi cercati, Luca e Sara si ritrovano. Avevano aspettato davanti a ingressi diversi.
+
+1. **Luca:** Ti ho aspettata dieci minuti davanti all’ingresso principale.
+2. **Sara:** Io ero al cancello del cortile!
+3. **Luca:** Nel messaggio avevo scritto soltanto “all’ingresso”.
+4. **Sara:** E io ho pensato al cortile, perché entro sempre da lì.
+5. **Luca:** Domani facciamo al cancello del cortile, alle due?
+6. **Sara:** Sì. Stavolta andiamo tutti e due nello stesso posto!
 
 **Osserva**
 
@@ -606,18 +708,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Osservare una lettura disponibile della stessa domanda.
 
-**Vignetta:** Luca guarda Sara, tiene le mani rilassate e parla con calma.
+**Prima di osservare:** La disponibilità suggerita da una domanda trova conferma nelle azioni e nelle parole successive. Un singolo indizio del volto non basta a conoscere l’intenzione.
+
+**Vignetta:** Sara è ferma sull’ultimo passaggio dell’esercizio. Luca ha già chiuso il quaderno.
 
 **Illustrazione:** assets/hu-warm.jpg
 
 ![19 · Hai finito? · Ti offro aiuto](assets/hu-warm.jpg)
 
-1. **Luca:** Hai finito? _Lettura proposta: calma, disponibile. Luca cerca il contatto visivo._
-2. **Sara:** Quasi. Mi manca l’ultimo passaggio.
-3. **Luca:** Se vuoi, possiamo controllarlo insieme.
-4. **Sara:** Grazie. Dalla tua domanda avevo capito che potevi aiutarmi.
-5. **Luca:** Era proprio quello che intendevo.
-6. **Sara:** Allora ti mostro dove mi sono fermata.
+
+> Sara è ferma sull’ultimo passaggio dell’esercizio. Luca ha già chiuso il quaderno.
+
+1. **Luca:** Hai finito? _Luca parla con calma e si rende disponibile._
+2. **Sara:** Quasi. Non mi torna l’ultimo passaggio.
+3. **Luca:** Vuoi che lo guardiamo insieme?
+4. **Sara:** Sì, grazie. È questo qui.
+5. **Luca:** Fammi vedere da dove sei partita.
+6. **Sara:** Da questa formula. Poi mi blocco.
 
 **Osserva**
 
@@ -639,18 +746,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere l’effetto di ritmo, postura e aspettative nella richiesta.
 
-**Vignetta:** Luca guarda l’orologio e tiene le braccia incrociate. Sara sta ancora scrivendo.
+**Prima di osservare:** Ritmo, postura e aspettative possono far percepire pressione. Esplicitare un vincolo concreto permette di negoziare i tempi senza dover attribuire intenzioni all’altro.
+
+**Vignetta:** Luca guarda l’orologio. Il suo autobus partirà fra poco; Sara sta ancora scrivendo.
 
 **Illustrazione:** assets/hu-impatient.jpg
 
 ![20 · Hai finito? · Ho fretta](assets/hu-impatient.jpg)
 
-1. **Luca:** Hai finito? _Lettura proposta: più rapida, impaziente. Luca guarda l’orologio._
-2. **Sara:** Mi sento messa fretta. Ti serve uscire subito?
-3. **Luca:** Sì, fra poco parte il mio autobus. Dovevo dirtelo.
-4. **Sara:** Mi mancano due minuti. Puoi aspettare oppure ci vediamo domani.
-5. **Luca:** Posso aspettare due minuti. Non volevo farti sentire sotto pressione.
-6. **Sara:** Grazie per avermi spiegato che cosa ti serviva.
+
+> Luca guarda l’orologio. Il suo autobus partirà fra poco; Sara sta ancora scrivendo.
+
+1. **Luca:** Hai finito? _Luca parla rapidamente e guarda l’orologio._
+2. **Sara:** Mi stai mettendo fretta. Devi andare via?
+3. **Luca:** Sì, fra poco parte il mio autobus.
+4. **Sara:** Mi mancano due minuti. Se non fai in tempo, ci sentiamo domani.
+5. **Luca:** Due minuti posso aspettare. Scusa, dovevo dirtelo prima.
+6. **Sara:** Va bene, finisco questa riga e andiamo.
 
 **Osserva**
 
@@ -672,18 +784,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere una possibile lettura di sorpresa della stessa domanda.
 
-**Vignetta:** Luca guarda il quaderno completato con sopracciglia alzate e un gesto aperto.
+**Prima di osservare:** Sorpresa e sfiducia possono essere confuse da chi riceve un commento. Le domande di chiarimento consentono di confrontare l’impressione ricevuta con ciò che l’altro intendeva.
+
+**Vignetta:** Sara chiude il quaderno prima del previsto. Luca alza lo sguardo dal proprio esercizio.
 
 **Illustrazione:** assets/hu-surprise.jpg
 
 ![21 · Hai finito? · Non me l’aspettavo](assets/hu-surprise.jpg)
 
-1. **Luca:** Hai finito? _Lettura proposta: sorpresa, con una breve pausa. Il quaderno è completato._
-2. **Sara:** Sì. Sembri sorpreso. Pensi che abbia saltato qualcosa?
-3. **Luca:** No, non mi aspettavo che lo completassi così presto.
-4. **Sara:** Avevo già lavorato su un esercizio simile.
-5. **Luca:** Ah, ecco. Mi piacerebbe capire il tuo procedimento.
-6. **Sara:** Te lo mostro. Pensavo che stessi mettendo in dubbio il mio lavoro.
+
+> Sara chiude il quaderno prima del previsto. Luca alza lo sguardo dal proprio esercizio.
+
+1. **Luca:** Hai finito? _Luca appare sorpreso e guarda il quaderno completato._
+2. **Sara:** Sì. Perché, pensi che abbia saltato qualcosa?
+3. **Luca:** No! Pensavo ci volesse molto più tempo.
+4. **Sara:** Ne avevo già fatto uno simile ieri.
+5. **Luca:** Ah, ecco. Mi fai vedere come hai iniziato?
+6. **Sara:** Certo, guarda qui.
 
 **Osserva**
 
@@ -705,18 +822,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Osservare la circolarità di un conflitto e le diverse ricostruzioni della sua origine.
 
-**Vignetta:** Luca e Sara discutono su come prendere la parola.
+**Prima di osservare:** In un conflitto ciascuno può considerare il proprio comportamento una risposta a quello dell’altro. Cambiare una regola dello scambio può interrompere il circolo.
+
+**Vignetta:** Durante il lavoro di gruppo, Luca e Sara parlano uno sopra l’altra.
 
 **Illustrazione:** assets/hu-conflict.jpg
 
 ![22 · Mi interrompi sempre](assets/hu-conflict.jpg)
 
+
+> Durante il lavoro di gruppo, Luca e Sara parlano uno sopra l’altra.
+
 1. **Luca:** Ti interrompo perché non mi ascolti.
-2. **Sara:** Io smetto di ascoltare perché mi interrompi.
-3. **Luca:** Per me il problema comincia quando guardi altrove.
-4. **Sara:** Per me comincia quando parli sopra la mia frase.
-5. **Luca:** Possiamo provare a parlare uno alla volta e poi riassumere ciò che abbiamo capito?
-6. **Sara:** Proviamo. Finisci tu, poi ti dico che cosa ho ascoltato.
+2. **Sara:** E io smetto di ascoltare perché mi interrompi!
+3. **Luca:** Ma appena comincio guardi da un’altra parte.
+4. **Sara:** Perché non riesco mai a finire una frase.
+5. **Luca:** Aspetta. Finisci tu, poi parlo io.
+6. **Sara:** Va bene. Ti spiego perché questa slide non funziona.
 
 **Osserva**
 
@@ -738,18 +860,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere il bisogno di appartenenza e distinguere intenzione ed esperienza dell’altro.
 
-**Vignetta:** Altri due compagni stanno lavorando più indietro. Sara scopre di non essere stata coinvolta.
+**Prima di osservare:** L’intenzione di una persona e l’esperienza dell’altra possono essere diverse. Chiedere che cosa è successo e riconoscere l’effetto prodotto apre possibilità di confronto.
+
+**Vignetta:** Sara vede il gruppo già al lavoro e si avvicina a Luca.
 
 **Illustrazione:** assets/hu-group.jpg
 
 ![23 · Il gruppo era già fatto](assets/hu-group.jpg)
 
-1. **Sara:** Ho visto che avete formato il gruppo senza chiedermi nulla.
-2. **Luca:** Pensavo che tu lavorassi già con gli altri.
-3. **Sara:** Invece aspettavo di parlarne con voi. Mi sono sentita esclusa.
-4. **Luca:** Non avevo intenzione di escluderti, ma capisco che sia successo questo.
-5. **Sara:** Possiamo capire se c’è ancora un ruolo per me?
-6. **Luca:** Sì. Chiediamo anche agli altri e decidiamo insieme, senza dare nulla per scontato.
+
+> Sara vede il gruppo già al lavoro e si avvicina a Luca.
+
+1. **Sara:** Avete già fatto il gruppo? Non mi avete chiesto niente.
+2. **Luca:** Pensavo lavorassi con Marta e gli altri.
+3. **Sara:** No, aspettavo di parlarne con voi. Ci sono rimasta male.
+4. **Luca:** Mi dispiace. Ho dato per scontato una cosa che non sapevo.
+5. **Sara:** C’è ancora un posto per me?
+6. **Luca:** Chiediamo agli altri. Non abbiamo ancora diviso tutte le parti.
 
 **Osserva**
 
@@ -771,18 +898,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere frustrazione, destinatario della reazione e possibilità di riparazione.
 
-**Vignetta:** Luca è contrariato dopo una verifica. Sara gli chiede del lavoro del pomeriggio.
+**Prima di osservare:** La causa di un disagio può essere diversa dalla persona che riceve una risposta brusca. Il disagio può spiegare una reazione, senza giustificare il modo di trattare l’altro.
+
+**Vignetta:** Luca ha appena ricevuto una verifica andata male. Sara gli si avvicina.
 
 **Illustrazione:** assets/hu-conflict.jpg
 
 ![24 · Non ce l’ho con te](assets/hu-conflict.jpg)
 
+
+> Luca ha appena ricevuto una verifica andata male. Sara gli si avvicina.
+
 1. **Sara:** Oggi prepariamo insieme la presentazione?
-2. **Luca:** Lasciami stare, non vedi che ho altro da fare?
-3. **Sara:** Mi hai risposto male. È successo qualcosa?
-4. **Luca:** La verifica è andata male e sono arrabbiato. Tu non c’entri.
-5. **Sara:** Posso ascoltarti, ma vorrei che mi parlassi senza aggredirmi.
-6. **Luca:** Hai ragione. Mi fermo un momento e poi te lo racconto con calma.
+2. **Luca:** Lasciami stare, ho altro per la testa.
+3. **Sara:** Ehi, ti ho solo fatto una domanda. Che succede?
+4. **Luca:** La verifica è andata male. Scusa, tu non c’entri.
+5. **Sara:** Se vuoi ne parliamo, ma non prendertela con me.
+6. **Luca:** Hai ragione. Dammi un momento, poi ti racconto.
 
 **Osserva**
 
@@ -804,18 +936,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Chiarire il bisogno comunicativo e praticare la riformulazione.
 
-**Vignetta:** Sara racconta una difficoltà; Luca propone subito una soluzione.
+**Prima di osservare:** Dare consigli e offrire ascolto rispondono a bisogni diversi. Una riformulazione proposta come domanda permette all’altro di confermare o correggere ciò che abbiamo capito.
+
+**Vignetta:** Sara racconta a Luca che il gruppo ha cambiato la sua parte della presentazione.
 
 **Illustrazione:** assets/hu-listen.jpg
 
 ![25 · Consigli o ascolto?](assets/hu-listen.jpg)
 
-1. **Sara:** Ci sono rimasta male quando hanno cambiato il mio pezzo della presentazione.
-2. **Luca:** Devi parlarne subito con il gruppo e rifarlo.
-3. **Sara:** Forse dopo. Adesso vorrei soltanto raccontarti come mi sono sentita.
-4. **Luca:** Capisco. Vuoi che ti ascolti prima di cercare una soluzione?
-5. **Sara:** Sì. Mi è sembrato che il mio lavoro non contasse.
-6. **Luca:** Se ho capito, ti è mancato il riconoscimento del tuo contributo. È così?
+
+> Sara racconta a Luca che il gruppo ha cambiato la sua parte della presentazione.
+
+1. **Sara:** Ci sono rimasta male. Hanno cambiato tutto il mio pezzo.
+2. **Luca:** Diglielo subito e fallo rimettere com’era.
+3. **Sara:** Aspetta, adesso vorrei solo raccontartelo.
+4. **Luca:** Scusa, ti ascolto. Che cosa ti ha dato più fastidio?
+5. **Sara:** Che non mi abbiano neanche chiesto un parere.
+6. **Luca:** Quindi non è solo la modifica: volevi essere coinvolta. Ho capito bene?
 
 **Osserva**
 
@@ -837,18 +974,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Esplorare regole implicite e preferenze senza stereotipi culturali.
 
-**Vignetta:** Luca saluta aprendo le braccia. Sara fa un piccolo gesto di saluto con la mano.
+**Prima di osservare:** Le abitudini di saluto variano tra persone e contesti. Una preferenza può essere chiesta e rispettata senza attribuire comportamenti fissi a un gruppo o a una cultura.
+
+**Vignetta:** Luca incontra Sara e apre le braccia per salutarla.
 
 **Illustrazione:** assets/hu-greeting.jpg
 
 ![26 · Come preferisci salutare?](assets/hu-greeting.jpg)
 
+
+> Luca incontra Sara e apre le braccia per salutarla.
+
 1. **Luca:** Ciao! Ti abbraccio?
-2. **Sara:** Preferisco salutare con la mano, se per te va bene.
-3. **Luca:** Certo. Tra i miei amici l’abbraccio è abituale, ma non vale per tutti.
-4. **Sara:** Io saluto in modi diversi a seconda della persona e del momento.
-5. **Luca:** Grazie per avermelo detto. Posso chiedere prima.
-6. **Sara:** Così possiamo trovare un modo che vada bene a entrambi.
+2. **Sara:** Oggi preferisco di no, se non ti dispiace.
+3. **Luca:** Certo, nessun problema.
+4. **Sara:** Facciamo un saluto con la mano?
+5. **Luca:** Va bene così! Come stai?
+6. **Sara:** Meglio di ieri. Ti racconto mentre andiamo?
 
 **Osserva**
 
@@ -870,18 +1012,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Rendere esplicite le diverse regole di partecipazione a una conversazione.
 
-**Vignetta:** Luca parla con entusiasmo; Sara aspetta una pausa per intervenire.
+**Prima di osservare:** Il silenzio può dipendere dalle regole con cui una persona prende la parola, oltre che dal suo interesse. Rendere espliciti i turni può facilitare la partecipazione.
+
+**Vignetta:** Luca espone un’idea senza fare pause. Sara aspetta per intervenire.
 
 **Illustrazione:** assets/hu-warm.jpg
 
 ![27 · Quando posso prendere la parola?](assets/hu-warm.jpg)
 
-1. **Luca:** Perché non dici niente? Non ti interessa la proposta?
-2. **Sara:** Mi interessa. Aspettavo che finissi per non interromperti.
-3. **Luca:** Io pensavo che avresti parlato appena avevi un’idea.
-4. **Sara:** Io preferisco una pausa o una domanda diretta.
-5. **Luca:** Allora dopo ogni proposta ci fermiamo e chiediamo il parere di tutti.
-6. **Sara:** Mi aiuta. Posso spiegare adesso la mia idea?
+
+> Luca espone un’idea senza fare pause. Sara aspetta per intervenire.
+
+1. **Luca:** Non dici niente. La proposta non ti piace?
+2. **Sara:** Mi piace, ma aspettavo che finissi.
+3. **Luca:** Pensavo mi avresti interrotto se avevi un’idea.
+4. **Sara:** Ci ho provato, poi ho preferito aspettare.
+5. **Luca:** Scusa, mi fermo. Tu che cosa cambieresti?
+6. **Sara:** Metterei l’esempio prima della spiegazione.
 
 **Osserva**
 
@@ -903,18 +1050,29 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Distinguere reazione emotiva, sentimento duraturo e stato d’animo attraverso il racconto nel tempo.
 
-**Vignetta:** Dopo un rumore improvviso i due raccontano esperienze diverse, senza dedurle soltanto dai volti.
+**Prima di osservare:** Per distinguere una reazione emotiva, un affetto duraturo e un umore di fondo servono informazioni su evento, durata ed esperienza della persona. L’espressione del viso, da sola, non basta.
+
+**Vignetta:** Un rumore improvviso ha fatto sobbalzare Luca. Poco dopo, i due riprendono a parlare.
 
 **Illustrazione:** assets/hu-listen.jpg
 
 ![28 · Un’emozione, un affetto, una giornata](assets/hu-listen.jpg)
 
-1. **Luca:** Quel rumore mi ha fatto sobbalzare. Il cuore mi batteva forte.
-2. **Sara:** Ti sei spaventato sul momento?
-3. **Luca:** Sì, poi mi sono tranquillizzato. È diverso dall’affetto che provo per i miei amici.
-4. **Sara:** Quell’affetto dura anche quando non succede nulla di particolare.
-5. **Luca:** Oggi invece mi sento un po’ giù da stamattina, senza un episodio preciso.
-6. **Sara:** Possiamo distinguere queste esperienze chiedendo come nascono e quanto durano.
+
+> Un rumore improvviso ha fatto sobbalzare Luca. Poco dopo, i due riprendono a parlare.
+
+1. **Luca:** Che colpo! Mi batte ancora forte il cuore.
+2. **Sara:** È stata la porta. Adesso è tutto tranquillo.
+
+> Il rumore è cessato. Luca si tranquillizza.
+
+3. **Luca:** Sì, mi è passata. Grazie per essere rimasta qui.
+4. **Sara:** Figurati. Lo sai che ti voglio bene.
+
+> Sara torna a chiedere come sta Luca: le era sembrato giù già prima del rumore.
+
+5. **Luca:** Anch’io. Oggi però mi sento un po’ giù da stamattina.
+6. **Sara:** Ti va di fare due passi e raccontarmi?
 
 **Osserva**
 
@@ -936,18 +1094,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere bisogni diversi e formularli senza svalutare quelli dell’altro.
 
-**Vignetta:** Sul tavolo c’è il contenitore della merenda ancora aperto. Nessuno sta mangiando.
+**Prima di osservare:** Durante un’attività possono emergere bisogni e obiettivi diversi. Dichiararli e proporre un accordo concreto rende possibile cercare una soluzione condivisa.
+
+**Vignetta:** La merenda di Luca è ancora nel contenitore. Il lavoro sul tavolo non è finito.
 
 **Illustrazione:** assets/school-snacks.jpg
 
 ![29 · Ho bisogno di una pausa](assets/school-snacks.jpg)
 
-1. **Luca:** Non riesco a concentrarmi: ho fame e vorrei fare una pausa.
-2. **Sara:** Io vorrei finire questa parte prima di fermarmi.
-3. **Luca:** Per me servono dieci minuti adesso. Poi posso lavorare meglio.
-4. **Sara:** Per me è importante sapere che non lasciamo il lavoro a metà.
-5. **Luca:** Facciamo una pausa di dieci minuti e fissiamo da quale punto ripartire.
-6. **Sara:** Va bene. Segno il punto, così possiamo riprendere insieme.
+
+> La merenda di Luca è ancora nel contenitore. Il lavoro sul tavolo non è finito.
+
+1. **Luca:** Ho fame, non riesco più a concentrarmi. Facciamo una pausa?
+2. **Sara:** Possiamo prima finire questa parte?
+3. **Luca:** Mi servono dieci minuti adesso, poi riparto.
+4. **Sara:** Ho paura che dopo ci perdiamo e non finiamo più.
+5. **Luca:** Mettiamo un timer e riprendiamo da questa slide.
+6. **Sara:** Va bene. Segno il punto, tu prendi la merenda.
 
 **Osserva**
 
@@ -969,18 +1132,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Confrontare motivazioni intrinseche ed estrinseche e la loro possibile coesistenza.
 
-**Vignetta:** Luca e Sara lavorano a un tavolo con un portatile e un quaderno.
+**Prima di osservare:** Si può svolgere la stessa attività per interesse verso il contenuto, per un risultato esterno o per entrambe le ragioni. Le motivazioni vanno ascoltate, non dedotte dal solo comportamento.
+
+**Vignetta:** Luca e Sara devono scegliere un esempio per la presentazione valutata.
 
 **Illustrazione:** assets/project.jpg
 
 ![30 · Lo faccio per il voto o per interesse?](assets/project.jpg)
 
-1. **Luca:** Vorrei rendere questa presentazione interessante, anche oltre il voto.
-2. **Sara:** Io penso soprattutto alla valutazione di fine mese.
-3. **Luca:** A me piace cercare esempi e capire come comunicano le persone.
-4. **Sara:** Il voto mi spinge a impegnarmi, ma gli esempi incuriosiscono anche me.
-5. **Luca:** Quindi possiamo avere più motivi per lavorare allo stesso progetto.
-6. **Sara:** Sì. Scegliamo un esempio che ci interessi e controlliamo anche le consegne.
+
+> Luca e Sara devono scegliere un esempio per la presentazione valutata.
+
+1. **Luca:** Questo esempio sulle chat mi incuriosisce. Lo mettiamo?
+2. **Sara:** Se ci aiuta a prendere un buon voto, sì.
+3. **Luca:** A me interessa anche capire perché ci fraintendiamo così spesso.
+4. **Sara:** In effetti “Fai come vuoi” ha fatto litigare anche me con un’amica.
+5. **Luca:** Allora partiamo da quello. Cerco due messaggi inventati.
+6. **Sara:** Io controllo le consegne, così non dimentichiamo nessun punto.
 
 **Osserva**
 
@@ -1002,18 +1170,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Distinguere le persone dai ruoli comunicativi e verificare un riferimento spaziale.
 
-**Vignetta:** Paolo è fermo in un’auto parcheggiata. Matteo è appena uscito dalla scuola guida. Si scrivono dai rispettivi telefoni.
+**Prima di osservare:** Mittente e destinatario sono ruoli nello scambio, non identità fisse. La posizione grafica di un messaggio può cambiare da un telefono all’altro senza cambiarne l’autore.
+
+**Vignetta:** Paolo aspetta nell’auto parcheggiata. Matteo esce dalla scuola guida e controlla il telefono.
 
 **Illustrazione:** assets/hu-father-son.jpg
 
 ![31 · Papà scrive: dove ci vediamo?](assets/hu-father-son.jpg)
 
+
+> Paolo aspetta nell’auto parcheggiata. Matteo esce dalla scuola guida e controlla il telefono.
+
 1. **Papà Paolo:** Ci vediamo al parcheggio dietro l’incrocio dove ti ho lasciato.
-2. **Matteo:** Ok. Intendi quello vicino alla farmacia o quello davanti al parco?
-3. **Papà Paolo:** Quello vicino alla farmacia. Sono fermo accanto all’ingresso pedonale.
-4. **Matteo:** Ho capito. Sto arrivando a piedi dalla scuola guida.
-5. **Papà Paolo:** Ti aspetto qui, senza spostare la macchina.
-6. **Matteo:** Ti vedo. Metto via il telefono e raggiungo l’ingresso.
+2. **Matteo:** Quello vicino alla farmacia o quello davanti al parco?
+3. **Papà Paolo:** Vicino alla farmacia. Sono all’ingresso pedonale.
+4. **Matteo:** Va bene, arrivo dalla scuola guida.
+5. **Papà Paolo:** Ti aspetto qui.
+6. **Matteo:** Ti vedo! Sto arrivando.
 
 **Osserva**
 
@@ -1035,18 +1208,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Segnalare una ricezione incompleta e scegliere un mezzo più adatto.
 
-**Vignetta:** Paolo, fermo nell’auto parcheggiata, invia un vocale. Matteo lo ascolta fuori dalla scuola guida, dove c’è rumore.
+**Prima di osservare:** Un vocale ricevuto solo in parte può richiedere una conferma scritta. Il passaggio dall’orale allo scritto modifica gli indizi e la possibilità di rileggere il contenuto.
+
+**Vignetta:** Paolo invia un vocale dall’auto ferma. Fuori dalla scuola guida Matteo sente il traffico.
 
 **Illustrazione:** assets/hu-father-son.jpg
 
 ![32 · Il vocale: una parola coperta dal rumore](assets/hu-father-son.jpg)
 
-1. **Papà Paolo:** Sono al parcheggio vicino alla farmacia. Ti aspetto all’ingresso pedonale. _Nella recitazione simulate un rumore breve sulla parola “farmacia”, senza alzare il volume._
-2. **Matteo:** Ho sentito “parcheggio”, ma il nome del posto non si capisce. Puoi scriverlo?
-3. **Papà Paolo:** Certo: farmacia, ingresso pedonale. Ti mando anche il punto sulla mappa.
-4. **Matteo:** Adesso il testo è chiaro. La mappa indica lo stesso parcheggio.
-5. **Papà Paolo:** Bene. Il primo vocale da solo non bastava.
-6. **Matteo:** Sì. Ho chiesto di ripetere invece di indovinare.
+
+> Paolo invia un vocale dall’auto ferma. Fuori dalla scuola guida Matteo sente il traffico.
+
+1. **Papà Paolo:** Sono al parcheggio vicino alla farmacia. Ti aspetto all’ingresso pedonale. _Nella recitazione simulate un rumore breve sulla parola “farmacia”._
+2. **Matteo:** Non ho sentito dove. Me lo scrivi?
+3. **Papà Paolo:** Farmacia, ingresso pedonale. Ti mando anche il punto sulla mappa.
+4. **Matteo:** Eccolo, ora l’ho trovato.
+5. **Papà Paolo:** Riesci a raggiungermi da lì?
+6. **Matteo:** Sì, sono a due minuti. Arrivo.
 
 **Osserva**
 
@@ -1068,28 +1246,33 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere il canale cartaceo e gli impliciti di un messaggio quotidiano.
 
-**Vignetta:** Teresa e la nipote Giulia parlano in cucina. Sul tavolo ci sono il contenitore della merenda, una mela e il biglietto della nonna.
+**Prima di osservare:** Un’espressione quotidiana può riferirsi ad azioni diverse. Chiarire il verbo attraverso una domanda permette di evitare un equivoco senza attribuire intenzioni negative.
+
+**Vignetta:** Sul tavolo della cucina c’è il biglietto di Teresa: «Prendi la merenda prima di uscire». Giulia sta preparando lo zaino.
 
 **Illustrazione:** assets/hu-grandmother.jpg
 
 ![33 · Un biglietto sul tavolo](assets/hu-grandmother.jpg)
 
-1. **Nonna Teresa:** Sul biglietto ho scritto: “La merenda è sul tavolo. Buono studio!”.
-2. **Giulia:** Pensavo fosse un ordine di mangiarla subito.
-3. **Nonna Teresa:** Volevo dirti dove trovarla, non quando mangiarla.
-4. **Giulia:** Allora posso tenerla per la pausa delle quattro?
-5. **Nonna Teresa:** Certo. Aggiungo: “Per la tua pausa, quando preferisci”.
-6. **Giulia:** Così il messaggio è più chiaro. Grazie, nonna.
+
+> Sul tavolo della cucina c’è il biglietto di Teresa: «Prendi la merenda prima di uscire». Giulia sta preparando lo zaino.
+
+1. **Nonna Teresa:** Hai visto il biglietto? Prendi la merenda prima di uscire.
+2. **Giulia:** Devo mangiarla adesso? Ho appena finito di pranzare.
+3. **Nonna Teresa:** No, intendevo portarla con te! È nel contenitore.
+4. **Giulia:** Ah, allora la metto nello zaino e la mangio alla pausa.
+5. **Nonna Teresa:** Sì, prendi anche la mela se ti va.
+6. **Giulia:** Grazie, nonna. Così non devo tornare a prenderla.
 
 **Osserva**
 
-- Chi ha scritto il biglietto e per chi?
-- Quali parole del biglietto sono diverse dalle spiegazioni dette a voce?
+- Quali due azioni vengono associate al verbo “prendere”?
+- Quale risposta chiarisce che cosa intendeva Teresa?
 
 **Interpreta e verifica**
 
-- Informare della presenza della merenda equivale a ordinare di mangiarla?
-- Quale aggiunta chiarisce l’intenzione senza cambiare la merenda?
+- Il biglietto era sufficiente per Giulia? Perché?
+- Come si potrebbe riscriverlo per evitare questo equivoco?
 
 **Metti in scena e trasforma:** Scrivete un biglietto informativo e uno con una richiesta esplicita. Scambiateli e confrontate le interpretazioni.
 
@@ -1101,18 +1284,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Interpretare un segnale convenzionale in relazione al contesto.
 
-**Vignetta:** Amir e la professoressa Rinaldi sono in aula. Si vede la campanella vicino alla porta.
+**Prima di osservare:** Un segnale convenzionale acquista significato nel contesto. Lo stesso suono può richiamare passaggi diversi dell’orario scolastico.
+
+**Vignetta:** Amir chiude il quaderno appena suona la campanella. La professoressa è ancora accanto al banco.
 
 **Illustrazione:** assets/hu-teacher.jpg
 
 ![34 · Suona la campanella: che cosa significa?](assets/hu-teacher.jpg)
 
-1. **Amir:** È suonata la campanella. La scuola è finita?
-2. **Prof.ssa Rinaldi:** Non ancora. A quest’ora segnala il cambio di lezione.
-3. **Amir:** Quindi lo stesso suono non vuol dire sempre “andiamo a casa”.
-4. **Prof.ssa Rinaldi:** Esatto. Per capirlo usiamo anche l’orario e le regole della scuola.
-5. **Amir:** Controllo l’orario: adesso abbiamo il laboratorio.
-6. **Prof.ssa Rinaldi:** Bene. Raccogliamo il materiale e raggiungiamo il laboratorio insieme.
+
+> Amir chiude il quaderno appena suona la campanella. La professoressa è ancora accanto al banco.
+
+1. **Amir:** Finalmente! Metto tutto nello zaino?
+2. **Prof.ssa Rinaldi:** Aspetta, non usciamo: è il cambio di lezione.
+3. **Amir:** Ah, pensavo fosse già l’ultima ora.
+4. **Prof.ssa Rinaldi:** Abbiamo ancora il laboratorio. Porta anche il quaderno.
+5. **Amir:** Giusto, l’avevo dimenticato. Andiamo in quello al piano di sopra?
+6. **Prof.ssa Rinaldi:** Sì, ci aspetta il resto della classe.
 
 **Osserva**
 
@@ -1134,18 +1322,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Confrontare mittente, destinatario, messaggio e supporto in un’email scolastica.
 
-**Vignetta:** Amir e la professoressa controllano una consegna al banco. Il portatile è sul tavolo.
+**Prima di osservare:** Il testo di un messaggio può annunciare un documento che non è stato effettivamente trasmesso. Il feedback permette di individuare la differenza tra intenzione e ricezione.
+
+**Vignetta:** Al banco, Amir e la professoressa controllano l’email della consegna.
 
 **Illustrazione:** assets/hu-teacher.jpg
 
 ![35 · L’email senza allegato](assets/hu-teacher.jpg)
 
-1. **Amir:** Professoressa, le ho mandato l’email: “Ecco la presentazione in allegato”.
-2. **Prof.ssa Rinaldi:** L’email è arrivata, ma non vedo nessun file allegato.
-3. **Amir:** Ho scritto il messaggio, però ho dimenticato di aggiungere il documento.
-4. **Prof.ssa Rinaldi:** Il testo annuncia un contenuto che al momento non ho ricevuto.
-5. **Amir:** Invio una nuova email con il file e un oggetto preciso: “Presentazione laboratorio”.
-6. **Prof.ssa Rinaldi:** Adesso il file c’è. Ti rispondo per confermare la ricezione.
+
+> Al banco, Amir e la professoressa controllano l’email della consegna.
+
+1. **Amir:** Professoressa, le è arrivata la mia presentazione?
+2. **Prof.ssa Rinaldi:** È arrivata l’email, ma il file non c’è.
+3. **Amir:** Davvero? Avevo scritto “in allegato”… Ah, non l’ho caricato!
+4. **Prof.ssa Rinaldi:** Puoi inviarlo adesso?
+5. **Amir:** Sì, eccolo. Questa volta controllo prima di premere invio.
+6. **Prof.ssa Rinaldi:** Adesso c’è. Ti mando la conferma, grazie.
 
 **Osserva**
 
@@ -1167,18 +1360,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Riconoscere un destinatario collettivo e integrare informazioni sonore e visive.
 
-**Vignetta:** Davide e una viaggiatrice, Rosa, sono nell’atrio della stazione. Si vedono un altoparlante e il numero del binario.
+**Prima di osservare:** Un annuncio pubblico ha molti destinatari. Un’informazione incompleta può essere verificata confrontando numero, destinazione e indicazioni visibili.
+
+**Vignetta:** Un annuncio si diffonde dagli altoparlanti. Davide e Rosa guardano verso i binari.
 
 **Illustrazione:** assets/hu-station.jpg
 
 ![36 · L’annuncio al binario tre](assets/hu-station.jpg)
 
-1. **Davide:** L’altoparlante ha annunciato: “Il treno è in arrivo al binario tre”.
-2. **Signora Rosa:** Era l’annuncio per il nostro treno o per un altro?
-3. **Davide:** Non ho sentito il numero del treno. Controlliamo il tabellone.
-4. **Signora Rosa:** Qui il nostro treno risulta al binario tre. Controllo anche la destinazione.
-5. **Davide:** Coincidono numero e destinazione. Adesso abbiamo verificato.
-6. **Signora Rosa:** Bene. Seguiamo le indicazioni senza basarci soltanto sulla prima frase.
+
+> Un annuncio si diffonde dagli altoparlanti. Davide e Rosa guardano verso i binari.
+
+1. **Davide:** Ha detto binario tre. Andiamo?
+2. **Signora Rosa:** Aspetta, era il nostro treno?
+3. **Davide:** Non ho sentito il numero. Guardiamo il tabellone.
+4. **Signora Rosa:** Eccolo: stesso numero del biglietto, binario tre.
+5. **Davide:** Anche la destinazione coincide. Siamo in tempo.
+6. **Signora Rosa:** Bene, prendiamo il sottopassaggio.
 
 **Osserva**
 
@@ -1200,18 +1398,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Distinguere codice non verbale, canale sonoro e regola condivisa.
 
-**Vignetta:** L’arbitro Marco e la capitana Sofia sono in palestra. Lui tiene il fischietto, lei il pallone.
+**Prima di osservare:** Un segnale sonoro può comunicare senza essere una parola. Nel gioco, fischio e gesti si interpretano attraverso le regole condivise.
+
+**Vignetta:** Durante la partita l’arbitro fischia e indica il punto della rimessa. Sofia si ferma con il pallone.
 
 **Illustrazione:** assets/hu-referee.jpg
 
 ![37 · Il fischio non è una parola](assets/hu-referee.jpg)
 
-1. **Arbitro Marco:** Ho fischiato: fermiamo il gioco un momento.
-2. **Sofia:** Avevo sentito il suono, ma non avevo capito il motivo.
-3. **Arbitro Marco:** La palla era uscita. Ora indico da dove si riprende.
-4. **Sofia:** Quindi il fischio interrompe il gioco e il gesto aggiunge un’informazione.
-5. **Arbitro Marco:** Sì. Le regole condivise ci aiutano a interpretarli.
-6. **Sofia:** Lo ricordo anche alla squadra: prima osserviamo, poi riprendiamo.
+
+> Durante la partita l’arbitro fischia e indica il punto della rimessa. Sofia si ferma con il pallone.
+
+1. **Arbitro Marco:** Fermi un momento! Palla fuori.
+2. **Sofia:** Era uscita? Non me ne sono accorta.
+3. **Arbitro Marco:** Sì, rimessa da qui.
+4. **Sofia:** Tocca a noi o all’altra squadra?
+5. **Arbitro Marco:** A voi. Aspetta che gli altri si sistemino.
+6. **Sofia:** Va bene. Ragazze, ripartiamo da qui!
 
 **Osserva**
 
@@ -1233,18 +1436,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Individuare un codice visivo convenzionale e un destinatario collettivo.
 
-**Vignetta:** Nicolò e Amina aspettano sul marciapiede prima delle strisce. Il semaforo visibile è rosso.
+**Prima di osservare:** I segnali visivi usano convenzioni condivise. Il codice è il sistema di segni; il canale è ciò che permette al segnale di essere percepito.
+
+**Vignetta:** Nicolò e Amina si fermano sul marciapiede davanti alle strisce. Il semaforo è rosso.
 
 **Illustrazione:** assets/hu-street.jpg
 
 ![38 · Il rosso comunica anche senza parole](assets/hu-street.jpg)
 
-1. **Nicolò:** Il semaforo è rosso. Aspettiamo qui.
-2. **Amina:** Non c’è una frase scritta, ma il segnale ci dà un’indicazione.
-3. **Nicolò:** Il rosso significa che dobbiamo fermarci.
-4. **Amina:** Lo capiamo perché conosciamo la convenzione dei colori.
-5. **Nicolò:** Quindi il colore fa parte del codice e la luce rende visibile il segnale.
-6. **Amina:** Sì. Il destinatario non è una sola persona: riguarda chi deve attraversare.
+
+> Nicolò e Amina si fermano sul marciapiede davanti alle strisce. Il semaforo è rosso.
+
+1. **Nicolò:** Aspetta, è rosso.
+2. **Amina:** Hai ragione, stavo guardando il telefono.
+3. **Nicolò:** Mettilo via, ti stavo quasi perdendo!
+4. **Amina:** Fatto. Abbiamo ancora tempo per l’autobus?
+5. **Nicolò:** Sì, passa fra dieci minuti.
+6. **Amina:** Allora aspettiamo, senza correre.
 
 **Osserva**
 
@@ -1266,18 +1474,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Leggere un simbolo pubblico e riconoscere il destinatario non nominato.
 
-**Vignetta:** Sul muro dell’edificio vicino al marciapiede è visibile un cartello con il simbolo del divieto di fumo.
+**Prima di osservare:** Un cartello può rivolgersi a chiunque si trovi in un luogo, senza nominare ogni destinatario. Il simbolo e la posizione aiutano a ricostruire il significato.
+
+**Vignetta:** All’ingresso dell’edificio, Amina nota il cartello con la sigaretta barrata.
 
 **Illustrazione:** assets/hu-street.jpg
 
 ![39 · A chi parla questo cartello?](assets/hu-street.jpg)
 
-1. **Nicolò:** Guarda il simbolo sul muro: una sigaretta barrata.
-2. **Amina:** Indica che in quel luogo è vietato fumare.
-3. **Nicolò:** Non c’è scritto il nome di un destinatario. A chi si rivolge?
-4. **Amina:** Alle persone che entrano o si trovano nell’area indicata.
-5. **Nicolò:** Il simbolo riassume una regola senza una lunga spiegazione.
-6. **Amina:** E per capire dove vale guardiamo anche dove è collocato.
+
+> All’ingresso dell’edificio, Amina nota il cartello con la sigaretta barrata.
+
+1. **Nicolò:** Guarda quel cartello. Non si può fumare qui.
+2. **Amina:** Vale solo dentro o anche vicino all’ingresso?
+3. **Nicolò:** Da qui non capisco dove finisce l’area.
+4. **Amina:** C’è un altro avviso sulla porta. Andiamo a leggere?
+5. **Nicolò:** Sì, così non restiamo nel dubbio.
+6. **Amina:** Ecco, qui è indicato anche l’ingresso.
 
 **Osserva**
 
@@ -1299,18 +1512,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Negoziare ruoli e accordi nella vita di una famiglia ricostituita senza presupporli.
 
-**Vignetta:** Roberto e sua figlia Chiara discutono in cucina davanti a un programma settimanale. Elena è la nuova compagna di Roberto e non è presente.
+**Prima di osservare:** Gli accordi quotidiani richiedono informazioni condivise e ascolto. La forma della famiglia non determina la qualità della comunicazione: conta come le persone negoziano ruoli e bisogni.
+
+**Vignetta:** Roberto e Chiara guardano il programma settimanale. Elena, la compagna di Roberto, si è offerta di accompagnarla.
 
 **Illustrazione:** assets/hu-family.jpg
 
 ![40 · Nella nostra famiglia: chiedere prima](assets/hu-family.jpg)
 
+
+> Roberto e Chiara guardano il programma settimanale. Elena, la compagna di Roberto, si è offerta di accompagnarla.
+
 1. **Roberto:** Domani viene Elena a prenderti dopo scuola.
-2. **Chiara:** Lo sapevi già tu, ma io non ne avevo ancora parlato con lei.
-3. **Roberto:** Hai ragione: l’ho deciso senza chiederti come ti organizzavi.
-4. **Chiara:** Mi va bene parlarne, ma vorrei sapere prima chi arriva e dove ci vediamo.
-5. **Roberto:** Lo concordiamo con Elena e poi lo scriviamo sul programma.
-6. **Chiara:** Così abbiamo un accordo chiaro e non dobbiamo indovinare.
+2. **Chiara:** Ma io mi ero organizzata con Martina. Non lo sapevo.
+3. **Roberto:** Scusa, ho cambiato il programma senza avvisarti.
+4. **Chiara:** Posso prima sentire Martina? Dovevamo studiare insieme.
+5. **Roberto:** Certo. Poi decidiamo con Elena dove e a che ora incontrarvi.
+6. **Chiara:** Va bene, le scrivo adesso e ti faccio sapere.
 
 **Osserva**
 
@@ -1332,18 +1550,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Confrontare scopo informativo e persuasivo, immagini e parole.
 
-**Vignetta:** Tommaso ed Elena osservano un manifesto con il disegno di un cane all’ingresso della biblioteca. La classe sta preparando una raccolta solidale.
+**Prima di osservare:** Un messaggio persuasivo può usare immagini ed emozioni per attirare l’attenzione. Per comprenderlo occorre riconoscere anche chi propone l’iniziativa e quale azione chiede.
+
+**Vignetta:** In biblioteca è esposto un manifesto con un cane. Accanto, un avviso invita a portare coperte pulite venerdì per una raccolta scolastica.
 
 **Illustrazione:** assets/hu-library-poster.jpg
 
 ![41 · Il manifesto vuole convincerci](assets/hu-library-poster.jpg)
 
-1. **Tommaso:** Il cane sul manifesto mi fa venire voglia di partecipare.
-2. **Elena:** L’immagine attira l’attenzione. Ma che cosa ci viene chiesto di fare?
-3. **Tommaso:** Il testo della proposta dice di portare coperte pulite venerdì, qui a scuola.
-4. **Elena:** Queste informazioni spiegano l’azione concreta, oltre a suscitare un’emozione.
-5. **Tommaso:** Prima di condividere controllo chi organizza e a chi vanno i materiali.
-6. **Elena:** Poi possiamo creare un messaggio chiaro, con un’immagine e indicazioni verificabili.
+
+> In biblioteca è esposto un manifesto con un cane. Accanto, un avviso invita a portare coperte pulite venerdì per una raccolta scolastica.
+
+1. **Tommaso:** Guarda quel cane! Vorrei partecipare alla raccolta.
+2. **Elena:** Che cosa dobbiamo portare?
+3. **Tommaso:** Coperte pulite, venerdì qui a scuola.
+4. **Elena:** Io ne ho una che non usiamo. Ma chi le raccoglie?
+5. **Tommaso:** Non lo vedo. Chiediamo in biblioteca prima di dirlo agli altri.
+6. **Elena:** Sì. Poi avviso anche mia sorella.
 
 **Osserva**
 
@@ -1365,18 +1588,23 @@ Riferimenti: manuale allegato, pp. 1–4; proposte concordate nella conversazion
 
 **Obiettivo:** Usare un esempio fittizio per distinguere osservazione e spiegazioni dello sviluppo linguistico.
 
-**Vignetta:** Amir e la professoressa discutono in aula un esempio inventato di linguaggio infantile, scritto sul quaderno.
+**Prima di osservare:** Nello sviluppo linguistico l’iperregolarizzazione consiste nell’estendere una regola a un’eccezione. Forme come “aprito” possono suggerire una costruzione attiva di regole, oltre all’imitazione. Un singolo episodio non dimostra una teoria né permette diagnosi.
+
+**Vignetta:** Durante la lezione, Amir racconta un esempio inventato: un bambino dice «ho aprito» invece di «ho aperto».
 
 **Illustrazione:** assets/hu-teacher.jpg
 
 ![42 · “Aprito”: una regola da scoprire](assets/hu-teacher.jpg)
 
-1. **Amir:** Nel nostro esempio il bambino dice “ho aprito”. Ha soltanto copiato una parola?
-2. **Prof.ssa Rinaldi:** Potrebbe aver applicato una regola a una forma che invece è irregolare.
-3. **Amir:** Come “finito”: allora prova “aprito”, anche se gli adulti dicono “aperto”.
-4. **Prof.ssa Rinaldi:** È una possibile iperregolarizzazione. Un esempio da osservare, non una diagnosi.
-5. **Amir:** Quindi confrontiamo ciò che sente, ciò che produce e come usa le regole.
-6. **Prof.ssa Rinaldi:** Sì. Studiamo anche le diverse teorie, senza pensare che un solo episodio le dimostri tutte.
+
+> Durante la lezione, Amir racconta un esempio inventato: un bambino dice «ho aprito» invece di «ho aperto».
+
+1. **Amir:** Il bambino del nostro esempio dice “ho aprito”. Ma nessuno gli ha insegnato quella parola.
+2. **Prof.ssa Rinaldi:** Che cosa potrebbe avergli fatto scegliere proprio “aprito”?
+3. **Amir:** Forse ha sentito “finito” e “dormito” e ha provato a fare lo stesso.
+4. **Prof.ssa Rinaldi:** E se un adulto gli dice “ho aperto”, che cosa potrebbe succedere?
+5. **Amir:** Magari la ripete giusta, poi la volta dopo dice ancora “aprito”.
+6. **Prof.ssa Rinaldi:** Annotiamo entrambe le forme e osserviamo altri esempi.
 
 **Osserva**
 
