@@ -2,7 +2,7 @@
 
 [Apri l’app](https://vitopalumbopodcast.github.io/Education/comic-lab-c001/) · [Scarica la copia locale](https://vitopalumbopodcast.github.io/Education/comic-lab-c001/?download=1)
 
-Applicazione per esercitarsi con dialoghi a due personaggi, pensata per adolescenti di 15–16 anni. Non richiede account, backend o installazione.
+Applicazione per esercitarsi con dialoghi a due personaggi, pensata per adolescenti di 15–16 anni. Non richiede account, chiavi API o servizi a pagamento.
 
 Il selettore **Percorso** distingue **Lingue** da **Scienze Umane · comunicazione**. [Apri direttamente i laboratori di Scienze Umane](https://vitopalumbopodcast.github.io/Education/comic-lab-c001/?subject=humanities).
 
@@ -23,6 +23,10 @@ Il selettore **Percorso** distingue **Lingue** da **Scienze Umane · comunicazio
 - QR generato nel dispositivo, già collegato alla pagina di download pubblica. Nessun servizio QR esterno.
 
 Le modifiche restano nel dispositivo: usare “Salva modifiche” oppure scaricare/esportare per conservarle. Nessuna registrazione o valutazione automatica della voce dello studente.
+
+## Voci gratuite ed espressive
+
+Nelle **Impostazioni → Audio, voci e dati locali** il controllo **Espressività delle voci gratuite** offre cinque profili: espressiva, calda e rassicurante, vivace, teatrale e neutra. I profili adattano ritmo, pause, volume e intonazione alla punteggiatura e al tipo di battuta. Gli MP3 inclusi rimangono disponibili offline; i testi nuovi o modificati usano le voci gratuite esposte dal dispositivo o dal browser. È sempre possibile associare un MP3 personale a una battuta.
 
 ## Voci e funzionamento offline
 
@@ -54,9 +58,9 @@ Verifica specifica: node humanities-pragmatics-test.cjs (audio, pausa, didascali
 
 ## Laboratorio comunicazione · scene 67–71
 
-Cinque scene iniziali modificabili: “Dal messaggio alla risposta”, “Mi passi la penna?”, “Va bene, ci vediamo domani alle otto”, “Certo, fai pure” e “Pensavo che saresti arrivato prima”. Il pannello di laboratorio consente di nascondere le parole, aggiungere una risposta e osservare il passaggio A → B / B → A, confrontare cinque letture AUDIO A–E senza mostrare subito le etichette, rivelare la formalizzazione solo in un secondo momento, confrontare intenzione del Gruppo A e interpretazione del Gruppo B senza correzione automatica e usare uno schema della distanza interpersonale.
+Cinque scene iniziali modificabili: “Dal messaggio alla risposta”, “Mi passi la penna?”, “Va bene, ci vediamo domani alle otto”, “Certo, fai pure” e “Pensavo che saresti arrivata prima”. Il pannello di laboratorio consente di nascondere le parole, aggiungere una risposta e osservare il passaggio A → B / B → A, confrontare cinque letture AUDIO A–E senza mostrare subito le etichette, rivelare la formalizzazione solo in un secondo momento, confrontare intenzione del Gruppo A e interpretazione del Gruppo B senza correzione automatica e usare uno schema della distanza interpersonale.
 
-Nelle Impostazioni, “Duplica la scena” può vincolare il confronto a testo, voce, espressione, postura, gesto, distanza o risposta. Sono inclusi 25 MP3 italiani, cinque letture A–E per ognuna delle cinque scene. Ogni lettura ha inoltre un prompt vocale modificabile e uno slot MP3 sostituibile; se il docente rimuove un MP3, resta disponibile una lettura indicativa della voce italiana del dispositivo. Le variazioni incluse usano ritmo, altezza e volume differenti come esempi di produzione, non come riconoscimento automatico delle emozioni. Le indicazioni su volto e corpo restano descrizioni osservabili e non diagnosi emotive. La scena digitale termina con una consegna per ripetere l’attività dal vivo, anche senza parole. Verifica specifica: `node communication-lab-browser-test.cjs`.
+Nelle Impostazioni, “Duplica la scena” può vincolare il confronto a testo, voce, espressione, postura, gesto, distanza o risposta. Sono inclusi 25 MP3 italiani, cinque letture A–E per ognuna delle cinque scene. Ogni lettura ha inoltre un prompt vocale modificabile e uno slot MP3 sostituibile; se il docente rimuove un MP3, resta disponibile una lettura indicativa della voce italiana del dispositivo. Le variazioni incluse usano ritmo, altezza e volume differenti come esempi di produzione, non come riconoscimento automatico delle emozioni. Le indicazioni su volto e corpo restano descrizioni osservabili e non diagnosi emotive. La scena digitale termina con una consegna per ripetere l’attività dal vivo, anche senza parole. Verifiche specifiche: `node audit-communication-lab-audio.cjs` e `node communication-lab-browser-test.cjs`.
 
 ## All about you · Presentarsi e raccontarsi
 
