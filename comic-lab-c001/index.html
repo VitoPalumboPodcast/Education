@@ -382,13 +382,13 @@ function sanitizeHumanitiesLineTone(line,scene,index){
  const generic=validDataAudio(line.audioData)?line.audioData:'';
  if(scene.subject!=='humanities')return {audioData:generic,audioText:generic?clean(line.audioText,400):''};
  const bank={};for(const key of HUMANITIES_TONE_KEYS)if(validDataAudio(line.toneAudio?.[key]))bank[key]=line.toneAudio[key];
- const variants=index===0&&Array.isArray(scene.lab?.workshop?.voice?.variants)?scene.lab.workshop.voice.variants:null;
+ const variants=line.text===scene.lab?.workshop?.voice?.phrase&&Array.isArray(scene.lab?.workshop?.voice?.variants)?scene.lab.workshop.voice.variants:null;
  if(!bank.neutral&&generic&&!variants)bank.neutral=generic;
  const requested=HUMANITIES_TONE_KEYS.includes(line.voiceTone)?line.voiceTone:(variants?HUMANITIES_TONE_KEYS[Math.max(0,Math.min(4,Number(scene.lab?.workshop?.primaryVoice)||0))]:'neutral');
  const selected=bank[requested]||(variants&&validDataAudio(variants[HUMANITIES_TONE_KEYS.indexOf(requested)]?.audioData)?variants[HUMANITIES_TONE_KEYS.indexOf(requested)].audioData:'')||bank.neutral||(variants&&validDataAudio(variants[0]?.audioData)?variants[0].audioData:'')||'';
  return {voiceTone:requested,toneAudio:bank,audioData:selected,audioText:selected?clean(line.audioText||line.text,400):''};
 }
-function humanitiesWorkshopToneAudio(line,tone,scene=current()){const index=scene?.lines?.indexOf(line);const variants=index===0&&Array.isArray(scene.lab?.workshop?.voice?.variants)?scene.lab.workshop.voice.variants:null;const variant=variants?.[HUMANITIES_TONE_KEYS.indexOf(humanitiesToneValue(tone))];return validDataAudio(variant?.audioData)?variant.audioData:'';}
+function humanitiesWorkshopToneAudio(line,tone,scene=current()){const variants=line?.text===scene?.lab?.workshop?.voice?.phrase&&Array.isArray(scene.lab?.workshop?.voice?.variants)?scene.lab.workshop.voice.variants:null;const variant=variants?.[HUMANITIES_TONE_KEYS.indexOf(humanitiesToneValue(tone))];return validDataAudio(variant?.audioData)?variant.audioData:'';}
 function humanitiesToneCustomHas(line,tone){return validDataAudio(line?.toneAudio?.[tone]);}
 function humanitiesToneSource(line,tone,scene=current()){return humanitiesToneCustomHas(line,tone)?line.toneAudio[tone]:humanitiesWorkshopToneAudio(line,tone,scene);}
 function syncHumanitiesToneAudio(line,scene=current()){const tone=humanitiesToneValue(line.voiceTone),bank=line.toneAudio&&typeof line.toneAudio==='object'?line.toneAudio:{};line.voiceTone=tone;line.toneAudio=bank;line.audioData=humanitiesToneSource(line,tone,scene)||humanitiesToneSource(line,'neutral',scene)||'';line.audioText=line.audioData?line.text:'';}
