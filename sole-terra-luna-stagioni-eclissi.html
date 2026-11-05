@@ -260,7 +260,7 @@ makePoleMarker(-1,0xffa64d);
 const earthWorldPosition=new THREE.Vector3();
 function updateEarthOrientation(){
   // La rivoluzione non deve far girare l'asse rispetto alle stelle.
-  earthTiltGroup.quaternion.copy(earthOrbitGroup.quaternion).invert().multiply(earthTiltQuaternion);
+  earthTiltGroup.quaternion.copy(earthOrbitGroup.quaternion).inverse().multiply(earthTiltQuaternion);
   earthAnchor.getWorldPosition(earthWorldPosition);
   earthAxisGroup.position.copy(earthWorldPosition);
 }
