@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Il sistema a economia mista (LIM)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "lucide-react": "https://esm.sh/lucide-react@0.263.1",
+        "motion/react": "https://esm.sh/framer-motion@11.11.11"
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="root"></div>
+  <script type="text/babel" data-type="module" data-presets="react">
+    
+
+
+
+// @ts-ignore
+
+
+const MarketIcon = ({ className = "w-6 h-6" }) => <ShoppingBag className={className} />;
+const PlannedIcon = ({ className = "w-6 h-6" }) => <Landmark className={className} />;
+const MixedIcon = ({ className = "w-6 h-6" }) => (
+  <div className="flex items-center justify-center gap-1">
+    <ShoppingBag className={className} />
+    <Landmark className={className} />
+  </div>
+);
+
+const tableData = [
+  {
+    label: "Chi decide cosa produrre?",
+    market: "Il Mercato (domanda e offerta)",
+    planned: "Lo Stato (piani centrali)",
+    mixed: "Imprese e Stato insieme"
+  },
+  {
+    label: "Qual è il ruolo dello Stato?",
+    market: "Assente o minimo (garante)",
+    planned: "Dominante e proprietario",
+    mixed: "Regolatore e partecipante"
+  },
+  {
+    label: "Qual è il ruolo delle imprese?",
+    market: "Libera iniziativa privata",
+    planned: "Esecutrici di ordini pubblici",
+    mixed: "Iniziativa privata con limiti"
+  },
+  {
+    label: "Come si formano i prezzi?",
+    market: "Liberi (decisi dal mercato)",
+    planned: "Fissi (decisi dallo Stato)",
+    mixed: "Liberi, ma alcuni controllati"
+  },
+  {
+    label: "Chi gestisce i servizi pubblici?",
+    market: "Privati (a pagamento)",
+    planned: "Tutti pubblici e gratuiti",
+    mixed: "Essenziali garantiti dallo Stato"
+  }
+];
+
+const cases = [
+  {
+    id: 1,
+    title: "Scenario economico 1",
+    description: "In questo Paese la maggior parte delle imprese è privata. I produttori decidono liberamente che cosa vendere. I prezzi cambiano in base alla domanda dei clienti e alla concorrenza. Lo Stato interviene poco nelle scelte economiche.",
+    correct: 'market',
+    explanation: "Risposta corretta: Economia di mercato. In questo scenario prevalgono imprese private, prezzi liberi e intervento pubblico limitato.",
+    icon: <FileText className="w-12 h-12 text-slate-400" />
+  },
+  {
+    id: 2,
+    title: "Scenario economico 2",
+    description: "In questo Paese lo Stato decide quantità, tipi di beni e prezzi della produzione. Le principali imprese sono controllate dal potere pubblico. Anche la produzione di automobili viene stabilita centralmente. Lo spazio per l’iniziativa privata è molto ridotto.",
+    correct: 'planned',
+    explanation: "Risposta corretta: Economia pianificata. Le principali decisioni economiche sono prese centralmente dallo Stato.",
+    icon: <FileText className="w-12 h-12 text-slate-400" />
+  },
+  {
+    id: 3,
+    title: "Scenario economico 3",
+    description: "In questo Paese molte imprese sono private e operano sul mercato. Però lo Stato finanzia con le tasse servizi essenziali come scuola e sanità. In alcuni settori interviene per garantire diritti e interesse collettivo. I prezzi restano in gran parte liberi.",
+    correct: 'mixed',
+    explanation: "Risposta corretta: Economia mista. Convivono mercato, imprese private e intervento pubblico nei servizi essenziali.",
+    icon: <FileText className="w-12 h-12 text-slate-400" />
+  },
+  {
+    id: 4,
+    title: "Scenario economico 4",
+    description: "In questo Paese il mercato funziona in molti settori e le imprese private possono fare profitto. Lo Stato però regola trasporti, energia e altri servizi di interesse generale. In alcuni casi partecipa direttamente o controlla le regole del settore. Economia privata e intervento pubblico convivono.",
+    correct: 'mixed',
+    explanation: "Risposta corretta: Economia mista. Il mercato opera, ma lo Stato regola o interviene nei settori di interesse collettivo.",
+    icon: <FileText className="w-12 h-12 text-slate-400" />
+  }
+];
+
+function App32_MixedEconomyLIM({ onBack }) {
+  const [activeSection, setActiveSection] = useState('start');
+  const [currentRow, setCurrentRow] = useState(0);
+  const [isRowRevealed, setIsRowRevealed] = useState(false);
+  const [isGuidedMode, setIsGuidedMode] = useState(true);
+  const [showFullTable, setShowFullTable] = useState(false);
+  const [currentCase, setCurrentCase] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [sliderValue, setSliderValue] = useState(50);
+
+  const reset = () => {
+    setActiveSection('start');
+    setCurrentRow(0);
+    setIsRowRevealed(false);
+    setShowFullTable(false);
+    setCurrentCase(0);
+    setSelectedAnswer(null);
+    setSliderValue(50);
+  };
+
+  const handleDownload = () => {
+    const strippedCode = rawCode
+      .replace(/import\s+[\s\S]*?from\s+['"][^'"]+['"];?/g, '')
+      .replace(/function App32_MixedEconomyLIM/g, 'function App32_MixedEconomyLIM')
+      .replace(/<button[^>]*onClick=\{handleDownload\}[^>]*>[\s\S]*?<\/button>/g, '');
+
+    const html = `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Il sistema a economia mista (LIM)</title>
+  <script src="https://cdn.tailwindcss.com"><\/script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "lucide-react": "https://esm.sh/lucide-react@0.263.1",
+        "motion/react": "https://esm.sh/framer-motion@11.11.11"
+      }
+    }
+  <\/script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="root"></div>
+  <script type="text/babel" data-type="module" data-presets="react">
+    
+    
+    
+    
+
+    const MiniAppLayout = ({ title, objective, instructions, children, isGuidedMode, onToggleMode }) => (
+      <div className="min-h-screen flex flex-col bg-slate-50">
+        <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+          <div>
+            <h1 className="text-2xl font-black text-slate-800 tracking-tight">{title}</h1>
+            <div className="flex items-center gap-4 mt-1">
+              <span className="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">{objective}</span>
+              <span className="text-sm text-slate-500 font-medium">{instructions}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+            <button onClick={onToggleMode} className={\`px-4 py-2 rounded-xl text-sm font-bold transition-all \${!isGuidedMode ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}\`}>Base</button>
+            <button onClick={onToggleMode} className={\`px-4 py-2 rounded-xl text-sm font-bold transition-all \${isGuidedMode ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}\`}>Guidata</button>
+          </div>
+        </header>
+        <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full flex flex-col">
+          {children}
+        </main>
+      </div>
+    );
+
+    ${strippedCode}
+
+    const root = createRoot(document.getElementById('root'));
+    root.render(<App32_MixedEconomyLIM onBack={() => {}} />);
+  <\/script>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'economia_mista_lim.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const renderStart = () => (
+    <div className="flex flex-col items-center justify-center text-center space-y-12 py-12 animate-in fade-in duration-700">
+      <div className="space-y-4">
+        <h2 className="text-5xl font-black text-slate-900 tracking-tight">Il sistema a economia mista</h2>
+        <p className="text-2xl text-slate-500 font-medium">Confrontiamo tre modelli economici</p>
+      </div>
+      
+      <div className="bg-blue-50 p-10 rounded-3xl border-2 border-blue-100 max-w-2xl">
+        <p className="text-2xl font-bold text-blue-900 leading-relaxed">
+          “Chi orienta le scelte economiche: il mercato, lo Stato o entrambi?”
+        </p>
+      </div>
+
+      <button 
+        onClick={() => setActiveSection('table')}
+        className="group flex items-center gap-4 px-12 py-6 bg-blue-600 text-white rounded-2xl text-2xl font-black uppercase hover:bg-blue-700 transition-all shadow-xl hover:scale-105"
+      >
+        Inizia <ChevronRight className="w-8 h-8 group-hover:translate-x-1 transition-transform" />
+      </button>
+
+      
+    </div>
+  );
+
+  const renderTable = () => (
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse bg-white shadow-sm rounded-3xl overflow-hidden">
+          <thead>
+            <tr className="bg-slate-900 text-white">
+              <th className="p-6 text-left text-lg font-black uppercase tracking-wider border-r border-slate-700 w-1/4 align-bottom">Confronto</th>
+              <th className="p-6 text-center text-lg font-black uppercase tracking-wider border-r border-slate-700">
+                <div className="flex flex-col items-center gap-3">
+                  <MarketIcon className="w-8 h-8 text-blue-300" />
+                  <span>Economia di Mercato</span>
+                </div>
+              </th>
+              <th className="p-6 text-center text-lg font-black uppercase tracking-wider border-r border-slate-700">
+                <div className="flex flex-col items-center gap-3">
+                  <MixedIcon className="w-8 h-8 text-emerald-300" />
+                  <span>Economia Mista</span>
+                </div>
+              </th>
+              <th className="p-6 text-center text-lg font-black uppercase tracking-wider">
+                <div className="flex flex-col items-center gap-3">
+                  <PlannedIcon className="w-8 h-8 text-orange-300" />
+                  <span>Economia Pianificata</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableData.map((row, idx) => {
+              const isVisible = showFullTable || idx <= currentRow;
+              const isRevealed = showFullTable || !isGuidedMode || idx < currentRow || (idx === currentRow && isRowRevealed);
+              
+              return (
+              <tr 
+                key={idx} 
+                className={`border-b border-slate-100 transition-opacity duration-500 ${
+                  isVisible ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                <td className="p-6 bg-slate-50 font-black text-slate-700 border-r border-slate-100 text-lg uppercase">{row.label}</td>
+                <td className="p-6 text-center text-xl font-medium text-slate-800 border-r border-slate-100">
+                  {isRevealed ? row.market : <span className="text-slate-300 italic">?</span>}
+                </td>
+                <td className="p-6 text-center text-xl font-bold text-blue-700 bg-blue-50/30 border-r border-slate-100">
+                  {isRevealed ? row.mixed : <span className="text-slate-300 italic">?</span>}
+                </td>
+                <td className="p-6 text-center text-xl font-medium text-slate-800">
+                  {isRevealed ? row.planned : <span className="text-slate-300 italic">?</span>}
+                </td>
+              </tr>
+            )})}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex justify-between items-center bg-slate-100 p-6 rounded-3xl">
+        <div className="flex gap-4">
+          <button 
+            disabled={(currentRow === 0 && (!isGuidedMode || (isGuidedMode && !isRowRevealed))) || showFullTable}
+            onClick={() => {
+              if (isGuidedMode) {
+                if (isRowRevealed) {
+                  setIsRowRevealed(false);
+                } else {
+                  setCurrentRow(currentRow - 1);
+                  setIsRowRevealed(true);
+                }
+              } else {
+                setCurrentRow(currentRow - 1);
+              }
+            }}
+            className="flex items-center gap-2 px-6 py-3 bg-white text-slate-600 rounded-xl font-bold uppercase disabled:opacity-30 border border-slate-200"
+          >
+            <ChevronLeft className="w-6 h-6" /> Indietro
+          </button>
+          <button 
+            disabled={(currentRow === tableData.length - 1 && (!isGuidedMode || (isGuidedMode && isRowRevealed))) || showFullTable}
+            onClick={() => {
+              if (isGuidedMode) {
+                if (!isRowRevealed) {
+                  setIsRowRevealed(true);
+                } else {
+                  setCurrentRow(currentRow + 1);
+                  setIsRowRevealed(false);
+                }
+              } else {
+                setCurrentRow(currentRow + 1);
+              }
+            }}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold uppercase disabled:opacity-30 shadow-md"
+          >
+            {isGuidedMode && !isRowRevealed ? "Mostra confronto" : "Avanti"} <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="flex gap-4">
+          <button 
+            onClick={() => setShowFullTable(!showFullTable)}
+            className="flex items-center gap-2 px-6 py-3 bg-slate-800 text-white rounded-xl font-bold uppercase"
+          >
+            <Eye className="w-6 h-6" /> {showFullTable ? "Nascondi" : "Mostra tutto"}
+          </button>
+          {(showFullTable || currentRow === tableData.length - 1) && (
+            <button 
+              onClick={() => setActiveSection('reasons')}
+              className="flex items-center gap-2 px-8 py-3 bg-emerald-600 text-white rounded-xl font-black uppercase shadow-lg hover:bg-emerald-700 transition-all"
+            >
+              Perché interviene? <ArrowRight className="w-6 h-6" />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderReasons = () => (
+    <div className="max-w-5xl mx-auto space-y-10 py-8 animate-in fade-in duration-700">
+      <div className="text-center space-y-4">
+        <h2 className="text-4xl font-black text-slate-900">Perché interviene lo Stato nell’economia mista?</h2>
+        <p className="text-2xl text-slate-600 font-medium">
+          Osservando la tabella, vediamo che nell’economia mista lo Stato non resta fuori. Ma perché interviene?
+        </p>
+      </div>
+
+      <div className="bg-blue-50 p-6 rounded-3xl border-2 border-blue-100 text-center">
+        <p className="text-xl font-bold text-blue-900">
+          Nella colonna dell’economia mista abbiamo visto che lo Stato regola, partecipa e garantisce alcuni servizi. Questo accade soprattutto per tre motivi:
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-8 rounded-3xl shadow-sm border-2 border-slate-100 flex flex-col items-center text-center space-y-4 hover:border-blue-200 transition-colors">
+          <div className="p-4 bg-orange-50 text-orange-600 rounded-2xl">
+            <Scale className="w-12 h-12" />
+          </div>
+          <h3 className="text-2xl font-black text-slate-800">Per mettere regole</h3>
+          <p className="text-lg text-slate-600 font-medium">Lo Stato interviene quando il mercato da solo non basta e servono regole chiare per tutti.</p>
+        </div>
+
+        <div className="bg-white p-8 rounded-3xl shadow-sm border-2 border-slate-100 flex flex-col items-center text-center space-y-4 hover:border-blue-200 transition-colors">
+          <div className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl">
+            <Building2 className="w-12 h-12" />
+          </div>
+          <h3 className="text-2xl font-black text-slate-800">Per garantire servizi essenziali</h3>
+          <p className="text-lg text-slate-600 font-medium">Lo Stato aiuta a garantire servizi importanti come scuola, sanità e trasporti.</p>
+        </div>
+
+        <div className="bg-white p-8 rounded-3xl shadow-sm border-2 border-slate-100 flex flex-col items-center text-center space-y-4 hover:border-blue-200 transition-colors">
+          <div className="p-4 bg-blue-50 text-blue-600 rounded-2xl">
+            <Users className="w-12 h-12" />
+          </div>
+          <h3 className="text-2xl font-black text-slate-800">Per tutelare l’interesse collettivo</h3>
+          <p className="text-lg text-slate-600 font-medium">Lo Stato interviene per proteggere bisogni e diritti che riguardano tutti i cittadini.</p>
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center gap-6 pt-4">
+        <p className="text-lg font-bold text-slate-500 uppercase tracking-wider bg-slate-100 px-6 py-2 rounded-full">
+          Guarda i 3 motivi e tienili a mente quando leggerai gli scenari.
+        </p>
+        <button 
+          onClick={() => setActiveSection('cases')}
+          className="flex items-center gap-3 px-10 py-5 bg-emerald-600 text-white rounded-2xl text-xl font-black uppercase shadow-xl hover:bg-emerald-700 transition-all hover:scale-105"
+        >
+          Vai agli scenari <ArrowRight className="w-6 h-6" />
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderCases = () => {
+    const current = cases[currentCase];
+    const isCorrect = selectedAnswer === current.correct;
+
+    return (
+      <div className="max-w-4xl mx-auto space-y-8 animate-in zoom-in-95 duration-500">
+        <div className="bg-white p-10 rounded-3xl shadow-sm border border-slate-200 space-y-8">
+          <div className="flex justify-between items-center">
+            <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest">Classificazione Casi Reali</h3>
+            <span className="text-lg font-black text-blue-600 bg-blue-50 px-4 py-1 rounded-full">Caso {currentCase + 1} di {cases.length}</span>
+          </div>
+
+          <p className="text-xl font-bold text-slate-800 border-l-4 border-blue-500 pl-4">
+            Leggi ogni micro-scenario e scegli quale sistema economico descrive meglio.
+          </p>
+
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                {current.icon}
+              </div>
+              <h4 className="text-4xl font-black text-slate-900">{current.title}</h4>
+            </div>
+            <p className="text-2xl text-slate-600 leading-relaxed">{current.description}</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+            {[
+              { id: 'market', label: 'Economia di Mercato', icon: <MarketIcon className="w-8 h-8" /> },
+              { id: 'mixed', label: 'Economia Mista', icon: <MixedIcon className="w-8 h-8" /> },
+              { id: 'planned', label: 'Economia Pianificata', icon: <PlannedIcon className="w-8 h-8" /> }
+            ].map(opt => (
+              <button
+                key={opt.id}
+                disabled={selectedAnswer !== null}
+                onClick={() => setSelectedAnswer(opt.id)}
+                className={`p-6 rounded-2xl text-xl font-black uppercase border-4 transition-all flex flex-col items-center justify-center gap-4 ${
+                  selectedAnswer === opt.id 
+                    ? (opt.id === current.correct ? 'bg-emerald-600 border-emerald-600 text-white' : 'bg-red-600 border-red-600 text-white')
+                    : 'bg-white border-slate-100 text-slate-600 hover:border-blue-400 hover:bg-slate-50'
+                }`}
+              >
+                <div className={selectedAnswer === opt.id ? "text-white" : "text-slate-400"}>
+                  {opt.icon}
+                </div>
+                <span>{opt.label}</span>
+              </button>
+            ))}
+          </div>
+
+          <AnimatePresence>
+            {selectedAnswer && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                className={`p-8 rounded-3xl flex items-start gap-6 ${isCorrect ? 'bg-emerald-50 text-emerald-900 border border-emerald-100' : 'bg-red-50 text-red-900 border border-red-100'}`}
+              >
+                {isCorrect ? <CheckCircle2 className="w-12 h-12 shrink-0 text-emerald-600" /> : <XCircle className="w-12 h-12 shrink-0 text-red-600" />}
+                <div className="space-y-4 w-full">
+                  <p className="text-2xl font-black uppercase">{isCorrect ? "Ottimo!" : "Riflettiamo..."}</p>
+                  
+                  <div className="flex items-start gap-4 bg-white/60 p-4 rounded-2xl">
+                    <div className={`mt-1 shrink-0 ${current.correct === 'market' ? 'text-blue-600' : current.correct === 'planned' ? 'text-orange-600' : 'text-emerald-600'}`}>
+                      {current.correct === 'market' ? <MarketIcon className="w-8 h-8" /> : current.correct === 'planned' ? <PlannedIcon className="w-8 h-8" /> : <MixedIcon className="w-8 h-8" />}
+                    </div>
+                    <p className="text-xl font-medium leading-relaxed">{current.explanation}</p>
+                  </div>
+                  
+                  <div className="pt-4">
+                    {currentCase < cases.length - 1 ? (
+                      <button 
+                        onClick={() => { setCurrentCase(currentCase + 1); setSelectedAnswer(null); }}
+                        className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-xl font-black uppercase text-sm"
+                      >
+                        Prossimo Caso <ChevronRight className="w-5 h-5" />
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={() => setActiveSection('summary')}
+                        className="flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-xl font-black uppercase text-sm shadow-lg"
+                      >
+                        Concludi <ArrowRight className="w-5 h-5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    );
+  };
+
+  const renderSummary = () => {
+    const getSliderLabel = (val) => {
+      if (val <= 10) return "Quasi solo mercato: modello teorico con intervento pubblico minimo.";
+      if (val <= 35) return "Economia mista con mercato prevalente.";
+      if (val <= 65) return "Economia mista: convivono mercato e intervento pubblico.";
+      if (val <= 89) return "Economia mista con forte intervento pubblico.";
+      return "Quasi solo pianificazione pubblica: modello teorico con decisioni centrali.";
+    };
+
+    return (
+      <div className="max-w-5xl mx-auto space-y-10 py-8 animate-in fade-in duration-700">
+        <div className="text-center space-y-4">
+          <h3 className="text-4xl font-black text-slate-900">Sintesi finale: dal mercato puro alla pianificazione pura</h3>
+          <p className="text-xl text-slate-600 font-medium">
+            I sistemi economici reali non coincidono quasi mai con modelli puri: l’economia mista occupa una fascia intermedia.
+          </p>
+        </div>
+
+        <div className="bg-white p-12 rounded-[3rem] shadow-xl border border-slate-100 space-y-12">
+          {/* Continuum Visualizer */}
+          <div className="space-y-8">
+            <div className="relative pt-10 pb-4">
+              {/* Labels for poles */}
+              <div className="flex justify-between mb-8">
+                <div className="w-1/4 text-left flex flex-col items-start gap-3">
+                  <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl border border-blue-100">
+                    <MarketIcon className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-black uppercase text-slate-400 block mb-1">Polo Teorico</span>
+                    <span className="text-sm font-bold text-slate-700 leading-tight block">Mercato quasi puro</span>
+                  </div>
+                </div>
+                
+                <div className="w-1/4 text-center flex flex-col items-center gap-3">
+                  <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl border border-emerald-100">
+                    <MixedIcon className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-black uppercase text-slate-400 block mb-1">Realtà prevalente</span>
+                    <span className="text-sm font-bold text-slate-700 leading-tight block">Economia Mista</span>
+                  </div>
+                </div>
+
+                <div className="w-1/4 text-right flex flex-col items-end gap-3">
+                  <div className="p-3 bg-orange-50 text-orange-600 rounded-2xl border border-orange-100">
+                    <PlannedIcon className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-black uppercase text-slate-400 block mb-1">Polo Teorico</span>
+                    <span className="text-sm font-bold text-slate-700 leading-tight block">Pianificazione quasi pura</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* The Track */}
+              <div className="relative h-12 bg-slate-100 rounded-full overflow-hidden flex">
+                {/* Pure Market Zone */}
+                <div className="w-[10%] h-full bg-blue-200/50 border-r border-white/50" />
+                {/* Mixed Economy Zone (The wide band) */}
+                <div className="w-[80%] h-full bg-gradient-to-r from-blue-100 via-emerald-100 to-orange-100 flex items-center justify-center">
+                  <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-500/50">Area Economia Mista</span>
+                </div>
+                {/* Pure Planned Zone */}
+                <div className="w-[10%] h-full bg-orange-200/50 border-l border-white/50" />
+              </div>
+
+              {/* The Slider Input */}
+              <input 
+                type="range" 
+                min="0" 
+                max="100" 
+                value={sliderValue} 
+                onChange={(e) => setSliderValue(parseInt(e.target.value))}
+                className="absolute top-[72px] left-0 w-full h-12 opacity-0 cursor-pointer z-20"
+              />
+
+              {/* The Visual Thumb/Indicator */}
+              <motion.div 
+                className="absolute top-[72px] w-1 h-12 bg-slate-900 z-10 shadow-lg flex items-center justify-center"
+                animate={{ left: `${sliderValue}%` }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                <div className="w-8 h-8 bg-slate-900 rounded-full border-4 border-white shadow-xl flex items-center justify-center">
+                  <div className="w-1 h-3 bg-white rounded-full mx-0.5" />
+                  <div className="w-1 h-3 bg-white rounded-full mx-0.5" />
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Dynamic Feedback */}
+            <div className="bg-slate-50 p-8 rounded-3xl border-2 border-slate-100 text-center min-h-[120px] flex items-center justify-center">
+              <p className="text-2xl font-black text-slate-800 italic">
+                “{getSliderLabel(sliderValue)}”
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-6 border-t border-slate-100">
+            <p className="text-2xl font-bold text-slate-700 leading-relaxed text-center">
+              I modelli puri di mercato e di pianificazione servono soprattutto come poli teorici. 
+              Nella realtà, molti sistemi economici si collocano in forme diverse di <span className="text-blue-600 underline decoration-blue-200 underline-offset-4">economia mista</span>.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-center gap-6">
+          <button 
+            onClick={reset}
+            className="flex items-center justify-center gap-3 px-12 py-6 bg-white text-slate-900 border-4 border-slate-900 rounded-3xl text-xl font-black uppercase hover:bg-slate-50 transition-all"
+          >
+            <RotateCcw className="w-8 h-8" /> Ricomincia
+          </button>
+          <button 
+            onClick={() => { reset(); setActiveSection('table'); setShowFullTable(true); }}
+            className="flex items-center justify-center gap-3 px-12 py-6 bg-blue-600 text-white rounded-3xl text-xl font-black uppercase hover:bg-blue-700 transition-all shadow-xl"
+          >
+            <Layout className="w-8 h-8" /> Mostra Tabella Completa
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <MiniAppLayout
+      title="Il sistema a economia mista (LIM)"
+      objective="Confrontare i modelli economici e classificare casi reali."
+      instructions="Usa i comandi per avanzare nella tabella e analizzare i casi con la classe."
+      onBack={onBack}
+      onReset={reset}
+      isGuidedMode={isGuidedMode}
+      onToggleMode={() => setIsGuidedMode(!isGuidedMode)}
+    >
+      <div className="flex-1 flex flex-col justify-center">
+        {activeSection === 'start' && renderStart()}
+        {activeSection === 'table' && renderTable()}
+        {activeSection === 'reasons' && renderReasons()}
+        {activeSection === 'cases' && renderCases()}
+        {activeSection === 'summary' && renderSummary()}
+      </div>
+    </MiniAppLayout>
+  );
+}
+
+    const root = createRoot(document.getElementById('root'));
+    root.render(<App32_MixedEconomyLIM onBack={() => {}} />);
+  </script>
+</body>
+</html>
