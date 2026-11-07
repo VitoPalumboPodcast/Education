@@ -303,6 +303,8 @@ const minimapViewportRect = minimapSvg.select("#minimap-viewport-rect");
 const loadingIndicator = document.getElementById("loading");
 const undoButton = document.getElementById("undo");
 const redoButton = document.getElementById("redo");
+undoButton.addEventListener("click", undo);
+redoButton.addEventListener("click", redo);
 const iconModal = document.getElementById("icon-modal");
 const iconModalList = document.getElementById("icon-modal-list");
 const iconModalSearch = document.getElementById("icon-modal-search");
@@ -2825,60 +2827,70 @@ function caricaMappaLocale() {
 }
 
 // === LAYOUTS ===
-function layoutRadialeMulti() {
-    if (appState.nodes.length === 0) return;
-    appState.autoSave = false; // Disable history saving for batch updates
-
-    const roots = appState.nodes.filter(n => !n.parentId || !appState.nodes.find(p => p.id === n.parentId));
-    const childrenMap = new Map();
-    appState.nodes.forEach(n => {
-        if (n.parentId) {
-            if (!childrenMap.has(n.parentId)) childrenMap.set(n.parentId, []);
-            childrenMap.get(n.parentId).push(n);
-        }
+function calcolaLayoutRadiale(nodes, connections, centerX, centerY) {
+    // Le connessioni disegnate definiscono la struttura, anche nelle mappe importate.
+    const byId = new Map(nodes.map(node => [node.id, node]));
+    const adjacent = new Map(nodes.map(node => [node.id, []]));
+    const incoming = new Map(nodes.map(node => [node.id, 0]));
+    const idOf = endpoint => typeof endpoint === 'object' && endpoint ? endpoint.id : endpoint;
+    connections.forEach(connection => {
+        const a = idOf(connection.source), b = idOf(connection.target);
+        if (!byId.has(a) || !byId.has(b) || a === b) return;
+        adjacent.get(a).push(b);
+        adjacent.get(b).push(a);
+        incoming.set(b, incoming.get(b) + 1);
     });
-
-    const [ centerX, centerY ] = [appState.currentViewBox[0] + appState.currentViewBox[2]/2, appState.currentViewBox[1] + appState.currentViewBox[3]/2];
-    
-    // Position roots in a circle
-    const numRoots = roots.length;
-    const rootRadius = numRoots > 1 ? Math.min(appState.currentViewBox[2], appState.currentViewBox[3]) / 4 : 0;
-    roots.forEach((root, i) => {
-        root.x = centerX + rootRadius * Math.cos(2 * Math.PI * i / numRoots);
-        root.y = centerY + rootRadius * Math.sin(2 * Math.PI * i / numRoots);
-    });
-
-    function arrangeChildren(parent, level = 1) {
-        const children = childrenMap.get(parent.id) || [];
-        if (children.length === 0) return;
-
-        const radius = Math.max(100, parent.size * 1.2) + level * 30; // Dynamic radius
-        const angleStep = (2 * Math.PI) / children.length;
-        let startAngle = -Math.PI / 2; // Start at the top
-
-        // Avoid overlap with parent's parent if possible
-        if (parent.parentId) {
-            const grandparent = appState.nodes.find(n => n.id === parent.parentId);
-            if (grandparent) {
-                const angleToGrandparent = Math.atan2(grandparent.y - parent.y, grandparent.x - parent.x);
-                startAngle = angleToGrandparent + Math.PI/2 + angleStep/2; // Try to place first child away from grandparent
+    const visited = new Set(), components = [];
+    // Preferire i nodi senza archi entranti come radici; gestire anche cicli e nodi isolati.
+    const candidates = nodes.filter(n => incoming.get(n.id) === 0).concat(nodes);
+    for (const root of candidates) {
+        if (visited.has(root.id)) continue;
+        visited.add(root.id);
+        const tree = { node: root, children: [] }, queue = [tree];
+        for (let i = 0; i < queue.length; i++) {
+            const current = queue[i];
+            for (const id of adjacent.get(current.node.id)) {
+                if (visited.has(id)) continue;
+                visited.add(id);
+                const child = { node: byId.get(id), children: [] };
+                current.children.push(child); queue.push(child);
             }
         }
-
-        children.forEach((child, i) => {
-            const angle = startAngle + i * angleStep;
-            child.x = parent.x + radius * Math.cos(angle);
-            child.y = parent.y + radius * Math.sin(angle);
-            arrangeChildren(child, level + 1);
-        });
+        const weight = entry => entry.weight = entry.children.length ? entry.children.reduce((sum, child) => sum + weight(child), 0) : 1;
+        weight(tree);
+        components.push({ tree });
     }
+    // Un unico centro e anelli concentrici: ogni ramo riceve un settore angolare.
+    const spacing = Math.max(220, ...nodes.map(node => Number(node.size) || 0)) * 1.35;
+    const totalRadius = components.length > 1 ? Math.max(spacing * 2, components.length * spacing / (2 * Math.PI)) : 0;
+    const place = (entry, cx, cy, depth, from, to) => {
+        const angle = (from + to) / 2;
+        entry.node.x = cx + depth * spacing * Math.cos(angle);
+        entry.node.y = cy + depth * spacing * Math.sin(angle);
+        let cursor = from;
+        entry.children.forEach(child => {
+            const width = (to - from) * child.weight / entry.weight;
+            place(child, cx, cy, depth + 1, cursor, cursor + width);
+            cursor += width;
+        });
+    };
+    components.forEach(({ tree }, i) => {
+        const angle = -Math.PI / 2 + 2 * Math.PI * i / components.length;
+        const cx = centerX + totalRadius * Math.cos(angle);
+        const cy = centerY + totalRadius * Math.sin(angle);
+        place(tree, cx, cy, 0, -Math.PI * 1.25, Math.PI * 0.75);
+    });
+    return components;
+}
 
-    roots.forEach(root => arrangeChildren(root));
-    
-    appState.nodes.forEach(n => aggiornaNodo(n)); // This calls redrawAll many times, not ideal
-    redrawAll(); // Single redraw after all positions are set
+function layoutRadialeMulti() {
+    if (!appState.nodes.length) return;
+    if (appState.physics) toggleFisica();
+    const [x, y, width, height] = appState.currentViewBox;
+    calcolaLayoutRadiale(appState.nodes, appState.connections, x + width / 2, y + height / 2);
+    redrawAll();
+    document.getElementById("fit-screen").click();
     saveToHistory();
-    appState.autoSave = true;
 }
 
 function layoutGriglia() {
@@ -2902,76 +2914,28 @@ function layoutGriglia() {
 }
 
 function layoutGerarchico() {
-    if (appState.nodes.length === 0) return;
-    appState.autoSave = false;
-
-    const roots = appState.nodes.filter(n => !n.parentId || !appState.nodes.find(p => p.id === n.parentId));
-    if (roots.length === 0 && appState.nodes.length > 0) { // No explicit roots, pick one
-      roots.push(appState.nodes[0]); 
-    }
-    if (roots.length === 0) {
-      showToast("Nessun nodo radice per il layout gerarchico.", "error");
-      appState.autoSave = true;
-      return;
-    }
-
-    // Build a hierarchical structure for D3
-    const buildHierarchy = (nodeId) => {
-        const node = appState.nodes.find(n => n.id === nodeId);
-        if (!node) return null;
-        const children = appState.nodes.filter(n => n.parentId === nodeId).map(child => buildHierarchy(child.id));
-        return { ...node, children: children.filter(c => c !== null) }; // Pass actual node data
-    };
-    
-    const hierarchicalDataRoots = roots.map(r => buildHierarchy(r.id)).filter(hr => hr);
-    if(hierarchicalDataRoots.length === 0) {
-        showToast("Errore nella costruzione della gerarchia.", "error");
-        appState.autoSave = true;
-        return;
-    }
-
-    const treeLayout = d3.tree()
-        .nodeSize([150, 250]) // [height between levels, width between siblings]
-        .separation((a, b) => a.parent === b.parent ? 1.2 : 1.5); // More separation for non-siblings
-
-    let totalMaxY = 0; // Keep track of overall Y to offset multiple trees
-
-    hierarchicalDataRoots.forEach(dataRoot => {
-        const rootD3 = d3.hierarchy(dataRoot, d => d.children);
-        treeLayout(rootD3);
-        
-        // Center the tree layout relative to viewport or previous tree
-        const nodesD3 = rootD3.descendants();
-        if (nodesD3.length === 0) return;
-
-        let minX = Infinity, maxX = -Infinity;
-        nodesD3.forEach(d => {
-            minX = Math.min(minX, d.x);
-            maxX = Math.max(maxX, d.x);
+    if (!appState.nodes.length) return;
+    if (appState.physics) toggleFisica();
+    const [x, y, width, height] = appState.currentViewBox;
+    const components = calcolaLayoutRadiale(appState.nodes, appState.connections, x + width / 2, y + height / 2);
+    const nodeSpacing = Math.max(180, ...appState.nodes.map(n => Number(n.size) || 0)) * 1.4;
+    let nextX = 0;
+    components.forEach(({tree}) => {
+        const root = d3.hierarchy(tree, entry => entry.children);
+        d3.tree().nodeSize([nodeSpacing, nodeSpacing * 1.2])(root);
+        const descendants = root.descendants();
+        const minX = Math.min(...descendants.map(n => n.x));
+        const maxX = Math.max(...descendants.map(n => n.x));
+        descendants.forEach(entry => {
+            entry.data.node.x = nextX + entry.x - minX;
+            entry.data.node.y = y + height / 2 + entry.y;
         });
-        
-        const treeWidth = maxX - minX;
-        const offsetX = appState.currentViewBox[0] + appState.currentViewBox[2]/2 - (minX + treeWidth / 2);
-        const offsetY = totalMaxY + appState.currentViewBox[1] + 100; // Start below previous tree
-        
-        let currentTreeMaxY = 0;
-        nodesD3.forEach(d => {
-            const appNode = appState.nodes.find(n => n.id === d.data.id);
-            if (appNode) {
-                appNode.x = d.x + offsetX; // d.x is vertical in D3 tree, d.y is horizontal
-                appNode.y = d.y + offsetY;
-                currentTreeMaxY = Math.max(currentTreeMaxY, appNode.y + appNode.size);
-            }
-        });
-        totalMaxY = currentTreeMaxY + 100; // Add padding for next tree
+        nextX += maxX - minX + nodeSpacing * 2;
     });
-
     redrawAll();
-    document.getElementById("fit-screen").click(); // Fit screen after layout
+    document.getElementById("fit-screen").click();
     saveToHistory();
-    appState.autoSave = true;
 }
-
 
 function toggleFisica() {
     let btn = document.getElementById("layout-physics");
@@ -3416,4 +3380,5 @@ function initDefaultMap(){
 
 
 })();
+
 
