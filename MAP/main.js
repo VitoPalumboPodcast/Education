@@ -2870,6 +2870,11 @@ function calcolaLayoutRadiale(nodes, connections, centerX, centerY) {
     const spacing = Math.max(220, ...nodes.map(node => Number(node.size) || 0)) * 1.35;
     const totalRadius = components.length > 1 ? Math.max(spacing * 2, components.length * spacing / (2 * Math.PI)) : 0;
     const place = (entry, cx, cy, depth, from, to) => {
+        // Con due soli rami, evitare che l'intera mappa sembri una linea retta.
+        if (depth === 0 && entry.children.length === 2) {
+            from = -Math.PI;
+            to = 0;
+        }
         const angle = (from + to) / 2;
         entry.node.x = cx + depth * spacing * Math.cos(angle);
         entry.node.y = cy + depth * spacing * Math.sin(angle);
