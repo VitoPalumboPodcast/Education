@@ -2700,6 +2700,12 @@ function generaPaginaHtmlConMappa(mapData) {
 }
 
 function caricaMappa(data) {
+    // Rifiuta formati errati prima di cancellare la mappa attualmente aperta.
+    if (!data || !Array.isArray(data.nodes) || !Array.isArray(data.connections) ||
+        data.nodes.some(n => !n || typeof n !== 'object' || typeof n.id !== 'string' || !n.id) ||
+        data.connections.some(c => !c || typeof c !== 'object' || typeof c.source !== 'string' || typeof c.target !== 'string')) {
+        throw new Error('Formato mappa non valido');
+    }
     // Clear existing map
     appState.nodes = [];
     appState.connections = [];
