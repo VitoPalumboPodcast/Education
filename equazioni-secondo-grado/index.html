@@ -11,8 +11,8 @@
 <body>
 <header><h1>Equazioni di secondo grado · Grafico interattivo</h1><p>Esplora coefficienti, discriminante e soluzioni</p></header>
 <main class="wrap">
- <div class="toolbar" role="group" aria-label="Modalità"><button id="modeExplore" class="mode" aria-pressed="true">Esplora la parabola</button><button id="modeGuide" class="mode" aria-pressed="false">Risolvi passo passo</button><a class="ineq-nav" href="#disequazioni">Disequazioni: Δ &gt; 0</a></div>
- <div class="layout">
+ <div class="toolbar" role="group" aria-label="Modalità"><button id="modeExplore" class="mode" aria-pressed="true">Esplora la parabola</button><button id="modeGuide" class="mode" aria-pressed="false">Risolvi passo passo</button><button type="button" id="modeIneq" class="mode" aria-pressed="false">Disequazioni</button></div>
+ <div class="layout" id="equationLayout">
   <section class="panel">
    <h2 id="leftHeading">Coefficienti</h2>
    <div id="equation" class="eq" aria-live="polite"></div>
@@ -42,26 +42,26 @@
    <div class="result" id="graphInfo" aria-live="polite"></div>
   </section>
  </div>
- <section class="panel ineq-section" id="disequazioni" aria-labelledby="ineqTitle">
-<h2 id="ineqTitle">Disequazioni di secondo grado · Δ &gt; 0</h2>
-<p class="ineq-intro">Se <strong>Δ &gt; 0</strong>, l’equazione associata <strong>ax² + bx + c = 0</strong> ha due soluzioni reali distinte, x₁ e x₂: la parabola taglia l’asse x nei punti <strong>(x₁, 0)</strong> e <strong>(x₂, 0)</strong>. Per risolvere la disequazione osserva dove il grafico è sopra o sotto l’asse e considera il segno di <strong>a</strong>.</p>
+ <section class="panel ineq-section hidden" id="disequazioni" aria-labelledby="ineqTitle">
+<h2 id="ineqTitle">Disequazioni di secondo grado</h2>
+<p class="ineq-intro">Per risolvere <strong>ax² + bx + c &gt; 0</strong> o <strong>&lt; 0</strong>, osserva dove la parabola è sopra o sotto l’asse x. Il discriminante indica quante volte incontra l’asse; il segno di <strong>a</strong> determina la concavità.</p>
 <div class="ineq-layout"><div>
-<strong>1. Scegli la concavità</strong>
+<strong>1. Scegli il discriminante</strong>
+<div class="ineq-controls" role="group" aria-label="Segno del discriminante"><button type="button" data-delta="positive" aria-pressed="true">Δ &gt; 0</button><button type="button" data-delta="zero" aria-pressed="false">Δ = 0</button><button type="button" data-delta="negative" aria-pressed="false">Δ &lt; 0</button></div>
+<p id="ineqDeltaInfo" class="ineq-rule" aria-live="polite"></p>
+<strong>2. Scegli la concavità</strong>
 <div class="ineq-controls" role="group" aria-label="Segno del coefficiente a"><button id="ineqUp" type="button" aria-pressed="true">a &gt; 0 · verso l’alto</button><button id="ineqDown" type="button" aria-pressed="false">a &lt; 0 · verso il basso</button></div>
-<p class="ineq-example" id="ineqFunction"></p>
-<p>In entrambi gli esempi le radici sono <strong>x₁ = −2</strong> e <strong>x₂ = 2</strong>, quindi Δ = 16 &gt; 0.</p>
-<div class="sign-row" id="ineqSigns" aria-label="Segno della funzione nei tre intervalli"></div>
-<p class="ineq-small">Le radici dividono l’asse in tre intervalli. La funzione vale zero nei due punti di intersezione.</p>
-<strong>2. Scegli la disequazione</strong>
+<p class="ineq-example" id="ineqFunction"></p><p id="ineqRoots"></p>
+<div class="sign-row" id="ineqSigns" aria-label="Segno della funzione"></div>
+<p class="ineq-small" id="ineqSignNote"></p>
+<strong>3. Scegli la disequazione</strong>
 <div class="ineq-controls" role="group" aria-label="Segno della disequazione"><button type="button" data-ineq="gt" aria-pressed="true">&gt; 0</button><button type="button" data-ineq="lt" aria-pressed="false">&lt; 0</button><button type="button" data-ineq="ge" aria-pressed="false">≥ 0</button><button type="button" data-ineq="le" aria-pressed="false">≤ 0</button></div>
 <div class="ineq-result" id="ineqResult" aria-live="polite"></div>
-</div><div><div class="ineq-chart"><svg id="ineqGraph" viewBox="0 0 600 360" role="img" aria-label="Grafico del segno della parabola e degli intervalli soluzione"></svg></div>
-<div class="ineq-key"><span style="color:#087148">● Sopra l’asse: positiva</span><span style="color:#b04430">● Sotto l’asse: negativa</span><span style="color:#174e90">━ Intervalli soluzione</span></div>
-<p class="ineq-caption">Sulla barra blu i cerchi vuoti escludono le radici, quelli pieni le includono. Le frecce indicano che l’intervallo continua.</p></div></div>
-<p class="ineq-rule"><strong>Ricorda:</strong> Δ positivo significa che la parabola taglia due volte l’asse x. Guarda dove si trova sopra (+) o sotto (−) l’asse: per a &gt; 0 il segno è <strong>+ | − | +</strong>; per a &lt; 0 è <strong>− | + | −</strong>.</p>
-<p class="ineq-small">Questa scheda riguarda il caso Δ &gt; 0. I casi Δ = 0 e Δ &lt; 0 richiedono un’analisi distinta.</p>
-</section>
- <p class="foot">Nella modalità guidata le coordinate delle soluzioni compaiono dopo il calcolo. In Esplora puoi modificare i coefficienti e osservare il risultato.</p>
+</div><div><div class="ineq-chart"><svg id="ineqGraph" viewBox="0 0 600 360" role="img" aria-label="Grafico della parabola e degli intervalli soluzione"></svg></div>
+<div class="ineq-key"><span style="color:#087148">● Sopra l’asse: positiva</span><span style="color:#b04430">● Sotto l’asse: negativa</span><span style="color:#174e90">━ Soluzioni</span></div>
+<p class="ineq-caption">Sulla linea blu i cerchi vuoti escludono gli estremi, quelli pieni li includono. Le frecce indicano che l’intervallo continua.</p></div></div>
+<p class="ineq-rule"><strong>Ricorda:</strong> con Δ &gt; 0 la parabola taglia l’asse in due punti; con Δ = 0 lo tocca in un punto; con Δ &lt; 0 non lo incontra. Il segno di a determina la concavità.</p></section>
+ <p class="foot" id="equationFoot">Nella modalità guidata le coordinate delle soluzioni compaiono dopo il calcolo. In Esplora puoi modificare i coefficienti e osservare il risultato.</p>
 </main>
 <script>
 /* MATEMATICA: coefficienti, discriminante, radici e segni. */
@@ -130,13 +130,31 @@ setValues(state);
 <script>
 (()=>{
 'use strict';
-let up=true,operator='gt';const $=id=>document.getElementById(id),svg=$('ineqGraph'),NS='http://www.w3.org/2000/svg';
-const el=(tag,attrs,text)=>{const node=document.createElementNS(NS,tag);for(const [key,value] of Object.entries(attrs))node.setAttribute(key,value);if(text!==undefined)node.textContent=text;svg.append(node);return node};
-function render(){const positive=operator==='gt'||operator==='ge',inclusive=operator==='ge'||operator==='le',outside=positive===up,signs=up?['+','−','+']:['−','+','−'],relation={gt:'>',lt:'<',ge:'≥',le:'≤'}[operator],expression=up?'x² − 4':'−x² + 4',result=outside?(inclusive?'x ≤ −2 oppure x ≥ 2':'x < −2 oppure x > 2'):(inclusive?'−2 ≤ x ≤ 2':'−2 < x < 2');
-$('ineqUp').setAttribute('aria-pressed',String(up));$('ineqDown').setAttribute('aria-pressed',String(!up));document.querySelectorAll('[data-ineq]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.ineq===operator)));$('ineqFunction').textContent='Esempio: y = '+expression;$('ineqSigns').innerHTML=signs.map((sign,i)=>'<div class="sign-cell '+(sign==='+'?'sign-positive':'sign-negative')+'">'+['x < −2','−2 < x < 2','x > 2'][i]+'<br>'+sign+'</div>').join('');$('ineqResult').replaceChildren();const title=document.createElement('div');title.textContent=expression+' '+relation+' 0';const answer=document.createElement('strong');answer.textContent=result;const note=document.createElement('div');note.textContent=inclusive?'Le radici sono incluse perché è ammessa l’uguaglianza.':'Le radici sono escluse perché la disuguaglianza è stretta.';$('ineqResult').append(title,answer,note);
-svg.replaceChildren();el('rect',{x:0,y:0,width:600,height:360,fill:'#fff'});for(let x=60;x<=540;x+=60)el('line',{x1:x,y1:20,x2:x,y2:310,stroke:'#e6ecf2'});for(let y=21;y<=309;y+=36)el('line',{x1:30,y1:y,x2:570,y2:y,stroke:'#e6ecf2'});el('line',{x1:30,y1:165,x2:570,y2:165,stroke:'#273c56','stroke-width':2});el('line',{x1:300,y1:20,x2:300,y2:310,stroke:'#273c56','stroke-width':2});el('text',{x:558,y:155,fill:'#273c56','font-size':16},'x');el('text',{x:310,y:34,fill:'#273c56','font-size':16},'y');for(let i=0;i<3;i++){const from=[-3.75,-2,2][i],to=[-2,2,3.75][i];let path='';for(let j=0;j<=80;j++){const x=from+(to-from)*j/80,y=(up?1:-1)*(x*x-4);path+=(j?' L':'M')+(300+x*60).toFixed(2)+' '+(165-y*18).toFixed(2)}el('path',{d:path,fill:'none',stroke:signs[i]==='+'?'#087148':'#b04430','stroke-width':4});}
-const segments=outside?[[60,180],[420,540]]:[[180,420]];for(const [x1,x2] of segments)el('line',{x1,y1:202,x2,y2:202,stroke:'#174e90','stroke-width':7,'stroke-linecap':'round'});if(outside){el('path',{d:'M 48 202 L 65 194 L 65 210 Z',fill:'#174e90'});el('path',{d:'M 552 202 L 535 194 L 535 210 Z',fill:'#174e90'});}for(const x of [180,420]){el('line',{x1:x,y1:165,x2:x,y2:202,stroke:'#93a6bb','stroke-dasharray':'3 4'});el('circle',{cx:x,cy:165,r:6,fill:'#fff',stroke:'#273c56','stroke-width':2});el('circle',{cx:x,cy:202,r:7,fill:inclusive?'#174e90':'#fff',stroke:'#174e90','stroke-width':3});}el('text',{x:154,y:151,fill:'#273c56','font-size':16,'font-weight':'700'},'x₁ = −2');el('text',{x:397,y:151,fill:'#273c56','font-size':16,'font-weight':'700'},'x₂ = 2');svg.setAttribute('aria-label','Grafico di y = '+expression+'. La parabola interseca l’asse x in meno due e due. Soluzione di '+expression+' '+relation+' zero: '+result+'.');}
-$('ineqUp').addEventListener('click',()=>{up=true;render()});$('ineqDown').addEventListener('click',()=>{up=false;render()});document.querySelectorAll('[data-ineq]').forEach(button=>button.addEventListener('click',()=>{operator=button.dataset.ineq;render()}));render();
+let up=true,operator='gt',delta='positive';const $=id=>document.getElementById(id),svg=$('ineqGraph'),NS='http://www.w3.org/2000/svg';
+const el=(tag,attrs,text)=>{const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);if(text!==undefined)n.textContent=text;svg.append(n);return n};
+function selectMode(which){const ineq=which==='ineq';$('disequazioni').classList.toggle('hidden',!ineq);$('equationLayout').classList.toggle('hidden',ineq);$('equationFoot').classList.toggle('hidden',ineq);$('modeIneq').setAttribute('aria-pressed',String(ineq));if(ineq){$('modeExplore').setAttribute('aria-pressed','false');$('modeGuide').setAttribute('aria-pressed','false');} }
+$('modeIneq').addEventListener('click',()=>selectMode('ineq'));$('modeExplore').addEventListener('click',()=>selectMode('equation'),true);$('modeGuide').addEventListener('click',()=>selectMode('equation'),true);if(location.hash==='#disequazioni')selectMode('ineq');
+function render(){
+const positive=operator==='gt'||operator==='ge',inclusive=operator==='ge'||operator==='le',match=positive===up,relation={gt:'>',lt:'<',ge:'≥',le:'≤'}[operator],sign=up?'+':'−';
+const expression=delta==='positive'?(up?'x² − 4':'−x² + 4'):delta==='zero'?(up?'x²':'−x²'):(up?'x² + 4':'−x² − 4');
+let kind,result,note;
+if(delta==='positive'){kind=match?'outside':'inside';result=match?(inclusive?'x ≤ −2 oppure x ≥ 2':'x < −2 oppure x > 2'):(inclusive?'−2 ≤ x ≤ 2':'−2 < x < 2');note=inclusive?'Le due radici sono incluse perché è ammessa l’uguaglianza.':'Le radici sono escluse perché la disuguaglianza è stretta.';}
+else if(delta==='zero'){kind=match?(inclusive?'all':'except'):(inclusive?'point':'empty');result={all:'Tutti i numeri reali: x ∈ ℝ',except:'Tutti i numeri reali tranne 0: x ≠ 0',point:'Solo x = 0',empty:'Nessuna soluzione: ∅'}[kind];note='La funzione è zero soltanto in x = 0. '+(inclusive?'L’uguaglianza è ammessa.':'La disuguaglianza è stretta.');}
+else{kind=match?'all':'empty';result=match?'Tutti i numeri reali: x ∈ ℝ':'Nessuna soluzione: ∅';note='La funzione non si annulla mai e mantiene sempre lo stesso segno.';}
+$('ineqUp').setAttribute('aria-pressed',String(up));$('ineqDown').setAttribute('aria-pressed',String(!up));document.querySelectorAll('[data-ineq]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.ineq===operator)));document.querySelectorAll('[data-delta]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.delta===delta)));
+$('ineqDeltaInfo').textContent={positive:'Δ > 0: due radici reali distinte; la parabola taglia l’asse x in due punti.',zero:'Δ = 0: una radice reale doppia; la parabola tocca l’asse x in un punto.',negative:'Δ < 0: nessuna radice reale; la parabola non incontra l’asse x.'}[delta];
+$('ineqFunction').textContent='Esempio: y = '+expression;$('ineqRoots').textContent={positive:'Δ = 16: x₁ = −2 e x₂ = 2.',zero:'Δ = 0: radice doppia x = 0.',negative:'Δ = −16: nessuna radice reale.'}[delta];
+const cells=delta==='positive'?(up?[['x < −2','+'],['−2 < x < 2','−'],['x > 2','+']]:[['x < −2','−'],['−2 < x < 2','+'],['x > 2','−']]):delta==='zero'?[['x < 0',sign],['x = 0','0'],['x > 0',sign]]:[['Per ogni x',sign]];
+$('ineqSigns').style.gridTemplateColumns='repeat('+cells.length+', minmax(0, 1fr))';$('ineqSigns').innerHTML=cells.map(([label,val])=>'<div class="sign-cell '+(val==='+'?'sign-positive':val==='−'?'sign-negative':'')+'">'+label+'<br>'+val+'</div>').join('');
+$('ineqSignNote').textContent=delta==='positive'?'Le radici dividono l’asse in tre intervalli.':delta==='zero'?'Il segno è quello di a, tranne nella radice doppia, dove la funzione vale zero.':'La funzione ha sempre il segno di a.';
+$('ineqResult').replaceChildren();const title=document.createElement('div'),answer=document.createElement('strong'),explain=document.createElement('div');title.textContent=expression+' '+relation+' 0';answer.textContent=result;explain.textContent=note;$('ineqResult').append(title,answer,explain);
+svg.replaceChildren();el('rect',{x:0,y:0,width:600,height:360,fill:'#fff'});for(let x=60;x<=540;x+=60)el('line',{x1:x,y1:20,x2:x,y2:310,stroke:'#e6ecf2'});for(let y=21;y<=309;y+=36)el('line',{x1:30,y1:y,x2:570,y2:y,stroke:'#e6ecf2'});el('line',{x1:30,y1:165,x2:570,y2:165,stroke:'#273c56','stroke-width':2});el('line',{x1:300,y1:20,x2:300,y2:310,stroke:'#273c56','stroke-width':2});el('text',{x:558,y:155,fill:'#273c56','font-size':16},'x');el('text',{x:310,y:34,fill:'#273c56','font-size':16},'y');
+const k=delta==='positive'?-4:delta==='zero'?0:4,parts=delta==='positive'?[[-3.75,-2],[-2,2],[2,3.75]]:[[-3.75,3.75]];for(const [from,to] of parts){let path='';for(let j=0;j<=100;j++){const x=from+(to-from)*j/100,y=(up?1:-1)*(x*x+k);path+=(j?' L':'M')+(300+x*60).toFixed(2)+' '+(165-y*18).toFixed(2)}const sample=(from+to)/2,value=(up?1:-1)*(sample*sample+k);el('path',{d:path,fill:'none',stroke:value>=0?'#087148':'#b04430','stroke-width':4});}
+const segments={outside:[[60,180],[420,540]],inside:[[180,420]],all:[[60,540]],except:[[60,300],[300,540]],point:[],empty:[]}[kind];for(const [x1,x2] of segments)el('line',{x1,y1:202,x2,y2:202,stroke:'#174e90','stroke-width':7,'stroke-linecap':'round'});if(['outside','all','except'].includes(kind)){el('path',{d:'M 48 202 L 65 194 L 65 210 Z',fill:'#174e90'});el('path',{d:'M 552 202 L 535 194 L 535 210 Z',fill:'#174e90'});}
+const roots=delta==='positive'?[180,420]:delta==='zero'?[300]:[];for(const [i,x] of roots.entries()){el('circle',{cx:x,cy:165,r:6,fill:'#fff',stroke:'#273c56','stroke-width':2});let text=delta==='zero'?'x = 0':i===0?'x₁ = −2':'x₂ = 2';el('text',{x:x-25,y:150,fill:'#273c56','font-size':16,'font-weight':'700'},text);if(kind!=='empty'&&kind!=='all'){el('line',{x1:x,y1:165,x2:x,y2:202,stroke:'#93a6bb','stroke-dasharray':'3 4'});el('circle',{cx:x,cy:202,r:7,fill:(kind==='point'||(delta==='positive'&&inclusive))?'#174e90':'#fff',stroke:'#174e90','stroke-width':3});}}
+if(kind==='empty')el('text',{x:300,y:208,'text-anchor':'middle',fill:'#174e90','font-size':17,'font-weight':'700'},'Nessuna soluzione');if(kind==='all')el('text',{x:300,y:238,'text-anchor':'middle',fill:'#174e90','font-size':15},'tutti i numeri reali');svg.setAttribute('aria-label','Grafico di y = '+expression+'. '+$('ineqDeltaInfo').textContent+' Soluzione di '+expression+' '+relation+' zero: '+result+'.');
+}
+$('ineqUp').addEventListener('click',()=>{up=true;render()});$('ineqDown').addEventListener('click',()=>{up=false;render()});document.querySelectorAll('[data-ineq]').forEach(b=>b.addEventListener('click',()=>{operator=b.dataset.ineq;render()}));document.querySelectorAll('[data-delta]').forEach(b=>b.addEventListener('click',()=>{delta=b.dataset.delta;render()}));render();
 })();
 </script></body>
 </html>
