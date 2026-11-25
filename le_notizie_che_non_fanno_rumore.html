@@ -783,6 +783,191 @@ dialog::backdrop {
     print-color-adjust:exact;
   }
 }
+/* Dimensioni dei riquadri condivise da compositore, lettore e stampa. */
+.front {
+  --front-track:clamp(1.12rem,2.15cqi,1.4rem);
+}
+.frame-grid {
+  display:grid;
+  grid-auto-rows:minmax(var(--front-track),auto);
+  gap:.25rem .7rem;
+}
+.frame-cell {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  padding:.45rem .12rem .18rem;
+}
+.frame-cell > .kicker,.frame-cell > .front-title,.frame-cell > .caption {
+  flex:none;
+}
+.frame-cell > .front-photo {
+  display:flex;
+  flex-direction:column;
+  flex:0 1 auto;
+  min-height:0;
+  margin:.28rem 0;
+}
+.front .frame-cell .front-photo img {
+  flex:0 1 auto;
+  height:min(calc(var(--photo-rows) * var(--front-track)),24cqi);
+  min-height:0;
+  max-height:none;
+  aspect-ratio:auto;
+}
+.frame-cell > .front-photo figcaption {
+  flex:none;
+  font-size:.71rem;
+  line-height:1.19;
+}
+.front-copy {
+  flex:1 1 auto;
+  min-height:calc(2.65rem * var(--front-factor));
+  height:0;
+  contain:size;
+  overflow:hidden;
+}
+.front-copy p {
+  margin:0 0 .25em;
+}
+.front-copy h3 {
+  font:700 calc(1.06rem * var(--front-factor))/1.25 var(--serif);
+  margin:.12em 0 .2em;
+}
+.frame-cell .front-continues {
+  align-self:start;
+  flex:none;
+  margin:.15rem 0 0;
+  border:0;
+  background:none;
+  padding:0;
+  font:650 .74rem/1.25 system-ui,sans-serif;
+  color:var(--accent);
+  text-align:left;
+}
+button.front-continues {
+  text-decoration:underline;
+  text-underline-offset:.16em;
+}
+.frame-cell .caption {
+  margin-top:.15rem;
+}
+.frame-handle.btn {
+  position:absolute;
+  z-index:2;
+  width:1.55rem;
+  height:1.55rem;
+  min-height:0;
+  border:1px solid var(--accent);
+  border-radius:50%;
+  padding:0;
+  font-size:0;
+  background:var(--paper);
+  color:var(--accent);
+  touch-action:none;
+  user-select:none;
+}
+.frame-handle::before {
+  content:'';
+  display:block;
+  width:.55rem;
+  height:.24rem;
+  border-block:1px solid currentColor;
+}
+.frame-handle-left,.frame-handle-right {
+  top:50%;
+  transform:translateY(-50%);
+  cursor:ew-resize;
+}
+.frame-handle-left {left:0}
+.frame-handle-right {right:0}
+.frame-handle-left::before,.frame-handle-right::before {transform:rotate(90deg)}
+.frame-handle-top,.frame-handle-bottom {
+  left:50%;
+  transform:translateX(-50%);
+  cursor:ns-resize;
+}
+.frame-handle-top {top:-.39rem}
+.frame-handle-bottom {bottom:-.39rem}
+.frame-resize-outline {
+  position:absolute;
+  z-index:5;
+  pointer-events:none;
+  inset:0;
+  outline:2px dashed var(--accent);
+  background:#76284113;
+}
+.cover-measure {
+  position:fixed;
+  top:0;
+  left:-120vw;
+  visibility:hidden;
+  pointer-events:none;
+}
+.cover-measure > .front,.reading-flow > .front {
+  --front-factor:var(--reading);
+}
+.print-root.measuring {
+  display:block;
+  position:fixed;
+  left:-120vw;
+  top:0;
+  visibility:hidden;
+}
+.print-root .front.frame-cover {
+  --front-factor:1;
+  box-shadow:none;
+  border:0;
+  padding:0;
+}
+.print-root .frame-grid {
+  gap:.25rem .7rem;
+}
+.flip-pending {
+  position:absolute;
+  top:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.reader-stage[aria-busy=true] {
+  overflow:clip;
+  background:var(--paper);
+}
+.reader-stage[aria-busy=true] .book,.reader-stage[aria-busy=true] > .front {
+  pointer-events:none;
+}
+.reader-toolbar .btn[aria-disabled=true] {
+  opacity:.67;
+  cursor:progress;
+}
+.flip-turning-source {
+  opacity:0;
+}
+@container (max-width:29rem) {
+  .frame-grid {
+    display:block;
+  }
+  .frame-cell {
+    width:var(--phone-width);
+    margin-inline-start:var(--phone-offset);
+    margin-block-end:.65rem;
+    height:calc(var(--frame-rows) * (var(--front-track) + .25rem));
+    min-height:min-content;
+  }
+  .front .frame-cell .front-photo img {
+    height:min(calc(var(--photo-rows) * var(--front-track)),31cqi);
+  }
+}
+@media print {
+  .print-root .frame-grid {
+    gap:.25rem .7rem;
+  }
+  .frame-handle,.frame-resize-outline {
+    display:none!important;
+  }
+}
+
 </style>
 <style>
 .top {
@@ -1386,10 +1571,232 @@ function lettura() {
       style:photo.width && photo.height ? 'aspect-ratio:' + photo.width + '/' + photo.height : null};
   }
   const articlePhoto = (article, index) => article.images[index] || article.images[0];
+  // Griglia editoriale a 12 colonne. Un bordo cambia un solo lato del rettangolo.
+  const frameColumns = 12;
+  const minimumWidth = 4;
+  const minimumHeight = 4;
+  const maximumHeight = 19;
+  const clamp = (number,min,max) => Math.max(min,Math.min(max,number));
+  const frameSides = {left:'sinistra',right:'destra',top:'alto',bottom:'basso'};
+  const intersects = (a,b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+  function normalizeFrame(value) {
+    if (!value || !Number.isInteger(value.w) || !Number.isInteger(value.h)) return null;
+    const w = clamp(value.w,minimumWidth,frameColumns);
+    return {w,h:clamp(value.h,minimumHeight,maximumHeight),anchor:value.anchor === true,
+      x:Number.isInteger(value.x) ? clamp(value.x,0,frameColumns-w) : null,
+      y:Number.isInteger(value.y) ? clamp(value.y,0,200) : null};
+  }
+  function fitBelow(frame, placed) {
+    let conflicts = placed.filter(other => intersects(frame,other));
+    while (conflicts.length) {
+      frame = {...frame,y:Math.max(...conflicts.map(other => other.y + other.h))};
+      conflicts = placed.filter(other => intersects(frame,other));
+    }
+    return frame;
+  }
+  function framePlan(edition) {
+    const photos = new Set(edition.articles.filter(article => article.images.length).map(article => article.id));
+    const preferred = [];
+    const changes = new Map(edition.layout.map(item => [item.id,normalizeFrame(item.frame)]));
+    const wideModel = edition.model !== 'classic';
+    edition.layout.forEach((item,index) => {
+      const main = index === 0;
+      const saved = changes.get(item.id);
+      const withPhoto = item.showPhoto && photos.has(item.id);
+      const w = saved?.w ?? (main ? (item.size === 'ridotto' ? 6 : item.size === 'ampio' || wideModel ? 12 : 8)
+        : item.size === 'ampio' ? 8 : 4);
+      const h = saved?.h ?? (main ? (edition.model === 'visual' ? 15 : edition.model === 'essential' ? 12 : 13) :
+        (withPhoto ? 10 : 7) + (item.size === 'ampio' ? 1 : item.size === 'ridotto' ? -1 : 0));
+      const y = main || index === 1 && !wideModel ? 0 : preferred[0].h;
+      const align = item.align === 'right' ? frameColumns-w : 0;
+      const x = main ? 0 : index === 1 && !wideModel ? frameColumns-w : align;
+      const base = {x,y,w,h,id:item.id};
+      const candidates = !main && (wideModel || index > 1) ? nearbyColumns(base) : [x];
+      preferred.push(bestPlacement(base,candidates,preferred));
+    });
+    const anchor = preferred.find(frame => changes.get(frame.id)?.anchor);
+    if (!anchor && !preferred.some(frame => changes.get(frame.id)?.x !== null && changes.get(frame.id)?.x !== undefined)) return preferred;
+    const placed = [];
+    const order = anchor ? [anchor,...preferred.filter(item => item !== anchor)] : preferred;
+    for (const frame of order) {
+      const saved = changes.get(frame.id);
+      const original = {...frame,x:saved?.x ?? frame.x,y:saved?.y ?? frame.y};
+      const candidates = frame === anchor ? [original.x] : nearbyColumns(original);
+      placed.push(bestPlacement(original,candidates,placed));
+    }
+    const byId = new Map(placed.map(frame => [frame.id,frame]));
+    return preferred.map(frame => byId.get(frame.id));
+  }
+  function nearbyColumns(frame) {
+    return Array.from({length:frameColumns-frame.w+1},(_,column) => column)
+      .sort((a,b) => Math.abs(a-frame.x)-Math.abs(b-frame.x));
+  }
+  function bestPlacement(frame,columns,placed) {
+    return columns.map(x => fitBelow({...frame,x},placed)).reduce((a,b) => b.y < a.y ? b : a);
+  }
+  function adjustEdge(frame,side,steps) {
+    let {x,y,w,h} = frame;
+    if (side === 'left') {
+      const edge = clamp(x-steps,Math.max(0,x+w-frameColumns),x+w-minimumWidth);
+      w += x-edge;
+      x = edge;
+    } else if (side === 'right') {
+      w = clamp(w+steps,minimumWidth,frameColumns-x);
+    } else if (side === 'top') {
+      const edge = clamp(y-steps,Math.max(0,y+h-maximumHeight),y+h-minimumHeight);
+      h += y-edge;
+      y = edge;
+    } else if (side === 'bottom') {
+      h = clamp(h+steps,minimumHeight,maximumHeight);
+    }
+    return {...frame,x,y,w,h};
+  }
+  const frameChanged = (old,next) => ['x','y','w','h'].some(key => old[key] !== next[key]);
+  function resizeFrame(edition,id,side,steps) {
+    const current = framePlan(edition).find(item => item.id === id);
+    if (!current) return false;
+    const changed = adjustEdge(current,side,steps);
+    if (!frameChanged(current,changed)) return false;
+    for (const item of edition.layout) {
+      if (item.id === id) item.frame = {...normalizeFrame(changed),anchor:true};
+      else if (item.frame?.anchor) item.frame = {...item.frame,anchor:false};
+    }
+    return true;
+  }
+  function resetFramePositions(edition) {
+    for (const item of edition.layout) {
+      if (item.frame) item.frame = {...item.frame,x:null,y:null,anchor:false};
+    }
+  }
+  function frameStyle(frame) {
+    const percent = 55 + (frame.w-minimumWidth) * 45 / (frameColumns-minimumWidth);
+    const room = frameColumns-frame.w;
+    const offset = room ? (100-percent) * frame.x / room : 0;
+    return 'grid-column:'+(frame.x+1)+'/span '+frame.w+';grid-row:'+(frame.y+1)+'/span '+frame.h+
+      ';--frame-rows:'+frame.h+';--photo-rows:'+Math.max(2,Math.round(frame.h*.34))+
+      ';--phone-width:'+percent+'%;--phone-offset:'+offset+'%';
+  }
+  function resizeHandle(side,frame,cell,apply) {
+    const horizontal = side === 'left' || side === 'right';
+    const direction = side === 'top' || side === 'left' ? -1 : 1;
+    const label = 'Ridimensiona dal lato ' + frameSides[side];
+    const handle = btn(label,() => apply(side,frameChanged(frame,adjustEdge(frame,side,1)) ? 1 : -1,side),
+      'frame-handle frame-handle-' + side,{'aria-label':label,title:label + ' · trascina o usa le frecce'});
+    let gesture;
+    handle.addEventListener('dragstart',event => event.preventDefault());
+    handle.addEventListener('pointerdown',event => {
+      if (event.button !== 0) return;
+      event.preventDefault();
+      const grid = cell.parentElement;
+      const styles = getComputedStyle(grid);
+      const columnGap = parseFloat(styles.columnGap) || 0;
+      const rowGap = parseFloat(styles.rowGap) || 0;
+      const mobile = styles.display !== 'grid';
+      const step = horizontal ? (grid.clientWidth + columnGap) / (mobile ? 17 : frameColumns)
+        : Math.max(18,cell.offsetHeight / frame.h + rowGap);
+      const ghost = el('div',{class:'frame-resize-outline','aria-hidden':'true'});
+      cell.append(ghost);
+      gesture = {at:horizontal ? event.clientX : event.clientY,step,ghost,id:event.pointerId,units:0};
+      handle.setPointerCapture(event.pointerId);
+    });
+    handle.addEventListener('pointermove',event => {
+      if (gesture?.id !== event.pointerId) return;
+      const distance = (horizontal ? event.clientX : event.clientY) - gesture.at;
+      const next = adjustEdge(frame,side,Math.round(distance*direction/gesture.step));
+      const units = horizontal ? next.w-frame.w : next.h-frame.h;
+      gesture.units = units;
+      gesture.ghost.style.setProperty(side,(-units*gesture.step)+'px');
+    });
+    const finish = event => {
+      if (gesture?.id !== event.pointerId) return;
+      const {ghost,units} = gesture;
+      gesture = null;
+      ghost.remove();
+      if (event.type === 'pointerup' && units) apply(side,units);
+    };
+    for (const event of ['pointerup','pointercancel','lostpointercapture']) handle.addEventListener(event,finish);
+    handle.addEventListener('keydown',event => {
+      const keys = horizontal ? ['ArrowLeft','ArrowRight'] : ['ArrowUp','ArrowDown'];
+      const index = keys.indexOf(event.key);
+      if (index < 0) return;
+      event.preventDefault();
+      apply(side,(index ? 1 : -1)*direction,side);
+    });
+    return handle;
+  }
+
+  const copyBlocks = new WeakMap();
+  const lockCoverFit = new WeakSet();
+  function fitFront(front,map = new Map()) {
+    if (!front?.isConnected || !front.clientWidth || lockCoverFit.has(front)) return map;
+    for (const box of front.querySelectorAll('.front-copy')) {
+      const copy = copyBlocks.get(box);
+      if (!copy) continue;
+      const {blocks,isArticle,articleId,link} = copy;
+      const height = box.clientHeight;
+      box.replaceChildren();
+      const fits = node => {
+        box.append(node);
+        const fits = box.scrollHeight <= height + 1;
+        node.remove();
+        return fits;
+      };
+      let index = 0, offset = 0;
+      if (height > 0) for (;index < blocks.length; index++) {
+        const {tag,tokens} = blocks[index];
+        const node = richNode(tag,tokens);
+        if (fits(node)) {
+          box.append(node);
+          continue;
+        }
+        if (tag !== 'p') break;
+        let low = 0, high = tokens.length;
+        while (low < high) {
+          const middle = Math.ceil((low+high)/2);
+          if (fits(richNode(tag,tokens.slice(0,middle)))) low = middle;
+          else high = middle-1;
+        }
+        offset = low;
+        if (offset) box.append(richNode(tag,tokens.slice(0,offset)));
+        break;
+      }
+      if (isArticle) {
+        if (index || offset) map.set(articleId,{index,offset});
+        if (link) link.textContent = index === blocks.length ? 'Fonti e dettagli all’interno' :
+          index || offset ? 'Continua nelle pagine interne' : 'Leggi nelle pagine interne';
+      }
+    }
+    return map;
+  }
+  function remainingBody(blocks,cut) {
+    if (!cut) return blocks;
+    const remaining = blocks.slice(cut.index);
+    if (cut.offset && remaining.length) {
+      remaining[0] = {...remaining[0],tokens:remaining[0].tokens.slice(cut.offset)};
+    }
+    return remaining;
+  }
+  function frontBody(article,cut) {
+    if (!cut) return '';
+    const blocks = richBody(article.text);
+    const visible = blocks.slice(0,cut.index);
+    if (cut.offset) visible.push({...blocks[cut.index],tokens:blocks[cut.index].tokens.slice(0,cut.offset)});
+    return visible.map(({tag,tokens}) => (tag === 'h3' ? '## ' : '') + richRuns(tokens).map(({strong,value}) =>
+      strong ? '**'+value+'**' : value).join('')).join('\n\n');
+  }
+  function measureCover(front,parent,width) {
+    const probe = el('div',{class:'cover-measure','aria-hidden':'true',inert:true,style:'width:'+width+'px'},front);
+    parent.append(probe);
+    const cuts = fitFront(front);
+    probe.remove();
+    return cuts;
+  }
+
   function frontPage(edition, options = {}) {
-    const {onArticle, onSelect, drag, selected, forPrint} = options;
-    const grid = el('div', {class:'front-grid'});
-    const front = el('div', {class:'front ' + edition.model}, el('header', {class:'front-flag'},
+    const {onArticle, onSelect, drag, resize, selected, forPrint, coversOnly} = options;
+    const plan = new Map(framePlan(edition).map(frame => [frame.id,frame]));
+    const grid = el('div', {class:'front-grid frame-grid'});
+    const front = el('div', {class:'front frame-cover ' + edition.model}, el('header', {class:'front-flag'},
       el('p', {class:'front-meta'}, [edition.issue, dateLabel(edition.date)].filter(Boolean).join(' · ') || 'Edizione senza data'),
       el('div', {class:'front-name'}, edition.name || 'Quotidiano senza titolo'),
       edition.motto && el('p', {class:'front-motto'}, edition.motto)), grid);
@@ -1409,15 +1816,29 @@ function lettura() {
       const picture = displayPhoto && el('figure', {class:'front-photo'},
         el('img', {...photoAttrs(photo), draggable:'false', style:'object-position:' + (item.cropX ?? 50) + '% ' + (item.cropY ?? 50) + '%'}),
         photo.caption && el('figcaption', {}, photo.caption));
-      const cell = el('article', {class:['front-cell', position, size, 'title-' + item.titleSize].filter(Boolean).join(' ') + align,
-        'data-id':item.id, 'data-selected':onSelect ? String(item.id === selected) : null,
+      const frame = plan.get(item.id);
+      const cell = el('article', {class:['front-cell frame-cell', position, size, 'title-' + item.titleSize].filter(Boolean).join(' ') + align,
+        style:frameStyle(frame), 'data-id':item.id, 'data-frame':[frame.x,frame.y,frame.w,frame.h].join(','), 'data-selected':onSelect ? String(item.id === selected) : null,
         draggable:drag ? 'true' : null});
       const category = !edition.hideCategories && article.categories.length ? article.categories.join(' · ') : '';
       const label = article.fiction ? 'Esempio inventato' : article.type === 'Notizia documentata' ? category : article.type;
       const tag = label && el('div', {class:'kicker'}, label);
       if (edition.model === 'visual' && index === 0) cell.append(...[picture, tag, title].filter(Boolean));
       else cell.append(...[tag, title, picture].filter(Boolean));
-      if (item.showSummary && summary) cell.append(el('p', {}, summary));
+      const mode = item.bodyMode || (item.showSummary ? 'summary' : 'title');
+      const isArticle = mode === 'article';
+      const display = isArticle ? article.text : mode === 'summary' ? summary : '';
+      const link = isArticle && !coversOnly && (onArticle
+        ? el('button',{type:'button',class:'front-continues',onclick:() => onArticle(item.id),'aria-label':'Continua a leggere: '+heading},'Continua nelle pagine interne')
+        : el('p',{class:'front-continues'},'Continua nelle pagine interne'));
+      if (display) {
+        const copy = el('div',{class:'front-copy'});
+        copyBlocks.set(copy,{blocks:richBody(display),isArticle,articleId:item.id,link});
+        cell.append(copy);
+        if (link) cell.append(link);
+      }
+      if (resize && selected === item.id) cell.append(...Object.keys(frameSides).map(side =>
+        resizeHandle(side,frame,cell,(edge,steps,focus) => resize(item.id,edge,steps,focus))));
       if (forPrint && displayPhoto && photo.credit) cell.append(el('div', {class:'caption'}, photo.credit,
         photo.creditURL && ' · ', external(photo.creditURL, 'Fonte immagine'), photo.license && ' · ', external(photo.license, 'Licenza')));
       if (drag) {
@@ -1450,8 +1871,10 @@ function lettura() {
     }
     const count = edition.pageCount ?? edition.articles.filter(article => article.published).length;
     front.append(el('p', {class:'front-editorial-foot'}, count + (count === 1 ? ' articolo nel giornale' : ' articoli nel giornale')));
+    queueMicrotask(() => fitFront(front));
     return front;
   }
+  addEventListener('resize',() => document.querySelectorAll('.frame-cover').forEach(front => fitFront(front)));
 
   // Il testo resta testo. Le sole scorciatoie tipografiche sono ## e **.
   function richBody(raw) {
@@ -1477,7 +1900,7 @@ function lettura() {
       return {...block, tokens};
     });
   }
-  function richNode(tag, tokens) {
+  function richRuns(tokens) {
     const runs = [];
     for (const token of tokens) {
       const last = runs.at(-1);
@@ -1485,7 +1908,10 @@ function lettura() {
       if (last?.strong === strong) last.value += token.value;
       else runs.push({strong,value:token.value});
     }
-    return el(tag, {}, runs.map(({value,strong}) => strong ? el('strong',{},value) : value));
+    return runs;
+  }
+  function richNode(tag,tokens) {
+    return el(tag,{},richRuns(tokens).map(({value,strong}) => strong ? el('strong',{},value) : value));
   }
   function credits(photo) {
     return [photo.caption, photo.credit].filter(Boolean).join(' · ');
@@ -1508,7 +1934,7 @@ function lettura() {
       ? el('button', {type:'button', onclick:() => showPhoto(photo), 'aria-label':photo.alt ? 'Ingrandisci: ' + photo.alt : 'Ingrandisci questa fotografia'}, image)
       : image);
   }
-  function articleBlocks(article, hideCategories) {
+  function articleBlocks(article, hideCategories,cut) {
     const metadata = [article.type, dateLabel(article.date), article.fiction && 'Esempio inventato',
       !hideCategories && article.categories.join(' · ')].filter(Boolean).join(' · ');
     const blocks = [{node:() => el('p', {class:'article-meta'}, metadata)},
@@ -1519,7 +1945,8 @@ function lettura() {
       if (credits(photo) || photo.creditURL || photo.license) blocks.push({node:() => captionNode(photo)});
     };
     if (article.images[0]) addPhoto(article.images[0]);
-    blocks.push(...richBody(article.text));
+    if (cut) blocks.push({node:() => el('p',{class:'article-meta'},'Continua dalla prima pagina')});
+    blocks.push(...remainingBody(richBody(article.text),cut));
     article.images.slice(1).forEach(addPhoto);
     if (article.note) blocks.push({tag:'h3',text:'Nota del redattore'}, ...richBody(article.note));
     if (article.limits) blocks.push({tag:'h3',text:'Limiti e verifiche'}, ...richBody(article.limits));
@@ -1531,17 +1958,23 @@ function lettura() {
   function blockNode(block, interactive) {
     return block.node ? block.node(interactive) : richNode(block.tag, block.tokens || [{value:block.text}]);
   }
-  function fullArticle(article, hideCategories, interactive = true) {
+  function fullArticle(article, hideCategories, interactive = true,cut) {
     return el('article', {class:'full-article', id:'article-' + article.id, tabindex:interactive ? '-1' : null},
-      articleBlocks(article, hideCategories).map(block => blockNode(block, interactive)));
+      articleBlocks(article, hideCategories,cut).map(block => blockNode(block, interactive)));
   }
   function printEdition(edition, coverOnly, format = 'A4') {
     const size = format === 'A3' ? 'A3' : 'A4';
-    const sheet = el('div', {class:'print-root'}, frontPage(edition, {forPrint:true}));
-    if (!coverOnly) sheet.append(...edition.articles.filter(article => article.published).map(article => fullArticle(article, edition.hideCategories, false)));
+    const front = frontPage(edition,{forPrint:true,coversOnly:coverOnly});
+    const sheet = el('div',{class:'print-root measuring',style:'width:'+(size === 'A3' ? 273 : 186)+'mm'},front);
+    document.body.append(sheet);
+    const cuts = fitFront(front);
+    lockCoverFit.add(front);
+    sheet.classList.remove('measuring');
+    sheet.removeAttribute('style');
+    if (!coverOnly) sheet.append(...edition.articles.filter(article => article.published).map(article =>
+      fullArticle(article,edition.hideCategories,false,cuts.get(article.id))));
     const style = el('style', {}, '@page { size: ' + size + ' portrait; margin: 12mm; }');
     document.head.append(style);
-    document.body.append(sheet);
     document.body.classList.add('printing');
     window.addEventListener('afterprint', () => {
       document.body.classList.remove('printing');
@@ -1553,7 +1986,7 @@ function lettura() {
 
   // Misura i blocchi alla larghezza effettiva. I paragrafi lunghi vengono spezzati
   // ai confini fra parole, o fra grafemi se una singola parola eccede una pagina.
-  function paginate(edition, stage, width, double) {
+  function paginate(edition, stage, width, double,cuts) {
     const probe = el('section', {class:'paper pagination-probe','aria-hidden':'true',inert:true,
       style:'width:' + (width / (double ? 2 : 1)) + 'px'});
     const measure = el('div', {class:'paper-content'});
@@ -1581,7 +2014,7 @@ function lettura() {
         content.push(block);
         measure.append(blockNode(block, false));
       };
-      for (const block of articleBlocks(article, edition.hideCategories)) {
+      for (const block of articleBlocks(article,edition.hideCategories,cuts.get(article.id))) {
         if (fits(blockNode(block, false))) {
           add(block);
           continue;
@@ -1656,11 +2089,12 @@ function lettura() {
     const reading = el('div',{class:'reader'}, toolbar, !coverOnly && toc, stage);
     host.replaceChildren(reading);
     let pages = [], first = new Map(), current = -1, double = false, lastWidth = 0, lastHeight = 0, buildPending = 0;
-    let flow = settings.flow, animation = settings.animation, scale = settings.scale, touchStart = null, flip = null;
+    let flow = settings.flow, animation = settings.animation, scale = settings.scale, touchStart = null;
+    let pending = null, coverNode, cuts = new Map();
     const articles = edition.articles.filter(article => article.published);
     const previous = btn('Pagina precedente', () => turn(-1), 'small');
     const next = btn('Apri il giornale', () => turn(1), 'small primary');
-    const cover = btn('Prima pagina', () => go(-1, false, true), 'small');
+    const cover = btn('Prima pagina', () => go(-1,true,true), 'small');
     const pageStatus = el('span',{role:'status','aria-live':'polite',class:'hint'});
     const toggleFlow = btn('', () => {
       const target = flow ? document.activeElement.closest('.full-article')?.id.replace(/^article-/,'') : pages[current]?.article.id;
@@ -1671,7 +2105,8 @@ function lettura() {
     const toggleAnimation = btn('', () => {
       animation = !animation;
       changeSettings({animation});
-      updateToolbar();
+      if (!animation && pending) finishTurn(pending,true);
+      else updateToolbar();
     }, 'small');
     const zoom = el('select', {'aria-label':'Ingrandimento del testo',style:'width:auto', onchange:event => {
       scale = Number(event.target.value);
@@ -1698,6 +2133,10 @@ function lettura() {
       toggleAnimation.textContent = !animation || media.matches ? 'Animazione disattivata' : 'Animazione attiva';
       toggleAnimation.disabled = media.matches;
       toggleAnimation.setAttribute('aria-pressed',String(animation && !media.matches));
+      for (const item of [previous,next,cover]) {
+        if (pending) item.setAttribute('aria-disabled','true');
+        else item.removeAttribute('aria-disabled');
+      }
       previous.disabled = current < 0;
       cover.disabled = current < 0;
       next.disabled = !pages.length || current >= 0 && current + (double ? 2 : 1) >= pages.length;
@@ -1705,8 +2144,13 @@ function lettura() {
       const end = Math.min(pages.length, current + (double ? 2 : 1));
       pageStatus.textContent = current < 0 ? 'Prima pagina' : (end === current + 1 ? 'Pagina ' + end : 'Pagine ' + (current + 1) + '–' + end) + ' di ' + pages.length;
     }
-    function printCover() {
-      return frontPage(edition, {onArticle:coverOnly ? null : id => jump(id,true), forPrint:coverOnly});
+    function coverWidth() {
+      return Math.min(stage.clientWidth,59*parseFloat(getComputedStyle(document.documentElement).fontSize));
+    }
+    function prepareCover() {
+      coverNode=frontPage(edition,{onArticle:coverOnly ? null : id => jump(id,true),forPrint:coverOnly,coversOnly:coverOnly});
+      cuts=measureCover(coverNode,stage,coverWidth());
+      lockCoverFit.add(coverNode);
     }
     function paper(page, index) {
       const label = page && first.get(page.article.id) !== index ? 'Segue · ' + page.article.title : '';
@@ -1715,51 +2159,67 @@ function lettura() {
           page && page.content.map(block => blockNode(block,true))),
         el('div',{class:'paper-foot'},el('span',{},edition.issue),el('span',{},page ? String(index + 1) : '')));
     }
-    function draw() {
+    function pageNode(index) {
       if (flow && !coverOnly) {
-        stage.replaceChildren(el('div',{class:'reading-flow'}, printCover(), articles.map(article => fullArticle(article,edition.hideCategories))));
-      } else if (current < 0 || coverOnly) stage.replaceChildren(printCover());
-      else stage.replaceChildren(el('div',{class:'book' + (double ? ' double' : '')},
-        paper(pages[current],current),double && paper(pages[current + 1],current + 1)));
+        return el('div',{class:'reading-flow'},coverNode,articles.map(article =>
+          fullArticle(article,edition.hideCategories,true,cuts.get(article.id))));
+      }
+      if (index < 0 || coverOnly) return coverNode;
+      return el('div',{class:'book' + (double ? ' double' : '')},paper(pages[index],index),
+        double && paper(pages[index+1],index+1));
+    }
+    function draw(nextNode = pageNode(current)) {
+      stage.replaceChildren(nextNode);
       updateToolbar();
     }
-    function showFlip(previousNode, old, direction) {
-      if (flow || !animation || media.matches || !previousNode) return;
-      const spread = current >= 0 && old >= 0 && double;
-      const oldFace = spread ? previousNode.children[direction > 0 ? 1 : 0] : previousNode;
-      const newFace = spread ? stage.firstElementChild.children[direction > 0 ? 0 : 1] : stage.firstElementChild;
-      if (!oldFace || !newFace) return;
-      const layer = el('div',{class:'flip-layer' + (direction < 0 ? ' reverse' : ''),inert:true,'aria-hidden':'true'});
-      layer.style.width = spread ? '50%' : previousNode.offsetWidth ? previousNode.offsetWidth + 'px' : '100%';
-      layer.style.height = Math.max(oldFace.offsetHeight,newFace.offsetHeight) + 'px';
-      layer.style.left = spread ? (direction > 0 ? '50%' : '0') : '50%';
-      if (!spread) layer.style.marginLeft = 'calc(' + layer.style.width + ' / -2)';
-      layer.style.transformOrigin = direction > 0 ? 'left center' : 'right center';
-      layer.append(el('div',{class:'flip-face'},oldFace.cloneNode(true)),el('div',{class:'flip-face back'},newFace.cloneNode(true)));
-      flip = layer;
-      stage.append(layer);
-      layer.addEventListener('animationend',() => layer.remove(),{once:true});
-      setTimeout(() => layer.remove(), 660);
+    function finishTurn(turn,commit) {
+      if (pending !== turn) return;
+      pending = null;
+      clearTimeout(turn.timeout);
+      turn.layer.remove();
+      turn.holder.remove();
+      turn.oldFace.classList.remove('flip-turning-source');
+      stage.removeAttribute('aria-busy');
+      if (commit) {
+        current = turn.index;
+        draw(turn.nextNode);
+        if (turn.focus) stage.focus({preventScroll:true});
+      } else updateToolbar();
     }
-    function go(index, animate = true, focus = false) {
-      if (index === current || index < -1 || index >= pages.length) return;
-      flip?.remove();
-      const old = current;
+    function startTurn(index,nextNode,focus) {
       const previousNode = stage.firstElementChild;
-      const previousWidth = previousNode?.offsetWidth || 0;
-      const previousHeight = previousNode?.offsetHeight || 0;
+      const direction = index > current ? 1 : -1;
+      const spread = current >= 0 && index >= 0 && double;
+      const oldFace = current >= 0 && double ? previousNode.children[spread && direction > 0 ? 1 : 0] : previousNode;
+      const newFace = index >= 0 && double ? nextNode.children[direction > 0 ? 0 : 1] : nextNode;
+      if (!oldFace?.offsetWidth || !newFace) return false;
+      const stageRect = stage.getBoundingClientRect();
+      const oldRect = oldFace.getBoundingClientRect();
+      const holder = el('div',{class:'flip-pending','aria-hidden':'true',inert:true,
+        style:'width:'+(index < 0 ? coverWidth() : stageRect.width)+'px'},nextNode);
+      stage.append(holder);
+      const layer = el('div',{class:'flip-layer' + (direction < 0 ? ' reverse' : ''),inert:true,'aria-hidden':'true',
+        style:'left:'+(oldRect.left-stageRect.left)+'px;width:'+oldRect.width+'px;height:'+oldRect.height+
+          'px;transform-origin:'+(direction > 0 ? 'left center' : 'right center')},
+        el('div',{class:'flip-face'},oldFace.cloneNode(true)),el('div',{class:'flip-face back'},newFace.cloneNode(true)));
+      const turn = {layer,holder,oldFace,nextNode,index,focus};
+      pending = turn;
+      stage.setAttribute('aria-busy','true');
+      stage.append(layer);
+      oldFace.classList.add('flip-turning-source');
+      updateToolbar();
+      const done = () => finishTurn(turn,true);
+      layer.addEventListener('animationend',done,{once:true});
+      layer.addEventListener('animationcancel',done,{once:true});
+      turn.timeout = setTimeout(done,780);
+      return true;
+    }
+    function go(index,animate = true,focus = false) {
+      if (pending || index === current || index < -1 || index >= pages.length) return;
+      const nextNode = pageNode(index);
+      if (animate && !flow && animation && !media.matches && startTurn(index,nextNode,focus)) return;
       current = index;
-      draw();
-      if (previousNode && previousWidth && previousHeight && animate) {
-        previousNode.style.width = previousWidth + 'px';
-        previousNode.style.minHeight = previousHeight + 'px';
-        showFlip(previousNode,old,index > old ? 1 : -1);
-        if (flip?.isConnected && !(current >= 0 && old >= 0 && double)) {
-          flip.style.width = previousWidth + 'px';
-          flip.style.marginLeft = -previousWidth / 2 + 'px';
-          flip.style.height = Math.max(previousHeight,stage.firstElementChild.offsetHeight) + 'px';
-        }
-      }
+      draw(nextNode);
       if (focus) stage.focus({preventScroll:true});
     }
     function turn(direction) {
@@ -1778,20 +2238,20 @@ function lettura() {
         return;
       }
       const index = first.get(id);
-      if (index !== undefined) {
-        go(index,true,focus);
-        if (focus) stage.focus({preventScroll:true});
-      }
+      if (index !== undefined && index !== current) go(index,true,focus);
+      else if (index !== undefined && focus && !pending) stage.focus({preventScroll:true});
     }
     function build(target, preservePage = false) {
+      if (pending) finishTurn(pending,false);
       const oldId = pages[current]?.article.id;
       const offset = current >= 0 && oldId ? current - first.get(oldId) : 0;
       reading.style.setProperty('--reading',String(scale));
       lastWidth = stage.clientWidth;
       lastHeight = innerHeight;
       double = lastWidth >= 790 && scale <= 1.5;
+      prepareCover();
       if (!flow && !coverOnly) {
-        ({pages,first} = paginate(edition,stage,lastWidth,double));
+        ({pages,first} = paginate(edition,stage,lastWidth,double,cuts));
         const id = target || oldId;
         current = id && first.has(id) ? first.get(id) : -1;
         if (preservePage && current >= 0 && id === oldId) {
@@ -1813,7 +2273,10 @@ function lettura() {
       cancelAnimationFrame(buildPending);
       buildPending = requestAnimationFrame(() => build(null,true));
     };
-    const onMedia = () => updateToolbar();
+    const onMedia = () => {
+      if (media.matches && pending) finishTurn(pending,true);
+      else updateToolbar();
+    };
     addEventListener('resize',onResize);
     media.addEventListener('change',onMedia);
     stage.addEventListener('keydown',event => {
@@ -1835,6 +2298,7 @@ function lettura() {
       touchStart = null;
     },{passive:true});
     return () => {
+      if (pending) finishTurn(pending,false);
       observer.disconnect();
       cancelAnimationFrame(buildPending);
       removeEventListener('resize',onResize);
@@ -1842,7 +2306,8 @@ function lettura() {
       window.speechSynthesis?.cancel();
     };
   }
-  return {$,el,btn,safeURL,external,dateLabel,frontPage,fullArticle,printEdition,mountReader};
+  return {$,el,btn,safeURL,external,dateLabel,frontPage,fitFront,frontBody,measureCover,fullArticle,printEdition,mountReader,
+    framePlan,frameChanged,adjustEdge,resizeFrame,normalizeFrame,resetFramePositions,frameSides};
 }
 </script>
 <script>
@@ -1880,7 +2345,7 @@ const blankArticle = () => ({id:uid(),title:'',subtitle:'',text:'',summary:'',im
   note:'',limits:'',published:true,starter:false,fiction:false,neutral:'',emotional:''});
 const emptyLab = () => ({initial:[],rated:[],titles:[]});
 const entryFor = article => ({id:article.id,size:'standard',align:'left',titleSize:'auto',showPhoto:true,showSummary:true,
-  title:'',summary:'',photo:0,cropX:50,cropY:50,reason:'',reasonText:''});
+  title:'',summary:'',photo:0,cropX:50,cropY:50,bodyMode:null,frame:null,reason:'',reasonText:''});
 const newEdition = (name = 'Il mio quotidiano', issue = 'Numero 1') => ({
   id:uid(),name,motto:'',issue,date:'',model:'classic',articles:[],layout:[],coverImage:null,showIds:null,
   hideCategories:false, guide:[5,10,15,10,10],lab:emptyLab(),snapshots:{A:null,B:null}
@@ -1890,14 +2355,14 @@ const defaultSettings = () => ({flow:false,animation:true,scale:1,contrast:false
 const starterData = [
   {id:'sample-milano',title:'Milano recupera 1.057 tonnellate di cibo in un anno',subtitle:'Il bilancio 2025 degli otto hub di aiuto alimentare',
     summary:'Gli hub milanesi raccolgono eccedenze e le rimettono in circolazione attraverso una rete di organizzazioni.',
-    text:'Il Comune di Milano ha comunicato che nel 2025 gli otto hub di aiuto alimentare della città hanno recuperato circa **1.057 tonnellate** di eccedenze. La rete intercetta alimenti ancora utilizzabili e li redistribuisce con il contributo di organizzazioni del territorio.\n\n## Una sperimentazione nelle scuole\nIl Comune riferisce anche di un progetto con biciclette da carico, che ha raccolto oltre tremila chili di pane e frutta in diciotto scuole di due municipi. Il dato riguarda questa sperimentazione specifica.',
+    text:'Il Comune di Milano ha comunicato che nel 2025 gli otto hub di aiuto alimentare della città hanno recuperato circa **1.057 tonnellate** di eccedenze. La rete intercetta alimenti ancora utilizzabili e li redistribuisce con il contributo di organizzazioni del territorio.\n\n## Una sperimentazione nelle scuole\nIl Comune riferisce anche di un progetto con biciclette da carico, che ha raccolto oltre tremila chili di pane e frutta in diciotto scuole di due municipi. Il dato riguarda questa sperimentazione specifica.\n\n## Come leggere il numero\nLe tonnellate sommano la quantità recuperata dagli otto hub in un anno. Il peso rende confrontabili le raccolte, ma da solo non dice quali alimenti fossero disponibili, con quale regolarità arrivassero o come fossero distribuiti. Il dato delle scuole descrive un singolo progetto e va letto con il suo perimetro.\n\nIl bilancio offre due possibili aperture per una redazione: il totale del cibo recuperato oppure il viaggio quotidiano di pane e frutta dalle mense ai punti di distribuzione. Entrambe le aperture si possono documentare, con domande diverse da approfondire.',
     source:'Comune di Milano',url:'https://www.comune.milano.it/w/food-policy.-nel-2025-recuperate-1.057-tonnellate-di-eccedenze',date:'2026-02-03',categories:[categories[2],categories[3]],
     note:'Il dato rende misurabile una parte del lavoro quotidiano di raccolta e redistribuzione.',
     limits:'Il peso recuperato non indica quante persone siano state raggiunte né quanto spreco alimentare resti in città.',photo:'food',
     neutral:'Nel 2025 gli hub di Milano recuperano circa 1.057 tonnellate di eccedenze',emotional:'Oltre mille tonnellate di cibo salvate: il bilancio degli hub di Milano'},
   {id:'sample-ariane',title:'Ariane 6 compie il suo primo volo',subtitle:'Il lancio inaugurale dalla Guyana francese',
     summary:'Il nuovo lanciatore europeo decolla dal centro spaziale di Kourou e rilascia in orbita diversi satelliti.',
-    text:'Il **9 luglio 2024** il nuovo lanciatore europeo Ariane 6 è partito dal centro spaziale della Guyana francese per il suo volo inaugurale. Ha raggiunto l’orbita prevista per il rilascio di diversi satelliti.\n\nUn aggiornamento successivo dell’Agenzia spaziale europea ricostruisce anche un imprevisto nell’ultima fase della missione, che ha impedito il completamento delle operazioni finali previste.',
+    text:'Il **9 luglio 2024** il nuovo lanciatore europeo Ariane 6 è partito dal centro spaziale della Guyana francese per il suo volo inaugurale. Ha raggiunto l’orbita prevista per il rilascio di diversi satelliti.\n\nUn aggiornamento successivo dell’Agenzia spaziale europea ricostruisce anche un imprevisto nell’ultima fase della missione, che ha impedito il completamento delle operazioni finali previste.\n\n## Il volo in più fasi\nDopo il decollo si sono separati i propulsori laterali e poi lo stadio principale. Il motore Vinci dello stadio superiore si è acceso due volte prima del rilascio di otto missioni satellitari. Il terzo avvio previsto, che avrebbe portato lo stadio superiore su una traiettoria di rientro, non ha avuto luogo.\n\nLe immagini del lancio raccontano bene i primi istanti del volo. Per capire quali obiettivi siano stati raggiunti, servono anche gli aggiornamenti tecnici successivi: il rilascio dei satelliti e il rientro dello stadio superiore facevano parte di fasi diverse della missione.',
     source:'Agenzia spaziale europea (ESA) · aggiornamento della missione',url:'https://www.esa.int/nl/articles/about-us/directorates/space-transportation/ariane/ariane-6-post-launch-update',date:'2024-07-09',categories:[categories[0],categories[3]],
     note:'Il decollo è un evento visivamente spettacolare. Il rilascio dei satelliti è un risultato distinto dal successo delle ultime operazioni.',
     limits:'Un primo volo non permette da solo di valutare l’affidabilità della serie o i costi a lungo termine.',photo:'rocket',
@@ -1928,7 +2393,7 @@ function starterWorkspace() {
   const edition = newEdition(appName,'Edizione di esempio');
   edition.motto = tagline;
   edition.articles = starterArticles();
-  edition.layout = edition.articles.slice(0,4).map((article,index) => ({...entryFor(article),showPhoto:index < 2,cropY:index === 1 ? 25 : 50}));
+  edition.layout = edition.articles.slice(0,4).map((article,index) => ({...entryFor(article),showPhoto:index < 2,cropY:index === 1 ? 25 : 50,bodyMode:index < 2 ? 'article' : 'summary'}));
   edition.hideCategories = true;
   const project = newProject('Archivio di esempio',edition);
   return {version:1,projects:[project],active:project.id,settings:defaultSettings(),comparison:[]};
@@ -1965,6 +2430,7 @@ function layoutFrom(value, articles) {
   return unique(arrayOf(value,7).filter(item => isObject(item) && byId.has(item.id)).map(item => ({
     ...entryFor(byId.get(item.id)),size:choice(item.size,['standard','ampio','ridotto'],'standard'),align:item.align === 'right' ? 'right' : 'left',
     titleSize:choice(item.titleSize,['auto','small','medium','large'],'auto'),showPhoto:item.showPhoto !== false,showSummary:item.showSummary !== false,
+    bodyMode:choice(item.bodyMode,['summary','article','title'],null),frame:R.normalizeFrame(item.frame),
     title:text(item.title,110),summary:text(item.summary,180),photo:bounded(item.photo,0,byId.get(item.id).images.length-1,0),
     cropX:bounded(item.cropX,0,100,50),cropY:bounded(item.cropY,0,100,50),reason:text(item.reason,90),reasonText:text(item.reasonText,550)
   })),item => item.id);
@@ -2498,6 +2964,7 @@ function showCompose() {
     grid.dataset.pane = value;
     edit.setAttribute('aria-pressed',String(value === 'edit'));
     inspect.setAttribute('aria-pressed',String(value === 'preview'));
+    if (value === 'preview') requestAnimationFrame(() => R.fitFront($('.frame-cover',preview)));
   }
   function selectArticle(id) {
     selectedArticle = id;
@@ -2525,25 +2992,36 @@ function showCompose() {
         tip('Un articolo può appartenere a più categorie e comparire in più conteggi.'),
         reasonsList(target)));
   }
+  function changeFrame(id,side,units,focus) {
+    if (!R.resizeFrame(target,id,side,units)) return;
+    if (focus && !focus.startsWith('handle-')) detailsOpen='resize';
+    touch();
+    draw(focus && !focus.startsWith('handle-') ? focus : undefined);
+    if (focus?.startsWith('handle-')) focusAfter('#compose-preview .frame-handle-' + focus.slice(7));
+  }
   function renderPreview() {
     const total = target.layout.length;
     const reflection = showReflection();
     const wordLoad = target.layout.reduce((sum,item) => {
       const article = articles.get(item.id);
-      return sum + (item.title || article?.title || '').length + (item.showSummary ? (item.summary || article?.summary || '').length : 0);
+      return sum + (item.title || article?.title || '').length +
+        (item.bodyMode === 'article' ? Math.min(article?.text.length || 0,150) : item.showSummary ? (item.summary || article?.summary || '').length : 0);
     },0);
     const photos = target.layout.filter(item => item.showPhoto && articles.get(item.id)?.images.length).length + Number(Boolean(target.coverImage));
+    const height = Math.max(0,...R.framePlan(target).map(item => item.y+item.h));
     preview.replaceChildren(...[
       el('div',{class:'preview-bar'},el('span',{class:'kicker'},'Anteprima della prima pagina'),
         el('span',{class:'hint'},models[target.model] + ' · ' + total + ' di ' + limit + ' riquadri')),
-      R.frontPage(target,{onSelect:selectArticle,selected:selectedArticle,drag:(from,to) => {
+      R.frontPage(target,{onSelect:selectArticle,selected:selectedArticle,resize:(id,side,units,focus) =>
+        changeFrame(id,side,units,focus && 'handle-'+focus),drag:(from,to) => {
         const found = target.layout.findIndex(item => item.id === from);
         const index = target.layout.findIndex(item => item.id === to);
         if (!moveArray(target.layout,found,index)) return;
+        R.resetFramePositions(target);
         selectedArticle = from;
         touch(); draw();
       }}),
-      (total >= 6 || wordLoad > 660 || photos >= 4) && el('p',{class:'notice'},'La pagina è densa e potrebbe occupare più fogli in stampa. Riduci le sintesi, prova il modello essenziale o sposta qualche notizia nelle pagine interne.'),
+      (total >= 6 || wordLoad > 780 || photos >= 4 || height > 29) && el('p',{class:'notice'},'La pagina è densa e potrebbe occupare più fogli in stampa. Riduci le sintesi, prova il modello essenziale o sposta qualche notizia nelle pagine interne.'),
       reflection].filter(Boolean));
   }
   function readingFocal(label,value,action) {
@@ -2575,7 +3053,7 @@ function showCompose() {
     } else archive.append(tip(bank.length ? 'Per aggiungere altre notizie, libera uno dei sette riquadri.' : 'Le notizie pubblicate sono già in prima pagina.'));
     const model = el('details',{class:'card',open:modelOpen},el('summary',{},'Testata e modello'),
       el('div',{class:'stack tool-content'},field('Modello editoriale',select(Object.entries(models),target.model,{'data-compose':'model',onchange:event => {
-        target.model=event.target.value; touch(); renderPreview();
+        target.model=event.target.value; R.resetFramePositions(target); touch(); draw('model');
       }})),btn('Modifica testata',() => projectDialog(false),'small'),
       checkbox('Nascondi le categorie ai lettori',target.hideCategories,{onchange:event => {
         target.hideCategories=event.target.checked; touch(); renderPreview();
@@ -2596,6 +3074,7 @@ function showCompose() {
       function shift(position,align) {
         if (align) current.align=align;
         moveArray(target.layout,index,position);
+        R.resetFramePositions(target);
         detailsOpen='position';
         touch();draw('article');
       }
@@ -2609,6 +3088,14 @@ function showCompose() {
         panel.addEventListener('toggle',() => {if (panel.open) detailsOpen=key;});
         return panel;
       }
+      const frame = R.framePlan(target).find(item => item.id === current.id);
+      const labels = {left:['a sinistra','da sinistra'],right:['a destra','da destra'],
+        top:['verso l’alto','dall’alto'],bottom:['verso il basso','dal basso']};
+      const resizing = Object.entries(labels).flatMap(([side,[outward,inward]]) => [1,-1].map(units => {
+        const key='resize-'+side+'-'+units;
+        return btn((units>0 ? 'Allarga '+outward : 'Restringi '+inward),() => changeFrame(current.id,side,units,key),'small',
+          {'data-compose':key,disabled:!R.frameChanged(frame,R.adjustEdge(frame,side,units))});
+      }));
       toolsCard.append(
         section('position','Posizione e grandezza',
           el('div',{class:'control-grid'},
@@ -2620,21 +3107,33 @@ function showCompose() {
             tool('Ripristina posizione',() => {
               const order = published.indexOf(article);
               const before = target.layout.filter(item => item.id !== current.id && published.indexOf(articles.get(item.id)) < order).length;
-              current.size='standard'; current.align='left'; current.titleSize='auto';
+              current.size='standard'; current.align='left'; current.titleSize='auto'; current.frame=null;
               shift(before);
             })),
-          field('Grandezza del riquadro',select([['standard','Standard'],['ampio','Ampio'],['ridotto','Compatto']],current.size,{onchange:read('size')})),
+          field('Grandezza del riquadro',select([['standard','Standard'],['ampio','Ampio'],['ridotto','Compatto']],current.size,{onchange:event => {
+            current.frame=null; R.resetFramePositions(target);
+            current.size=event.target.value; touch(); draw('preset');
+          },'data-compose':'preset'})),
           btn('Rimuovi dalla prima pagina',() => {
             target.layout.splice(index,1);
+            R.resetFramePositions(target);
             selectedArticle=target.layout[Math.min(index,target.layout.length-1)]?.id || '';
             touch(); draw('article');
           },'small danger')),
-        section('text','Titolo e sintesi',
+        section('resize','Ridimensiona sui quattro lati',
+          tip(frame.w + ' di 12 colonne · ' + frame.h + ' righe'),
+          el('div',{class:'control-grid'},resizing),
+          tip('Trascina i bordi del riquadro nell’anteprima o usa questi comandi. In prima pagina il testo visibile e la fotografia si adattano allo spazio.')),
+        section('text','Titolo e testo',
           field('Dimensione del titolo',select([['auto','Secondo la posizione'],['large','Grande'],['medium','Medio'],['small','Piccolo']],current.titleSize,{onchange:read('titleSize')})),
           field('Titolo di prima pagina',input('front-title',current.title,{maxlength:110,placeholder:article.title,oninput:read('title')}),
             'Lascia vuoto per riprendere il titolo dell’articolo.'),
           field('Sintesi di prima pagina',area('front-summary',current.summary,180,2),'Lascia vuoto per riprendere la sintesi redazionale.'),
-          checkbox('Mostra la sintesi',current.showSummary,{onchange:mark('showSummary')})),
+          field('Testo nel riquadro',select([['summary','Sintesi'],['article','Inizio dell’articolo con continuazione'],['title','Nessun testo']],
+            current.bodyMode || (current.showSummary ? 'summary' : 'title'),{onchange:event => {
+              current.bodyMode=event.target.value; current.showSummary=current.bodyMode === 'summary'; touch(); renderPreview();
+            }})),
+          tip('Con Inizio dell’articolo, il giornale riprende dal punto raggiunto in prima pagina.')),
         section('image','Fotografia e inquadratura',
           article.images.length ? el('div',{class:'stack'},
             checkbox('Mostra la fotografia',current.showPhoto,{onchange:mark('showPhoto')}),
@@ -2673,7 +3172,7 @@ function showCompose() {
   setPane(phonePane);
   draw();
   return el('section',{class:'layout-editor'},
-    heading('Creo la prima pagina','Scegli l’apertura e dai spazio alle notizie. Seleziona un riquadro o trascinalo per cambiare posizione.',[
+    heading('Creo la prima pagina','Scegli l’apertura e distribuisci lo spazio. Trascina un riquadro per spostarlo oppure usa i bordi per ridimensionarlo.',[
       btn('Rivedi le tue scelte',revisionDialog),btn('Sfoglia il giornale',() => changeView('reader'),'primary')]),
     mobileSwitch,grid);
 }
@@ -2689,6 +3188,8 @@ function versionChanges(a,b) {
   const ids = new Set([...a.layout,...b.layout].map(item => item.id));
   const order = {ridotto:0,standard:1,ampio:2};
   const sizes = {small:0,auto:1,medium:1,large:2};
+  const beforeFrames = new Map(R.framePlan(a).map(frame => [frame.id,frame]));
+  const afterFrames = new Map(R.framePlan(b).map(frame => [frame.id,frame]));
   return [...ids].flatMap(id => {
     const before = a.layout.findIndex(item => item.id === id), after = b.layout.findIndex(item => item.id === id);
     const old = a.layout[before], current = b.layout[after];
@@ -2701,9 +3202,13 @@ function versionChanges(a,b) {
       if (order[current.size] !== order[old.size]) notes.push(order[current.size] > order[old.size] ? 'Riquadro ampliato' : 'Riquadro ridotto');
       if (sizes[current.titleSize] !== sizes[old.titleSize]) notes.push(sizes[current.titleSize] > sizes[old.titleSize] ? 'Titolo ingrandito' : 'Titolo ridotto');
       if (old.title !== current.title || old.summary !== current.summary || old.showPhoto !== current.showPhoto ||
-        old.showSummary !== current.showSummary || old.photo !== current.photo) notes.push('Contenuto del riquadro modificato');
+        old.showSummary !== current.showSummary || old.bodyMode !== current.bodyMode || old.photo !== current.photo) notes.push('Contenuto del riquadro modificato');
       if ((old.cropX ?? 50) !== (current.cropX ?? 50) || (old.cropY ?? 50) !== (current.cropY ?? 50)) notes.push('Inquadratura della foto modificata');
       if (old.align !== current.align) notes.push('Colonna modificata');
+      const previousFrame = beforeFrames.get(id), currentFrame = afterFrames.get(id);
+      if (previousFrame && currentFrame && (previousFrame.w !== currentFrame.w || previousFrame.h !== currentFrame.h)) {
+        notes.push('Riquadro da ' + previousFrame.w + ' × ' + previousFrame.h + ' a ' + currentFrame.w + ' × ' + currentFrame.h);
+      }
     }
     return notes.length ? [[current?.title || old?.title || article?.title || 'Articolo',notes.join(' · ')]] : [];
   });
@@ -3072,8 +3577,9 @@ function exportEdition(coverOnly) {
   const target = edition();
   const snapshot = captureFront(target);
   const published = target.articles.filter(item => item.published);
+  const coverCuts = coverOnly ? R.measureCover(R.frontPage(snapshot,{coversOnly:true}),document.body,944) : new Map();
   snapshot.articles = coverOnly ? snapshot.articles.map(article => ({
-    ...article,text:'',subtitle:'',note:'',limits:'',source:'',url:'',neutral:'',emotional:'',consulted:''
+    ...article,text:R.frontBody(article,coverCuts.get(article.id)),subtitle:'',note:'',limits:'',source:'',url:'',neutral:'',emotional:'',consulted:''
   })) : published.map(({neutral,emotional,...article}) => article);
   snapshot.layout = snapshot.layout.map(({reason,reasonText,...item}) => item);
   snapshot.pageCount = published.length;
