@@ -367,9 +367,70 @@ dialog::backdrop {
   outline:2px solid var(--accent);
   outline-offset:3px;
 }
-.front-cell[data-drop=true] {
+.compose-paper {
+  position:relative;
+}
+#move-layout-help {
+  min-height:1.5em;
+}
+.compose-paper > .move-preview {
+  position:absolute;
+  inset:0 0 auto;
+  width:100%;
+  pointer-events:none;
+}
+.compose-paper[data-preview=true] > .editable-cover {
+  opacity:0;
+}
+.front-cell[data-moving=true] {
+  outline:2px dashed var(--accent);
+  outline-offset:2px;
+}
+.front-cell[data-insertion=true] {
+  background:var(--soft);
   outline:3px dashed var(--accent);
-  outline-offset:3px;
+  outline-offset:2px;
+}
+.front-cell[data-editor=true] > .front-title {
+  padding-inline-end:1.75rem;
+}
+.tile-grip.btn {
+  position:absolute;
+  z-index:2;
+  top:.2rem;
+  right:.12rem;
+  width:1.75rem;
+  min-height:1.75rem;
+  padding:0;
+  background:var(--paper);
+  color:var(--accent);
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+}
+.tile-grip.btn:active,.tile-grip.btn[aria-pressed=true] {
+  cursor:grabbing;
+  background:var(--soft);
+}
+.grip-mark {
+  width:.62rem;
+  height:.94rem;
+  display:block;
+  background:radial-gradient(circle,currentColor 1.15px,transparent 1.4px) 0 0/.31rem .31rem;
+}
+@media(pointer:coarse) {
+  .front-cell[data-editor=true] > .front-title {
+    padding-inline-end:2.25rem;
+  }
+  .tile-grip.btn {
+    width:2.2rem;
+    min-height:2.2rem;
+  }
+}
+@media(max-width:46rem) {
+  #move-layout-help {
+    min-height:3em;
+  }
 }
 .front-cell .front-title {
   font:700 calc(clamp(1.1rem,3.25cqi,2.05rem) * var(--front-factor))/1.06 var(--serif);
@@ -1726,8 +1787,8 @@ function lettura() {
   function normalizeFrame(value) {
     if (!value || !Number.isInteger(value.w) || !Number.isInteger(value.h)) return null;
     const w = clamp(value.w,minimumWidth,frameColumns);
-    return {w,h:clamp(value.h,minimumHeight,maximumHeight),anchor:value.anchor === true,
-      x:Number.isInteger(value.x) ? clamp(value.x,0,frameColumns-w) : null,
+    return {w,h:clamp(value.h,minimumHeight,maximumHeight),anchor:value.anchor === true,autoSize:value.autoSize === true,
+      x:Number.isInteger(value.x) ? clamp(value.x,0,frameColumns-1) : null,
       y:Number.isInteger(value.y) ? clamp(value.y,0,200) : null};
   }
   function fitBelow(frame, placed) {
@@ -1746,10 +1807,11 @@ function lettura() {
     edition.layout.forEach((item,index) => {
       const main = index === 0;
       const saved = changes.get(item.id);
+      const manual = saved && !saved.autoSize ? saved : null;
       const withPhoto = item.showPhoto && photos.has(item.id);
-      const w = saved?.w ?? (main ? (item.size === 'ridotto' ? 6 : item.size === 'ampio' || wideModel ? 12 : 8)
+      const w = manual?.w ?? (main ? (item.size === 'ridotto' ? 6 : item.size === 'ampio' || wideModel ? 12 : 8)
         : item.size === 'ampio' ? 8 : 4);
-      const h = saved?.h ?? (main ? (edition.model === 'visual' ? 15 : edition.model === 'essential' ? 12 : 13) :
+      const h = manual?.h ?? (main ? (edition.model === 'visual' ? 15 : edition.model === 'essential' ? 12 : 13) :
         (withPhoto ? 10 : 7) + (item.size === 'ampio' ? 1 : item.size === 'ridotto' ? -1 : 0));
       const y = main || index === 1 && !wideModel ? 0 : preferred[0].h;
       const align = item.align === 'right' ? frameColumns-w : 0;
@@ -1764,7 +1826,7 @@ function lettura() {
     const order = anchor ? [anchor,...preferred.filter(item => item !== anchor)] : preferred;
     for (const frame of order) {
       const saved = changes.get(frame.id);
-      const original = {...frame,x:saved?.x ?? frame.x,y:saved?.y ?? frame.y};
+      const original = {...frame,x:clamp(saved?.x ?? frame.x,0,frameColumns-frame.w),y:saved?.y ?? frame.y};
       const candidates = frame === anchor ? [original.x] : nearbyColumns(original);
       placed.push(bestPlacement(original,candidates,placed));
     }
@@ -1809,8 +1871,22 @@ function lettura() {
   }
   function resetFramePositions(edition) {
     for (const item of edition.layout) {
-      if (item.frame) item.frame = {...item.frame,x:null,y:null,anchor:false};
+      if (item.frame) item.frame = item.frame.autoSize ? null : {...item.frame,x:null,y:null,anchor:false};
     }
+  }
+  function moveIntoArea(edition,source,destination) {
+    const order = [...edition.layout];
+    const from = order.findIndex(item => item.id === source), to = order.findIndex(item => item.id === destination);
+    if (from < 0 || to < 0 || from === to) return null;
+    const slots = framePlan(edition);
+    order.splice(to,0,order.splice(from,1)[0]);
+    // Gli articoli fra origine e destinazione avanzano di un posto verso il riquadro liberato.
+    // Al riquadro trascinato spetta l'area di arrivo quando la griglia risolve gli incastri.
+    return order.map((item,index) => {
+      const {x,y,w,h} = slots[index];
+      const previous = normalizeFrame(item.frame);
+      return {...item,frame:{w:previous?.w ?? w,h:previous?.h ?? h,x,y,autoSize:!previous || previous.autoSize,anchor:item.id === source}};
+    });
   }
   function frameStyle(frame) {
     const percent = 55 + (frame.w-minimumWidth) * 45 / (frameColumns-minimumWidth);
@@ -1937,10 +2013,11 @@ function lettura() {
   }
 
   function frontPage(edition, options = {}) {
-    const {onArticle, onSelect, drag, resize, selected, forPrint, coversOnly} = options;
+    const {onArticle,onSelect,editable=false,insertion,resize,selected,forPrint,coversOnly} = options;
+    const canMove = editable && edition.layout.length > 1;
     const plan = new Map(framePlan(edition).map(frame => [frame.id,frame]));
     const grid = el('div', {class:'front-grid frame-grid'});
-    const front = el('div', {class:'front frame-cover ' + edition.model}, el('header', {class:'front-flag'},
+    const front = el('div', {class:'front frame-cover '+edition.model+(editable ? ' editable-cover' : '')}, el('header', {class:'front-flag'},
       el('p', {class:'front-meta'}, [editionClass(edition),edition.issue,dateLabel(edition.date)].filter(Boolean).join(' · ') || 'Edizione senza data'),
       el('div', {class:'front-name'}, edition.name || 'Quotidiano senza titolo'),
       edition.motto && el('p', {class:'front-motto'}, edition.motto)), grid);
@@ -1963,7 +2040,8 @@ function lettura() {
       const frame = plan.get(item.id);
       const cell = el('article', {class:['front-cell frame-cell', position, size, 'title-' + item.titleSize].filter(Boolean).join(' ') + align,
         style:frameStyle(frame), 'data-id':item.id, 'data-frame':[frame.x,frame.y,frame.w,frame.h].join(','), 'data-selected':onSelect ? String(item.id === selected) : null,
-        draggable:drag ? 'true' : null});
+        'data-insertion':insertion === item.id ? 'true' : null,'data-editor':canMove || insertion ? 'true' : null,
+        draggable:canMove ? 'true' : null});
       const category = !edition.hideCategories && article.categories.length ? article.categories.join(' · ') : '';
       const label = article.fiction ? 'Esempio inventato' : article.type === 'Notizia documentata' ? category : article.type;
       const tag = label && el('div', {class:'kicker'}, label);
@@ -1985,23 +2063,9 @@ function lettura() {
         resizeHandle(side,frame,cell,(edge,steps,focus) => resize(item.id,edge,steps,focus))));
       if (forPrint && displayPhoto && photo.credit) cell.append(el('div', {class:'caption'}, photo.credit,
         photo.creditURL && ' · ', external(photo.creditURL, 'Fonte immagine'), photo.license && ' · ', external(photo.license, 'Licenza')));
-      if (drag) {
-        cell.addEventListener('dragstart', event => {
-          event.dataTransfer.effectAllowed = 'move';
-          event.dataTransfer.setData('text/plain', item.id);
-        });
-        cell.addEventListener('dragover', event => {
-          event.preventDefault();
-          event.dataTransfer.dropEffect = 'move';
-          cell.dataset.drop = 'true';
-        });
-        cell.addEventListener('dragleave', () => delete cell.dataset.drop);
-        cell.addEventListener('drop', event => {
-          event.preventDefault();
-          delete cell.dataset.drop;
-          drag(event.dataTransfer.getData('text/plain'), item.id);
-        });
-      }
+      if (canMove) cell.append(el('button',{type:'button',class:'btn tile-grip',draggable:'false','data-move-handle':item.id,
+        title:'Sposta il riquadro','aria-label':'Sposta '+heading,'aria-pressed':'false','aria-describedby':'move-layout-help'},
+        el('span',{class:'grip-mark','aria-hidden':'true'})));
       grid.append(cell);
     });
     if (!grid.childElementCount) grid.append(el('p', {class:'empty', style:'grid-column:1/-1'}, 'La prima pagina è ancora vuota.'));
@@ -2492,7 +2556,7 @@ function lettura() {
     };
   }
   return {$,el,btn,safeURL,external,dateLabel,editionClass,frontPage,fitFront,frontBody,measureCover,fullArticle,printEdition,mountReader,photoBounds,photoSize,samePhotoSize,
-    framePlan,frameChanged,adjustEdge,resizeFrame,normalizeFrame,resetFramePositions,frameSides};
+    framePlan,frameChanged,adjustEdge,resizeFrame,normalizeFrame,resetFramePositions,moveIntoArea,frameSides};
 }
 </script>
 <script>
@@ -3192,12 +3256,208 @@ function editArchive() {
       list,group(btn('Importa archivio comune',() => importFiles('package')),btn('Esporta archivio comune',exportPackage))));
 }
 
-// Compositore. Le scelte di copertina restano distinte dai contenuti completi.
+// Compositore. La prova di inserimento usa la stessa griglia del risultato salvato.
+function wireCoverMovement(paper,edition,help,announce,onCommit) {
+  const instructions = help.textContent;
+  let move, pointer, scrollTask = 0, ignoreClickUntil = 0;
+  const original = () => $('.editable-cover',paper);
+  const gripFor = id => $('[data-move-handle="'+id+'"]',paper);
+  const frames = () => [...(original()?.querySelectorAll('.frame-cell') ?? [])];
+  const title = id => edition.layout.find(item => item.id === id)?.title || edition.articles.find(item => item.id === id)?.title || '';
+
+  function removePreview() {
+    if (move?.preview) move.preview.remove();
+    delete paper.dataset.preview;
+    paper.style.minHeight = '';
+  }
+  function clear() {
+    cancelAnimationFrame(scrollTask);
+    scrollTask = 0;
+    removePreview();
+    if (move) gripFor(move.id)?.setAttribute('aria-pressed','false');
+    frames().forEach(cell => delete cell.dataset.moving);
+    help.textContent = instructions;
+    move = null;
+  }
+  function start(id,kind) {
+    clear();
+    if (edition.layout.length < 2) return false;
+    move = {id,kind,destination:null};
+    const cell = frames().find(item => item.dataset.id === id);
+    if (cell) cell.dataset.moving = 'true';
+    gripFor(id)?.setAttribute('aria-pressed','true');
+    help.textContent = kind === 'keyboard' ? 'Scegli un riquadro con le frecce. Premi Invio per inserirlo o Esc per annullare.'
+      : 'Trascina il riquadro fino all’area in cui vuoi inserirlo.';
+    announce.textContent = 'Spostamento di «'+title(id)+'».';
+    return true;
+  }
+  function offer(destination) {
+    if (!move || move.destination === destination) return;
+    removePreview();
+    move.destination = destination;
+    move.layout = destination && R.moveIntoArea(edition,move.id,destination);
+    if (!move.layout) {
+      help.textContent = 'Scegli l’area in cui inserire il riquadro.';
+      return;
+    }
+    const preview = R.frontPage({...edition,layout:move.layout},{insertion:move.id});
+    preview.classList.add('move-preview');
+    preview.setAttribute('aria-hidden','true');
+    preview.inert = true;
+    move.preview = preview;
+    paper.append(preview);
+    paper.style.minHeight = Math.max(original().offsetHeight,preview.offsetHeight)+'px';
+    paper.dataset.preview = 'true';
+    help.textContent = move.kind === 'keyboard' ? 'Premi Invio per confermare la disposizione mostrata.' : 'Rilascia per inserire il riquadro nel punto tratteggiato.';
+    announce.textContent = '«'+title(move.id)+'» nell’area di «'+title(destination)+'».';
+  }
+  function finish(commit) {
+    if (!move) return;
+    const {id,destination,layout,kind} = move;
+    clear();
+    if (commit && layout) onCommit(layout,id,kind === 'keyboard');
+    else announce.textContent = 'Spostamento annullato.';
+  }
+  function hit(x,y) {
+    const cells = frames().map(cell => ({id:cell.dataset.id,rect:cell.getBoundingClientRect()}));
+    const over = cells.find(({rect}) => x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom);
+    if (over) return over.id === move.id ? null : over.id;
+    const grid = $('.frame-grid',original()).getBoundingClientRect();
+    if (x < grid.left-12 || x > grid.right+12 || y < grid.top-12 || y > grid.bottom+12) return null;
+    // Il piccolo margine permette il rilascio anche nella fessura fra due riquadri.
+    const distances = cells.filter(cell => cell.id !== move.id).map(({id,rect}) => ({id,distance:Math.hypot(
+      Math.max(rect.left-x,0,x-rect.right), Math.max(rect.top-y,0,y-rect.bottom))}));
+    const nearest = distances.sort((a,b) => a.distance-b.distance)[0];
+    return nearest?.distance <= 24 ? nearest.id : null;
+  }
+  function scrollStep(y) {
+    const margin = 70;
+    if (y < margin) return -Math.ceil(Math.min(18,(margin-y)/4));
+    if (y > innerHeight-margin) return Math.ceil(Math.min(18,(y-innerHeight+margin)/4));
+    return 0;
+  }
+  function scrollWhileDragging() {
+    scrollTask = 0;
+    if (!move?.point || !paper.isConnected) return;
+    const [x,y] = move.point;
+    const step = scrollStep(y);
+    if (!step) return;
+    const before = scrollY;
+    scrollBy({top:step,behavior:'instant'});
+    if (before === scrollY) return;
+    offer(hit(x,y));
+    scrollTask = requestAnimationFrame(scrollWhileDragging);
+  }
+  function moveAt(event) {
+    move.point = [event.clientX,event.clientY];
+    offer(hit(...move.point));
+    if (!scrollTask && scrollStep(event.clientY)) scrollTask = requestAnimationFrame(scrollWhileDragging);
+  }
+
+  paper.addEventListener('dragstart',event => {
+    if (pointer || !event.dataTransfer) {event.preventDefault(); return;}
+    const cell = event.target.closest('.editable-cover .frame-cell');
+    if (!cell || !start(cell.dataset.id,'native')) {event.preventDefault(); return;}
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain',cell.dataset.id);
+  });
+  paper.addEventListener('dragover',event => {
+    if (move?.kind !== 'native') return;
+    event.preventDefault();
+    moveAt(event);
+    if (event.dataTransfer) event.dataTransfer.dropEffect = move.layout ? 'move' : 'none';
+  });
+  paper.addEventListener('dragleave',event => {
+    if (move?.kind !== 'native') return;
+    const rect = paper.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
+      move.point = null;
+      offer(null);
+    }
+  });
+  paper.addEventListener('drop',event => {
+    if (move?.kind !== 'native') return;
+    event.preventDefault();
+    moveAt(event);
+    finish(true);
+  });
+  paper.addEventListener('dragend',() => {if (move?.kind === 'native') finish(false);});
+
+  paper.addEventListener('pointerdown',event => {
+    const grip = event.target.closest('[data-move-handle]');
+    if (!grip || !event.isPrimary || event.button !== 0) return;
+    event.preventDefault();
+    grip.focus({preventScroll:true});
+    pointer = {id:event.pointerId,article:grip.dataset.moveHandle,x:event.clientX,y:event.clientY,active:false};
+    grip.setPointerCapture(event.pointerId);
+  });
+  paper.addEventListener('pointermove',event => {
+    if (pointer?.id !== event.pointerId) return;
+    if (!pointer.active && Math.hypot(event.clientX-pointer.x,event.clientY-pointer.y) >= 6) {
+      pointer.active = start(pointer.article,'pointer');
+    }
+    if (pointer.active && move) moveAt(event);
+  });
+  function endPointer(event) {
+    if (pointer?.id !== event.pointerId) return;
+    const {active} = pointer;
+    pointer = null;
+    if (!active || move?.kind !== 'pointer') return;
+    ignoreClickUntil = performance.now()+160;
+    if (event.type === 'pointerup') moveAt(event);
+    finish(event.type === 'pointerup');
+  }
+  for (const type of ['pointerup','pointercancel','lostpointercapture']) paper.addEventListener(type,endPointer);
+
+  paper.addEventListener('click',event => {
+    const grip = event.target.closest('[data-move-handle]');
+    if (!grip || event.detail && performance.now() < ignoreClickUntil) return;
+    const id = grip.dataset.moveHandle;
+    if (move?.kind === 'keyboard') {
+      if (id !== move.id) offer(id);
+      if (move.layout) finish(true); else finish(false);
+    } else start(id,'keyboard');
+  });
+  paper.addEventListener('keydown',event => {
+    if (event.key === 'Escape' && move) {
+      event.preventDefault();
+      finish(false);
+      return;
+    }
+    if (move?.kind !== 'keyboard') return;
+    if (event.key === 'Tab') {finish(false); return;}
+    const direction = {ArrowUp:-1,ArrowLeft:-1,ArrowDown:1,ArrowRight:1}[event.key];
+    if (!direction) return;
+    const index = edition.layout.findIndex(item => item.id === (move.destination ?? move.id));
+    let next = index+direction;
+    if (edition.layout[next]?.id === move.id) next += direction;
+    const candidate = edition.layout[next];
+    if (candidate) {
+      event.preventDefault();
+      offer(candidate.id);
+      const card = move.preview?.querySelector('[data-insertion="true"]');
+      card?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
+    }
+  });
+  return () => {pointer = null; clear();};
+}
+
+// Le scelte di copertina restano distinte dai contenuti completi.
 function showCompose() {
   const target = edition();
   const published = target.articles.filter(item => item.published);
   const articles = new Map(published.map(item => [item.id,item]));
   const preview = el('div',{class:'composer-preview',id:'compose-preview'});
+  const paper = el('div',{class:'compose-paper'});
+  const moveHelp = el('p',{class:'hint',id:'move-layout-help'},'Trascina la maniglia di un articolo sopra un altro. Da tastiera, attiva la maniglia e usa le frecce.');
+  const moveNotice = el('p',{class:'sr',role:'status','aria-live':'polite'});
+  const cancelMove = wireCoverMovement(paper,target,moveHelp,moveNotice,(layout,id,focus) => {
+    target.layout = layout;
+    selectedArticle = id;
+    touch(); draw();
+    if (focus) focusAfter('#compose-preview [data-move-handle="'+id+'"]');
+    showStatus('Riquadro spostato.');
+  });
   const tools = el('aside',{class:'composer-tools stack',id:'compose-controls','aria-label':'Strumenti di impaginazione'});
   const grid = el('div',{class:'compose-grid'},preview,tools);
   const limit = 7;
@@ -3210,6 +3470,7 @@ function showCompose() {
   const mobileSwitch = el('div',{class:'mobile-compose-switch row','aria-label':'Vista di impaginazione'},edit,inspect);
 
   function setPane(value) {
+    if (value !== 'preview') cancelMove();
     phonePane = value;
     grid.dataset.pane = value;
     edit.setAttribute('aria-pressed',String(value === 'edit'));
@@ -3250,6 +3511,7 @@ function showCompose() {
     if (focus?.startsWith('handle-')) focusAfter('#compose-preview .frame-handle-' + focus.slice(7));
   }
   function renderPreview() {
+    cancelMove();
     const total = target.layout.length;
     const reflection = showReflection();
     const wordLoad = target.layout.reduce((sum,item) => {
@@ -3260,18 +3522,12 @@ function showCompose() {
     const photos = target.layout.filter(item => item.showPhoto && articles.get(item.id)?.images.length).length + Number(Boolean(target.coverImage));
     const height = Math.max(0,...R.framePlan(target).map(item => item.y+item.h));
     const largeCover = target.coverImage && R.photoSize(target.coverImage.photoSize).height > 155;
+    paper.replaceChildren(R.frontPage(target,{editable:true,onSelect:selectArticle,selected:selectedArticle,resize:(id,side,units,focus) =>
+      changeFrame(id,side,units,focus && 'handle-'+focus)}));
     preview.replaceChildren(...[
       el('div',{class:'preview-bar'},el('span',{class:'kicker'},'Anteprima della prima pagina'),
         el('span',{class:'hint'},models[target.model] + ' · ' + total + ' di ' + limit + ' riquadri')),
-      R.frontPage(target,{onSelect:selectArticle,selected:selectedArticle,resize:(id,side,units,focus) =>
-        changeFrame(id,side,units,focus && 'handle-'+focus),drag:(from,to) => {
-        const found = target.layout.findIndex(item => item.id === from);
-        const index = target.layout.findIndex(item => item.id === to);
-        if (!moveArray(target.layout,found,index)) return;
-        R.resetFramePositions(target);
-        selectedArticle = from;
-        touch(); draw();
-      }}),
+      total > 1 && moveHelp,moveNotice,paper,
       (total >= 6 || wordLoad > 780 || photos >= 4 || height > 29 || largeCover) && el('p',{class:'notice'},'La pagina è densa e potrebbe occupare più fogli in stampa. Riduci le fotografie o le sintesi, prova il modello essenziale o sposta qualche notizia nelle pagine interne.'),
       reflection].filter(Boolean));
   }
