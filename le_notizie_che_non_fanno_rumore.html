@@ -468,9 +468,85 @@ dialog::backdrop {
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:7px;
-  padding:.55rem .7rem;
+  padding:.38rem .55rem;
+  max-width:72rem;
+  width:100%;
+  margin:auto;
+  position:relative;
+  z-index:5;
+}
+.reader-tools {
+  margin-left:auto;
+}
+.reader-control {
+  position:relative;
+}
+.reader-control > summary {
+  display:flex;
+  align-items:center;
+  min-height:2.4rem;
+  padding:.34rem .64rem;
+  border:1px solid var(--line);
+  border-radius:5px;
+  font-size:.9rem;
+  list-style:none;
+}
+.reader-control > summary::-webkit-details-marker {
+  display:none;
+}
+.reader-control[open] > summary {
+  background:var(--soft);
+  color:var(--accent);
+}
+.reader-control-panel {
+  position:absolute;
+  top:calc(100% + .4rem);
+  right:0;
+  width:min(28rem,calc(100vw - 2.3rem));
+  max-height:70dvh;
+  overflow:auto;
+  padding:.7rem;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:6px;
+  box-shadow:0 7px 28px #29202829;
+}
+.reader-deck {
+  display:grid;
+  grid-template-columns:2.9rem minmax(0,1fr) 2.9rem;
+  grid-template-areas:'previous paper next';
+  gap:.55rem;
+  max-width:72rem;
+  width:100%;
+  margin:auto;
+}
+.reader-deck.single-pane {
+  grid-template-columns:minmax(0,1fr);
+  grid-template-areas:'paper';
+}
+.turn-rail {
+  padding-top:min(23vh,12rem);
+}
+.turn-rail.previous {
+  grid-area:previous;
+}
+.turn-rail.next {
+  grid-area:next;
+}
+.page-turn.btn {
+  position:sticky;
+  top:calc(50dvh - 1.45rem);
+  width:2.9rem;
+  min-height:2.9rem;
+  padding:0;
+  border-radius:50%;
+  font:650 2rem/1 system-ui,sans-serif;
+}
+.page-turn.btn .turn-mark {
+  transform:translateY(-.065em);
 }
 .reader-stage {
+  grid-area:paper;
   position:relative;
   max-width:76rem;
   width:100%;
@@ -937,7 +1013,7 @@ button.front-continues {
 .reader-stage[aria-busy=true] .book,.reader-stage[aria-busy=true] > .front {
   pointer-events:none;
 }
-.reader-toolbar .btn[aria-disabled=true] {
+.reader-toolbar .btn[aria-disabled=true],.page-turn[aria-disabled=true] {
   opacity:.67;
   cursor:progress;
 }
@@ -965,6 +1041,36 @@ button.front-continues {
   }
   .frame-handle,.frame-resize-outline {
     display:none!important;
+  }
+}
+@media(max-width:46rem) {
+  .reader-deck {
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:'previous next' 'paper paper';
+  }
+  .turn-rail {
+    display:flex;
+    position:sticky;
+    top:.25rem;
+    align-self:start;
+    z-index:4;
+    padding-top:0;
+    pointer-events:none;
+  }
+  .turn-rail.next {
+    justify-content:flex-end;
+  }
+  .page-turn.btn {
+    position:static;
+    pointer-events:auto;
+  }
+  .reader-tools {
+    position:relative;
+    justify-content:flex-end;
+    margin-left:0;
+  }
+  .reader-control {
+    position:static;
   }
 }
 
@@ -1262,6 +1368,12 @@ th {
 }
 .presentation .top,.presentation .nav-shell,.presentation .projectbar,.presentation .app-foot {
   display:none;
+}
+.reader-only .nav-shell,.reader-only .projectbar,.reader-only .storage-note,.reader-only .app-foot {
+  display:none;
+}
+.reader-only .workspace {
+  padding-top:.8rem;
 }
 .presentation .workspace {
   padding-top:.7rem;
@@ -2094,15 +2206,22 @@ function lettura() {
     const media = matchMedia('(prefers-reduced-motion: reduce)');
     const toolbar = el('div',{class:'reader-toolbar row between'});
     const stage = el('div',{class:'reader-stage',tabindex:'-1','aria-label':'Pagine del giornale'});
-    const toc = el('details',{class:'reader-toc'}, el('summary',{},'Sommario degli articoli'));
-    const reading = el('div',{class:'reader'}, toolbar, !coverOnly && toc, stage);
+    const tocList = el('div',{class:'reader-control-panel reader-toc'});
+    const toc = el('details',{class:'reader-control'},el('summary',{},'Sommario degli articoli'),tocList);
+    const deck = el('div',{class:'reader-deck'});
+    const reading = el('div',{class:'reader'},toolbar,deck);
     host.replaceChildren(reading);
     let pages = [], first = new Map(), current = -1, double = false, lastWidth = 0, lastHeight = 0, buildPending = 0;
-    let flow = settings.flow, animation = settings.animation, scale = settings.scale, touchStart = null;
+    let flow = settings.flow, animation = settings.animation, scale = settings.scale, contrast = settings.contrast, touchStart = null;
     let pending = null, coverNode, cuts = new Map();
     const articles = edition.articles.filter(article => article.published);
-    const previous = btn('Pagina precedente', () => turn(-1), 'small');
-    const next = btn('Apri il giornale', () => turn(1), 'small primary');
+    const edgeButton = (mark,action,variant,caption) => el('button',{type:'button',class:'btn page-turn '+variant,onclick:action,
+      'aria-label':caption,title:caption},el('span',{class:'turn-mark','aria-hidden':'true'},mark));
+    const previous = edgeButton('‹',() => turn(-1),'turn-previous','Pagina precedente');
+    const next = edgeButton('›',() => turn(1),'primary turn-next','Apri il giornale');
+    const previousRail = el('div',{class:'turn-rail previous'},previous);
+    const nextRail = el('div',{class:'turn-rail next'},next);
+    deck.append(previousRail,nextRail,stage);
     const cover = btn('Prima pagina', () => go(-1,true,true), 'small');
     const pageStatus = el('span',{role:'status','aria-live':'polite',class:'hint'});
     const toggleFlow = btn('', () => {
@@ -2117,26 +2236,44 @@ function lettura() {
       if (!animation && pending) finishTurn(pending,true);
       else updateToolbar();
     }, 'small');
+    const toggleContrast = btn('Contrasto elevato',() => {
+      contrast = !contrast;
+      document.documentElement.dataset.contrast = String(contrast);
+      changeSettings({contrast});
+      toggleContrast.setAttribute('aria-pressed',String(contrast));
+    },'small',{'aria-pressed':String(contrast)});
     const zoom = el('select', {'aria-label':'Ingrandimento del testo',style:'width:auto', onchange:event => {
       scale = Number(event.target.value);
       changeSettings({scale});
       build(!flow && pages[current]?.article.id, true);
     }}, [1,1.25,1.5,2].map(value => el('option',{value:String(value)}, Math.round(value * 100) + '%')));
     zoom.value = String(scale);
-    const navigation = el('div',{class:'row'}, !coverOnly && [cover,previous,next,pageStatus]);
+    const navigation = el('div',{class:'row'},!coverOnly && [cover,pageStatus]);
     const printSize = el('select', {'aria-label':'Formato carta',style:'width:auto'}, el('option',{},'A4'), el('option',{},'A3'));
     const printing = [printSize, btn('Stampa prima pagina', () => printEdition(edition,true,printSize.value),'small'),
       !coverOnly && btn('Stampa giornale', () => printEdition(edition,false,printSize.value),'small')];
-    toolbar.append(navigation,el('div',{class:'row'}, !coverOnly && [toggleFlow,toggleAnimation],zoom,
+    const tools = el('div',{class:'reader-control-panel row'},!coverOnly && [toggleFlow,toggleAnimation],zoom,toggleContrast,
       ...speechControls(() => {
         if (flow || current < 0) return stage.innerText;
         return pages.slice(current, current + (double ? 2 : 1)).flatMap(page => page.content).map(block =>
           blockNode(block, false).textContent).join(' ');
-      }, status), printing));
-    if (articles.length) toc.append(el('ol',{}, articles.map(article => el('li',{},btn(article.title,() => jump(article.id,true),'quiet small')))));
-    else toc.append(el('p',{class:'hint'},'Il numero non contiene articoli pubblicati.'));
+      }, status), printing);
+    const readingOptions = el('details',{class:'reader-control'},el('summary',{},'Opzioni di lettura'),tools);
+    toolbar.append(navigation,el('div',{class:'row reader-tools'},!coverOnly && toc,readingOptions));
+    for (const panel of [toc,readingOptions]) panel.addEventListener('toggle',() => {
+      if (panel.open) (panel === toc ? readingOptions : toc).open = false;
+    });
+    if (articles.length) tocList.append(el('ol',{},articles.map(article => el('li',{},btn(article.title,() => {
+      toc.open = false;
+      jump(article.id,true);
+    },'quiet small')))));
+    else tocList.append(el('p',{class:'hint'},'Il numero non contiene articoli pubblicati.'));
+    function updateDeck() {
+      previousRail.hidden = nextRail.hidden = flow || coverOnly;
+      deck.classList.toggle('single-pane',flow || coverOnly);
+    }
     function updateToolbar() {
-      for (const item of [previous,next,cover]) item.hidden = flow;
+      cover.hidden = flow || current < 0;
       pageStatus.hidden = flow;
       toggleFlow.textContent = flow ? 'Lettura a pagine' : 'Scorrimento verticale';
       toggleAnimation.textContent = !animation || media.matches ? 'Animazione disattivata' : 'Animazione attiva';
@@ -2149,7 +2286,9 @@ function lettura() {
       previous.disabled = current < 0;
       cover.disabled = current < 0;
       next.disabled = !pages.length || current >= 0 && current + (double ? 2 : 1) >= pages.length;
-      next.textContent = current < 0 ? 'Apri il giornale' : 'Pagina successiva';
+      const nextLabel = current < 0 ? 'Apri il giornale' : 'Pagina successiva';
+      next.setAttribute('aria-label',nextLabel);
+      next.title = nextLabel;
       const end = Math.min(pages.length, current + (double ? 2 : 1));
       pageStatus.textContent = current < 0 ? 'Prima pagina' : (end === current + 1 ? 'Pagina ' + end : 'Pagine ' + (current + 1) + '–' + end) + ' di ' + pages.length;
     }
@@ -2225,6 +2364,7 @@ function lettura() {
     }
     function go(index,animate = true,focus = false) {
       if (pending || index === current || index < -1 || index >= pages.length) return;
+      toc.open = readingOptions.open = false;
       const nextNode = pageNode(index);
       if (animate && !flow && animation && !media.matches && startTurn(index,nextNode,focus)) return;
       current = index;
@@ -2255,6 +2395,7 @@ function lettura() {
       const oldId = pages[current]?.article.id;
       const offset = current >= 0 && oldId ? current - first.get(oldId) : 0;
       reading.style.setProperty('--reading',String(scale));
+      updateDeck();
       lastWidth = stage.clientWidth;
       lastHeight = innerHeight;
       double = lastWidth >= 790 && scale <= 1.5;
@@ -2288,8 +2429,18 @@ function lettura() {
     };
     addEventListener('resize',onResize);
     media.addEventListener('change',onMedia);
-    stage.addEventListener('keydown',event => {
+    reading.addEventListener('keydown',event => {
+      if (event.key === 'Escape') {
+        const openPanel = toc.open ? toc : readingOptions.open ? readingOptions : null;
+        if (openPanel) {
+          openPanel.open = false;
+          openPanel.querySelector('summary').focus();
+          event.preventDefault();
+        }
+        return;
+      }
       if (event.altKey || event.ctrlKey || flow || coverOnly) return;
+      if (event.target !== previous && event.target !== next && !stage.contains(event.target)) return;
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
         event.preventDefault();
         turn(event.key === 'ArrowRight' ? 1 : -1);
@@ -2327,6 +2478,8 @@ const {$,el,btn,safeURL,external,dateLabel,editionClass} = R;
 const appName = 'Le notizie che non fanno rumore';
 const tagline = 'Che cosa attira la nostra attenzione? Che cosa ha valore?';
 const categories = ['Spettacolare positiva','Spettacolare negativa','Costruttiva / edificante','Interesse pubblico'];
+const categoryOptions = target => [...new Set([...(target.categoryLabels ?? categories),...target.articles.flatMap(article => article.categories)])];
+const categoryKey = label => label.normalize('NFKC').toLocaleLowerCase('it');
 const types = ['Notizia documentata','Approfondimento','Intervista','Commento personale','Editoriale'];
 const models = {classic:'Quotidiano classico',visual:'Quotidiano visivo',essential:'Quotidiano essenziale'};
 const phases = ['Presentazione del problema','Osservazione dei titoli e scelta iniziale','Lettura e confronto delle notizie','Raccolta delle valutazioni','Discussione sui risultati'];
@@ -2357,7 +2510,7 @@ const entryFor = article => ({id:article.id,size:'standard',align:'left',titleSi
   title:'',summary:'',photo:0,cropX:50,cropY:50,bodyMode:null,frame:null,reason:'',reasonText:''});
 const newEdition = (name = 'Il mio quotidiano', issue = 'Numero 1') => ({
   id:uid(),name,classLabel:editionClass({}),motto:'',issue,date:'',model:'classic',articles:[],layout:[],coverImage:null,showIds:null,
-  hideCategories:false, guide:[5,10,15,10,10],lab:emptyLab(),snapshots:{A:null,B:null}
+  categoryLabels:[...categories],hideCategories:false, guide:[5,10,15,10,10],lab:emptyLab(),snapshots:{A:null,B:null}
 });
 const newProject = (code = 'Progetto personale', edition = newEdition()) => ({id:uid(),code,activeEdition:edition.id,editions:[edition]});
 const defaultSettings = () => ({flow:false,animation:true,scale:1,contrast:false});
@@ -2466,6 +2619,9 @@ function editionFrom(value, snapshot = false) {
   const safe = {...newEdition(text(value.name,90),text(value.issue,58)),id:value.id,motto:text(value.motto,150),date:day(value.date),model:value.model,articles,
     classLabel:typeof value.classLabel === 'string' ? text(value.classLabel,24).trim() : editionClass({}),
     layout:layoutFrom(value.layout,articles),hideCategories:value.hideCategories === true};
+  if (value.categoryLabels !== undefined) {
+    safe.categoryLabels = [...new Set(arrayOf(value.categoryLabels,5000).map(label => text(label,60).trim()).filter(Boolean))];
+  }
   if (isObject(value.coverImage)) {
     const article = articles.find(item => item.published && item.id === value.coverImage.id);
     if (article?.images[value.coverImage.index]) safe.coverImage = {id:article.id,index:Number(value.coverImage.index),x:bounded(value.coverImage.x,0,100,50),y:bounded(value.coverImage.y,0,100,50)};
@@ -2574,9 +2730,9 @@ const nav = {archive:'Le mie notizie',compose:'Creo la prima pagina',reader:'Sfo
   compare:'Confronta i giornali',lab:'Laboratorio',results:'Risultati'};
 const studentSteps = ['archive','compose','reader'];
 const classSteps = ['compare','lab','results'];
-let currentView = location.hash === '#giornale' ? 'reader' : 'archive';
+let currentView = 'reader', inStudio = false, lastStudioView = 'archive';
 let lastClassView = 'compare', phonePane = 'edit', phoneProjectOpen = false;
-let presented = location.hash === '#giornale', teacher = presented, readerCleanup, selectedArticle = '';
+let presented = false, teacher = false, readerCleanup, selectedArticle = '';
 let search = '', categoryFilter = '', labPhase = 'initial', ratedArticle = '', labRole = 'persona', resultMode = 'persona';
 let compareMode = 'pair', pair = [null,null], pickerTrigger;
 const heading = (title, description, actions = []) => el('div',{class:'section-head'},
@@ -2622,6 +2778,10 @@ function focusAfter(selector) {
 }
 function changeView(view, focus = true) {
   currentView = view;
+  if (!presented) {
+    inStudio = view !== 'reader';
+    if (inStudio) lastStudioView = view;
+  }
   if (classSteps.includes(view)) lastClassView = view;
   render();
   if (focus) focusAfter('#view h2');
@@ -2692,6 +2852,7 @@ function issueDialog() {
     const old = edition();
     const target = newEdition(old.name,String(data.get('issue')).trim());
     target.classLabel = editionClass(old);
+    target.categoryLabels = categoryOptions(old);
     target.date = day(data.get('date'));
     target.motto = old.motto;
     target.model = old.model;
@@ -2800,7 +2961,7 @@ function encodePhoto(file) {
 function articleEditor(existing) {
   const target = edition();
   const article = existing ? clone(existing) : blankArticle();
-  const options = [...new Set([...categories,...target.articles.flatMap(item => item.categories),...article.categories])];
+  const options = categoryOptions(target);
   const photoList = el('div',{class:'stack'});
   const alert = el('p',{class:'notice',role:'alert',hidden:true});
   let loading = false;
@@ -2879,13 +3040,16 @@ function articleEditor(existing) {
     if (article.images.some(photo => (photo.creditURL && !safeURL(photo.creditURL)) || (photo.license && !safeURL(photo.license)))) {
       return markError('Gli indirizzi delle fotografie e delle licenze devono usare HTTPS.');
     }
-    const labels = [...new Set([...data.getAll('category'),...get('custom').split(';')].map(item => item.trim()).filter(Boolean))];
+    const chosen = data.getAll('category');
+    const custom = get('custom').split(';').map(item => item.trim()).filter(Boolean);
+    const labels = [...new Set([...chosen,...custom.map(name => options.find(label => categoryKey(label) === categoryKey(name)) ?? name)])];
     if (labels.length > 18 || labels.some(item => item.length > 60)) return markError('Usa al massimo 18 categorie, fino a 60 caratteri ciascuna.');
     if (!existing && target.articles.length >= 250) return markError('Il numero contiene già 250 articoli.');
     const fields = ['title','subtitle','text','summary','source','note','limits','neutral','emotional'];
     fields.forEach(name => {article[name] = get(name);});
     Object.assign(article,{url,date:day(get('date')),consulted:day(get('consulted')),categories:labels,type:get('type'),published:data.has('published')});
     article.images = article.images.map(imageFrom);
+    target.categoryLabels = [...new Set([...options,...labels])];
     const index = target.articles.findIndex(item => item.id === article.id);
     if (index < 0) target.articles.push(article);
     else target.articles[index] = article;
@@ -2906,10 +3070,56 @@ function moveArray(list,from,to) {
   list.splice(to,0,list.splice(from,1)[0]);
   return true;
 }
+function categoryDialog() {
+  const target = edition();
+  const labels = categoryOptions(target);
+  const assigned = label => target.articles.filter(article => article.categories.includes(label)).length;
+  function save(previous,next) {
+    target.categoryLabels = previous === null ? [...labels,next] : labels.flatMap(label =>
+      label !== previous ? [label] : next ? [next] : []);
+    if (previous !== null) {
+      for (const article of target.articles) {
+        if (article.categories.includes(previous)) article.categories = [...new Set(article.categories.flatMap(label =>
+          label !== previous ? [label] : next ? [next] : []))];
+      }
+      if (categoryFilter === previous) categoryFilter = next;
+    }
+    touch();
+    $('#app-dialog').close();
+    render();
+    focusAfter('#manage-categories');
+    showStatus(previous === null ? 'Categoria aggiunta.' : next ? 'Categoria rinominata.' : 'Categoria rimossa.');
+  }
+  function nameForm(previous) {
+    const control = input('category-name',previous ?? '',{required:true,maxlength:60,
+      oninput:event => event.target.setCustomValidity('')});
+    return buildForm([field(previous === null ? 'Nome della nuova categoria' : 'Nuovo nome della categoria',control)],data => {
+      const name = String(data.get('category-name') ?? '').trim();
+      const exists = labels.some(label => label !== previous && categoryKey(label) === categoryKey(name));
+      const error = !name ? 'Inserisci un nome.' : exists ? 'Esiste già una categoria con questo nome.' : '';
+      if (error) {
+        control.setCustomValidity(error);
+        control.reportValidity();
+        return;
+      }
+      save(previous,name);
+    },previous === null ? 'Aggiungi categoria' : 'Salva il nuovo nome');
+  }
+  modal('Gestisci categorie',el('div',{class:'stack'},tip('Le categorie valgono per il numero attivo. Ogni articolo può averne più di una.'),
+    nameForm(null),
+    labels.length ? el('div',{class:'articlelist'},labels.map(label => {
+      const count = assigned(label);
+      return el('div',{class:'archive-row'},el('div',{},el('strong',{},label),tip(count + (count === 1 ? ' articolo' : ' articoli'))),
+        group(btn('Rinomina',() => modal('Rinomina categoria',el('div',{class:'stack'},el('p',{},label),nameForm(label),
+          btn('Torna alle categorie',categoryDialog,'small'))),'small',{'aria-label':'Rinomina '+label}),
+        btn('Rimuovi',() => confirmAction('Rimuovere la categoria?', '«' + label + '» verrà rimossa dal numero e dalle schede che la usano.',
+          () => save(label,'')), 'small danger',{'aria-label':'Rimuovi '+label})));
+    })) : empty('Il numero non ha ancora categorie.')));
+}
 function editArchive() {
   const target = edition();
   const list = el('div',{class:'card'});
-  const allCategories = [...new Set(target.articles.flatMap(item => item.categories))].sort((a,b) => a.localeCompare(b,'it'));
+  const allCategories = categoryOptions(target).sort((a,b) => a.localeCompare(b,'it'));
   const populate = () => {
     const term = search.trim().toLocaleLowerCase('it');
     const articles = target.articles.filter(item =>
@@ -2950,7 +3160,8 @@ function editArchive() {
   populate();
   return el('section',{},heading('Le mie notizie','Raccogli le notizie che vuoi raccontare, scrivi i testi e indica le fonti.',[
     btn('Nuova notizia',() => articleEditor(),'primary'),btn('Modifica testata',() => projectDialog(false)),btn('Vai alla prima pagina',() => changeView('compose'))]),
-    el('div',{class:'stack'},card(el('div',{class:'columns'},field('Cerca nell’archivio',searchInput),field('Filtra per categoria',filter))),
+    el('div',{class:'stack'},card(el('div',{class:'columns'},field('Cerca nell’archivio',searchInput),field('Filtra per categoria',filter)),
+      group(btn('Gestisci categorie',categoryDialog,'small',{id:'manage-categories'}))),
       list,group(btn('Importa archivio comune',() => importFiles('package')),btn('Esporta archivio comune',exportPackage))));
 }
 
@@ -2987,7 +3198,7 @@ function showCompose() {
   function showReflection() {
     const opened = $('.editorial-reflection',preview)?.open;
     const used = target.layout.map(item => articles.get(item.id)).filter(Boolean);
-    const labels = [...new Set([...categories.slice(0,3),...used.flatMap(item => item.categories)])];
+    const labels = [...new Set([...categoryOptions(target).slice(0,3),...used.flatMap(item => item.categories)])];
     const lead = used[0];
     const relevant = target.layout.slice(0,2).map((item,index) => {
       const article = articles.get(item.id);
@@ -3355,7 +3566,7 @@ function leavePresentation() {
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   presented = false;
   teacher = false;
-  changeView('compose');
+  changeView(lastStudioView);
 }
 
 // Laboratorio e registrazione di scelte e valutazioni anonime.
@@ -3651,7 +3862,7 @@ function importFiles(mode) {
         state.projects.push(copy);
         state.active=copy.id;
         selectedArticle=''; ratedArticle=''; search=''; categoryFilter='';
-        currentView='compose';
+        currentView='compose'; lastStudioView='compose';
         message='Progetto importato come quotidiano indipendente.';
       } else if (mode === 'package') {
         if (incoming[0].kind !== 'package') throw new Error('Scegli un file esportato con Esporta archivio comune.');
@@ -3696,7 +3907,9 @@ function render() {
   ].filter(Boolean));
   $('#app-footer').textContent = [classLabel,'Laboratorio di educazione ai media'].filter(Boolean).join(' · ');
   document.body.classList.toggle('presentation',presented);
-  $('#top-tools').replaceChildren(btn('Accessibilità',settingsDialog,'small'),btn('Guida',guideDialog,'small'));
+  document.body.classList.toggle('reader-only',!inStudio && !presented);
+  $('#top-tools').replaceChildren(...(inStudio ? [btn('Accessibilità',settingsDialog,'small'),btn('Guida',guideDialog,'small'),
+    btn('Torna al giornale',() => changeView('reader'),'small')] : [btn('Apri redazione',() => changeView(lastStudioView),'small')]));
   const isClass = classSteps.includes(currentView);
   const studentNavigation = el('div',{class:'row learning-steps'}, studentSteps.map((key,index) => {
     const step = btn(nav[key],() => changeView(key),'',{'aria-current':currentView === key ? 'page' : null});
@@ -3745,10 +3958,7 @@ function render() {
   const views = {archive:editArchive,compose:showCompose,compare:compareView,lab:showLab,results:resultView};
   if (currentView === 'reader') {
     const contents = el('div',{id:'reader-host'});
-    const subtitle = edition().motto || edition().issue;
-    view.replaceChildren(heading('Sfoglio il giornale',subtitle,[
-      !presented && btn('Presenta alla LIM',startPresentation),
-      !presented && btn('Esporta giornale HTML',() => exportEdition(false),'primary')]),contents);
+    view.replaceChildren(el('h2',{class:'sr'},'Sfoglio il giornale'),contents);
     readerCleanup = R.mountReader(contents,presentingEdition(),state.settings,{status:showStatus,changeSettings:changes => updateSetting(changes,false)});
 
   } else view.replaceChildren(views[currentView]());
