@@ -409,6 +409,8 @@ dialog::backdrop {
 }
 .front-photo {
   margin:.45rem 0;
+  width:var(--photo-width,100%);
+  max-width:100%;
 }
 .front-photo img {
   width:100%;
@@ -421,6 +423,14 @@ dialog::backdrop {
   font-size:.74rem;
   color:var(--muted);
   margin-top:.26rem;
+}
+.front > .front-cover-photo {
+  margin-inline:auto;
+}
+.front > .front-cover-photo img {
+  height:calc(min(32cqi,10.4rem) * var(--photo-height,1));
+  max-height:none;
+  aspect-ratio:auto;
 }
 .front-cell:not(.lead) .front-photo img {
   aspect-ratio:2.55;
@@ -887,7 +897,7 @@ dialog::backdrop {
 }
 .front .frame-cell .front-photo img {
   flex:0 1 auto;
-  height:min(calc(var(--photo-rows) * var(--front-track)),24cqi);
+  height:calc(min(calc(var(--photo-rows) * var(--front-track)),24cqi) * var(--photo-height,1));
   min-height:0;
   max-height:none;
   aspect-ratio:auto;
@@ -1032,7 +1042,7 @@ button.front-continues {
     min-height:min-content;
   }
   .front .frame-cell .front-photo img {
-    height:min(calc(var(--photo-rows) * var(--front-track)),31cqi);
+    height:calc(min(calc(var(--photo-rows) * var(--front-track)),31cqi) * var(--photo-height,1));
   }
 }
 @media print {
@@ -1698,6 +1708,19 @@ function lettura() {
   const minimumHeight = 4;
   const maximumHeight = 19;
   const clamp = (number,min,max) => Math.max(min,Math.min(max,number));
+  const photoBounds = {width:[25,100],height:[30,200]};
+  function photoSize(value) {
+    return Object.fromEntries(Object.entries(photoBounds).map(([axis,[min,max]]) => [axis,
+      Number.isInteger(value?.[axis]) ? clamp(value[axis],min,max) : 100]));
+  }
+  function samePhotoSize(a,b) {
+    const first = photoSize(a), second = photoSize(b);
+    return first.width === second.width && first.height === second.height;
+  }
+  function photoSizeStyle(value) {
+    const {width,height} = photoSize(value);
+    return '--photo-width:'+width+'%;--photo-height:'+height/100;
+  }
   const frameSides = {left:'sinistra',right:'destra',top:'alto',bottom:'basso'};
   const intersects = (a,b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
   function normalizeFrame(value) {
@@ -1934,7 +1957,7 @@ function lettura() {
       const open = onSelect || onArticle;
       const title = el('h3', {class:'front-title'}, open ? el('button', {type:'button', onclick:() => open(item.id), 'aria-pressed':onSelect ? String(selected === item.id) : null}, heading) : heading);
       const displayPhoto = item.showPhoto && photo;
-      const picture = displayPhoto && el('figure', {class:'front-photo'},
+      const picture = displayPhoto && el('figure', {class:'front-photo',style:photoSizeStyle(item.photoSize)},
         el('img', {...photoAttrs(photo), draggable:'false', style:'object-position:' + (item.cropX ?? 50) + '% ' + (item.cropY ?? 50) + '%'}),
         photo.caption && el('figcaption', {}, photo.caption));
       const frame = plan.get(item.id);
@@ -1985,8 +2008,10 @@ function lettura() {
     const featured = edition.coverImage && articles.get(edition.coverImage.id);
     const chosen = featured && articlePhoto(featured, edition.coverImage.index);
     if (chosen && !edition.layout.some(item => item.id === featured.id && item.showPhoto && articlePhoto(featured, item.photo) === chosen &&
-      (item.cropX ?? 50) === (edition.coverImage.x ?? 50) && (item.cropY ?? 50) === (edition.coverImage.y ?? 50))) {
-      front.insertBefore(el('figure', {class:'front-photo'}, el('img', {...photoAttrs(chosen), style:'object-position:' + (edition.coverImage.x ?? 50) + '% ' + (edition.coverImage.y ?? 50) + '%'}),
+      (item.cropX ?? 50) === (edition.coverImage.x ?? 50) && (item.cropY ?? 50) === (edition.coverImage.y ?? 50) &&
+      samePhotoSize(item.photoSize,edition.coverImage.photoSize))) {
+      front.insertBefore(el('figure', {class:'front-photo front-cover-photo',style:photoSizeStyle(edition.coverImage.photoSize)},
+        el('img', {...photoAttrs(chosen), style:'object-position:' + (edition.coverImage.x ?? 50) + '% ' + (edition.coverImage.y ?? 50) + '%'}),
         chosen.caption && el('figcaption', {}, chosen.caption),
         forPrint && chosen.credit && el('div', {class:'caption'}, chosen.credit, ' ', external(chosen.creditURL, 'Fonte immagine'), ' ', external(chosen.license, 'Licenza'))), grid);
     }
@@ -2466,7 +2491,7 @@ function lettura() {
       window.speechSynthesis?.cancel();
     };
   }
-  return {$,el,btn,safeURL,external,dateLabel,editionClass,frontPage,fitFront,frontBody,measureCover,fullArticle,printEdition,mountReader,
+  return {$,el,btn,safeURL,external,dateLabel,editionClass,frontPage,fitFront,frontBody,measureCover,fullArticle,printEdition,mountReader,photoBounds,photoSize,samePhotoSize,
     framePlan,frameChanged,adjustEdge,resizeFrame,normalizeFrame,resetFramePositions,frameSides};
 }
 </script>
@@ -2507,7 +2532,7 @@ const blankArticle = () => ({id:uid(),title:'',subtitle:'',text:'',summary:'',im
   note:'',limits:'',published:true,starter:false,fiction:false,neutral:'',emotional:''});
 const emptyLab = () => ({initial:[],rated:[],titles:[]});
 const entryFor = article => ({id:article.id,size:'standard',align:'left',titleSize:'auto',showPhoto:true,showSummary:true,
-  title:'',summary:'',photo:0,cropX:50,cropY:50,bodyMode:null,frame:null,reason:'',reasonText:''});
+  title:'',summary:'',photo:0,cropX:50,cropY:50,photoSize:null,bodyMode:null,frame:null,reason:'',reasonText:''});
 const newEdition = (name = 'Il mio quotidiano', issue = 'Numero 1') => ({
   id:uid(),name,classLabel:editionClass({}),motto:'',issue,date:'',model:'classic',articles:[],layout:[],coverImage:null,showIds:null,
   categoryLabels:[...categories],hideCategories:false, guide:[5,10,15,10,10],lab:emptyLab(),snapshots:{A:null,B:null}
@@ -2594,7 +2619,8 @@ function layoutFrom(value, articles) {
     titleSize:choice(item.titleSize,['auto','small','medium','large'],'auto'),showPhoto:item.showPhoto !== false,showSummary:item.showSummary !== false,
     bodyMode:choice(item.bodyMode,['summary','article','title'],null),frame:R.normalizeFrame(item.frame),
     title:text(item.title,110),summary:text(item.summary,180),photo:bounded(item.photo,0,byId.get(item.id).images.length-1,0),
-    cropX:bounded(item.cropX,0,100,50),cropY:bounded(item.cropY,0,100,50),reason:text(item.reason,90),reasonText:text(item.reasonText,550)
+    cropX:bounded(item.cropX,0,100,50),cropY:bounded(item.cropY,0,100,50),photoSize:R.photoSize(item.photoSize),
+    reason:text(item.reason,90),reasonText:text(item.reasonText,550)
   })),item => item.id);
 }
 function cleanLab(value) {
@@ -2624,7 +2650,8 @@ function editionFrom(value, snapshot = false) {
   }
   if (isObject(value.coverImage)) {
     const article = articles.find(item => item.published && item.id === value.coverImage.id);
-    if (article?.images[value.coverImage.index]) safe.coverImage = {id:article.id,index:Number(value.coverImage.index),x:bounded(value.coverImage.x,0,100,50),y:bounded(value.coverImage.y,0,100,50)};
+    if (article?.images[value.coverImage.index]) safe.coverImage = {id:article.id,index:Number(value.coverImage.index),
+      x:bounded(value.coverImage.x,0,100,50),y:bounded(value.coverImage.y,0,100,50),photoSize:R.photoSize(value.coverImage.photoSize)};
   }
   if (!snapshot) {
     safe.showIds = value.showIds === null || value.showIds === undefined ? null :
@@ -3232,6 +3259,7 @@ function showCompose() {
     },0);
     const photos = target.layout.filter(item => item.showPhoto && articles.get(item.id)?.images.length).length + Number(Boolean(target.coverImage));
     const height = Math.max(0,...R.framePlan(target).map(item => item.y+item.h));
+    const largeCover = target.coverImage && R.photoSize(target.coverImage.photoSize).height > 155;
     preview.replaceChildren(...[
       el('div',{class:'preview-bar'},el('span',{class:'kicker'},'Anteprima della prima pagina'),
         el('span',{class:'hint'},models[target.model] + ' · ' + total + ' di ' + limit + ' riquadri')),
@@ -3244,18 +3272,35 @@ function showCompose() {
         selectedArticle = from;
         touch(); draw();
       }}),
-      (total >= 6 || wordLoad > 780 || photos >= 4 || height > 29) && el('p',{class:'notice'},'La pagina è densa e potrebbe occupare più fogli in stampa. Riduci le sintesi, prova il modello essenziale o sposta qualche notizia nelle pagine interne.'),
+      (total >= 6 || wordLoad > 780 || photos >= 4 || height > 29 || largeCover) && el('p',{class:'notice'},'La pagina è densa e potrebbe occupare più fogli in stampa. Riduci le fotografie o le sintesi, prova il modello essenziale o sposta qualche notizia nelle pagine interne.'),
       reflection].filter(Boolean));
   }
-  function readingFocal(label,value,action) {
-    const output = el('span',{class:'range-value hint'},(value ?? 50) + '%');
-    return field(label,el('div',{class:'crop-range'},input('',value ?? 50,{type:'range',min:0,max:100,step:5,'aria-label':label,
+  function photoRange(label,value,action,[min,max] = [0,100]) {
+    const output = el('span',{class:'range-value hint'},value+'%');
+    return field(label,el('div',{class:'crop-range'},input('',value,{type:'range',min,max,step:5,'aria-label':label,
       oninput:event => {
         const choice = Number(event.target.value);
         output.textContent=choice+'%';
         action(choice);
         touch(); renderPreview();
       }}),output));
+  }
+  function photoSizeControls(photoTarget,isMain = false) {
+    const measure = R.photoSize(photoTarget.photoSize);
+    const captions = {width:'Larghezza della foto',height:'Altezza della foto'};
+    const reset = isMain ? 'cover-photo-reset' : 'article-photo-reset';
+    return el('fieldset',{class:'stack'},el('legend',{},'Dimensioni della fotografia'),
+      Object.entries(captions).map(([axis,label]) => photoRange(label,measure[axis],value => {
+        measure[axis] = value;
+        photoTarget.photoSize = {...measure};
+      },R.photoBounds[axis])),
+      tip('La larghezza si misura rispetto al riquadro. Per l’altezza, 100% corrisponde alla misura automatica.'),
+      btn('Ripristina dimensioni automatiche',() => {
+        photoTarget.photoSize = null;
+        if (isMain) coverOpen = true;
+        else detailsOpen = 'image';
+        touch(); draw(reset);
+      },'small',{'data-compose':reset}));
   }
   function draw(focus) {
     const current = target.layout.find(item => item.id === selectedArticle);
@@ -3362,9 +3407,10 @@ function showCompose() {
             checkbox('Mostra la fotografia',current.showPhoto,{onchange:mark('showPhoto')}),
             article.images.length > 1 && field('Foto nel riquadro',select(article.images.map((photo,i) => [i,photo.caption || 'Foto ' + (i+1)]),current.photo,
               {onchange:event => update('photo',Number(event.target.value))})),
-            readingFocal('Posizione orizzontale del ritaglio',current.cropX,value => {current.cropX=value;}),
-            readingFocal('Posizione verticale del ritaglio',current.cropY,value => {current.cropY=value;}),
-            tip('L’inquadratura vale per la prima pagina. Nel giornale resta visibile la foto intera.')) : tip('Aggiungi una fotografia alla scheda in redazione.')),
+            photoSizeControls(current),
+            photoRange('Posizione orizzontale del ritaglio',current.cropX ?? 50,value => {current.cropX=value;}),
+            photoRange('Posizione verticale del ritaglio',current.cropY ?? 50,value => {current.cropY=value;}),
+            tip('Dimensioni e ritaglio valgono per la prima pagina. Nell’articolo si può aprire la fotografia intera.')) : tip('Aggiungi una fotografia alla scheda in redazione.')),
         section('reason','Perché l’ho messa qui?',
           field('Motivazione',select([['','Scegli una motivazione'],...reasons.map(item => [item,item])],current.reason,
             {onchange:read('reason')})),
@@ -3381,12 +3427,13 @@ function showCompose() {
         field('Fotografia di copertina',select([['','Usa le foto dei riquadri'],...photos],
           target.coverImage ? target.coverImage.id + '/' + target.coverImage.index : '',{'data-compose':'cover',onchange:event => {
             const [id,index] = event.target.value.split('/');
-            target.coverImage=id ? {id,index:Number(index),x:50,y:50} : null;
+            target.coverImage=id ? {id,index:Number(index),x:50,y:50,photoSize:target.coverImage?.photoSize ?? null} : null;
             coverOpen=true; touch(); draw('cover');
           }})),
-        tip('Usa una fotografia principale tra la testata e i riquadri. Se è già presente con la stessa inquadratura, compare una sola volta.'),
-        target.coverImage && readingFocal('Ritaglio orizzontale della copertina',target.coverImage.x,value => {target.coverImage.x=value;}),
-        target.coverImage && readingFocal('Ritaglio verticale della copertina',target.coverImage.y,value => {target.coverImage.y=value;})));
+        tip('La fotografia principale è tra la testata e i riquadri. Se in un riquadro compare già con le stesse dimensioni e lo stesso ritaglio, il giornale la mostra una sola volta.'),
+        target.coverImage && photoSizeControls(target.coverImage,true),
+        target.coverImage && photoRange('Ritaglio orizzontale della copertina',target.coverImage.x ?? 50,value => {target.coverImage.x=value;}),
+        target.coverImage && photoRange('Ritaglio verticale della copertina',target.coverImage.y ?? 50,value => {target.coverImage.y=value;})));
       tools.append(cover);
     }
     renderPreview();
@@ -3427,6 +3474,7 @@ function versionChanges(a,b) {
       if (old.title !== current.title || old.summary !== current.summary || old.showPhoto !== current.showPhoto ||
         old.showSummary !== current.showSummary || old.bodyMode !== current.bodyMode || old.photo !== current.photo) notes.push('Contenuto del riquadro modificato');
       if ((old.cropX ?? 50) !== (current.cropX ?? 50) || (old.cropY ?? 50) !== (current.cropY ?? 50)) notes.push('Inquadratura della foto modificata');
+      if (!R.samePhotoSize(old.photoSize,current.photoSize)) notes.push('Dimensioni della foto modificate');
       if (old.align !== current.align) notes.push('Colonna modificata');
       const previousFrame = beforeFrames.get(id), currentFrame = afterFrames.get(id);
       if (previousFrame && currentFrame && (previousFrame.w !== currentFrame.w || previousFrame.h !== currentFrame.h)) {
