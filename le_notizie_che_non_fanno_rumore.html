@@ -291,7 +291,7 @@ dialog::backdrop {
   container-type:inline-size;
   background:var(--paper);
   color:var(--ink);
-  padding:clamp(.7rem,3.8cqi,2rem);
+  padding:clamp(.7rem,2.8cqi,1.5rem);
   border:1px solid var(--line);
   box-shadow:0 10px 28px #32232c12;
   overflow-wrap:anywhere;
@@ -301,28 +301,40 @@ dialog::backdrop {
 }
 .front-flag {
   display:grid;
-  gap:.23rem;
+  gap:.33rem;
   text-align:center;
-  margin-bottom:1rem;
-  border-top:3px solid var(--ink);
-  border-bottom:3px double var(--ink);
-  padding:.6rem 0 .75rem;
+  margin-bottom:.72rem;
+  border-top:4px solid var(--ink);
+  padding:.48rem 0 0;
 }
 .front-name {
-  font:700 calc(clamp(2rem,7.4cqi,4.35rem) * var(--front-factor))/.94 var(--serif);
-  letter-spacing:-.055em;
+  font:700 calc(clamp(1.65rem,5.7cqi,3.85rem) * var(--front-factor))/1 var(--serif);
+  letter-spacing:-.045em;
   color:var(--ink);
-  margin:.2rem 0;
+  text-wrap:balance;
+}
+.front-edition {
+  display:flex;
+  align-items:baseline;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:.18rem .65rem;
+  border-top:1px solid var(--line);
+  border-bottom:3px double var(--ink);
+  padding:.31rem 0;
+}
+.front-meta,.front-motto {
+  margin:0;
 }
 .front-meta {
-  font-size:.75rem;
+  font-size:calc(.72rem * var(--front-factor));
   text-transform:uppercase;
-  letter-spacing:.11em;
+  letter-spacing:.08em;
   color:var(--muted);
   font-weight:720;
 }
 .front-motto {
-  font:italic 1rem var(--serif);
+  font:italic calc(.87rem * var(--front-factor))/1.22 var(--serif);
   color:var(--muted);
 }
 .front-grid {
@@ -433,21 +445,22 @@ dialog::backdrop {
   }
 }
 .front-cell .front-title {
-  font:700 calc(clamp(1.1rem,3.25cqi,2.05rem) * var(--front-factor))/1.06 var(--serif);
+  font:700 calc(clamp(1.08rem,7.4cqi,2.05rem) * var(--front-factor))/1.06 var(--serif);
   letter-spacing:-.025em;
   margin:.18rem 0 .34rem;
 }
 .front-cell.lead .front-title {
-  font-size:calc(clamp(1.5rem,4.85cqi,3.15rem) * var(--front-factor));
+  font-size:calc(clamp(1.38rem,6.6cqi,3rem) * var(--front-factor));
 }
+.front-cell.title-auto[data-section=brief] .front-title,
 .front-cell.title-small .front-title {
-  font-size:calc(clamp(1rem,2.45cqi,1.48rem) * var(--front-factor));
+  font-size:calc(clamp(1rem,5.6cqi,1.48rem) * var(--front-factor));
 }
 .front-cell.title-medium .front-title {
-  font-size:calc(clamp(1.1rem,3.3cqi,2.06rem) * var(--front-factor));
+  font-size:calc(clamp(1.08rem,7.4cqi,2.05rem) * var(--front-factor));
 }
 .front-cell.title-large .front-title {
-  font-size:calc(clamp(1.45rem,4.5cqi,2.95rem) * var(--front-factor));
+  font-size:calc(clamp(1.28rem,8.9cqi,3.2rem) * var(--front-factor));
 }
 .front-title button {
   font:inherit;
@@ -465,7 +478,7 @@ dialog::backdrop {
   text-underline-offset:.12em;
 }
 .front-cell p {
-  font:calc(clamp(.85rem,2.1cqi,1.02rem) * var(--front-factor))/1.35 var(--serif);
+  font:calc(clamp(.92rem,3.1cqi,1.02rem) * var(--front-factor))/1.34 var(--serif);
   margin:.3rem 0;
 }
 .front-photo {
@@ -524,10 +537,43 @@ dialog::backdrop {
 }
 .front-editorial-foot {
   border-top:1px solid var(--line);
-  margin-top:.85rem;
-  padding-top:.4rem;
-  font-size:.78rem;
+  margin-block:.6rem 0;
+  padding-top:.45rem;
   color:var(--muted);
+}
+.front-briefs {
+  border-top:3px double var(--ink);
+}
+.front-briefs h3 {
+  margin:0 0 .28rem;
+  color:var(--ink);
+  font:750 calc(.72rem * var(--front-factor))/1.2 system-ui,sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+.front-briefs ul {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));
+  gap:.35rem .9rem;
+  margin:0;
+  padding:0;
+  list-style:none;
+  font:700 calc(.95rem * var(--front-factor))/1.26 var(--serif);
+  color:var(--ink);
+}
+.front-briefs button {
+  border:0;
+  background:transparent;
+  color:inherit;
+  padding:0;
+  text-align:left;
+  font:inherit;
+}
+.front-briefs button:hover {text-decoration:underline}
+.front-folio {
+  color:var(--accent);
+  font:650 calc(.72rem * var(--front-factor))/1.25 system-ui,sans-serif;
+  white-space:nowrap;
 }
 .reader {
   display:grid;
@@ -917,18 +963,6 @@ dialog::backdrop {
   .print-root .front-photo figcaption {
     font-size:8pt;
   }
-  .print-root .full-article {
-    padding:0;
-    border:0;
-    break-before:page;
-    font-size:11pt;
-  }
-  .print-root .full-article figure,.print-root .full-article h2,.print-root .full-article h3 {
-    break-inside:avoid;
-  }
-  .print-root .full-article img {
-    max-height:95mm;
-  }
   .print-root a {
     color:inherit;
   }
@@ -953,14 +987,30 @@ dialog::backdrop {
   position:relative;
   display:flex;
   flex-direction:column;
+  container-type:inline-size;
   min-height:0;
   padding:.45rem .12rem .18rem;
 }
 .frame-cell[data-section=editorial] {
   border-top:3px double var(--ink);
 }
-.frame-cell > .kicker,.frame-cell > .front-title,.frame-cell > .caption {
+@container (min-width:29.01rem) {
+  .frame-cell[data-section=sidebar]::before {
+    content:'';
+    position:absolute;
+    inset:.45rem auto 0 -.34rem;
+    border-inline-start:1px solid var(--line);
+    pointer-events:none;
+  }
+}
+.frame-cell > .kicker,.frame-cell > .front-title,.frame-cell > .front-deck {
   flex:none;
+}
+.frame-cell .front-deck {
+  margin:.05rem 0 .38rem;
+  color:var(--muted);
+  font-weight:600;
+  line-height:1.22;
 }
 .frame-cell > .front-photo {
   display:flex;
@@ -971,15 +1021,27 @@ dialog::backdrop {
 }
 .front .frame-cell .front-photo img {
   flex:0 1 auto;
-  height:calc(min(calc(var(--photo-rows) * var(--front-track)),24cqi) * var(--photo-height,1));
+  height:calc(min(var(--photo-rows) * 1.12rem,43cqi) * var(--photo-height,1));
   min-height:0;
   max-height:none;
   aspect-ratio:auto;
+}
+.frame-cell.portrait-photo > .front-photo {
+  width:100%;
+}
+.front .frame-cell.portrait-photo .front-photo img {
+  width:calc(min(100%,9.5rem) * var(--photo-width-factor,1));
+  height:calc(min(var(--photo-rows) * 1.6rem,88cqi) * var(--photo-height,1));
 }
 .frame-cell > .front-photo figcaption {
   flex:none;
   font-size:.71rem;
   line-height:1.19;
+}
+.front-photo .photo-credit {
+  display:block;
+  opacity:.9;
+  margin-top:.12rem;
 }
 .front-copy {
   flex:1 1 auto;
@@ -990,10 +1052,24 @@ dialog::backdrop {
 }
 .front-copy p {
   margin:0 0 .25em;
+  orphans:1;
+  widows:1;
 }
+.front-copy .copy-cut::after {content:'…'}
 .front-copy h3 {
   font:700 calc(1.06rem * var(--front-factor))/1.25 var(--serif);
   margin:.12em 0 .2em;
+  break-inside:avoid;
+  break-after:avoid-column;
+}
+@container (min-width:27rem) {
+  .lead .front-copy {
+    column-count:2;
+    column-width:calc(12.5rem * var(--front-factor));
+    column-gap:1.15rem;
+    column-rule:1px solid var(--line);
+    column-fill:auto;
+  }
 }
 .frame-cell .front-continues {
   align-self:start;
@@ -1002,7 +1078,7 @@ dialog::backdrop {
   border:0;
   background:none;
   padding:0;
-  font:650 .74rem/1.25 system-ui,sans-serif;
+  font:650 calc(.73rem * var(--front-factor))/1.25 system-ui,sans-serif;
   color:var(--accent);
   text-align:left;
 }
@@ -1077,6 +1153,7 @@ button.front-continues {
 }
 .print-root .front.frame-cover {
   --front-factor:1;
+  --front-track:clamp(1rem,calc((var(--print-page-height) - 41mm) / var(--grid-rows) - .25rem),1.6rem);
   box-shadow:none;
   border:0;
   padding:0;
@@ -1084,6 +1161,18 @@ button.front-continues {
 .print-root .frame-grid {
   gap:.25rem .7rem;
 }
+.print-story {
+  display:flex;
+  flex-direction:column;
+  min-height:var(--print-page-height);
+  break-before:page;
+  overflow-wrap:anywhere;
+  --read-font:11pt;
+}
+.print-story .article-img img {max-height:80mm}
+.print-story .paper-foot {margin-top:auto}
+.print-story .paper-content {padding-bottom:5mm}
+.print-story.pagination-probe {min-height:0}
 .flip-pending {
   position:absolute;
   top:0;
@@ -1114,9 +1203,6 @@ button.front-continues {
     margin-block-end:.65rem;
     height:calc(var(--frame-rows) * (var(--front-track) + .25rem));
     min-height:min-content;
-  }
-  .front .frame-cell .front-photo img {
-    height:calc(min(calc(var(--photo-rows) * var(--front-track)),31cqi) * var(--photo-height,1));
   }
 }
 @media print {
@@ -1843,7 +1929,7 @@ function lettura() {
   const unitsFor = edition => columnCount(edition) * columnUnits;
   const minimumWidth = columnUnits;
   const minimumHeight = 4;
-  const maximumHeight = 19;
+  const maximumHeight = 25;
   const clamp = (number,min,max) => Math.max(min,Math.min(max,number));
   const photoBounds = {width:[25,100],height:[30,200]};
   function photoSize(value) {
@@ -1856,7 +1942,7 @@ function lettura() {
   }
   function photoSizeStyle(value) {
     const {width,height} = photoSize(value);
-    return '--photo-width:'+width+'%;--photo-height:'+height/100;
+    return '--photo-width:'+width+'%;--photo-height:'+height/100+';--photo-width-factor:'+width/100;
   }
   const frameSides = {left:'sinistra',right:'destra',top:'alto',bottom:'basso'};
   const intersects = (a,b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
@@ -1878,12 +1964,20 @@ function lettura() {
   function sectionPlan(edition) {
     const taken = new Set();
     const roles = new Map();
+    const editorials = new Set(edition.articles.filter(article => article.type === 'Editoriale').map(article => article.id));
     for (const {id,section} of edition.layout) {
-      if (!Object.hasOwn(editorialSections,section) || taken.has(section)) continue;
+      if (!Object.hasOwn(editorialSections,section) || taken.has(section) || section === 'editorial' && !editorials.has(id)) continue;
       roles.set(id,section);
       if (section !== 'brief') taken.add(section);
     }
-    const next = [...(layoutModels[edition.model] || layoutModels.classic).sections];
+    if (edition.model === 'broadsheet' && !taken.has('editorial')) {
+      const candidate = edition.layout.find(({id},index) => (index > 0 || taken.has('opening')) && editorials.has(id) && !roles.has(id));
+      if (candidate) {
+        roles.set(candidate.id,'editorial');
+        taken.add('editorial');
+      }
+    }
+    const next = (layoutModels[edition.model] || layoutModels.classic).sections.filter(section => section !== 'editorial');
     for (const {id} of edition.layout) {
       if (roles.has(id)) continue;
       while (taken.has(next[0])) next.shift();
@@ -1903,6 +1997,8 @@ function lettura() {
     const topEditorial = edition.model === 'broadsheet' && units >= 3*columnUnits && [...sections.values()].includes('editorial');
     const priority = ['opening','sidebar','editorial','middle','brief','closing'];
     const ordered = [...edition.layout].sort((a,b) => priority.indexOf(sections.get(a.id))-priority.indexOf(sections.get(b.id)));
+    const lower = ordered.filter(({id}) => ['middle','brief'].includes(sections.get(id)));
+    const columns = units / columnUnits;
     for (const item of ordered) {
       const section = sections.get(item.id);
       const main = section === 'opening';
@@ -1910,18 +2006,21 @@ function lettura() {
       const manual = saved && !saved.autoSize ? saved : null;
       const withPhoto = item.showPhoto && photos.has(item.id);
       const openingWidth = model.opening === 'full' || units === columnUnits ? units : units-(topEditorial ? 2 : 1)*columnUnits;
-      const secondaryWidth = section === 'closing' ? 2*columnUnits : columnUnits;
+      const lowerIndex = lower.indexOf(item);
+      const secondaryColumns = section === 'closing' ? 2 : lowerIndex < 0 ? 1 : Math.max(1,
+        Math.floor(columns / lower.length) + Number(lowerIndex < columns % lower.length));
+      const secondaryWidth = secondaryColumns * columnUnits;
       const natural = main ? (item.size === 'ampio' ? units : item.size === 'ridotto' ? openingWidth-2 : openingWidth)
         : item.size === 'ampio' ? 2*columnUnits : item.size === 'ridotto' ? columnUnits : secondaryWidth;
       const w = manual?.w ?? clamp(natural,minimumWidth,units);
-      const h = manual?.h ?? (main ? (edition.model === 'visual' ? 15 : edition.model === 'essential' ? 12 : 13) :
-        (withPhoto ? 10 : 7) + (item.size === 'ampio' ? 1 : item.size === 'ridotto' ? -1 : 0));
       const lead = preferred[0]?.section === 'opening' ? preferred[0] : null;
       const sidebar = section === 'sidebar';
       const editorial = section === 'editorial';
       const edge = units-w;
       const x = main && topEditorial ? Math.min(columnUnits,edge) : sidebar || item.align === 'right' && !main && !editorial ? edge : 0;
       const onTop = main || sidebar && (!lead || lead.x+lead.w <= edge) || editorial && topEditorial && (!lead || w <= lead.x);
+      const h = manual?.h ?? (main ? (edition.model === 'essential' ? 16 : 19) :
+        onTop && lead ? lead.h : (withPhoto ? 11 : 8) + (item.size === 'ampio' ? 1 : item.size === 'ridotto' ? -1 : 0));
       const y = section === 'closing' ? Math.max(0,...preferred.map(frame => frame.y+frame.h)) :
         onTop ? 0 : lead?.h ?? 0;
       const base = {x,y,w,h,id:item.id,section,units};
@@ -2072,17 +2171,51 @@ function lettura() {
 
   const copyBlocks = new WeakMap();
   const lockCoverFit = new WeakSet();
+  const sentenceEnd = /[.!?…][»”’"')\]]*\s*$/u;
+  const sentences = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter('it',{granularity:'sentence'}) : null;
+  function sentenceBoundary(tokens, limit) {
+    if (!sentences) return tokens.slice(0,limit).findLastIndex(token => sentenceEnd.test(token.value)) + 1;
+    const prefix = tokens.slice(0,limit+1).map(token => token.value).join('');
+    const length = prefix.length - (tokens[limit]?.value.length ?? 0);
+    let end = 0;
+    for (const {index,segment} of sentences.segment(prefix)) {
+      if (index + segment.length > length) break;
+      if (sentenceEnd.test(segment)) end = index + segment.length;
+    }
+    let used = 0;
+    let boundary = 0;
+    while (boundary < limit && (used += tokens[boundary].value.length) <= end) boundary++;
+    return boundary;
+  }
+  function referenceLabel(node) {
+    const page = node.dataset.folio;
+    if (node.classList.contains('front-folio')) {
+      node.textContent = page ? ' · a pag. ' + page : '';
+      return;
+    }
+    node.textContent = page ? (node.dataset.continuation === 'true' ? 'Segue a pag. ' : 'A pag. ') + page :
+      node.dataset.continuation === 'true' ? 'Continua nelle pagine interne' : 'Leggi nelle pagine interne';
+    if (node.matches('button')) {
+      node.setAttribute('aria-label',node.textContent+' · '+node.title);
+    }
+  }
+  function setCoverReferences(front,first) {
+    for (const node of front.querySelectorAll('[data-front-reference]')) {
+      node.dataset.folio = first.get(node.dataset.frontReference) ?? '';
+      referenceLabel(node);
+    }
+  }
   function fitFront(front,map = new Map()) {
     if (!front?.isConnected || !front.clientWidth || lockCoverFit.has(front)) return map;
     for (const box of front.querySelectorAll('.front-copy')) {
       const copy = copyBlocks.get(box);
       if (!copy) continue;
-      const {blocks,isArticle,articleId,link} = copy;
+      const {blocks,isArticle,articleId,link,fallback,hasInterior,customSize} = copy;
       const height = box.clientHeight;
       box.replaceChildren();
       const fits = node => {
         box.append(node);
-        const fits = box.scrollHeight <= height + 1;
+        const fits = box.scrollHeight <= height + 1 && box.scrollWidth <= box.clientWidth + 1;
         node.remove();
         return fits;
       };
@@ -2101,14 +2234,36 @@ function lettura() {
           if (fits(richNode(tag,tokens.slice(0,middle)))) low = middle;
           else high = middle-1;
         }
-        offset = low;
+        const boundary = sentenceBoundary(tokens,low);
+        if (customSize && low > boundary || !boundary && !index && !fallback) {
+          const excerpt = count => {
+            const node = richNode(tag,[...tokens.slice(0,count-1),
+              {...tokens[count-1],value:tokens[count-1].value.trimEnd()}]);
+            node.classList.add('copy-cut');
+            return node;
+          };
+          while (low && !fits(excerpt(low))) low--;
+          if (low > boundary) {
+            offset = low;
+            box.append(excerpt(offset));
+            break;
+          }
+        }
+        offset = boundary;
         if (offset) box.append(richNode(tag,tokens.slice(0,offset)));
+        else if (!index && fallback && fits(richNode('p',[{value:fallback}]))) box.append(richNode('p',[{value:fallback}]));
         break;
+      }
+      if (!offset && index && blocks[index-1].tag === 'h3') {
+        box.lastElementChild.remove();
+        index--;
       }
       if (isArticle) {
         if (index || offset) map.set(articleId,{index,offset});
-        if (link) link.textContent = index === blocks.length ? 'Fonti e dettagli all’interno' :
-          index || offset ? 'Continua nelle pagine interne' : 'Leggi nelle pagine interne';
+        if (link) {
+          link.dataset.continuation = String(Boolean((index || offset) && (index < blocks.length || hasInterior)));
+          referenceLabel(link);
+        }
       }
     }
     return map;
@@ -2129,6 +2284,9 @@ function lettura() {
     return visible.map(({tag,tokens}) => (tag === 'h3' ? '## ' : '') + richRuns(tokens).map(({strong,value}) =>
       strong ? '**'+value+'**' : value).join('')).join('\n\n');
   }
+  function hasRemainingBody(article,cut) {
+    return remainingBody(richBody(article.text),cut).length > 0;
+  }
   function measureCover(front,parent,width) {
     const probe = el('div',{class:'cover-measure','aria-hidden':'true',inert:true,style:'width:'+width+'px'},front);
     parent.append(probe);
@@ -2138,16 +2296,21 @@ function lettura() {
   }
 
   function frontPage(edition, options = {}) {
-    const {onArticle,onSelect,editable=false,insertion,resize,selected,forPrint,coversOnly} = options;
+    const {onArticle,onSelect,editable=false,insertion,resize,selected} = options;
     const canMove = editable && edition.layout.length > 1;
     const plan = new Map(framePlan(edition).map(frame => [frame.id,frame]));
     const grid = el('div', {class:'front-grid frame-grid'});
     const front = el('div', {class:'front frame-cover '+edition.model+(editable ? ' editable-cover' : ''),
-      style:'--grid-units:'+unitsFor(edition),'data-columns':columnCount(edition)}, el('header', {class:'front-flag'},
-      el('p', {class:'front-meta'}, [editionClass(edition),edition.issue,dateLabel(edition.date)].filter(Boolean).join(' · ') || 'Edizione senza data'),
+      style:'--grid-units:'+unitsFor(edition)+';--grid-rows:'+Math.max(1,...[...plan.values()].map(frame => frame.y+frame.h)),
+      'data-columns':columnCount(edition)}, el('header', {class:'front-flag'},
       el('div', {class:'front-name'}, edition.name || 'Quotidiano senza titolo'),
-      edition.motto && el('p', {class:'front-motto'}, edition.motto)), grid);
+      el('div',{class:'front-edition'},el('p', {class:'front-meta'}, [dateLabel(edition.date),edition.issue,editionClass(edition)].filter(Boolean).join(' · ') || 'Edizione senza data'),
+        edition.motto && el('p', {class:'front-motto'}, edition.motto))), grid);
     const articles = new Map(edition.articles.map(article => [article.id, article]));
+    const frontCredit = photo => (photo.caption || photo.credit || photo.creditURL || photo.license) && el('figcaption',{},photo.caption,
+      (photo.credit || photo.creditURL || photo.license) && el('span',{class:'photo-credit'},photo.credit,
+        photo.credit && photo.creditURL && ' · ', external(photo.creditURL,'Fonte immagine'),
+        (photo.credit || photo.creditURL) && photo.license && ' · ', external(photo.license,'Licenza')));
     [...edition.layout].sort((a,b) => plan.get(a.id).y-plan.get(b.id).y || plan.get(a.id).x-plan.get(b.id).x).forEach(item => {
       const article = articles.get(item.id);
       if (!article) return;
@@ -2157,14 +2320,18 @@ function lettura() {
       const align = !position && item.align === 'right' ? ' pos-right' : '';
       const heading = item.title || article.title;
       const summary = item.summary || article.summary;
+      const mode = item.bodyMode || (item.showSummary ? 'summary' : 'title');
+      const isArticle = mode === 'article';
+      const display = isArticle ? article.text : mode === 'summary' ? summary : '';
       const photo = articlePhoto(article, item.photo);
       const open = onSelect || onArticle;
       const title = el('h3', {class:'front-title'}, open ? el('button', {type:'button', onclick:() => open(item.id), 'aria-pressed':onSelect ? String(selected === item.id) : null}, heading) : heading);
       const displayPhoto = item.showPhoto && photo;
+      const portrait = displayPhoto && frame.w <= columnUnits && photo.height > photo.width;
       const picture = displayPhoto && el('figure', {class:'front-photo',style:photoSizeStyle(item.photoSize)},
         el('img', {...photoAttrs(photo), draggable:'false', style:'object-position:' + (item.cropX ?? 50) + '% ' + (item.cropY ?? 50) + '%'}),
-        photo.caption && el('figcaption', {}, photo.caption));
-      const cell = el('article', {class:['front-cell frame-cell', position, size, 'title-' + item.titleSize].filter(Boolean).join(' ') + align,
+        frontCredit(photo));
+      const cell = el('article', {class:['front-cell frame-cell', position, size, 'title-' + item.titleSize,portrait && 'portrait-photo'].filter(Boolean).join(' ') + align,
         style:frameStyle(frame), 'data-id':item.id, 'data-section':frame.section,
         'data-frame':[frame.x,frame.y,frame.w,frame.h].join(','), 'data-selected':onSelect ? String(item.id === selected) : null,
         'data-insertion':insertion === item.id ? 'true' : null,'data-editor':canMove || insertion ? 'true' : null,
@@ -2172,24 +2339,23 @@ function lettura() {
       const category = !edition.hideCategories && article.categories.length ? article.categories.join(' · ') : '';
       const label = article.fiction ? 'Esempio inventato' : article.type === 'Notizia documentata' ? category : article.type;
       const tag = label && el('div', {class:'kicker'}, label);
-      if (edition.model === 'visual' && frame.section === 'opening') cell.append(...[picture, tag, title].filter(Boolean));
-      else cell.append(...[tag, title, picture].filter(Boolean));
-      const mode = item.bodyMode || (item.showSummary ? 'summary' : 'title');
-      const isArticle = mode === 'article';
-      const display = isArticle ? article.text : mode === 'summary' ? summary : '';
-      const link = isArticle && !coversOnly && (onArticle
-        ? el('button',{type:'button',class:'front-continues',onclick:() => onArticle(item.id),'aria-label':'Continua a leggere: '+heading},'Continua nelle pagine interne')
-        : el('p',{class:'front-continues'},'Continua nelle pagine interne'));
+      const deck = isArticle && frame.section === 'opening' && article.subtitle && el('p',{class:'front-deck'},article.subtitle);
+      if (edition.model === 'visual' && frame.section === 'opening') cell.append(...[picture, tag, title, deck].filter(Boolean));
+      else cell.append(...[tag, title, deck, picture].filter(Boolean));
+      const linkAttrs = {class:'front-continues','data-front-reference':item.id};
+      const link = (onArticle
+        ? el('button',{...linkAttrs,type:'button',onclick:() => onArticle(item.id),title:heading},'Leggi nelle pagine interne')
+        : el('p',linkAttrs,'Leggi nelle pagine interne'));
       if (display) {
         const copy = el('div',{class:'front-copy'});
-        copyBlocks.set(copy,{blocks:richBody(display),isArticle,articleId:item.id,link});
+        copyBlocks.set(copy,{blocks:richBody(display),isArticle,articleId:item.id,link,hasInterior:article.hasInterior,
+          customSize:isArticle && (item.frame && !item.frame.autoSize || !samePhotoSize(item.photoSize,null)),
+          fallback:isArticle && summary !== article.subtitle ? summary : ''});
         cell.append(copy);
-        if (link) cell.append(link);
       }
+      cell.append(link);
       if (resize && selected === item.id) cell.append(...Object.keys(frameSides).map(side =>
         resizeHandle(side,frame,cell,(edge,steps,focus) => resize(item.id,edge,steps,focus))));
-      if (forPrint && displayPhoto && photo.credit) cell.append(el('div', {class:'caption'}, photo.credit,
-        photo.creditURL && ' · ', external(photo.creditURL, 'Fonte immagine'), photo.license && ' · ', external(photo.license, 'Licenza')));
       if (canMove) cell.append(el('button',{type:'button',class:'btn tile-grip',draggable:'false','data-move-handle':item.id,
         title:'Sposta il riquadro','aria-label':'Sposta '+heading,'aria-pressed':'false','aria-describedby':'move-layout-help'},
         el('span',{class:'grip-mark','aria-hidden':'true'})));
@@ -2203,11 +2369,14 @@ function lettura() {
       samePhotoSize(item.photoSize,edition.coverImage.photoSize))) {
       front.insertBefore(el('figure', {class:'front-photo front-cover-photo',style:photoSizeStyle(edition.coverImage.photoSize)},
         el('img', {...photoAttrs(chosen), style:'object-position:' + (edition.coverImage.x ?? 50) + '% ' + (edition.coverImage.y ?? 50) + '%'}),
-        chosen.caption && el('figcaption', {}, chosen.caption),
-        forPrint && chosen.credit && el('div', {class:'caption'}, chosen.credit, ' ', external(chosen.creditURL, 'Fonte immagine'), ' ', external(chosen.license, 'Licenza'))), grid);
+        frontCredit(chosen)), grid);
     }
-    const count = edition.pageCount ?? edition.articles.filter(article => article.published).length;
-    front.append(el('p', {class:'front-editorial-foot'}, count + (count === 1 ? ' articolo nel giornale' : ' articoli nel giornale')));
+    const inside = (edition.inside || edition.articles.filter(article => article.published && !plan.has(article.id))).slice(0,6);
+    if (inside.length) front.append(el('aside',{class:'front-editorial-foot front-briefs','aria-label':'In questo numero'},
+      el('h3',{},'In questo numero'),el('ul',{},inside.map(({id,title}) => {
+        const folio = el('span',{class:'front-folio','data-front-reference':id});
+        return el('li',{},onArticle ? el('button',{type:'button',onclick:() => onArticle(id)},title,folio) : [title,folio]);
+      }))));
     queueMicrotask(() => fitFront(front));
     return front;
   }
@@ -2282,8 +2451,9 @@ function lettura() {
       if (credits(photo) || photo.creditURL || photo.license) blocks.push({node:() => captionNode(photo)});
     };
     if (article.images[0]) addPhoto(article.images[0]);
-    if (cut) blocks.push({node:() => el('p',{class:'article-meta'},'Continua dalla prima pagina')});
-    blocks.push(...remainingBody(richBody(article.text),cut));
+    const body = remainingBody(richBody(article.text),cut);
+    if (cut && body.length) blocks.push({node:() => el('p',{class:'article-meta'},'Continua dalla prima pagina')});
+    blocks.push(...body);
     article.images.slice(1).forEach(addPhoto);
     if (article.note) blocks.push({tag:'h3',text:'Nota del redattore'}, ...richBody(article.note));
     if (article.limits) blocks.push({tag:'h3',text:'Limiti e verifiche'}, ...richBody(article.limits));
@@ -2299,17 +2469,33 @@ function lettura() {
     return el('article', {class:'full-article', id:'article-' + article.id, tabindex:interactive ? '-1' : null},
       articleBlocks(article, hideCategories,cut).map(block => blockNode(block, interactive)));
   }
-  function printEdition(edition, coverOnly, format = 'A4') {
-    const size = format === 'A3' ? 'A3' : 'A4';
-    const front = frontPage(edition,{forPrint:true,coversOnly:coverOnly});
-    const sheet = el('div',{class:'print-root measuring',style:'width:'+(size === 'A3' ? 273 : 186)+'mm'},front);
+  // I rimandi della stampa usano gli stessi blocchi e formati delle pagine stampate.
+  function printLayout(edition,size) {
+    const width = size === 'A3' ? 273 : 186;
+    const height = size === 'A3' ? 395 : 272;
+    const front = frontPage(edition);
+    const sheet = el('div',{class:'print-root measuring',style:'width:'+width+'mm;--print-page-height:'+height+'mm'},front);
     document.body.append(sheet);
     const cuts = fitFront(front);
     lockCoverFit.add(front);
+    const saved = edition.printFolios?.[size];
+    const {pages,first} = saved ? {pages:[],first:new Map(saved)} :
+      paginate(edition,sheet,sheet.getBoundingClientRect().width,false,cuts,(height-13)*96/25.4);
+    const folios = saved ? first : new Map([...first].map(([id,index]) => [id,index+1]));
+    setCoverReferences(front,folios);
+    sheet.remove();
+    return {sheet,cuts,pages,first,folios};
+  }
+  function printEdition(edition, coverOnly, format = 'A4') {
+    const size = format === 'A3' ? 'A3' : 'A4';
+    const {sheet,pages,first} = printLayout(edition,size);
+    if (!coverOnly) sheet.append(...pages.map(({article,content},index) => el('article',{class:'print-story'},
+      el('div',{class:'paper-content'},first.get(article.id) !== index && el('p',{class:'article-meta'},'Segue · '+article.title),
+        content.map(block => blockNode(block,false))),
+      el('div',{class:'paper-foot'},el('span',{},edition.issue || edition.name),el('span',{},'Pagina '+(index+1))))));
     sheet.classList.remove('measuring');
-    sheet.removeAttribute('style');
-    if (!coverOnly) sheet.append(...edition.articles.filter(article => article.published).map(article =>
-      fullArticle(article,edition.hideCategories,false,cuts.get(article.id))));
+    sheet.style.removeProperty('width');
+    document.body.append(sheet);
     const style = el('style', {}, '@page { size: ' + size + ' portrait; margin: 12mm; }');
     document.head.append(style);
     document.body.classList.add('printing');
@@ -2323,13 +2509,13 @@ function lettura() {
 
   // Misura i blocchi alla larghezza effettiva. I paragrafi lunghi vengono spezzati
   // ai confini fra parole, o fra grafemi se una singola parola eccede una pagina.
-  function paginate(edition, stage, width, double,cuts) {
-    const probe = el('section', {class:'paper pagination-probe','aria-hidden':'true',inert:true,
+  function paginate(edition, stage, width, double,cuts,printLimit) {
+    const probe = el('section', {class:(printLimit ? 'print-story' : 'paper')+' pagination-probe','aria-hidden':'true',inert:true,
       style:'width:' + (width / (double ? 2 : 1)) + 'px'});
     const measure = el('div', {class:'paper-content'});
     probe.append(measure);
     stage.append(probe);
-    const limit = Math.max(385, Math.min(735, window.innerHeight - 210));
+    const limit = printLimit ?? Math.max(385, Math.min(735, window.innerHeight - 210));
     const pages = [];
     const first = new Map();
     for (const article of edition.articles.filter(item => item.published)) {
@@ -2522,7 +2708,7 @@ function lettura() {
       return Math.min(stage.clientWidth,59*parseFloat(getComputedStyle(document.documentElement).fontSize));
     }
     function prepareCover() {
-      coverNode=frontPage(edition,{onArticle:coverOnly ? null : id => jump(id,true),forPrint:coverOnly,coversOnly:coverOnly});
+      coverNode=frontPage(edition,{onArticle:coverOnly ? null : id => jump(id,true)});
       cuts=measureCover(coverNode,stage,coverWidth());
       lockCoverFit.add(coverNode);
     }
@@ -2629,11 +2815,16 @@ function lettura() {
       if (!flow && !coverOnly) {
         const bookWidth = double ? lastWidth : Math.min(lastWidth,48*parseFloat(getComputedStyle(document.documentElement).fontSize));
         ({pages,first} = paginate(edition,stage,bookWidth,double,cuts));
+        setCoverReferences(coverNode,new Map([...first].map(([id,index]) => [id,index+1])));
         const id = target || oldId;
         current = id && first.has(id) ? first.get(id) : -1;
         if (preservePage && current >= 0 && id === oldId) {
           while (pages[current + 1]?.article.id === id && current - first.get(id) < offset) current++;
         }
+      }
+      if (coverOnly && edition.printFolios) {
+        setCoverReferences(coverNode,new Map(edition.printFolios.A4));
+        coverNode.querySelector('.front-briefs h3')?.append(' · edizione A4');
       }
       draw();
       if (flow && target) jump(target,false);
@@ -2693,7 +2884,7 @@ function lettura() {
       window.speechSynthesis?.cancel();
     };
   }
-  return {$,el,btn,safeURL,external,dateLabel,editionClass,frontPage,fitFront,frontBody,measureCover,fullArticle,printEdition,mountReader,photoBounds,photoSize,samePhotoSize,
+  return {$,el,btn,safeURL,external,dateLabel,editionClass,frontPage,fitFront,frontBody,hasRemainingBody,measureCover,fullArticle,printEdition,printLayout,mountReader,photoBounds,photoSize,samePhotoSize,
     framePlan,frameChanged,adjustEdge,resizeFrame,normalizeFrame,resetFramePositions,moveIntoArea,frameSides,
     readingSpreads,layoutModels,editorialSections,columnCount,unitsFor,changeColumns,sectionPlan,columnUnits};
 }
@@ -2869,6 +3060,7 @@ function expandSavedExamples(articles) {
 }
 function starterWorkspace() {
   const edition = newEdition(appName,'Edizione di esempio');
+  edition.date = '2026-10-24';
   edition.motto = tagline;
   edition.articles = starterArticles();
   edition.layout = edition.articles.slice(0,4).map((article,index) => ({...entryFor(article),showPhoto:index < 2,cropY:index === 1 ? 25 : 50,bodyMode:index < 2 ? 'article' : 'summary'}));
@@ -2908,7 +3100,8 @@ function layoutFrom(value, articles, units) {
   return unique(arrayOf(value,7).filter(item => isObject(item) && byId.has(item.id)).map(item => ({
     ...entryFor(byId.get(item.id)),size:choice(item.size,['standard','ampio','ridotto'],'standard'),align:item.align === 'right' ? 'right' : 'left',
     titleSize:choice(item.titleSize,['auto','small','medium','large'],'auto'),showPhoto:item.showPhoto !== false,showSummary:item.showSummary !== false,
-    bodyMode:choice(item.bodyMode,['summary','article','title'],null),section:choice(item.section,Object.keys(R.editorialSections),null),
+    bodyMode:choice(item.bodyMode,['summary','article','title'],null),section:item.section === 'editorial' && byId.get(item.id).type !== 'Editoriale'
+      ? null : choice(item.section,Object.keys(R.editorialSections),null),
     frame:R.normalizeFrame(item.frame,units),
     title:text(item.title,110),summary:text(item.summary,180),photo:bounded(item.photo,0,byId.get(item.id).images.length-1,0),
     cropX:bounded(item.cropX,0,100,50),cropY:bounded(item.cropY,0,100,50),photoSize:R.photoSize(item.photoSize),
@@ -3375,6 +3568,8 @@ function articleEditor(existing) {
     const index = target.articles.findIndex(item => item.id === article.id);
     if (index < 0) target.articles.push(article);
     else target.articles[index] = article;
+    const frame = target.layout.find(item => item.id === article.id);
+    if (frame?.section === 'editorial' && article.type !== 'Editoriale') frame.section = null;
     if (!article.published) {
       target.layout = target.layout.filter(item => item.id !== article.id);
       if (target.coverImage?.id === article.id) target.coverImage = null;
@@ -3676,7 +3871,7 @@ function wireCoverMovement(paper,edition,help,announce,onCommit) {
 
 // Le scelte di copertina restano distinte dai contenuti completi.
 function modelThumbnail(id,model) {
-  const articles = Array.from({length:5},(_,index) => ({id:String(index),images:index === 0 ? [{}] : []}));
+  const articles = Array.from({length:5},(_,index) => ({id:String(index),images:index === 0 ? [{}] : [],type:index === 2 ? 'Editoriale' : ''}));
   const layout = articles.map(entryFor);
   const sample = {model:id,columns:model.columns,articles,layout};
   const frames = R.framePlan(sample);
@@ -3793,7 +3988,7 @@ function showCompose() {
         measure[axis] = value;
         photoTarget.photoSize = {...measure};
       },R.photoBounds[axis])),
-      tip('La larghezza si misura rispetto al riquadro. Per l’altezza, 100% corrisponde alla misura automatica.'),
+      tip('Il 100% corrisponde alle dimensioni automatiche della foto nel riquadro.'),
       btn('Ripristina dimensioni automatiche',() => {
         photoTarget.photoSize = null;
         if (isMain) coverOpen = true;
@@ -3889,9 +4084,10 @@ function showCompose() {
       }));
       toolsCard.append(
         section('position','Posizione e grandezza',
-          field('Sezione della prima pagina',select([['','Automatica'],...Object.entries(R.editorialSections)],current.section ?? '',
+          field('Sezione della prima pagina',select([['','Automatica'],...Object.entries(R.editorialSections).filter(([key]) =>
+            key !== 'editorial' || article.type === 'Editoriale')],current.section === 'editorial' && article.type !== 'Editoriale' ? '' : current.section ?? '',
             {'data-compose':'editorial-section',onchange:event => assignSection(event.target.value)}),
-          'Posizione attuale · '+R.editorialSections[frame.section]),
+          'Posizione attuale · '+R.editorialSections[frame.section]+(article.type !== 'Editoriale' ? '. Il fondo è riservato agli editoriali.' : '')),
           el('div',{class:'control-grid'},
             tool('Sposta in apertura',() => assignSection('opening'),frame.section === 'opening'),
             tool('Sposta in alto',() => shift(index-1),index === 0),
@@ -4378,12 +4574,21 @@ function exportEdition(coverOnly) {
   const target = edition();
   const snapshot = captureFront(target);
   const published = target.articles.filter(item => item.published);
-  const coverCuts = coverOnly ? R.measureCover(R.frontPage(snapshot,{coversOnly:true}),document.body,944) : new Map();
-  snapshot.articles = coverOnly ? snapshot.articles.map(article => ({
-    ...article,text:R.frontBody(article,coverCuts.get(article.id)),subtitle:'',note:'',limits:'',source:'',url:'',neutral:'',emotional:'',consulted:''
-  })) : published.map(({neutral,emotional,...article}) => article);
+  if (coverOnly) {
+    const a4 = R.printLayout(target,'A4');
+    const a3 = R.printLayout(target,'A3');
+    const screen = R.measureCover(R.frontPage(target),document.body,944);
+    snapshot.printFolios = {A4:[...a4.folios],A3:[...a3.folios]};
+    snapshot.inside = published.filter(article => !target.layout.some(item => item.id === article.id)).slice(0,6)
+      .map(({id,title}) => ({id,title}));
+    snapshot.articles = snapshot.articles.map(article => {
+      const cut = [a4.cuts,a3.cuts,screen].map(cuts => cuts.get(article.id)).filter(Boolean)
+        .sort((a,b) => b.index-a.index || b.offset-a.offset)[0];
+      return {...article,text:R.frontBody(article,cut),hasInterior:R.hasRemainingBody(article,cut),
+        note:'',limits:'',source:'',url:'',neutral:'',emotional:'',consulted:''};
+    });
+  } else snapshot.articles = published.map(({neutral,emotional,...article}) => article);
   snapshot.layout = snapshot.layout.map(({reason,reasonText,...item}) => item);
-  snapshot.pageCount = published.length;
   delete snapshot.guide;
   delete snapshot.lab;
   delete snapshot.snapshots;
