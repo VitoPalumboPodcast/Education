@@ -289,6 +289,7 @@ dialog::backdrop {
 .front {
   --front-factor:1;
   container-type:inline-size;
+  container-name:front-page;
   background:var(--paper);
   color:var(--ink);
   padding:clamp(.7rem,2.8cqi,1.5rem);
@@ -1019,6 +1020,7 @@ dialog::backdrop {
   min-height:0;
   margin:.28rem 0;
 }
+.front.visual .frame-cell.lead > .front-photo {order:-1}
 .front .frame-cell .front-photo img {
   flex:0 1 auto;
   height:calc(min(var(--photo-rows) * 1.12rem,43cqi) * var(--photo-height,1));
@@ -1203,6 +1205,48 @@ button.front-continues {
     margin-block-end:.65rem;
     height:calc(var(--frame-rows) * (var(--front-track) + .25rem));
     min-height:min-content;
+  }
+}
+@container front-page (max-width:32rem) {
+  .reading-cover .frame-grid {
+    --cover-feed:1;
+    display:block;
+  }
+  .reading-cover .frame-cell {
+    width:100%;
+    height:auto;
+    margin-inline:0;
+    margin-block-end:0;
+    padding:.9rem 0 1rem;
+  }
+  .reading-cover .frame-cell[data-section=sidebar]::before {display:none}
+  .reading-cover .front-photo,
+  .front.visual.reading-cover .frame-cell.lead > .front-photo {
+    width:100%;
+    order:0;
+    margin-block:.4rem .5rem;
+  }
+  .front.reading-cover .frame-cell .front-photo img,
+  .front.reading-cover > .front-cover-photo img {
+    width:100%;
+    height:auto;
+    aspect-ratio:16/10;
+  }
+  .front.reading-cover .front-photo img[data-portrait] {aspect-ratio:1}
+  .reading-cover .front-copy {
+    flex:none;
+    contain:none;
+    column-count:1;
+    height:auto;
+    min-height:0;
+  }
+  .reading-cover .front-copy.measure-excerpt {
+    height:calc(8.2rem * var(--front-factor));
+  }
+  .reading-cover .frame-cell .front-continues {
+    min-height:2.75rem;
+    display:flex;
+    align-items:center;
   }
 }
 @media print {
@@ -2247,10 +2291,17 @@ function lettura() {
   }
   function fitFront(front,map = new Map()) {
     if (!front?.isConnected || !front.clientWidth || lockCoverFit.has(front)) return map;
+    const coverFeed = front.classList.contains('reading-cover') &&
+      getComputedStyle(front.querySelector('.frame-grid')).getPropertyValue('--cover-feed').trim() === '1';
     for (const box of front.querySelectorAll('.front-copy')) {
       const copy = copyBlocks.get(box);
       if (!copy) continue;
       const {blocks,isArticle,articleId,link,fallback,hasInterior,customSize} = copy;
+      if (coverFeed && !isArticle) {
+        box.replaceChildren(...blocks.map(({tag,tokens}) => richNode(tag,tokens)));
+        continue;
+      }
+      if (coverFeed) box.classList.add('measure-excerpt');
       const height = box.clientHeight;
       box.replaceChildren();
       const fits = node => {
@@ -2305,6 +2356,7 @@ function lettura() {
           referenceLabel(link);
         }
       }
+      box.classList.remove('measure-excerpt');
     }
     return map;
   }
@@ -2336,11 +2388,11 @@ function lettura() {
   }
 
   function frontPage(edition, options = {}) {
-    const {onArticle,onSelect,editable=false,insertion,resize,selected} = options;
+    const {onArticle,onSelect,editable=false,insertion,resize,selected,reading=false} = options;
     const canMove = editable && edition.layout.length > 1;
     const plan = new Map(framePlan(edition).map(frame => [frame.id,frame]));
     const grid = el('div', {class:'front-grid frame-grid'});
-    const front = el('div', {class:'front frame-cover '+edition.model+(editable ? ' editable-cover' : ''),
+    const front = el('div', {class:['front','frame-cover',edition.model,editable && 'editable-cover',reading && 'reading-cover'].filter(Boolean).join(' '),
       style:'--grid-units:'+unitsFor(edition)+';--grid-rows:'+Math.max(1,...[...plan.values()].map(frame => frame.y+frame.h)),
       'data-columns':columnCount(edition)}, el('header', {class:'front-flag'},
       el('div', {class:'front-name'}, edition.name || 'Quotidiano senza titolo'),
@@ -2369,7 +2421,8 @@ function lettura() {
       const displayPhoto = item.showPhoto && photo;
       const portrait = displayPhoto && frame.w <= columnUnits && photo.height > photo.width;
       const picture = displayPhoto && el('figure', {class:'front-photo',style:photoSizeStyle(item.photoSize)},
-        el('img', {...photoAttrs(photo), draggable:'false', style:'object-position:' + (item.cropX ?? 50) + '% ' + (item.cropY ?? 50) + '%'}),
+        el('img', {...photoAttrs(photo), draggable:'false','data-portrait':photo.height > photo.width,
+          style:'object-position:' + (item.cropX ?? 50) + '% ' + (item.cropY ?? 50) + '%'}),
         frontCredit(photo));
       const cell = el('article', {class:['front-cell frame-cell', position, size, 'title-' + item.titleSize,portrait && 'portrait-photo'].filter(Boolean).join(' ') + align,
         style:frameStyle(frame), 'data-id':item.id, 'data-section':frame.section,
@@ -2380,8 +2433,7 @@ function lettura() {
       const label = article.fiction ? 'Esempio inventato' : article.type === 'Notizia documentata' ? category : article.type;
       const tag = label && el('div', {class:'kicker'}, label);
       const deck = isArticle && frame.section === 'opening' && article.subtitle && el('p',{class:'front-deck'},article.subtitle);
-      if (edition.model === 'visual' && frame.section === 'opening') cell.append(...[picture, tag, title, deck].filter(Boolean));
-      else cell.append(...[tag, title, deck, picture].filter(Boolean));
+      cell.append(...[tag, title, deck, picture].filter(Boolean));
       const linkAttrs = {class:'front-continues','data-front-reference':item.id};
       const link = (onArticle
         ? el('button',{...linkAttrs,type:'button',onclick:() => onArticle(item.id),title:heading},'Leggi nelle pagine interne')
@@ -2408,7 +2460,8 @@ function lettura() {
       (item.cropX ?? 50) === (edition.coverImage.x ?? 50) && (item.cropY ?? 50) === (edition.coverImage.y ?? 50) &&
       samePhotoSize(item.photoSize,edition.coverImage.photoSize))) {
       front.insertBefore(el('figure', {class:'front-photo front-cover-photo',style:photoSizeStyle(edition.coverImage.photoSize)},
-        el('img', {...photoAttrs(chosen), style:'object-position:' + (edition.coverImage.x ?? 50) + '% ' + (edition.coverImage.y ?? 50) + '%'}),
+        el('img', {...photoAttrs(chosen),'data-portrait':chosen.height > chosen.width,
+          style:'object-position:' + (edition.coverImage.x ?? 50) + '% ' + (edition.coverImage.y ?? 50) + '%'}),
         frontCredit(chosen)), grid);
     }
     const inside = (edition.inside || edition.articles.filter(article => article.published && !plan.has(article.id))).slice(0,6);
@@ -2748,7 +2801,7 @@ function lettura() {
       return Math.min(stage.clientWidth,59*parseFloat(getComputedStyle(document.documentElement).fontSize));
     }
     function prepareCover() {
-      coverNode=frontPage(edition,{onArticle:coverOnly ? null : id => jump(id,true)});
+      coverNode=frontPage(edition,{reading:true,onArticle:coverOnly ? null : id => jump(id,true)});
       cuts=measureCover(coverNode,stage,coverWidth());
       lockCoverFit.add(coverNode);
     }
