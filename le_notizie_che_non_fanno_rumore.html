@@ -1463,6 +1463,36 @@ button.front-continues {
   gap:.55rem;
   flex-wrap:wrap;
 }
+.writing-dialog {width:min(68rem,calc(100% - 1rem));max-height:94dvh}
+.writing-dialog .dialog-body {padding:clamp(.85rem,2.5vw,1.8rem)}
+.writing-tabs {display:flex;gap:.3rem;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:.65rem}
+.writing-tabs .btn {border:0;background:transparent;color:var(--muted)}
+.writing-tabs [aria-selected=true] {background:var(--accent);color:#fff}
+.writing-panel {min-height:22rem;padding:.5rem 0}
+.writing-panel textarea[name=text] {font:1.12rem/1.7 var(--serif);min-height:22rem;padding:1.1rem;background:var(--paper);resize:vertical}
+.writing-panel input[name=title] {font:700 1.4rem/1.25 var(--serif)}
+.writing-format {gap:.4rem}
+.writing-format .btn:first-child {font-weight:800}
+.writing-footer {position:sticky;bottom:-1px;background:var(--panel);border-top:1px solid var(--line);padding:.8rem 0;z-index:2}
+.writing-panel .full-article {--read-font:1.08rem;box-shadow:none;padding:clamp(1rem,4vw,2.6rem)}
+.archive-filters {display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:.8rem}
+.archive-cards {display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));gap:1rem}
+.archive-story {display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.archive-photo {height:10rem;width:100%;object-fit:cover;background:var(--soft)}
+.archive-story-copy {padding:1.15rem 1.15rem .7rem;flex:1}
+.archive-story h3 {font:700 1.45rem/1.15 var(--serif);overflow-wrap:anywhere}
+.archive-summary {font:1rem/1.45 var(--serif)}
+.archive-story > .row {padding:.5rem 1.15rem 1.15rem;align-items:start}
+.archive-actions {width:100%;border-top:1px solid var(--line);padding-top:.6rem;margin-top:.3rem}
+.archive-actions summary {font-size:.85rem;color:var(--muted);cursor:pointer}
+.archive-actions > .row {padding-top:.65rem}
+@media(max-width:42rem) {
+  .archive-filters {grid-template-columns:1fr}
+  .writing-tabs {gap:.15rem}
+  .writing-tabs .btn {flex:1 1 42%;padding:.55rem .3rem}
+  .writing-panel textarea[name=text] {min-height:16rem}
+  .writing-footer {gap:.5rem}
+}
 .archive-row {
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
@@ -3473,6 +3503,111 @@ function encodePhoto(file) {
     img.src = url;
   });
 }
+// Spazio di scrittura con anteprima sicura e protezione delle modifiche aperte.
+function setupArticleEditor(form,article,dialog) {
+  dialog.classList.add('writing-dialog');
+  const children = [...form.children];
+  const footer = children.pop();
+  footer.classList.add('writing-footer');
+  const notices = children.shift();
+  const tabs = el('div',{class:'writing-tabs',role:'tablist','aria-label':'Sezioni dell’articolo'});
+  const panels = ['Scrivi','Fonti e categorie','Fotografie','Anteprima'].map((title,index) =>
+    el('section',{class:'stack writing-panel',role:'tabpanel',id:'writing-panel-'+index,
+      'aria-labelledby':'writing-tab-'+index,hidden:index !== 0}));
+  children.forEach(child => {
+    const names = [...child.querySelectorAll('[name]')].map(node => node.name);
+    const index = names.includes('photos') ? 2 : names.some(name => ['type','source','url','date','category','note','limits','neutral'].includes(name)) ? 1 : 0;
+    panels[index].append(child);
+  });
+  function activate(index,focus = false) {
+    panels.forEach((panel,i) => {
+      panel.hidden = i !== index;
+      tabs.children[i].setAttribute('aria-selected',String(i === index));
+      tabs.children[i].tabIndex = i === index ? 0 : -1;
+    });
+    if (index === 3) preview();
+    if (focus) tabs.children[index].focus();
+  }
+  ['Scrivi','Fonti e categorie','Fotografie','Anteprima'].forEach((title,index) => {
+    const tab = btn(title,() => activate(index),'small',{role:'tab',id:'writing-tab-'+index,
+      'aria-controls':'writing-panel-'+index,'aria-selected':String(index === 0),tabindex:index === 0 ? 0 : -1});
+    tab.addEventListener('keydown',event => {
+      const keys = {ArrowRight:(index+1)%4,ArrowLeft:(index+3)%4,Home:0,End:3};
+      if (Object.hasOwn(keys,event.key)) {event.preventDefault();activate(keys[event.key],true);}
+    });
+    tabs.append(tab);
+  });
+  const editor = panels[0].querySelector('textarea[name=text]');
+  const toolbar = el('div',{class:'row writing-format','aria-label':'Formattazione del testo'});
+  function format(kind) {
+    let start = editor.selectionStart, end = editor.selectionEnd;
+    let selected = editor.value.slice(start,end);
+    if (kind === 'bold') {
+      const content = selected || 'testo in evidenza';
+      if (start >= 2 && editor.value.slice(start-2,start) === '**' && editor.value.slice(end,end+2) === '**') {
+        editor.setRangeText(selected,start-2,end+2,'select');
+      } else {
+        editor.setRangeText('**'+content+'**',start,end,'select');
+        editor.setSelectionRange(start+2,start+2+content.length);
+      }
+    } else {
+      start = editor.value.lastIndexOf('\n',start-1)+1;
+      const next = editor.value.indexOf('\n',end);
+      end = next < 0 ? editor.value.length : next;
+      selected = editor.value.slice(start,end);
+      editor.setRangeText(selected.split('\n').map(line => line.startsWith('## ') ? line.slice(3) : '## '+(line || 'Sottotitolo')).join('\n'),start,end,'select');
+    }
+    editor.dispatchEvent(new Event('input',{bubbles:true}));
+    editor.focus();
+  }
+  toolbar.append(btn('Grassetto',() => format('bold'),'small',{title:'Evidenzia la selezione · Ctrl+B'}),
+    btn('Sottotitolo',() => format('heading'),'small',{title:'Trasforma il paragrafo selezionato in sottotitolo'}));
+  editor.closest('label').before(toolbar);
+  const counter = el('p',{class:'hint writing-count'});
+  editor.closest('label').after(counter);
+  const status = el('span',{class:'hint',role:'status'},'Modifica il testo, poi salva l’articolo.');
+  footer.append(status);
+  form.replaceChildren(tabs,notices,...panels,footer);
+  const initial = JSON.stringify([...new FormData(form)])+JSON.stringify(article.images);
+  const changed = () => initial !== JSON.stringify([...new FormData(form)])+JSON.stringify(article.images);
+  function update() {
+    const words = editor.value.trim().split(/\s+/).filter(Boolean).length;
+    counter.textContent = words+' parole · '+editor.value.length.toLocaleString('it')+' caratteri · circa '+Math.max(1,Math.ceil(words/200))+' min di lettura';
+    status.textContent = changed() ? 'Modifiche da salvare' : 'Nessuna modifica da salvare';
+  }
+  function preview() {
+    const draft = {...article};
+    for (const key of ['title','subtitle','text','source','url','date','consulted','note','limits','type']) draft[key] = form.elements[key].value;
+    draft.categories = new FormData(form).getAll('category');
+    panels[3].replaceChildren(R.fullArticle(draft,false,false));
+  }
+  form.addEventListener('input',update);
+  form.addEventListener('change',update);
+  form.addEventListener('click',() => queueMicrotask(update));
+  form.addEventListener('invalid',event => {
+    const panel = event.target.closest('.writing-panel');
+    if (panel) activate(panels.indexOf(panel));
+  },true);
+  form.addEventListener('keydown',event => {
+    if (!(event.ctrlKey || event.metaKey)) return;
+    if (event.key.toLowerCase() === 's') {event.preventDefault();form.requestSubmit();}
+    if (event.key.toLowerCase() === 'b' && event.target === editor) {event.preventDefault();format('bold');}
+  });
+  const canClose = () => !changed() || confirm('Ci sono modifiche da salvare. Vuoi chiudere e scartarle?');
+  const close = dialog.querySelector('.dialog-body > .row button');
+  const intercept = event => {if (!canClose()) {event.preventDefault();event.stopImmediatePropagation();}};
+  close.addEventListener('click',intercept,true);
+  const cancel = event => {if (!canClose()) event.preventDefault();};
+  dialog.addEventListener('cancel',cancel);
+  const unload = event => {if (changed()) {event.preventDefault();event.returnValue='';}};
+  addEventListener('beforeunload',unload);
+  dialog.addEventListener('close',() => {
+    dialog.classList.remove('writing-dialog');
+    dialog.removeEventListener('cancel',cancel);
+    removeEventListener('beforeunload',unload);
+  },{once:true});
+  update();
+}
 function articleEditor(existing) {
   const target = edition();
   const article = existing ? clone(existing) : blankArticle();
@@ -3501,11 +3636,17 @@ function articleEditor(existing) {
   function markError(message) {
     alert.textContent = message;
     alert.hidden = false;
+    alert.scrollIntoView({block:'nearest'});
   }
   function showImages() {
     photoList.replaceChildren(...article.images.map((photo,index) => {
       const photoInput = (key,max,type = 'text') => input('',photo[key],{type,maxlength:max,oninput:event => {photo[key] = event.target.value;}});
       return card(group(el('img',{class:'file-image',src:photo.src,alt:''}),el('strong',{},'Foto ' + (index+1)),
+        index === 0 && el('span',{class:'pill'},'Apertura dell’articolo'),
+        btn('Prima',() => {moveArray(article.images,index,index-1);showImages();},'small',
+          {disabled:index === 0,'aria-label':'Anticipa foto '+(index+1)}),
+        btn('Dopo',() => {moveArray(article.images,index,index+1);showImages();},'small',
+          {disabled:index === article.images.length-1,'aria-label':'Posticipa foto '+(index+1)}),
         btn('Rimuovi foto ' + (index+1),() => {article.images.splice(index,1); showImages(); photos.focus();},'small danger')),
         checkbox('Immagine puramente decorativa',photo.alt === '' && photo.decorative === true,{onchange:event => {
           photo.decorative = event.target.checked;
@@ -3519,6 +3660,7 @@ function articleEditor(existing) {
         el('div',{class:'columns'},field('URL HTTPS della fotografia',photoInput('creditURL',2000,'url')),
           field('URL HTTPS della licenza',photoInput('license',2000,'url'))));
     }));
+    queueMicrotask(() => photoList.closest('form')?.dispatchEvent(new Event('change',{bubbles:true})));
   }
   if (existing) article.images.forEach(item => {if (!item.alt) item.decorative = true;});
   showImages();
@@ -3564,6 +3706,11 @@ function articleEditor(existing) {
     fields.forEach(name => {article[name] = get(name);});
     Object.assign(article,{url,date:day(get('date')),consulted:day(get('consulted')),categories:labels,type:get('type'),published:data.has('published')});
     article.images = article.images.map(imageFrom);
+    if (existing) {
+      const photoIndex = index => Math.max(0,article.images.findIndex(image => image.src === existing.images[index]?.src));
+      for (const item of target.layout) if (item.id === article.id) item.photo = photoIndex(item.photo);
+      if (target.coverImage?.id === article.id) target.coverImage.index = photoIndex(target.coverImage.index);
+    }
     target.categoryLabels = [...new Set([...options,...labels])];
     const index = target.articles.findIndex(item => item.id === article.id);
     if (index < 0) target.articles.push(article);
@@ -3577,10 +3724,12 @@ function articleEditor(existing) {
     if (target.coverImage?.id === article.id && !article.images[target.coverImage.index]) target.coverImage = null;
     $('#app-dialog').close();
     touch();
+    persist();
     render();
     showStatus('Articolo salvato.');
   },'Salva articolo');
-  modal(existing ? 'Modifica articolo' : 'Nuova notizia',form);
+  const dialog = modal(existing ? 'Modifica articolo' : 'Nuova notizia',form);
+  setupArticleEditor(form,article,dialog);
 }
 function moveArray(list,from,to) {
   if (from < 0 || to < 0 || to >= list.length || to === from) return false;
@@ -3635,20 +3784,39 @@ function categoryDialog() {
 }
 function editArchive() {
   const target = edition();
-  const list = el('div',{class:'card'});
+  const list = el('div',{class:'archive-cards'});
+  const resultCount = el('p',{class:'hint',role:'status'});
+  let stateFilter = 'all';
   const allCategories = categoryOptions(target).sort((a,b) => a.localeCompare(b,'it'));
   const populate = () => {
     const term = search.trim().toLocaleLowerCase('it');
     const articles = target.articles.filter(item =>
+      (stateFilter === 'all' || stateFilter === 'draft' && !item.published || stateFilter === 'published' && item.published ||
+        stateFilter === 'front' && target.layout.some(entry => entry.id === item.id)) &&
       (!categoryFilter || item.categories.includes(categoryFilter)) &&
       (!term || [item.title,item.text,item.source,...item.categories].join(' ').toLocaleLowerCase('it').includes(term)));
+    resultCount.textContent = articles.length+' di '+target.articles.length+' articoli';
     list.replaceChildren(...articles.map(article => {
       const index = target.articles.indexOf(article);
-      return el('article',{class:'archive-row'},
-        el('div',{class:'stack',style:'gap:.2rem'},el('h3',{},article.title),
+      const placed = target.layout.some(item => item.id === article.id);
+      return el('article',{class:'archive-story'},
+        article.images[0] && el('img',{class:'archive-photo',src:article.images[0].src,alt:article.images[0].alt || '',loading:'lazy'}),
+        el('div',{class:'stack archive-story-copy',style:'gap:.45rem'},
+          el('p',{class:'kicker'},placed ? 'In prima pagina' : article.published ? 'Pagine interne' : 'Bozza'),el('h3',{},article.title),
+          article.summary && el('p',{class:'archive-summary'},article.summary),
+          tip([article.source,R.dateLabel(article.date)].filter(Boolean).join(' · ')),
           tip([article.type,article.starter && 'Dall’archivio di esempio',article.fiction && 'Esempio inventato',!article.published && 'Bozza',
             ...article.categories].filter(Boolean).join(' · '))),
-        group(btn('Modifica',() => articleEditor(article),'small',{'aria-label':'Modifica ' + article.title}),
+        group(btn('Modifica',() => articleEditor(article),'primary small',{'aria-label':'Modifica ' + article.title}),
+          btn('Anteprima',() => modal(article.title,R.fullArticle(article,target.hideCategories)), 'small',{'aria-label':'Anteprima '+article.title}),
+          article.published && btn(placed ? 'Impagina' : 'Metti in prima pagina',() => {
+            if (!placed) {
+              if (target.layout.length >= 7) return showStatus('La prima pagina contiene già sette articoli. Apri il compositore per liberare un riquadro.');
+              target.layout.push(entryFor(article));touch();
+            }
+            selectedArticle=article.id;changeView('compose');
+          },'small'),
+          el('details',{class:'archive-actions'},el('summary',{},'Altre azioni'),group(
           btn('Duplica',() => {
             if (target.articles.length >= 250) return showStatus('Il numero contiene già 250 articoli.');
             const copy = {...clone(article),id:uid(),title:article.title.slice(0,151) + ' (copia)'};
@@ -3667,7 +3835,7 @@ function editArchive() {
             if (target.coverImage?.id === article.id) target.coverImage = null;
             if (target.showIds) target.showIds = target.showIds.filter(id => id !== article.id);
             touch(); render(); showStatus('Articolo eliminato.');
-          }),'small danger',{'aria-label':'Elimina ' + article.title})));
+          }),'small danger',{'aria-label':'Elimina ' + article.title})))));
     }));
     if (!articles.length) list.append(empty(target.articles.length ? 'Nessun articolo corrisponde ai filtri.' : 'L’archivio è vuoto. Crea una notizia o importa l’archivio comune.'));
   };
@@ -3677,8 +3845,10 @@ function editArchive() {
   populate();
   return el('section',{},heading('Le mie notizie','Raccogli le notizie che vuoi raccontare, scrivi i testi e indica le fonti.',[
     btn('Nuova notizia',() => articleEditor(),'primary'),btn('Modifica testata',() => projectDialog(false)),btn('Vai alla prima pagina',() => changeView('compose'))]),
-    el('div',{class:'stack'},card(el('div',{class:'columns'},field('Cerca nell’archivio',searchInput),field('Filtra per categoria',filter)),
-      group(btn('Gestisci categorie',categoryDialog,'small',{id:'manage-categories'}))),
+    el('div',{class:'stack'},card(el('div',{class:'archive-filters'},field('Cerca nell’archivio',searchInput),field('Filtra per categoria',filter),
+      field('Stato degli articoli',select([['all','Tutti gli articoli'],['front','In prima pagina'],['published','Pubblicati'],['draft','Bozze']],'all',
+        {onchange:event => {stateFilter=event.target.value;populate();}}))),
+      group(resultCount,btn('Gestisci categorie',categoryDialog,'small',{id:'manage-categories'}))),
       list,group(btn('Importa archivio comune',() => importFiles('package')),btn('Esporta archivio comune',exportPackage))));
 }
 
