@@ -804,6 +804,11 @@ dialog::backdrop {
     column-rule:1px solid var(--line);
   }
 }
+.reader:not([data-inside-style=two]) .paper[data-long-article] .story-copy {
+  column-count:1;
+  max-inline-size:68ch;
+  margin-inline:auto;
+}
 .paper-content h2,.full-article h2 {
   font-size:1.85em;
   line-height:1.03;
@@ -838,8 +843,6 @@ dialog::backdrop {
   object-fit:contain;
 }
 .paper .article-img img {max-height:clamp(9rem,32dvh,18rem)}
-.paper .article-img[data-fit=compact] img {max-height:10rem}
-.paper .article-img[data-fit=small] img {max-height:7rem}
 .article-img figcaption {
   padding:.38rem 0 .48rem;
   border-bottom:1px solid var(--line);
@@ -2812,9 +2815,9 @@ function lettura() {
     document.body.append(modal);
     modal.showModal();
   }
-  function photoBlock(photo,interactive,fit) {
+  function photoBlock(photo,interactive) {
     const image = el('img', photoAttrs(photo));
-    return el('figure', {class:'article-img','data-fit':fit}, interactive
+    return el('figure', {class:'article-img'}, interactive
       ? el('button', {type:'button', onclick:() => showPhoto(photo), 'aria-label':photo.alt ? 'Ingrandisci: ' + photo.alt : 'Ingrandisci questa fotografia'}, image)
       : image, (credits(photo) || photo.creditURL || photo.license) && captionNode(photo,'figcaption'));
   }
@@ -2825,7 +2828,7 @@ function lettura() {
       el('p',{class:'article-meta'},metadata),
       article.eyebrow && el('div',{class:'news-eyebrow','data-eyebrow-size':article.eyebrowSize},article.eyebrow),el('h2',{},article.title),
       article.subtitle && el('p',{class:'article-deck'},article.subtitle))}];
-    if (article.images[0]) blocks.push({photo:article.images[0],leadPhoto:true});
+    if (article.images[0]) blocks.push({photo:article.images[0]});
     const body = remainingBody(articleBody(article),cut);
     if (cut && body.length) blocks.push({node:() => el('p',{class:'article-meta'},'Continua dalla prima pagina')});
     blocks.push(...body);
@@ -2838,7 +2841,7 @@ function lettura() {
     return blocks;
   }
   function blockNode(block, interactive) {
-    if (block.photo) return photoBlock(block.photo,interactive,block.fit);
+    if (block.photo) return photoBlock(block.photo,interactive);
     return block.node ? block.node(interactive) : richNode(block.tag,block.tokens || [{value:block.text}],block.align);
   }
   function fullArticle(article, hideCategories, interactive = true,cut) {
@@ -2864,11 +2867,12 @@ function lettura() {
     return node;
   }
   function storyPage(edition,page,index,continued,print=false) {
-    const content = page && storyPageContent(edition,continued && page.article);
-    if (page) page.content.forEach(block => placeStoryBlock(content,block,!print));
+    const content = storyPageContent(edition,continued && page.article);
+    page.content.forEach(block => placeStoryBlock(content,block,!print));
     return el(print ? 'article' : 'section',{class:print ? 'print-story' : 'paper',
-      'aria-label':page ? 'Pagina '+(index+1) : 'Pagina vuota'},content,
-      page && el('div',{class:'paper-foot'},el('span',{},dateLabel(edition.date)),el('span',{},'Pagina '+(index+1))));
+      'data-article':page.article.id,'data-long-article':!print && page.article.text.length > 2400,
+      'aria-label':'Pagina '+(index+1)},content,
+      el('div',{class:'paper-foot'},el('span',{},dateLabel(edition.date)),el('span',{},'Pagina '+(index+1))));
   }
   // I rimandi della stampa usano gli stessi blocchi e formati delle pagine stampate.
   function printLayout(edition,size) {
@@ -2882,7 +2886,7 @@ function lettura() {
     lockCoverFit.add(front);
     const saved = edition.printFolios?.[size];
     const {pages,first} = saved ? {pages:[],first:new Map(saved)} :
-      paginate(edition,sheet,sheet.getBoundingClientRect().width,false,cuts,(height-13)*96/25.4);
+      paginatePrint(edition,sheet,sheet.getBoundingClientRect().width,cuts,(height-13)*96/25.4);
     const folios = saved ? first : new Map([...first].map(([id,index]) => [id,index+1]));
     setCoverReferences(front,folios);
     sheet.remove();
@@ -2906,13 +2910,11 @@ function lettura() {
     window.print();
   }
 
-  // Misura i blocchi alla larghezza effettiva. I paragrafi lunghi vengono spezzati
+  // Misura i blocchi per il formato carta. I paragrafi lunghi vengono spezzati
   // ai confini fra parole, o fra grafemi se una singola parola eccede una pagina.
-  function paginate(edition, stage, width, double,cuts,printLimit) {
-    const probe = el('section', {class:(printLimit ? 'print-story' : 'paper')+' pagination-probe','aria-hidden':'true',inert:true,
-      style:'width:' + (width / (double ? 2 : 1)) + 'px'});
+  function paginatePrint(edition,stage,width,cuts,limit) {
+    const probe = el('section',{class:'print-story pagination-probe','aria-hidden':'true',inert:true,style:'width:'+width+'px'});
     stage.append(probe);
-    const limit = printLimit ?? Math.max(385, Math.min(735, window.innerHeight - 210));
     const pages = [];
     const first = new Map();
     for (const article of edition.articles.filter(item => item.published)) {
@@ -2943,13 +2945,6 @@ function lettura() {
         if (fits(block)) {
           add(block);
           continue;
-        }
-        if (block.leadPhoto && !printLimit) {
-          const fit = ['compact','small'].find(size => fits({...block,fit:size}));
-          if (fit) {
-            add({...block,fit});
-            continue;
-          }
         }
         const parts = block.tokens;
         if (!parts) {
@@ -3022,11 +3017,13 @@ function lettura() {
     const deck = el('div',{class:'reader-deck'});
     const reading = el('div',{class:'reader','data-inside-style':edition.insideStyle},toolbar,deck);
     host.replaceChildren(reading);
-    let pages = [], first = new Map(), current = -1, double = false, lastWidth = 0, lastHeight = 0, buildPending = 0;
+    let current = -1, double = false, lastWidth = 0, buildPending = 0;
     let flow = settings.flow, animation = settings.animation, scale = settings.scale, contrast = settings.contrast, touchStart = null;
     let spread = readingSpreads.some(([value]) => value === settings.spread) ? settings.spread : 'auto';
-    let pending = null, coverNode, cuts = new Map();
+    let pending = null, coverNode;
     const articles = edition.articles.filter(article => article.published);
+    const pages = articles.map(article => ({article,content:articleBlocks(article,edition.hideCategories)}));
+    const first = new Map(articles.map(({id},index) => [id,index]));
     const edgeButton = (mark,action,variant,caption) => el('button',{type:'button',class:'btn page-turn '+variant,onclick:action,
       'aria-label':caption,title:caption},el('span',{class:'turn-mark','aria-hidden':'true'},mark));
     const previous = edgeButton('‹',() => turn(-1),'turn-previous','Pagina precedente');
@@ -3037,10 +3034,17 @@ function lettura() {
     const cover = btn('Prima pagina', () => go(-1,true,true), 'small');
     const pageStatus = el('span',{role:'status','aria-live':'polite',class:'hint'});
     const toggleFlow = btn('', () => {
-      const target = flow ? document.activeElement.closest('.full-article')?.id.replace(/^article-/,'') : pages[current]?.article.id;
+      const target = flow
+        ? [...stage.querySelectorAll('.full-article')].find(node => {
+          const rect = node.getBoundingClientRect();
+          return rect.top < innerHeight * .5 && rect.bottom > 0;
+        })?.id.replace(/^article-/,'')
+        : pages[current]?.article.id;
+      if (flow && !target) current = -1;
       flow = !flow;
       changeSettings({flow});
       build(target);
+      if (!flow) showPageStart();
     }, 'small');
     const toggleAnimation = btn('', () => {
       animation = !animation;
@@ -3058,14 +3062,14 @@ function lettura() {
     const spreadChoice = el('select',{'aria-label':'Disposizione delle pagine',onchange:event => {
       spread = event.target.value;
       changeSettings({spread});
-      build(pages[current]?.article.id,true);
+      build();
     }},readingSpreads.map(([value,label]) => el('option',{value},label)));
     spreadChoice.value = spread;
     const spreadField = el('label',{class:'field reader-spread'},'Disposizione delle pagine',spreadChoice,spreadHint);
     const zoom = el('select', {'aria-label':'Ingrandimento del testo',style:'width:auto', onchange:event => {
       scale = Number(event.target.value);
       changeSettings({scale});
-      build(!flow && pages[current]?.article.id, true);
+      build();
     }}, [1,1.25,1.5,2].map(value => el('option',{value:String(value)}, Math.round(value * 100) + '%')));
     zoom.value = String(scale);
     const navigation = el('div',{class:'row'},!coverOnly && [cover,pageStatus]);
@@ -3118,24 +3122,31 @@ function lettura() {
     }
     function prepareCover() {
       coverNode=frontPage(edition,{reading:true,onArticle:coverOnly ? null : id => jump(id,true)});
-      cuts=measureCover(coverNode,stage,coverWidth());
+      measureCover(coverNode,stage,coverWidth());
       lockCoverFit.add(coverNode);
-    }
-    function paper(page, index) {
-      return storyPage(edition,page,index,page && first.get(page.article.id) !== index);
+      if (!coverOnly) {
+        for (const node of coverNode.querySelectorAll('[data-continuation=true]')) {
+          node.dataset.continuation = 'false';
+          referenceLabel(node);
+        }
+      }
     }
     function pageNode(index) {
       if (flow && !coverOnly) {
         return el('div',{class:'reading-flow'},coverNode,articles.map(article =>
-          fullArticle(article,edition.hideCategories,true,cuts.get(article.id))));
+          fullArticle(article,edition.hideCategories,true)));
       }
       if (index < 0 || coverOnly) return coverNode;
-      return el('div',{class:'book' + (double ? ' double' : ' single-page')},paper(pages[index],index),
-        double && paper(pages[index+1],index+1));
+      const pair = double && pages[index+1];
+      return el('div',{class:'book' + (pair ? ' double' : ' single-page')},storyPage(edition,pages[index],index),
+        pair && storyPage(edition,pair,index+1));
     }
     function draw(nextNode = pageNode(current)) {
       stage.replaceChildren(nextNode);
       updateToolbar();
+    }
+    function showPageStart() {
+      if (reading.getBoundingClientRect().top < 0) reading.scrollIntoView({block:'start',behavior:'instant'});
     }
     function finishTurn(turn,commit) {
       if (pending !== turn) return;
@@ -3148,23 +3159,26 @@ function lettura() {
       if (commit) {
         current = turn.index;
         draw(turn.nextNode);
+        showPageStart();
         if (turn.focus) stage.focus({preventScroll:true});
       } else updateToolbar();
     }
     function startTurn(index,nextNode,focus) {
       const previousNode = stage.firstElementChild;
       const direction = index > current ? 1 : -1;
-      const spread = current >= 0 && index >= 0 && double;
-      const oldFace = current >= 0 && double ? previousNode.children[spread && direction > 0 ? 1 : 0] : previousNode;
-      const newFace = index >= 0 && double ? nextNode.children[direction > 0 ? 0 : 1] : nextNode;
+      const oldSpread = previousNode.classList.contains('double');
+      const newSpread = nextNode.classList.contains('double');
+      const oldFace = oldSpread ? previousNode.children[index >= 0 && direction > 0 ? 1 : 0] : previousNode;
+      const newFace = newSpread ? nextNode.children[direction > 0 ? 0 : 1] : nextNode;
       if (!oldFace?.offsetWidth || !newFace) return false;
       const stageRect = stage.getBoundingClientRect();
       const oldRect = oldFace.getBoundingClientRect();
+      if (oldRect.top < -innerHeight / 2) return false;
       const holder = el('div',{class:'flip-pending','aria-hidden':'true',inert:true,
         style:'width:'+(index < 0 ? coverWidth() : stageRect.width)+'px'},nextNode);
       stage.append(holder);
       const layer = el('div',{class:'flip-layer' + (direction < 0 ? ' reverse' : ''),inert:true,'aria-hidden':'true',
-        style:'left:'+(oldRect.left-stageRect.left)+'px;width:'+oldRect.width+'px;height:'+oldRect.height+
+        style:'left:'+(oldRect.left-stageRect.left)+'px;width:'+oldRect.width+'px;height:'+Math.min(oldRect.height,innerHeight)+
           'px;transform-origin:'+(direction > 0 ? 'left center' : 'right center')},
         el('div',{class:'flip-face'},oldFace.cloneNode(true)),el('div',{class:'flip-face back'},newFace.cloneNode(true)));
       const turn = {layer,holder,oldFace,nextNode,index,focus};
@@ -3186,6 +3200,7 @@ function lettura() {
       if (animate && !flow && animation && !media.matches && startTurn(index,nextNode,focus)) return;
       current = index;
       draw(nextNode);
+      showPageStart();
       if (focus) stage.focus({preventScroll:true});
     }
     function turn(direction) {
@@ -3207,25 +3222,16 @@ function lettura() {
       if (index !== undefined && index !== current) go(index,true,focus);
       else if (index !== undefined && focus && !pending) stage.focus({preventScroll:true});
     }
-    function build(target, preservePage = false) {
+    function build(target) {
       if (pending) finishTurn(pending,false);
-      const oldId = pages[current]?.article.id;
-      const offset = current >= 0 && oldId ? current - first.get(oldId) : 0;
       reading.style.setProperty('--reading',String(scale));
       updateDeck();
       lastWidth = stage.clientWidth;
-      lastHeight = innerHeight;
       double = spread === 'double' ? lastWidth >= 620 : spread === 'auto' && lastWidth >= 790 && scale <= 1.5;
       prepareCover();
       if (!flow && !coverOnly) {
-        const bookWidth = double ? lastWidth : Math.min(lastWidth,48*parseFloat(getComputedStyle(document.documentElement).fontSize));
-        ({pages,first} = paginate(edition,stage,bookWidth,double,cuts));
         setCoverReferences(coverNode,new Map([...first].map(([id,index]) => [id,index+1])));
-        const id = target || oldId;
-        current = id && first.has(id) ? first.get(id) : -1;
-        if (preservePage && current >= 0 && id === oldId) {
-          while (pages[current + 1]?.article.id === id && current - first.get(id) < offset) current++;
-        }
+        if (target && first.has(target)) current = first.get(target);
       }
       if (coverOnly && edition.printFolios) {
         setCoverReferences(coverNode,new Map(edition.printFolios.A4));
@@ -3238,19 +3244,13 @@ function lettura() {
     const observer = new ResizeObserver(() => {
       if (stage.clientWidth === lastWidth || !stage.clientWidth) return;
       cancelAnimationFrame(buildPending);
-      buildPending = requestAnimationFrame(() => build(null,true));
+      buildPending = requestAnimationFrame(() => build());
     });
     observer.observe(stage);
-    const onResize = () => {
-      if (Math.abs(lastHeight - innerHeight) < 40) return;
-      cancelAnimationFrame(buildPending);
-      buildPending = requestAnimationFrame(() => build(null,true));
-    };
     const onMedia = () => {
       if (media.matches && pending) finishTurn(pending,true);
       else updateToolbar();
     };
-    addEventListener('resize',onResize);
     media.addEventListener('change',onMedia);
     reading.addEventListener('keydown',event => {
       if (event.key === 'Escape') {
@@ -3284,7 +3284,6 @@ function lettura() {
       if (pending) finishTurn(pending,false);
       observer.disconnect();
       cancelAnimationFrame(buildPending);
-      removeEventListener('resize',onResize);
       media.removeEventListener('change',onMedia);
       window.speechSynthesis?.cancel();
     };
@@ -4866,11 +4865,11 @@ function showCompose() {
           field('Dimensione del titolo',select([['auto','Secondo la posizione'],...headlineSizes.slice(1)],current.titleSize || 'auto',
             {'aria-label':'Dimensione del titolo',onchange:read('titleSize')})),
           field('Sintesi di prima pagina',area('front-summary',current.summary,180,2),'Lascia vuoto per riprendere la sintesi redazionale.'),
-          field('Testo nel riquadro',select([['summary','Sintesi'],['article','Inizio dell’articolo con continuazione'],['title','Nessun testo']],
+          field('Testo nel riquadro',select([['summary','Sintesi'],['article','Inizio dell’articolo'],['title','Nessun testo']],
             current.bodyMode || (current.showSummary ? 'summary' : 'title'),{'aria-label':'Testo nel riquadro',onchange:event => {
               current.bodyMode=event.target.value; current.showSummary=current.bodyMode === 'summary'; touch(); renderPreview();
             }})),
-          tip('Con Inizio dell’articolo, il giornale riprende dal punto raggiunto in prima pagina.')),
+          tip('Nello sfoglio digitale l’articolo si apre per intero. In stampa il testo prosegue dal punto raggiunto in prima pagina.')),
         section('image','Fotografia e inquadratura',
           article.images.length ? el('div',{class:'stack'},
             checkbox('Mostra la fotografia',current.showPhoto,{onchange:mark('showPhoto')}),
