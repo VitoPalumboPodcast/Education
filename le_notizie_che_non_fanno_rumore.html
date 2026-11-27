@@ -765,6 +765,15 @@ dialog::backdrop {
 }
 .story-copy > * + * {margin-top:.68em}
 .story-copy h3 {break-after:avoid-column}
+[data-text-align=left] {text-align:left}
+[data-text-align=center] {text-align:center}
+[data-text-align=right] {text-align:right}
+[data-text-align=justify] {text-align:justify}
+[data-text-size=small],.writing-surface font[size="2"] {font-size:.87em}
+[data-text-size=large],.writing-surface font[size="4"] {font-size:1.23em}
+[data-text-size=xlarge],.writing-surface font[size="5"] {font-size:1.48em}
+.writing-surface font[size="3"] {font-size:1em}
+.formatted-block {white-space:pre-line;overflow-wrap:anywhere}
 @container story-page (min-width:35rem) {
   .story-copy {
     column-count:2;
@@ -1574,10 +1583,18 @@ button.front-continues {
 .writing-tabs .btn {border:0;background:transparent;color:var(--muted)}
 .writing-tabs [aria-selected=true] {background:var(--accent);color:#fff}
 .writing-panel {min-height:22rem;padding:.5rem 0}
-.writing-panel textarea[name=text] {font:1.12rem/1.7 var(--serif);min-height:22rem;padding:1.1rem;background:var(--paper);resize:vertical}
+.writing-surface {font:1.12rem/1.6 var(--serif);min-height:22rem;padding:1.1rem;background:var(--paper);border:1px solid var(--line);border-radius:5px;overflow-wrap:anywhere}
+.writing-surface > * + * {margin-top:.68em}
+.writing-surface h3 {font:700 1.22em/1.15 var(--serif)}
+.writing-surface:empty::before {content:attr(data-placeholder);color:var(--muted);pointer-events:none}
+.writing-format select {width:auto;font-size:.86rem;min-height:2.4rem}
+.writing-format .btn[aria-pressed=true] {background:var(--soft);border-color:var(--accent);color:var(--accent)}
 .writing-panel input[name=title] {font:700 1.4rem/1.25 var(--serif)}
 .writing-format {gap:.4rem}
-.writing-format .btn:first-child {font-weight:800}
+.writing-format [data-writing-command=bold] {font-weight:800}
+.writing-format [data-writing-command=italic] {font-style:italic}
+.writing-format [data-writing-command=underline] {text-decoration:underline}
+#writing-label {font-weight:700}
 .writing-footer {position:sticky;bottom:-1px;background:var(--panel);border-top:1px solid var(--line);padding:.8rem 0;z-index:2}
 .writing-panel .full-article {--read-font:1.08rem;box-shadow:none;padding:clamp(1rem,4vw,2.6rem)}
 .archive-filters {display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:.8rem}
@@ -1595,7 +1612,8 @@ button.front-continues {
   .archive-filters {grid-template-columns:1fr}
   .writing-tabs {gap:.15rem}
   .writing-tabs .btn {flex:1 1 42%;padding:.55rem .3rem}
-  .writing-panel textarea[name=text] {min-height:16rem}
+  .writing-surface {min-height:16rem;padding:.8rem}
+  .writing-format .btn,.writing-format select {min-height:2.75rem}
   .writing-footer {gap:.5rem}
 }
 .archive-row {
@@ -2354,7 +2372,7 @@ function lettura() {
       if (!copy) continue;
       const {blocks,isArticle,articleId,link,fallback,hasInterior,customSize} = copy;
       if (coverFeed && !isArticle) {
-        box.replaceChildren(...blocks.map(({tag,tokens}) => richNode(tag,tokens)));
+        box.replaceChildren(...blocks.map(block => blockNode(block,false)));
         continue;
       }
       if (coverFeed) box.classList.add('measure-excerpt');
@@ -2368,8 +2386,8 @@ function lettura() {
       };
       let index = 0, offset = 0;
       if (height > 0) for (;index < blocks.length; index++) {
-        const {tag,tokens} = blocks[index];
-        const node = richNode(tag,tokens);
+        const {tag,tokens,align} = blocks[index];
+        const node = richNode(tag,tokens,align);
         if (fits(node)) {
           box.append(node);
           continue;
@@ -2378,14 +2396,14 @@ function lettura() {
         let low = 0, high = tokens.length;
         while (low < high) {
           const middle = Math.ceil((low+high)/2);
-          if (fits(richNode(tag,tokens.slice(0,middle)))) low = middle;
+          if (fits(richNode(tag,tokens.slice(0,middle),align))) low = middle;
           else high = middle-1;
         }
         const boundary = sentenceBoundary(tokens,low);
         if (customSize && low > boundary || !boundary && !index && !fallback) {
           const excerpt = count => {
             const node = richNode(tag,[...tokens.slice(0,count-1),
-              {...tokens[count-1],value:tokens[count-1].value.trimEnd()}]);
+              {...tokens[count-1],value:tokens[count-1].value.trimEnd()}],align);
             node.classList.add('copy-cut');
             return node;
           };
@@ -2397,7 +2415,7 @@ function lettura() {
           }
         }
         offset = boundary;
-        if (offset) box.append(richNode(tag,tokens.slice(0,offset)));
+        if (offset) box.append(richNode(tag,tokens.slice(0,offset),align));
         else if (!index && fallback && fits(richNode('p',[{value:fallback}]))) box.append(richNode('p',[{value:fallback}]));
         break;
       }
@@ -2425,15 +2443,19 @@ function lettura() {
     return remaining;
   }
   function frontBody(article,cut) {
-    if (!cut) return '';
-    const blocks = richBody(article.text);
+    if (!cut) return {text:'',format:undefined};
+    const blocks = articleBody(article);
     const visible = blocks.slice(0,cut.index);
     if (cut.offset) visible.push({...blocks[cut.index],tokens:blocks[cut.index].tokens.slice(0,cut.offset)});
-    return visible.map(({tag,tokens}) => (tag === 'h3' ? '## ' : '') + richRuns(tokens).map(({strong,value}) =>
-      strong ? '**'+value+'**' : value).join('')).join('\n\n');
+    if (article.format) {
+      const format = visible.map(({tag,align,tokens}) => ({tag,align,runs:richRuns(tokens)}));
+      return {text:plainBody(format),format};
+    }
+    return {text:visible.map(({tag,tokens}) => (tag === 'h3' ? '## ' : '') + richRuns(tokens).map(({strong,value}) =>
+      strong ? '**'+value+'**' : value).join('')).join('\n\n')};
   }
   function hasRemainingBody(article,cut) {
-    return remainingBody(richBody(article.text),cut).length > 0;
+    return remainingBody(articleBody(article),cut).length > 0;
   }
   function measureCover(front,parent,width) {
     const probe = el('div',{class:'cover-measure','aria-hidden':'true',inert:true,style:'width:'+width+'px'},front);
@@ -2496,7 +2518,7 @@ function lettura() {
         : el('p',linkAttrs,'Leggi nelle pagine interne'));
       if (display) {
         const copy = el('div',{class:'front-copy'});
-        copyBlocks.set(copy,{blocks:richBody(display),isArticle,articleId:item.id,link,hasInterior:article.hasInterior,
+        copyBlocks.set(copy,{blocks:isArticle ? articleBody(article) : richBody(display),isArticle,articleId:item.id,link,hasInterior:article.hasInterior,
           customSize:isArticle && (item.frame && !item.frame.autoSize || !samePhotoSize(item.photoSize,null)),
           fallback:isArticle && summary !== article.subtitle ? summary : ''});
         cell.append(copy);
@@ -2531,7 +2553,7 @@ function lettura() {
   }
   addEventListener('resize',() => document.querySelectorAll('.frame-cover').forEach(front => fitFront(front)));
 
-  // Il testo resta testo. Le sole scorciatoie tipografiche sono ## e **.
+  // Compatibilità con i testi salvati prima dell’editor visivo.
   function richBody(raw) {
     const output = [];
     let paragraph = [];
@@ -2555,18 +2577,50 @@ function lettura() {
       return {...block, tokens};
     });
   }
+  const alignments = ['left','center','right','justify'];
+  const textSizes = ['small','large','xlarge'];
+  function cleanFormatting(input) {
+    if (!Array.isArray(input)) return undefined;
+    const format = [];
+    for (const block of input) {
+      if (!Array.isArray(block?.runs)) continue;
+      const runs = block.runs.filter(run => typeof run?.value === 'string' && run.value).map(run => ({value:run.value.replaceAll('\u00a0',' '),
+        strong:run.strong === true,italic:run.italic === true,underline:run.underline === true,
+        size:textSizes.includes(run.size) ? run.size : undefined}));
+      while (runs.length && !(runs[0].value = runs[0].value.trimStart())) runs.shift();
+      while (runs.length && !(runs.at(-1).value = runs.at(-1).value.trimEnd())) runs.pop();
+      if (runs.length) format.push({tag:block.tag === 'h3' ? 'h3' : 'p',
+        align:alignments.includes(block.align) ? block.align : undefined,runs:richRuns(runs)});
+    }
+    return format;
+  }
+  const plainBody = format => format.map(block => block.runs.map(run => run.value).join('')).join('\n\n');
+  function articleBody(article) {
+    if (!article.format) return richBody(article.text);
+    return article.format.map(({tag,align,runs}) => ({tag,align,tokens:runs.flatMap(run =>
+      run.value.split(/(?<=\s)(?=\S)/u).filter(Boolean).map(value => ({...run,value})))}));
+  }
   function richRuns(tokens) {
     const runs = [];
     for (const token of tokens) {
       const last = runs.at(-1);
-      const strong = Boolean(token.strong);
-      if (last?.strong === strong) last.value += token.value;
-      else runs.push({strong,value:token.value});
+      const {value,size} = token;
+      const [strong,italic,underline] = [token.strong,token.italic,token.underline].map(Boolean);
+      if (last && last.strong === strong && last.italic === italic && last.underline === underline && last.size === size) last.value += value;
+      else runs.push({value,strong,italic,underline,size});
     }
     return runs;
   }
-  function richNode(tag,tokens) {
-    return el(tag,{},richRuns(tokens).map(({value,strong}) => strong ? el('strong',{},value) : value));
+  function richNode(tag,tokens,align) {
+    return el(tag,{class:'formatted-block','data-text-align':alignments.includes(align) ? align : null},
+      richRuns(tokens).map(({value,strong,italic,underline,size}) => {
+        let part = value;
+        if (strong) part = el('strong',{},part);
+        if (italic) part = el('em',{},part);
+        if (underline) part = el('u',{},part);
+        if (textSizes.includes(size)) part = el('span',{'data-text-size':size},part);
+        return part;
+      }));
   }
   function credits(photo) {
     return [photo.caption, photo.credit].filter(Boolean).join(' · ');
@@ -2597,7 +2651,7 @@ function lettura() {
       article.subtitle && el('p',{class:'article-deck'},article.subtitle))}];
     const addPhoto = photo => blocks.push({node:interactive => photoBlock(photo,interactive)});
     if (article.images[0]) addPhoto(article.images[0]);
-    const body = remainingBody(richBody(article.text),cut);
+    const body = remainingBody(articleBody(article),cut);
     if (cut && body.length) blocks.push({node:() => el('p',{class:'article-meta'},'Continua dalla prima pagina')});
     blocks.push(...body);
     article.images.slice(1).forEach(addPhoto);
@@ -2609,7 +2663,7 @@ function lettura() {
     return blocks;
   }
   function blockNode(block, interactive) {
-    return block.node ? block.node(interactive) : richNode(block.tag, block.tokens || [{value:block.text}]);
+    return block.node ? block.node(interactive) : richNode(block.tag,block.tokens || [{value:block.text}],block.align);
   }
   function fullArticle(article, hideCategories, interactive = true,cut) {
     return el('article', {class:'full-article', id:'article-' + article.id, tabindex:interactive ? '-1' : null},
@@ -3052,6 +3106,7 @@ function lettura() {
     };
   }
   return {$,el,btn,safeURL,external,dateLabel,editionClass,frontPage,fitFront,frontBody,hasRemainingBody,measureCover,fullArticle,printEdition,printLayout,mountReader,photoBounds,photoSize,samePhotoSize,
+    articleBody,plainBody,cleanFormatting,blockNode,
     framePlan,frameChanged,adjustEdge,resizeFrame,normalizeFrame,resetFramePositions,moveIntoArea,frameSides,
     readingSpreads,layoutModels,editorialSections,columnCount,unitsFor,changeColumns,sectionPlan,columnUnits};
 }
@@ -3256,7 +3311,9 @@ function imageFrom(value) {
 function articleFrom(value) {
   if (!isObject(value) || !validID(value.id) || !text(value.title,160).trim() || typeof value.text !== 'string' || !value.text.trim() ||
     value.text.length > 100000 || value.url && !safeURL(value.url)) throw new Error('Un articolo non contiene titolo, testo o indirizzo HTTPS validi.');
-  return {id:value.id,title:text(value.title,160),subtitle:text(value.subtitle,220),text:value.text,summary:text(value.summary,220),
+  const format = R.cleanFormatting(value.format);
+  return {id:value.id,title:text(value.title,160),subtitle:text(value.subtitle,220),text:value.text,
+    format:format && R.plainBody(format) === value.text ? format : undefined,summary:text(value.summary,220),
     images:arrayOf(value.images,12).map(imageFrom),source:text(value.source,160),url:safeURL(value.url),date:day(value.date),consulted:day(value.consulted),
     categories:[...new Set(arrayOf(value.categories,18).map(item => text(item,60).trim()).filter(Boolean))],type:choice(value.type,types,types[0]),
     note:text(value.note,7000),limits:text(value.limits,7000),published:value.published !== false,starter:value.starter === true,
@@ -3640,6 +3697,133 @@ function encodePhoto(file) {
     img.src = url;
   });
 }
+// L’editor legge solo testo e stili tipografici conosciuti dal DOM modificabile.
+const editorFontSizes = {'2':'small','3':undefined,'4':'large','5':'xlarge'};
+function readWritingSurface(surface) {
+  const blocks = [];
+  let runs = [];
+  function flush(block) {
+    if (runs.length) blocks.push({...block,runs});
+    runs = [];
+  }
+  function scan(node,block,style) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      runs.push({...style,value:node.nodeValue});
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
+    if (node.tagName === 'BR') {
+      runs.push({...style,value:'\n'});
+      return;
+    }
+    const blockElement = /^(P|DIV|H[1-6])$/.test(node.tagName);
+    const fontSize = node.getAttribute('size');
+    const nextStyle = {
+      strong:style.strong || /^(B|STRONG)$/.test(node.tagName) || /^(bold|[6-9]00)$/.test(node.style.fontWeight),
+      italic:style.italic || /^(I|EM)$/.test(node.tagName) || node.style.fontStyle === 'italic',
+      underline:style.underline || node.tagName === 'U' || node.style.textDecorationLine.includes('underline'),
+      size:node.tagName === 'FONT' && Object.hasOwn(editorFontSizes,fontSize) ? editorFontSizes[fontSize] : style.size
+    };
+    const align = node.style.textAlign || node.getAttribute('align') || block.align;
+    const nextBlock = blockElement ? {tag:node.tagName.startsWith('H') ? 'h3' : 'p',align} : block;
+    if (blockElement) flush(block);
+    for (const child of node.childNodes) scan(child,nextBlock,nextStyle);
+    if (blockElement) flush(nextBlock);
+  }
+  const paragraph = {tag:'p'};
+  for (const child of surface.childNodes) scan(child,paragraph,{});
+  flush(paragraph);
+  return R.cleanFormatting(blocks);
+}
+function writingSurface(article,fieldNode) {
+  const backing = fieldNode.querySelector('textarea');
+  backing.hidden = true;
+  backing.required = false;
+  const label = fieldNode.firstElementChild;
+  label.id = 'writing-label';
+  const surface = el('div',{class:'writing-surface',contenteditable:'true',role:'textbox','aria-multiline':'true',
+    'aria-labelledby':label.id,'aria-required':'true','data-placeholder':'Scrivi il testo dell’articolo…',tabindex:0});
+  for (const block of R.articleBody(article)) {
+    const node = R.blockNode(block,false);
+    if (block.align) {
+      node.style.textAlign = block.align;
+      node.removeAttribute('data-text-align');
+    }
+    for (const span of node.querySelectorAll('[data-text-size]')) {
+      const size = Object.keys(editorFontSizes).find(key => editorFontSizes[key] === span.dataset.textSize);
+      span.replaceWith(el('font',{size},[...span.childNodes]));
+    }
+    surface.append(node);
+  }
+  const toolbar = el('div',{class:'row writing-format',role:'group','aria-label':'Formattazione del testo'});
+  const counter = el('p',{class:'hint writing-count'});
+  fieldNode.replaceWith(el('div',{class:'stack'},label,toolbar,surface,backing,counter));
+  let selection;
+  let format;
+  let serialized;
+  const toggles = new Map();
+  function refresh() {
+    format = readWritingSurface(surface);
+    backing.value = R.plainBody(format);
+    serialized = JSON.stringify(format);
+    const words = backing.value.match(/\S+/g)?.length ?? 0;
+    counter.textContent = words+' parole · '+backing.value.length.toLocaleString('it')+' caratteri'+
+      (words ? ' · circa '+Math.ceil(words/200)+' min di lettura' : '');
+  }
+  function remember() {
+    const current = window.getSelection();
+    if (!current?.rangeCount || !surface.contains(current.anchorNode) || !surface.contains(current.focusNode)) return;
+    selection = current.getRangeAt(0).cloneRange();
+    toggles.forEach((control,command) => control.setAttribute('aria-pressed',String(document.queryCommandState(command))));
+  }
+  function apply(command,value) {
+    if (!selection || !surface.contains(selection.commonAncestorContainer)) {
+      selection = document.createRange();
+      selection.selectNodeContents(surface);
+      selection.collapse(false);
+    }
+    surface.focus();
+    const current = window.getSelection();
+    current.removeAllRanges();
+    current.addRange(selection);
+    document.execCommand(command,false,value);
+    surface.dispatchEvent(new Event('input',{bubbles:true}));
+    remember();
+  }
+  for (const [title,symbol,command] of [['Grassetto','B','bold'],['Corsivo','I','italic'],['Sottolineato','U','underline']]) {
+    const control = btn(symbol,() => apply(command),'small',{'aria-label':title,title,'aria-pressed':'false','data-writing-command':command});
+    toggles.set(command,control);
+    toolbar.append(control);
+  }
+  const chooser = (label,options,command) => select([['',label],...options],'',{'aria-label':label,onchange:event => {
+    if (event.target.value) apply(command || event.target.value,command ? event.target.value : undefined);
+    event.target.value = '';
+  }});
+  toolbar.append(
+    chooser('Stile del paragrafo',[['p','Paragrafo'],['h3','Sottotitolo']],'formatBlock'),
+    chooser('Dimensione testo',[['2','Piccola'],['3','Normale'],['4','Grande'],['5','Molto grande']],'fontSize'),
+    chooser('Allineamento',[['justifyLeft','Sinistra'],['justifyCenter','Centro'],['justifyRight','Destra'],['justifyFull','Giustificato']]),
+    btn('Azzera stile testo',() => apply('removeFormat'),'small'));
+  toolbar.addEventListener('mousedown',event => {if (event.target.closest('button')) event.preventDefault();});
+  surface.addEventListener('input',refresh);
+  surface.addEventListener('paste',event => {
+    event.preventDefault();
+    remember();
+    const text = event.clipboardData?.getData('text/plain');
+    if (text) apply('insertText',text);
+  });
+  surface.addEventListener('drop',event => event.preventDefault());
+  surface.addEventListener('keydown',event => {
+    if (!(event.ctrlKey || event.metaKey) || event.altKey) return;
+    const command = {b:'bold',i:'italic',u:'underline'}[event.key.toLowerCase()];
+    if (!command) return;
+    event.preventDefault();remember();apply(command);
+  });
+  document.addEventListener('selectionchange',remember);
+  refresh();
+  return {surface,format:() => format,serialized:() => serialized,
+    cleanup:() => document.removeEventListener('selectionchange',remember)};
+}
 // Spazio di scrittura con anteprima sicura e protezione delle modifiche aperte.
 function setupArticleEditor(form,article,dialog) {
   dialog.classList.add('writing-dialog');
@@ -3674,46 +3858,18 @@ function setupArticleEditor(form,article,dialog) {
     });
     tabs.append(tab);
   });
-  const editor = panels[0].querySelector('textarea[name=text]');
-  const toolbar = el('div',{class:'row writing-format','aria-label':'Formattazione del testo'});
-  function format(kind) {
-    let start = editor.selectionStart, end = editor.selectionEnd;
-    let selected = editor.value.slice(start,end);
-    if (kind === 'bold') {
-      const content = selected || 'testo in evidenza';
-      if (start >= 2 && editor.value.slice(start-2,start) === '**' && editor.value.slice(end,end+2) === '**') {
-        editor.setRangeText(selected,start-2,end+2,'select');
-      } else {
-        editor.setRangeText('**'+content+'**',start,end,'select');
-        editor.setSelectionRange(start+2,start+2+content.length);
-      }
-    } else {
-      start = editor.value.lastIndexOf('\n',start-1)+1;
-      const next = editor.value.indexOf('\n',end);
-      end = next < 0 ? editor.value.length : next;
-      selected = editor.value.slice(start,end);
-      editor.setRangeText(selected.split('\n').map(line => line.startsWith('## ') ? line.slice(3) : '## '+(line || 'Sottotitolo')).join('\n'),start,end,'select');
-    }
-    editor.dispatchEvent(new Event('input',{bubbles:true}));
-    editor.focus();
-  }
-  toolbar.append(btn('Grassetto',() => format('bold'),'small',{title:'Evidenzia la selezione · Ctrl+B'}),
-    btn('Sottotitolo',() => format('heading'),'small',{title:'Trasforma il paragrafo selezionato in sottotitolo'}));
-  editor.closest('label').before(toolbar);
-  const counter = el('p',{class:'hint writing-count'});
-  editor.closest('label').after(counter);
+  const writer = writingSurface(article,panels[0].querySelector('textarea[name=text]').closest('label'));
   const status = el('span',{class:'hint',role:'status'},'Modifica il testo, poi salva l’articolo.');
   footer.append(status);
   form.replaceChildren(tabs,notices,...panels,footer);
-  const initial = JSON.stringify([...new FormData(form)])+JSON.stringify(article.images);
-  const changed = () => initial !== JSON.stringify([...new FormData(form)])+JSON.stringify(article.images);
+  const snapshot = () => JSON.stringify([...new FormData(form)])+JSON.stringify(article.images)+writer.serialized();
+  const initial = snapshot();
+  const changed = () => initial !== snapshot();
   function update() {
-    const words = editor.value.trim().split(/\s+/).filter(Boolean).length;
-    counter.textContent = words+' parole · '+editor.value.length.toLocaleString('it')+' caratteri · circa '+Math.max(1,Math.ceil(words/200))+' min di lettura';
     status.textContent = changed() ? 'Modifiche da salvare' : 'Nessuna modifica da salvare';
   }
   function preview() {
-    const draft = {...article};
+    const draft = {...article,format:writer.format()};
     for (const key of ['title','subtitle','text','source','url','date','consulted','note','limits','type']) draft[key] = form.elements[key].value;
     draft.categories = new FormData(form).getAll('category');
     panels[3].replaceChildren(R.fullArticle(draft,false,false));
@@ -3728,7 +3884,6 @@ function setupArticleEditor(form,article,dialog) {
   form.addEventListener('keydown',event => {
     if (!(event.ctrlKey || event.metaKey)) return;
     if (event.key.toLowerCase() === 's') {event.preventDefault();form.requestSubmit();}
-    if (event.key.toLowerCase() === 'b' && event.target === editor) {event.preventDefault();format('bold');}
   });
   const canClose = () => !changed() || confirm('Ci sono modifiche da salvare. Vuoi chiudere e scartarle?');
   const close = dialog.querySelector('.dialog-body > .row button');
@@ -3742,12 +3897,15 @@ function setupArticleEditor(form,article,dialog) {
     dialog.classList.remove('writing-dialog');
     dialog.removeEventListener('cancel',cancel);
     removeEventListener('beforeunload',unload);
+    writer.cleanup();
   },{once:true});
   update();
+  return {format:writer.format,focus:() => {activate(0);writer.surface.focus();}};
 }
 function articleEditor(existing) {
   const target = edition();
   const article = existing ? clone(existing) : blankArticle();
+  let writer;
   const options = categoryOptions(target);
   const photoList = el('div',{class:'stack'});
   const alert = el('p',{class:'notice',role:'alert',hidden:true});
@@ -3805,8 +3963,7 @@ function articleEditor(existing) {
     alert,
     field('Titolo dell’articolo',input('title',article.title,{required:true,maxlength:160})),
     field('Sottotitolo',input('subtitle',article.subtitle,{maxlength:220})),
-    field('Testo completo',el('textarea',{name:'text',rows:11,maxlength:100000,required:true},article.text),
-      'Lascia una riga vuota tra i paragrafi. Usa ## prima di un sottotitolo e racchiudi tra ** le parole da evidenziare.'),
+    field('Testo completo',el('textarea',{name:'text',rows:11,maxlength:100000},article.text)),
     field('Sintesi breve per la prima pagina',area('summary',article.summary,220,2)),
     el('div',{class:'columns'},
       field('Tipo di contenuto',select(types.map(item => [item,item]),article.type,{name:'type'})),
@@ -3827,7 +3984,10 @@ function articleEditor(existing) {
     alert.hidden = true;
     if (loading) return markError('Attendi che il caricamento delle foto sia terminato.');
     const get = key => String(data.get(key) || '').trim();
-    if (!get('title') || !get('text')) return markError('Inserisci un titolo e il testo dell’articolo.');
+    if (!get('text') || get('text').length > 100000) {
+      writer.focus();
+      return markError(get('text') ? 'Il testo può contenere al massimo 100.000 caratteri.' : 'Inserisci il testo dell’articolo.');
+    }
     const url = safeURL(get('url'));
     if (get('url') && !url) return markError('Inserisci un indirizzo della fonte che inizi con https:// e sia privo di credenziali.');
     if (article.images.some(photo => !photo.decorative && !photo.alt.trim())) return markError('Descrivi ogni fotografia o indicala come decorativa.');
@@ -3841,6 +4001,7 @@ function articleEditor(existing) {
     if (!existing && target.articles.length >= 250) return markError('Il numero contiene già 250 articoli.');
     const fields = ['title','subtitle','text','summary','source','note','limits','neutral','emotional'];
     fields.forEach(name => {article[name] = get(name);});
+    article.format = writer.format();
     Object.assign(article,{url,date:day(get('date')),consulted:day(get('consulted')),categories:labels,type:get('type'),published:data.has('published')});
     article.images = article.images.map(imageFrom);
     if (existing) {
@@ -3866,7 +4027,7 @@ function articleEditor(existing) {
     showStatus('Articolo salvato.');
   },'Salva articolo');
   const dialog = modal(existing ? 'Modifica articolo' : 'Nuova notizia',form);
-  setupArticleEditor(form,article,dialog);
+  writer = setupArticleEditor(form,article,dialog);
 }
 function moveArray(list,from,to) {
   if (from < 0 || to < 0 || to >= list.length || to === from) return false;
@@ -4891,7 +5052,7 @@ function exportEdition(coverOnly) {
     snapshot.articles = snapshot.articles.map(article => {
       const cut = [a4.cuts,a3.cuts,screen].map(cuts => cuts.get(article.id)).filter(Boolean)
         .sort((a,b) => b.index-a.index || b.offset-a.offset)[0];
-      return {...article,text:R.frontBody(article,cut),hasInterior:R.hasRemainingBody(article,cut),
+      return {...article,...R.frontBody(article,cut),hasInterior:R.hasRemainingBody(article,cut),
         note:'',limits:'',source:'',url:'',neutral:'',emotional:'',consulted:''};
     });
   } else snapshot.articles = published.map(({neutral,emotional,...article}) => article);
