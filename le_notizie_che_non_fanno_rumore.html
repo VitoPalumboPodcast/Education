@@ -478,6 +478,17 @@ dialog::backdrop {
   text-decoration-thickness:1px;
   text-underline-offset:.12em;
 }
+.news-eyebrow {
+  color:var(--accent);
+  font:750 calc(.79rem * var(--eyebrow-scale,1) * var(--front-factor,1))/1.24 system-ui,sans-serif;
+  letter-spacing:.065em;
+  text-transform:uppercase;
+  overflow-wrap:anywhere;
+}
+[data-eyebrow-size=small] {--eyebrow-scale:.88}
+[data-eyebrow-size=large] {--eyebrow-scale:1.28}
+[data-headline-size=small] {--headline-scale:.83}
+[data-headline-size=large] {--headline-scale:1.24}
 .front-cell p {
   font:calc(clamp(.92rem,3.1cqi,1.02rem) * var(--front-factor))/1.34 var(--serif);
   margin:.3rem 0;
@@ -750,12 +761,13 @@ dialog::backdrop {
   text-transform:uppercase;
 }
 .story-heading > * + * {margin-top:.38em}
+.full-article .story-heading h2 {font-size:calc(1.85em * var(--headline-scale,1))}
 .story-heading .article-meta {
   color:var(--accent);
   font-weight:700;
 }
 .paper-content .story-heading h2 {
-  font-size:clamp(1.45em,7.4cqi,2.5em);
+  font-size:calc(clamp(1.45em,7.4cqi,2.5em) * var(--headline-scale,1));
   text-wrap:pretty;
 }
 .paper-content .continuation {
@@ -1069,7 +1081,7 @@ dialog::backdrop {
     pointer-events:none;
   }
 }
-.frame-cell > .kicker,.frame-cell > .front-title,.frame-cell > .front-deck {
+.frame-cell > .kicker,.frame-cell > .front-title,.frame-cell > .front-deck,.frame-cell > .news-eyebrow {
   flex:none;
 }
 .frame-cell .front-deck {
@@ -1105,6 +1117,36 @@ dialog::backdrop {
   font-size:.71rem;
   line-height:1.19;
 }
+.frame-cell > .front-photo-overlay {
+  flex:none;
+  min-width:min(100%,13rem);
+}
+.front-overlay-stage {
+  position:relative;
+  isolation:isolate;
+  display:grid;
+  grid-template-rows:minmax(clamp(4.5rem,14cqi,8rem),1fr) auto;
+  min-height:calc(clamp(9rem,35cqi,18rem) * var(--photo-height,1));
+  background:#29222a;
+}
+.front .frame-cell .front-overlay-stage > img {
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.front-overlay-copy {
+  grid-row:2;
+  padding:clamp(.65rem,2.5cqi,1.25rem);
+  background:linear-gradient(180deg,#181019c9,#181019ee);
+  color:#fff;
+}
+.front-overlay-copy :is(.news-eyebrow,.kicker,.front-deck) {color:#fff}
+.front-overlay-copy .front-title button:focus-visible {outline-color:#fff}
+.front-overlay-copy .front-title {margin-bottom:.2rem}
+.front-overlay-copy .front-deck,.front-overlay-copy .front-overlay-summary {margin:.38rem 0 0}
 .front-photo .photo-credit {
   display:block;
   opacity:.9;
@@ -1298,6 +1340,13 @@ button.front-continues {
     aspect-ratio:16/10;
   }
   .front.reading-cover .front-photo img[data-portrait] {aspect-ratio:1}
+  .front.reading-cover .front-overlay-stage {
+    min-height:clamp(12rem,60cqi,17rem);
+  }
+  .front.reading-cover .frame-cell .front-overlay-stage > img {
+    height:100%;
+    aspect-ratio:auto;
+  }
   .reading-cover .front-copy {
     flex:none;
     contain:none;
@@ -1433,6 +1482,9 @@ button.front-continues {
 .model-block[data-section=opening] {
   background:var(--accent);
   border-color:var(--accent);
+}
+.model-block[data-overlaid] {
+  background:linear-gradient(180deg,var(--soft) 54%,var(--accent) 54%);
 }
 .brand-seal {
   min-width:2.35rem;
@@ -2077,6 +2129,7 @@ function lettura() {
   const layoutModels = {
     classic:{name:'Quotidiano classico',columns:3,opening:'split',sections:['opening','sidebar','middle','brief','brief','closing']},
     visual:{name:'Quotidiano visivo',columns:3,opening:'full',sections:['opening','sidebar','middle','brief','brief','closing']},
+    'photo-overlay':{name:'Titoli sulla foto',columns:3,opening:'full',sections:['opening','sidebar','middle','brief','brief','closing']},
     essential:{name:'Quotidiano essenziale',columns:2,opening:'full',sections:['opening','middle','brief','brief','closing']},
     broadsheet:{name:'Quotidiano di approfondimento',columns:4,opening:'split',sections:['opening','sidebar','editorial','middle','brief','closing']}
   };
@@ -2155,7 +2208,8 @@ function lettura() {
     const topEditorial = edition.model === 'broadsheet' && units >= 3*columnUnits && [...sections.values()].includes('editorial');
     const priority = ['opening','sidebar','editorial','middle','brief','closing'];
     const ordered = [...edition.layout].sort((a,b) => priority.indexOf(sections.get(a.id))-priority.indexOf(sections.get(b.id)));
-    const lower = ordered.filter(({id}) => ['middle','brief'].includes(sections.get(id)));
+    const lowerSections = edition.model === 'photo-overlay' ? ['sidebar','middle','brief'] : ['middle','brief'];
+    const lower = ordered.filter(({id}) => lowerSections.includes(sections.get(id)));
     const columns = units / columnUnits;
     for (const item of ordered) {
       const section = sections.get(item.id);
@@ -2177,7 +2231,7 @@ function lettura() {
       const edge = units-w;
       const x = main && topEditorial ? Math.min(columnUnits,edge) : sidebar || item.align === 'right' && !main && !editorial ? edge : 0;
       const onTop = main || sidebar && (!lead || lead.x+lead.w <= edge) || editorial && topEditorial && (!lead || w <= lead.x);
-      const h = manual?.h ?? (main ? (edition.model === 'essential' ? 16 : 19) :
+      const h = manual?.h ?? (main ? (edition.model === 'photo-overlay' ? 15 : edition.model === 'essential' ? 16 : 19) :
         onTop && lead ? lead.h : (withPhoto ? 11 : 8) + (item.size === 'ampio' ? 1 : item.size === 'ridotto' ? -1 : 0));
       const y = section === 'closing' ? Math.max(0,...preferred.map(frame => frame.y+frame.h)) :
         onTop ? 0 : lead?.h ?? 0;
@@ -2497,11 +2551,11 @@ function lettura() {
       const open = onSelect || onArticle;
       const title = el('h3', {class:'front-title'}, open ? el('button', {type:'button', onclick:() => open(item.id), 'aria-pressed':onSelect ? String(selected === item.id) : null}, heading) : heading);
       const displayPhoto = item.showPhoto && photo;
-      const portrait = displayPhoto && frame.w <= columnUnits && photo.height > photo.width;
-      const picture = displayPhoto && el('figure', {class:'front-photo',style:photoSizeStyle(item.photoSize)},
-        el('img', {...photoAttrs(photo), draggable:'false','data-portrait':photo.height > photo.width,
-          style:'object-position:' + (item.cropX ?? 50) + '% ' + (item.cropY ?? 50) + '%'}),
-        frontCredit(photo));
+      const overlay = displayPhoto && (item.photoText === 'overlay' ||
+        item.photoText !== 'separate' && edition.model === 'photo-overlay' && frame.section === 'opening');
+      const portrait = displayPhoto && !overlay && frame.w <= columnUnits && photo.height > photo.width;
+      const image = displayPhoto && el('img', {...photoAttrs(photo),draggable:'false','data-portrait':photo.height > photo.width,
+        style:'object-position:' + (item.cropX ?? 50) + '% ' + (item.cropY ?? 50) + '%'});
       const cell = el('article', {class:['front-cell frame-cell', position, size, 'title-' + item.titleSize,portrait && 'portrait-photo'].filter(Boolean).join(' ') + align,
         style:frameStyle(frame), 'data-id':item.id, 'data-section':frame.section,
         'data-frame':[frame.x,frame.y,frame.w,frame.h].join(','), 'data-selected':onSelect ? String(item.id === selected) : null,
@@ -2510,13 +2564,25 @@ function lettura() {
       const category = !edition.hideCategories && article.categories.length ? article.categories.join(' · ') : '';
       const label = article.fiction ? 'Esempio inventato' : article.type === 'Notizia documentata' ? category : article.type;
       const tag = label && el('div', {class:'kicker'}, label);
+      const eyebrow = item.eyebrow || article.eyebrow;
+      const overline = eyebrow && el('div',{class:'news-eyebrow','data-eyebrow-size':item.eyebrowSize && item.eyebrowSize !== 'auto'
+        ? item.eyebrowSize : article.eyebrowSize},eyebrow);
       const deck = isArticle && frame.section === 'opening' && article.subtitle && el('p',{class:'front-deck'},article.subtitle);
-      cell.append(...[tag, title, deck, picture].filter(Boolean));
+      const overlaidSummary = overlay && mode === 'summary' && summary;
+      const headingElements = [tag,overline,title,deck];
+      if (overlay) {
+        cell.append(el('figure',{class:'front-photo front-photo-overlay',style:photoSizeStyle(item.photoSize)},
+          el('div',{class:'front-overlay-stage'},image,el('div',{class:'front-overlay-copy'},headingElements,
+            overlaidSummary && el('p',{class:'front-overlay-summary'},summary))),frontCredit(photo)));
+      } else {
+        const picture = displayPhoto && el('figure',{class:'front-photo',style:photoSizeStyle(item.photoSize)},image,frontCredit(photo));
+        cell.append(...[...headingElements,picture].filter(Boolean));
+      }
       const linkAttrs = {class:'front-continues','data-front-reference':item.id};
       const link = (onArticle
         ? el('button',{...linkAttrs,type:'button',onclick:() => onArticle(item.id),title:heading},'Leggi nelle pagine interne')
         : el('p',linkAttrs,'Leggi nelle pagine interne'));
-      if (display) {
+      if (display && !overlaidSummary) {
         const copy = el('div',{class:'front-copy'});
         copyBlocks.set(copy,{blocks:isArticle ? articleBody(article) : richBody(display),isArticle,articleId:item.id,link,hasInterior:article.hasInterior,
           customSize:isArticle && (item.frame && !item.frame.autoSize || !samePhotoSize(item.photoSize,null)),
@@ -2646,8 +2712,9 @@ function lettura() {
   function articleBlocks(article, hideCategories,cut) {
     const metadata = [article.type, dateLabel(article.date), article.fiction && 'Esempio inventato',
       !hideCategories && article.categories.join(' · ')].filter(Boolean).join(' · ');
-    const blocks = [{node:() => el('header',{class:'story-heading'},
-      el('p',{class:'article-meta'},metadata),el('h2',{},article.title),
+    const blocks = [{node:() => el('header',{class:'story-heading','data-headline-size':article.titleSize},
+      el('p',{class:'article-meta'},metadata),
+      article.eyebrow && el('div',{class:'news-eyebrow','data-eyebrow-size':article.eyebrowSize},article.eyebrow),el('h2',{},article.title),
       article.subtitle && el('p',{class:'article-deck'},article.subtitle))}];
     const addPhoto = photo => blocks.push({node:interactive => photoBlock(photo,interactive)});
     if (article.images[0]) addPhoto(article.images[0]);
@@ -3123,6 +3190,8 @@ const categoryOptions = target => [...new Set([...(target.categoryLabels ?? cate
 const categoryKey = label => label.normalize('NFKC').toLocaleLowerCase('it');
 const types = ['Notizia documentata','Approfondimento','Intervista','Commento personale','Editoriale'];
 const models = Object.fromEntries(Object.entries(R.layoutModels).map(([id,model]) => [id,model.name]));
+const headlineSizes = [['auto','Automatica'],['large','Grande'],['medium','Media'],['small','Piccola']];
+const headlineSizeValues = headlineSizes.map(([value]) => value);
 const phases = ['Presentazione del problema','Osservazione dei titoli e scelta iniziale','Lettura e confronto delle notizie','Raccolta delle valutazioni','Discussione sui risultati'];
 const initialQuestions = [['open','Quale notizia apriresti per prima?'],['share','Quale notizia condivideresti?'],['curious','Quale notizia ti incuriosisce di più?']];
 const measures = [['attention','Attenzione'],['emotion','Emozione'],['importance','Importanza'],['value','Utilità o impatto sociale positivo'],['share','Disponibilità a condividere dopo la lettura']];
@@ -3144,10 +3213,10 @@ const today = () => {
 };
 const day = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : '';
 const slug = value => value.normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,65) || 'giornale';
-const blankArticle = () => ({id:uid(),title:'',subtitle:'',text:'',summary:'',images:[],source:'',url:'',date:'',consulted:'',categories:[],type:types[0],
+const blankArticle = () => ({id:uid(),title:'',titleSize:'auto',eyebrow:'',eyebrowSize:'auto',subtitle:'',text:'',summary:'',images:[],source:'',url:'',date:'',consulted:'',categories:[],type:types[0],
   note:'',limits:'',published:true,starter:false,fiction:false,neutral:'',emotional:''});
 const emptyLab = () => ({initial:[],rated:[],titles:[]});
-const entryFor = article => ({id:article.id,size:'standard',align:'left',titleSize:'auto',showPhoto:true,showSummary:true,
+const entryFor = article => ({id:article.id,size:'standard',align:'left',titleSize:'auto',eyebrow:'',eyebrowSize:'auto',photoText:'auto',showPhoto:true,showSummary:true,
   title:'',summary:'',photo:0,cropX:50,cropY:50,photoSize:null,bodyMode:null,section:null,frame:null,reason:'',reasonText:''});
 const newEdition = (name = 'Il mio quotidiano', issue = 'Numero 1') => ({
   id:uid(),name,classLabel:editionClass({}),motto:'',issue,date:'',model:'classic',columns:3,articles:[],layout:[],coverImage:null,showIds:null,
@@ -3312,7 +3381,8 @@ function articleFrom(value) {
   if (!isObject(value) || !validID(value.id) || !text(value.title,160).trim() || typeof value.text !== 'string' || !value.text.trim() ||
     value.text.length > 100000 || value.url && !safeURL(value.url)) throw new Error('Un articolo non contiene titolo, testo o indirizzo HTTPS validi.');
   const format = R.cleanFormatting(value.format);
-  return {id:value.id,title:text(value.title,160),subtitle:text(value.subtitle,220),text:value.text,
+  return {id:value.id,title:text(value.title,160),titleSize:choice(value.titleSize,headlineSizeValues,'auto'),
+    eyebrow:text(value.eyebrow,100),eyebrowSize:choice(value.eyebrowSize,headlineSizeValues,'auto'),subtitle:text(value.subtitle,220),text:value.text,
     format:format && R.plainBody(format) === value.text ? format : undefined,summary:text(value.summary,220),
     images:arrayOf(value.images,12).map(imageFrom),source:text(value.source,160),url:safeURL(value.url),date:day(value.date),consulted:day(value.consulted),
     categories:[...new Set(arrayOf(value.categories,18).map(item => text(item,60).trim()).filter(Boolean))],type:choice(value.type,types,types[0]),
@@ -3323,7 +3393,9 @@ function layoutFrom(value, articles, units) {
   const byId = new Map(articles.filter(article => article.published).map(article => [article.id,article]));
   return unique(arrayOf(value,7).filter(item => isObject(item) && byId.has(item.id)).map(item => ({
     ...entryFor(byId.get(item.id)),size:choice(item.size,['standard','ampio','ridotto'],'standard'),align:item.align === 'right' ? 'right' : 'left',
-    titleSize:choice(item.titleSize,['auto','small','medium','large'],'auto'),showPhoto:item.showPhoto !== false,showSummary:item.showSummary !== false,
+    titleSize:choice(item.titleSize,headlineSizeValues,'auto'),eyebrow:text(item.eyebrow,100),
+    eyebrowSize:choice(item.eyebrowSize,headlineSizeValues,'auto'),photoText:choice(item.photoText,['auto','overlay','separate'],'auto'),
+    showPhoto:item.showPhoto !== false,showSummary:item.showSummary !== false,
     bodyMode:choice(item.bodyMode,['summary','article','title'],null),section:item.section === 'editorial' && byId.get(item.id).type !== 'Editoriale'
       ? null : choice(item.section,Object.keys(R.editorialSections),null),
     frame:R.normalizeFrame(item.frame,units),
@@ -3870,7 +3942,9 @@ function setupArticleEditor(form,article,dialog) {
   }
   function preview() {
     const draft = {...article,format:writer.format()};
-    for (const key of ['title','subtitle','text','source','url','date','consulted','note','limits','type']) draft[key] = form.elements[key].value;
+    for (const key of ['title','titleSize','eyebrow','eyebrowSize','subtitle','text','source','url','date','consulted','note','limits','type']) {
+      draft[key] = form.elements[key].value;
+    }
     draft.categories = new FormData(form).getAll('category');
     panels[3].replaceChildren(R.fullArticle(draft,false,false));
   }
@@ -3961,7 +4035,11 @@ function articleEditor(existing) {
   showImages();
   const form = buildForm([
     alert,
+    field('Occhiello',input('eyebrow',article.eyebrow,{maxlength:100}), 'Facoltativo. È la breve riga che compare sopra il titolo.'),
     field('Titolo dell’articolo',input('title',article.title,{required:true,maxlength:160})),
+    el('div',{class:'columns'},
+      field('Dimensione del titolo',select(headlineSizes,article.titleSize || 'auto',{name:'titleSize','aria-label':'Dimensione del titolo'})),
+      field('Dimensione dell’occhiello',select(headlineSizes,article.eyebrowSize || 'auto',{name:'eyebrowSize','aria-label':'Dimensione dell’occhiello'}))),
     field('Sottotitolo',input('subtitle',article.subtitle,{maxlength:220})),
     field('Testo completo',el('textarea',{name:'text',rows:11,maxlength:100000},article.text)),
     field('Sintesi breve per la prima pagina',area('summary',article.summary,220,2)),
@@ -3999,7 +4077,7 @@ function articleEditor(existing) {
     const labels = [...new Set([...chosen,...custom.map(name => options.find(label => categoryKey(label) === categoryKey(name)) ?? name)])];
     if (labels.length > 18 || labels.some(item => item.length > 60)) return markError('Usa al massimo 18 categorie, fino a 60 caratteri ciascuna.');
     if (!existing && target.articles.length >= 250) return markError('Il numero contiene già 250 articoli.');
-    const fields = ['title','subtitle','text','summary','source','note','limits','neutral','emotional'];
+    const fields = ['title','titleSize','eyebrow','eyebrowSize','subtitle','text','summary','source','note','limits','neutral','emotional'];
     fields.forEach(name => {article[name] = get(name);});
     article.format = writer.format();
     Object.assign(article,{url,date:day(get('date')),consulted:day(get('consulted')),categories:labels,type:get('type'),published:data.has('published')});
@@ -4345,7 +4423,7 @@ function modelThumbnail(id,model) {
   const frames = R.framePlan(sample);
   const rows = Math.max(...frames.map(frame => frame.y+frame.h));
   return el('span',{class:'model-sample','aria-hidden':'true',style:'--model-units:'+R.unitsFor(sample)+';--model-rows:'+rows},
-    frames.map(frame => el('span',{class:'model-block','data-section':frame.section,
+    frames.map(frame => el('span',{class:'model-block','data-section':frame.section,'data-overlaid':id === 'photo-overlay' && frame.section === 'opening',
       style:'grid-area:'+(frame.y+1)+' / '+(frame.x+1)+' / span '+frame.h+' / span '+frame.w})));
 }
 function showCompose() {
@@ -4583,18 +4661,25 @@ function showCompose() {
           el('div',{class:'control-grid'},resizing),
           tip('Trascina i bordi del riquadro nell’anteprima o usa questi comandi. In prima pagina il testo visibile e la fotografia si adattano allo spazio.')),
         section('text','Titolo e testo',
-          field('Dimensione del titolo',select([['auto','Secondo la posizione'],['large','Grande'],['medium','Medio'],['small','Piccolo']],current.titleSize,{onchange:read('titleSize')})),
+          field('Occhiello di prima pagina',input('front-eyebrow',current.eyebrow,{maxlength:100,placeholder:article.eyebrow || '',oninput:read('eyebrow')}),
+            'Lascia vuoto per riprendere l’occhiello dell’articolo.'),
+          field('Dimensione dell’occhiello',select([['auto','Come nell’articolo'],...headlineSizes.slice(1)],current.eyebrowSize || 'auto',
+            {'aria-label':'Dimensione dell’occhiello',onchange:read('eyebrowSize')})),
           field('Titolo di prima pagina',input('front-title',current.title,{maxlength:110,placeholder:article.title,oninput:read('title')}),
             'Lascia vuoto per riprendere il titolo dell’articolo.'),
+          field('Dimensione del titolo',select([['auto','Secondo la posizione'],...headlineSizes.slice(1)],current.titleSize || 'auto',
+            {'aria-label':'Dimensione del titolo',onchange:read('titleSize')})),
           field('Sintesi di prima pagina',area('front-summary',current.summary,180,2),'Lascia vuoto per riprendere la sintesi redazionale.'),
           field('Testo nel riquadro',select([['summary','Sintesi'],['article','Inizio dell’articolo con continuazione'],['title','Nessun testo']],
-            current.bodyMode || (current.showSummary ? 'summary' : 'title'),{onchange:event => {
+            current.bodyMode || (current.showSummary ? 'summary' : 'title'),{'aria-label':'Testo nel riquadro',onchange:event => {
               current.bodyMode=event.target.value; current.showSummary=current.bodyMode === 'summary'; touch(); renderPreview();
             }})),
           tip('Con Inizio dell’articolo, il giornale riprende dal punto raggiunto in prima pagina.')),
         section('image','Fotografia e inquadratura',
           article.images.length ? el('div',{class:'stack'},
             checkbox('Mostra la fotografia',current.showPhoto,{onchange:mark('showPhoto')}),
+            field('Titolo e fotografia',select([['auto','Secondo il modello'],['overlay','Testo sulla foto'],['separate','Testo separato dalla foto']],
+              current.photoText || 'auto',{'aria-label':'Titolo e fotografia',onchange:read('photoText')}),'Con Testo sulla foto puoi mostrare anche l’occhiello e la sintesi.'),
             article.images.length > 1 && field('Foto nel riquadro',select(article.images.map((photo,i) => [i,photo.caption || 'Foto ' + (i+1)]),current.photo,
               {onchange:event => update('photo',Number(event.target.value))})),
             photoSizeControls(current),
@@ -4661,6 +4746,8 @@ function versionChanges(a,b) {
       if (before !== after) notes.push((after < before ? 'Posizione più in alto' : 'Posizione più in basso') + ' (' + (before+1) + ' → ' + (after+1) + ')');
       if (order[current.size] !== order[old.size]) notes.push(order[current.size] > order[old.size] ? 'Riquadro ampliato' : 'Riquadro ridotto');
       if (sizes[current.titleSize] !== sizes[old.titleSize]) notes.push(sizes[current.titleSize] > sizes[old.titleSize] ? 'Titolo ingrandito' : 'Titolo ridotto');
+      if ((current.eyebrow || '') !== (old.eyebrow || '') || (current.eyebrowSize || 'auto') !== (old.eyebrowSize || 'auto')) notes.push('Occhiello modificato');
+      if ((current.photoText || 'auto') !== (old.photoText || 'auto')) notes.push('Posizione del testo rispetto alla foto modificata');
       if (old.title !== current.title || old.summary !== current.summary || old.showPhoto !== current.showPhoto ||
         old.showSummary !== current.showSummary || old.bodyMode !== current.bodyMode || old.photo !== current.photo) notes.push('Contenuto del riquadro modificato');
       if ((old.cropX ?? 50) !== (current.cropX ?? 50) || (old.cropY ?? 50) !== (current.cropY ?? 50)) notes.push('Inquadratura della foto modificata');
