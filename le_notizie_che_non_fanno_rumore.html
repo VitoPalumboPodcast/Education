@@ -838,6 +838,8 @@ dialog::backdrop {
   object-fit:contain;
 }
 .paper .article-img img {max-height:clamp(9rem,32dvh,18rem)}
+.paper .article-img[data-fit=compact] img {max-height:10rem}
+.paper .article-img[data-fit=small] img {max-height:7rem}
 .article-img figcaption {
   padding:.38rem 0 .48rem;
   border-bottom:1px solid var(--line);
@@ -2030,7 +2032,7 @@ th {
 .presentation .storage-note {
   display:none;
 }
-@media(max-width:46rem) {
+@media(max-width:58rem) {
   .mobile-compose-switch {
     display:flex;
     position:sticky;
@@ -2050,6 +2052,8 @@ th {
   .layout-editor .composer-preview {
     grid-row:auto;
   }
+}
+@media(max-width:46rem) {
   .nav-inner .learning-steps {
     width:100%;
   }
@@ -2808,9 +2812,9 @@ function lettura() {
     document.body.append(modal);
     modal.showModal();
   }
-  function photoBlock(photo, interactive) {
+  function photoBlock(photo,interactive,fit) {
     const image = el('img', photoAttrs(photo));
-    return el('figure', {class:'article-img'}, interactive
+    return el('figure', {class:'article-img','data-fit':fit}, interactive
       ? el('button', {type:'button', onclick:() => showPhoto(photo), 'aria-label':photo.alt ? 'Ingrandisci: ' + photo.alt : 'Ingrandisci questa fotografia'}, image)
       : image, (credits(photo) || photo.creditURL || photo.license) && captionNode(photo,'figcaption'));
   }
@@ -2821,12 +2825,11 @@ function lettura() {
       el('p',{class:'article-meta'},metadata),
       article.eyebrow && el('div',{class:'news-eyebrow','data-eyebrow-size':article.eyebrowSize},article.eyebrow),el('h2',{},article.title),
       article.subtitle && el('p',{class:'article-deck'},article.subtitle))}];
-    const addPhoto = photo => blocks.push({node:interactive => photoBlock(photo,interactive)});
-    if (article.images[0]) addPhoto(article.images[0]);
+    if (article.images[0]) blocks.push({photo:article.images[0],leadPhoto:true});
     const body = remainingBody(articleBody(article),cut);
     if (cut && body.length) blocks.push({node:() => el('p',{class:'article-meta'},'Continua dalla prima pagina')});
     blocks.push(...body);
-    article.images.slice(1).forEach(addPhoto);
+    blocks.push(...article.images.slice(1).map(photo => ({photo})));
     if (article.note) blocks.push({tag:'h3',text:'Nota del redattore'}, ...richBody(article.note));
     if (article.limits) blocks.push({tag:'h3',text:'Limiti e verifiche'}, ...richBody(article.limits));
     const sourceText = [article.source, article.consulted && 'Consultata il ' + dateLabel(article.consulted)].filter(Boolean).join(' · ');
@@ -2835,6 +2838,7 @@ function lettura() {
     return blocks;
   }
   function blockNode(block, interactive) {
+    if (block.photo) return photoBlock(block.photo,interactive,block.fit);
     return block.node ? block.node(interactive) : richNode(block.tag,block.tokens || [{value:block.text}],block.align);
   }
   function fullArticle(article, hideCategories, interactive = true,cut) {
@@ -2939,6 +2943,13 @@ function lettura() {
         if (fits(block)) {
           add(block);
           continue;
+        }
+        if (block.leadPhoto && !printLimit) {
+          const fit = ['compact','small'].find(size => fits({...block,fit:size}));
+          if (fit) {
+            add({...block,fit});
+            continue;
+          }
         }
         const parts = block.tokens;
         if (!parts) {
@@ -3978,13 +3989,13 @@ function writingSurface(article,fieldNode) {
     toggles.set(command,control);
     toolbar.append(control);
   }
-  const chooser = (label,options,command) => select([['',label],...options],'',{'aria-label':label,onchange:event => {
+  const chooser = (label,options,command,caption=label) => select([['',caption],...options],'',{'aria-label':label,onchange:event => {
     if (event.target.value) apply(command || event.target.value,command ? event.target.value : undefined);
     event.target.value = '';
   }});
   toolbar.append(
-    chooser('Stile del paragrafo',[['p','Paragrafo'],['h3','Sottotitolo']],'formatBlock'),
-    chooser('Dimensione testo',[['2','Piccola'],['3','Normale'],['4','Grande'],['5','Molto grande']],'fontSize'),
+    chooser('Stile del paragrafo',[['p','Paragrafo'],['h3','Sottotitolo']],'formatBlock','Paragrafo'),
+    chooser('Dimensione testo',[['2','Piccola'],['3','Normale'],['4','Grande'],['5','Molto grande']],'fontSize','Dimensione'),
     chooser('Allineamento',[['justifyLeft','Sinistra'],['justifyCenter','Centro'],['justifyRight','Destra'],['justifyFull','Giustificato']]),
     btn('Azzera stile testo',() => apply('removeFormat'),'small'));
   toolbar.addEventListener('mousedown',event => {if (event.target.closest('button')) event.preventDefault();});
