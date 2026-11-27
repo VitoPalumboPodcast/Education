@@ -777,6 +777,15 @@ dialog::backdrop {
 }
 .story-copy > * + * {margin-top:.68em}
 .story-copy h3 {break-after:avoid-column}
+[data-inside-style=one] {--wide-story-count:1}
+@container story-page (min-width:30rem) {
+  [data-inside-style=two] .story-copy {
+    column-count:2;
+    column-width:calc(13.5rem * var(--reading));
+    column-gap:1.75rem;
+    column-rule:1px solid var(--line);
+  }
+}
 [data-text-align=left] {text-align:left}
 [data-text-align=center] {text-align:center}
 [data-text-align=right] {text-align:right}
@@ -788,7 +797,7 @@ dialog::backdrop {
 .formatted-block {white-space:pre-line;overflow-wrap:anywhere}
 @container story-page (min-width:35rem) {
   .story-copy {
-    column-count:2;
+    column-count:var(--wide-story-count,2);
     column-width:calc(15rem * var(--reading));
     column-gap:1.75rem;
     column-rule:1px solid var(--line);
@@ -1140,11 +1149,18 @@ dialog::backdrop {
 .front-overlay-copy {
   grid-row:2;
   padding:clamp(.65rem,2.5cqi,1.25rem);
-  background:linear-gradient(180deg,#181019c9,#181019ee);
-  color:#fff;
+  background:var(--overlay-background,linear-gradient(180deg,#181019c9,#181019ee));
+  color:var(--overlay-ink,#fff);
 }
-.front-overlay-copy :is(.news-eyebrow,.kicker,.front-deck) {color:#fff}
-.front-overlay-copy .front-title button:focus-visible {outline-color:#fff}
+.front-overlay-stage[data-ink=black] {
+  --overlay-ink:#111;
+  --overlay-background:linear-gradient(180deg,#fffefaee,#fffefacc);
+}
+.front-overlay-stage[data-band=off] {--overlay-background:transparent}
+.front-overlay-stage[data-text-position=top] {grid-template-rows:auto minmax(clamp(4.5rem,14cqi,8rem),1fr)}
+.front-overlay-stage[data-text-position=top] .front-overlay-copy {grid-row:1}
+.front-overlay-copy :is(.news-eyebrow,.kicker,.front-deck) {color:inherit}
+.front-overlay-copy .front-title button:focus-visible {outline-color:currentColor}
 .front-overlay-copy .front-title {margin-bottom:.2rem}
 .front-overlay-copy .front-deck,.front-overlay-copy .front-overlay-summary {margin:.38rem 0 0}
 .front-photo .photo-credit {
@@ -1486,6 +1502,8 @@ button.front-continues {
 .model-block[data-overlaid] {
   background:linear-gradient(180deg,var(--soft) 54%,var(--accent) 54%);
 }
+.arrangement-options .model-option {padding:.75rem .55rem}
+.arrangement-options .model-sample {width:min(100%,7rem);height:4.7rem}
 .brand-seal {
   min-width:2.35rem;
   min-height:2.35rem;
@@ -2579,7 +2597,8 @@ function lettura() {
       const headingElements = [tag,overline,title,deck];
       if (overlay) {
         cell.append(el('figure',{class:'front-photo front-photo-overlay',style:photoSizeStyle(item.photoSize)},
-          el('div',{class:'front-overlay-stage'},image,el('div',{class:'front-overlay-copy'},headingElements,
+          el('div',{class:'front-overlay-stage','data-ink':item.overlayInk,'data-band':item.overlayBand === false ? 'off' : 'on',
+            'data-text-position':item.overlayPosition},image,el('div',{class:'front-overlay-copy'},headingElements,
             overlaidSummary && el('p',{class:'front-overlay-summary'},summary))),frontCredit(photo)));
       } else {
         const picture = displayPhoto && el('figure',{class:'front-photo',style:photoSizeStyle(item.photoSize)},image,frontCredit(photo));
@@ -2773,7 +2792,8 @@ function lettura() {
     const width = size === 'A3' ? 273 : 186;
     const height = size === 'A3' ? 395 : 272;
     const front = frontPage(edition);
-    const sheet = el('div',{class:'print-root measuring',style:'width:'+width+'mm;--print-page-height:'+height+'mm'},front);
+    const sheet = el('div',{class:'print-root measuring','data-inside-style':edition.insideStyle,
+      style:'width:'+width+'mm;--print-page-height:'+height+'mm'},front);
     document.body.append(sheet);
     const cuts = fitFront(front);
     lockCoverFit.add(front);
@@ -2910,7 +2930,7 @@ function lettura() {
     const tocList = el('div',{class:'reader-control-panel reader-toc'});
     const toc = el('details',{class:'reader-control'},el('summary',{},'Sommario degli articoli'),tocList);
     const deck = el('div',{class:'reader-deck'});
-    const reading = el('div',{class:'reader'},toolbar,deck);
+    const reading = el('div',{class:'reader','data-inside-style':edition.insideStyle},toolbar,deck);
     host.replaceChildren(reading);
     let pages = [], first = new Map(), current = -1, double = false, lastWidth = 0, lastHeight = 0, buildPending = 0;
     let flow = settings.flow, animation = settings.animation, scale = settings.scale, contrast = settings.contrast, touchStart = null;
@@ -3223,10 +3243,11 @@ const slug = value => value.normalize('NFD').replace(/\p{Diacritic}/gu,'').toLow
 const blankArticle = () => ({id:uid(),title:'',titleSize:'auto',eyebrow:'',eyebrowSize:'auto',subtitle:'',text:'',summary:'',images:[],source:'',url:'',date:'',consulted:'',categories:[],type:types[0],
   note:'',limits:'',published:true,starter:false,fiction:false,neutral:'',emotional:''});
 const emptyLab = () => ({initial:[],rated:[],titles:[]});
-const entryFor = article => ({id:article.id,size:'standard',align:'left',titleSize:'auto',eyebrow:'',eyebrowSize:'auto',photoText:'auto',showPhoto:true,showSummary:true,
+const entryFor = article => ({id:article.id,size:'standard',align:'left',titleSize:'auto',eyebrow:'',eyebrowSize:'auto',photoText:'auto',
+  overlayInk:'white',overlayBand:true,overlayPosition:'bottom',showPhoto:true,showSummary:true,
   title:'',summary:'',photo:0,cropX:50,cropY:50,photoSize:null,bodyMode:null,section:null,frame:null,reason:'',reasonText:''});
 const newEdition = (name = 'Il mio quotidiano', issue = 'Numero 1') => ({
-  id:uid(),name,classLabel:editionClass({}),motto:'',issue,date:'',model:'classic',columns:3,articles:[],layout:[],coverImage:null,showIds:null,
+  id:uid(),name,classLabel:editionClass({}),motto:'',issue,date:'',model:'classic',columns:3,insideStyle:'auto',articles:[],layout:[],coverImage:null,showIds:null,
   categoryLabels:[...categories],hideCategories:false, guide:[5,10,15,10,10],lab:emptyLab(),snapshots:{A:null,B:null}
 });
 const newProject = (code = 'Progetto personale', edition = newEdition()) => ({id:uid(),code,activeEdition:edition.id,editions:[edition]});
@@ -3402,6 +3423,8 @@ function layoutFrom(value, articles, units) {
     ...entryFor(byId.get(item.id)),size:choice(item.size,['standard','ampio','ridotto'],'standard'),align:item.align === 'right' ? 'right' : 'left',
     titleSize:choice(item.titleSize,headlineSizeValues,'auto'),eyebrow:text(item.eyebrow,100),
     eyebrowSize:choice(item.eyebrowSize,headlineSizeValues,'auto'),photoText:choice(item.photoText,['auto','overlay','separate'],'auto'),
+    overlayInk:choice(item.overlayInk,['white','black'],'white'),overlayBand:item.overlayBand !== false,
+    overlayPosition:choice(item.overlayPosition,['top','bottom'],'bottom'),
     showPhoto:item.showPhoto !== false,showSummary:item.showSummary !== false,
     bodyMode:choice(item.bodyMode,['summary','article','title'],null),section:item.section === 'editorial' && byId.get(item.id).type !== 'Editoriale'
       ? null : choice(item.section,Object.keys(R.editorialSections),null),
@@ -3432,6 +3455,7 @@ function editionFrom(value, snapshot = false) {
   const articles = unique(arrayOf(value.articles,250).map(articleFrom), item => item.id);
   const safe = {...newEdition(text(value.name,90),text(value.issue,58)),id:value.id,motto:text(value.motto,150),date:day(value.date),model:value.model,articles,
     classLabel:typeof value.classLabel === 'string' ? text(value.classLabel,24).trim() : editionClass({}),
+    insideStyle:choice(value.insideStyle,['auto','one','two'],'auto'),
     columns:R.columnCount(value),layout:layoutFrom(value.layout,articles,R.unitsFor(value)),hideCategories:value.hideCategories === true};
   if (value.categoryLabels !== undefined) {
     safe.categoryLabels = [...new Set(arrayOf(value.categoryLabels,5000).map(label => text(label,60).trim()).filter(Boolean))];
@@ -3674,6 +3698,7 @@ function issueDialog() {
     target.motto = old.motto;
     target.model = old.model;
     target.columns = R.columnCount(old);
+    target.insideStyle = old.insideStyle || 'auto';
     target.hideCategories = old.hideCategories;
     target.guide = [...old.guide];
     if (data.has('copy')) target.articles = clone(old.articles);
@@ -4429,10 +4454,31 @@ function modelThumbnail(id,model) {
   const layout = articles.map(entryFor);
   const sample = {model:id,columns:model.columns,articles,layout};
   const frames = R.framePlan(sample);
-  const rows = Math.max(...frames.map(frame => frame.y+frame.h));
-  return el('span',{class:'model-sample','aria-hidden':'true',style:'--model-units:'+R.unitsFor(sample)+';--model-rows:'+rows},
-    frames.map(frame => el('span',{class:'model-block','data-section':frame.section,'data-overlaid':id === 'photo-overlay' && frame.section === 'opening',
+  return frameThumbnail(frames,R.unitsFor(sample),id === 'photo-overlay');
+}
+function frameThumbnail(frames,units,overlay=false) {
+  const rows = Math.max(1,...frames.map(frame => frame.y+frame.h));
+  return el('span',{class:'model-sample','aria-hidden':'true',style:'--model-units:'+units+';--model-rows:'+rows},
+    frames.map(frame => el('span',{class:'model-block','data-section':frame.section,'data-overlaid':overlay && frame.section === 'opening',
       style:'grid-area:'+(frame.y+1)+' / '+(frame.x+1)+' / span '+frame.h+' / span '+frame.w})));
+}
+const pageArrangements = [
+  {name:'Apertura e spalla',columns:6,featured:[[0,0,4,16],[4,0,2,16]],perRow:3},
+  {name:'Apertura a tutta larghezza',columns:6,featured:[[0,0,6,15]],perRow:3},
+  {name:'Due notizie affiancate',columns:6,featured:[[0,0,3,15],[3,0,3,15]],perRow:2},
+  {name:'Mosaico',columns:6,featured:[[0,0,3,20],[3,0,3,10],[3,10,3,10]],perRow:3},
+  {name:'Colonna unica',columns:1,featured:[[0,0,1,13]],perRow:1}
+];
+function arrangementFrames(frames,preset) {
+  const {columns,featured,perRow} = preset;
+  const ordered = [...frames].sort((a,b) => Number(b.section === 'opening')-Number(a.section === 'opening') || a.y-b.y || a.x-b.x);
+  const firstFreeRow = Math.max(...featured.map(([,y,,h]) => y+h));
+  const width = columns/perRow;
+  return ordered.map(({id,section},index) => {
+    const rest = index-featured.length;
+    const [x,y,w,h] = featured[index] ?? [rest%perRow*width,firstFreeRow+Math.floor(rest/perRow)*9,width,9];
+    return {id,section,x:x*R.columnUnits,y,w:w*R.columnUnits,h};
+  });
 }
 function showCompose() {
   const target = edition();
@@ -4455,10 +4501,53 @@ function showCompose() {
   const reasons = ['È importante per molte persone.','Mi ha colpito emotivamente.','Racconta un comportamento virtuoso.',
     'È un fatto eccezionale.','È utile conoscerla.','Mi interessa personalmente.'];
   let detailsOpen = 'position', bankOpen = false, modelOpen = false, coverOpen = false;
+  let previousArrangement;
   if (!target.layout.some(item => item.id === selectedArticle)) selectedArticle = target.layout[0]?.id || '';
   const edit = btn('Modifica',() => setPane('edit'),'small',{'aria-controls':'compose-controls'});
   const inspect = btn('Anteprima',() => setPane('preview'),'small',{'aria-controls':'compose-preview'});
   const mobileSwitch = el('div',{class:'mobile-compose-switch row','aria-label':'Vista di impaginazione'},edit,inspect);
+
+  const restoreArrangement = btn('Ripristina disposizione precedente',() => {
+    target.columns = previousArrangement.columns;
+    target.insideStyle = previousArrangement.insideStyle;
+    for (const item of target.layout) {
+      if (previousArrangement.frames.has(item.id)) item.frame = previousArrangement.frames.get(item.id);
+    }
+    previousArrangement = undefined;
+    restoreArrangement.hidden = true;
+    touch();draw();focusAfter('#page-arrangements');showStatus('Disposizione precedente ripristinata.');
+  },'small',{hidden:true});
+  function arrangementDialog() {
+    const frames = R.framePlan(target);
+    const suggestions = pageArrangements.map(preset => arrangementFrames(frames,preset));
+    const sketch = (label,value,preview,units) => el('label',{class:'model-option'},
+      input('arrangement',value,{type:'radio',class:'sr',checked:value === 'current','aria-label':label}),
+      frameThumbnail(preview,units,target.model === 'photo-overlay'),el('span',{},label));
+    modal('Prova disposizioni',buildForm([
+      frames.length && el('fieldset',{},el('legend',{},'Prima pagina'),el('div',{class:'model-options arrangement-options'},
+        sketch('Disposizione attuale','current',frames,R.unitsFor(target)),pageArrangements.map((preset,index) =>
+          sketch(preset.name,String(index),suggestions[index],preset.columns*R.columnUnits)))),
+      field('Pagine interne',select([['auto','Colonne automatiche'],['one','Una colonna di testo'],['two','Due colonne quando c’è spazio']],
+        target.insideStyle || 'auto',{name:'insideStyle','aria-label':'Pagine interne'}))
+    ],data => {
+      const index = Number(data.get('arrangement') ?? 'current');
+      const preset = pageArrangements[index];
+      const insideStyle = data.get('insideStyle');
+      if (preset || insideStyle !== (target.insideStyle || 'auto')) {
+        previousArrangement = {columns:target.columns,insideStyle:target.insideStyle,
+          frames:new Map(target.layout.map(item => [item.id,clone(item.frame ?? null)]))};
+        if (preset) {
+          target.columns = preset.columns;
+          const positions = new Map(suggestions[index].map(({id,section,...frame}) => [id,frame]));
+          target.layout.forEach(item => {item.frame=positions.get(item.id);});
+        }
+        target.insideStyle = insideStyle;
+        restoreArrangement.hidden = false;
+        touch();draw();showStatus('Disposizione applicata.');
+      }
+      $('#app-dialog').close();
+    },'Applica disposizione'));
+  }
 
   function setPane(value) {
     if (value !== 'preview') cancelMove();
@@ -4688,6 +4777,12 @@ function showCompose() {
             checkbox('Mostra la fotografia',current.showPhoto,{onchange:mark('showPhoto')}),
             field('Titolo e fotografia',select([['auto','Secondo il modello'],['overlay','Testo sulla foto'],['separate','Testo separato dalla foto']],
               current.photoText || 'auto',{'aria-label':'Titolo e fotografia',onchange:read('photoText')}),'Con Testo sulla foto puoi mostrare anche l’occhiello e la sintesi.'),
+            field('Colore del testo sulla foto',select([['white','Bianco'],['black','Nero']],current.overlayInk || 'white',
+              {'aria-label':'Colore del testo sulla foto',onchange:read('overlayInk')}),
+              'Per il testo senza fascia, scegli il nero su una zona chiara o il bianco su una zona scura.'),
+            field('Posizione del testo sulla foto',select([['bottom','In basso'],['top','In alto']],current.overlayPosition || 'bottom',
+              {'aria-label':'Posizione del testo sulla foto',onchange:read('overlayPosition')})),
+            checkbox('Mostra la fascia di contrasto',current.overlayBand !== false,{onchange:mark('overlayBand')}),
             article.images.length > 1 && field('Foto nel riquadro',select(article.images.map((photo,i) => [i,photo.caption || 'Foto ' + (i+1)]),current.photo,
               {onchange:event => update('photo',Number(event.target.value))})),
             photoSizeControls(current),
@@ -4726,7 +4821,8 @@ function showCompose() {
   draw();
   return el('section',{class:'layout-editor'},
     heading('Creo la prima pagina','Scegli l’apertura e distribuisci lo spazio. Trascina un riquadro per spostarlo oppure usa i bordi per ridimensionarlo.',[
-      btn('Rivedi le tue scelte',revisionDialog),btn('Sfoglia il giornale',() => changeView('reader'),'primary')]),
+      btn('Prova disposizioni',arrangementDialog,'primary',{id:'page-arrangements'}),restoreArrangement,
+      btn('Rivedi le tue scelte',revisionDialog),btn('Sfoglia il giornale',() => changeView('reader'))]),
     mobileSwitch,grid);
 }
 
@@ -4734,7 +4830,7 @@ function captureFront(target) {
   const identifiers = new Set(target.layout.map(item => item.id));
   if (target.coverImage) identifiers.add(target.coverImage.id);
   return {...newEdition(target.name,target.issue),id:target.id,classLabel:editionClass(target),motto:target.motto,date:target.date,model:target.model,
-    columns:R.columnCount(target),articles:clone(target.articles.filter(item => identifiers.has(item.id))),
+    columns:R.columnCount(target),insideStyle:target.insideStyle || 'auto',articles:clone(target.articles.filter(item => identifiers.has(item.id))),
     layout:clone(target.layout),coverImage:clone(target.coverImage),hideCategories:target.hideCategories};
 }
 function versionChanges(a,b) {
@@ -4756,6 +4852,8 @@ function versionChanges(a,b) {
       if (sizes[current.titleSize] !== sizes[old.titleSize]) notes.push(sizes[current.titleSize] > sizes[old.titleSize] ? 'Titolo ingrandito' : 'Titolo ridotto');
       if ((current.eyebrow || '') !== (old.eyebrow || '') || (current.eyebrowSize || 'auto') !== (old.eyebrowSize || 'auto')) notes.push('Occhiello modificato');
       if ((current.photoText || 'auto') !== (old.photoText || 'auto')) notes.push('Posizione del testo rispetto alla foto modificata');
+      if ((current.overlayInk || 'white') !== (old.overlayInk || 'white') || (current.overlayBand !== false) !== (old.overlayBand !== false) ||
+        (current.overlayPosition || 'bottom') !== (old.overlayPosition || 'bottom')) notes.push('Stile del testo sulla foto modificato');
       if (old.title !== current.title || old.summary !== current.summary || old.showPhoto !== current.showPhoto ||
         old.showSummary !== current.showSummary || old.bodyMode !== current.bodyMode || old.photo !== current.photo) notes.push('Contenuto del riquadro modificato');
       if ((old.cropX ?? 50) !== (current.cropX ?? 50) || (old.cropY ?? 50) !== (current.cropY ?? 50)) notes.push('Inquadratura della foto modificata');
