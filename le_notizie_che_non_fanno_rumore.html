@@ -1642,6 +1642,13 @@ button.front-continues {
 .writing-format select {width:auto;font-size:.86rem;min-height:2.4rem}
 .writing-format .btn[aria-pressed=true] {background:var(--soft);border-color:var(--accent);color:var(--accent)}
 .writing-panel input[name=title] {font:700 1.4rem/1.25 var(--serif)}
+.writing-headline-options {
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:.55rem .72rem;
+}
+.writing-headline-options summary {font-weight:700;cursor:pointer}
+.writing-headline-options > .stack {margin-top:.65rem}
 .writing-format {gap:.4rem}
 .writing-format [data-writing-command=bold] {font-weight:800}
 .writing-format [data-writing-command=italic] {font-style:italic}
@@ -4035,11 +4042,12 @@ function articleEditor(existing) {
   showImages();
   const form = buildForm([
     alert,
-    field('Occhiello',input('eyebrow',article.eyebrow,{maxlength:100}), 'Facoltativo. È la breve riga che compare sopra il titolo.'),
     field('Titolo dell’articolo',input('title',article.title,{required:true,maxlength:160})),
-    el('div',{class:'columns'},
-      field('Dimensione del titolo',select(headlineSizes,article.titleSize || 'auto',{name:'titleSize','aria-label':'Dimensione del titolo'})),
-      field('Dimensione dell’occhiello',select(headlineSizes,article.eyebrowSize || 'auto',{name:'eyebrowSize','aria-label':'Dimensione dell’occhiello'}))),
+    el('details',{class:'writing-headline-options'},el('summary',{},'Titolo e occhiello'),el('div',{class:'stack'},
+      field('Occhiello',input('eyebrow',article.eyebrow,{maxlength:100}), 'Facoltativo. È la breve riga che compare sopra il titolo.'),
+      el('div',{class:'columns'},
+        field('Dimensione del titolo',select(headlineSizes,article.titleSize || 'auto',{name:'titleSize','aria-label':'Dimensione del titolo'})),
+        field('Dimensione dell’occhiello',select(headlineSizes,article.eyebrowSize || 'auto',{name:'eyebrowSize','aria-label':'Dimensione dell’occhiello'}))))),
     field('Sottotitolo',input('subtitle',article.subtitle,{maxlength:220})),
     field('Testo completo',el('textarea',{name:'text',rows:11,maxlength:100000},article.text)),
     field('Sintesi breve per la prima pagina',area('summary',article.summary,220,2)),
