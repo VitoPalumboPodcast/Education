@@ -725,8 +725,53 @@ dialog::backdrop {
   display:flow-root;
   min-width:0;
 }
+.paper-content {
+  container:story-page / inline-size;
+}
 .paper-content>*+*,.full-article>*+* {
   margin-top:.68em;
+}
+.story-masthead {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:.2rem .8rem;
+  padding:.35rem 0;
+  border-top:3px solid var(--ink);
+  border-bottom:1px solid var(--line);
+  margin-bottom:.9rem;
+  font:700 .88rem/1.25 var(--serif);
+}
+.story-masthead span {
+  color:var(--muted);
+  font:700 .66rem/1.35 system-ui,sans-serif;
+  letter-spacing:.065em;
+  text-transform:uppercase;
+}
+.story-heading > * + * {margin-top:.38em}
+.story-heading .article-meta {
+  color:var(--accent);
+  font-weight:700;
+}
+.paper-content .story-heading h2 {
+  font-size:clamp(1.45em,7.4cqi,2.5em);
+  text-wrap:pretty;
+}
+.paper-content .continuation {
+  border-bottom:1px solid var(--line);
+  padding-bottom:.52rem;
+  font-weight:700;
+}
+.story-copy > * + * {margin-top:.68em}
+.story-copy h3 {break-after:avoid-column}
+@container story-page (min-width:35rem) {
+  .story-copy {
+    column-count:2;
+    column-width:calc(15rem * var(--reading));
+    column-gap:1.75rem;
+    column-rule:1px solid var(--line);
+  }
 }
 .paper-content h2,.full-article h2 {
   font-size:1.85em;
@@ -750,15 +795,26 @@ dialog::backdrop {
   border-top:1px solid var(--line);
   padding-top:.35rem;
   color:var(--muted);
-  font-size:.8rem;
+  font:650 .76rem/1.35 system-ui,sans-serif;
   display:flex;
   justify-content:space-between;
   gap:.75rem;
 }
+.paper-foot span:last-child {color:var(--ink);white-space:nowrap}
 .article-img img {
   width:100%;
   max-height:13rem;
   object-fit:contain;
+}
+.paper .article-img img {max-height:clamp(9rem,32dvh,18rem)}
+.article-img figcaption {
+  padding:.38rem 0 .48rem;
+  border-bottom:1px solid var(--line);
+}
+.paper-content .article-source,.full-article .article-source {
+  padding:.68rem .75rem;
+  border-left:2px solid var(--accent);
+  background:var(--soft);
 }
 .article-img button {
   display:block;
@@ -2531,18 +2587,15 @@ function lettura() {
     const image = el('img', photoAttrs(photo));
     return el('figure', {class:'article-img'}, interactive
       ? el('button', {type:'button', onclick:() => showPhoto(photo), 'aria-label':photo.alt ? 'Ingrandisci: ' + photo.alt : 'Ingrandisci questa fotografia'}, image)
-      : image);
+      : image, (credits(photo) || photo.creditURL || photo.license) && captionNode(photo,'figcaption'));
   }
   function articleBlocks(article, hideCategories,cut) {
     const metadata = [article.type, dateLabel(article.date), article.fiction && 'Esempio inventato',
       !hideCategories && article.categories.join(' · ')].filter(Boolean).join(' · ');
-    const blocks = [{node:() => el('p', {class:'article-meta'}, metadata)},
-      {node:() => el('h2', {}, article.title), title:article.title},
-      ...article.subtitle ? [{node:() => el('p', {class:'article-deck'}, article.subtitle), text:article.subtitle, tag:'p'}] : []];
-    const addPhoto = photo => {
-      blocks.push({node:interactive => photoBlock(photo, interactive)});
-      if (credits(photo) || photo.creditURL || photo.license) blocks.push({node:() => captionNode(photo)});
-    };
+    const blocks = [{node:() => el('header',{class:'story-heading'},
+      el('p',{class:'article-meta'},metadata),el('h2',{},article.title),
+      article.subtitle && el('p',{class:'article-deck'},article.subtitle))}];
+    const addPhoto = photo => blocks.push({node:interactive => photoBlock(photo,interactive)});
     if (article.images[0]) addPhoto(article.images[0]);
     const body = remainingBody(richBody(article.text),cut);
     if (cut && body.length) blocks.push({node:() => el('p',{class:'article-meta'},'Continua dalla prima pagina')});
@@ -2561,6 +2614,31 @@ function lettura() {
   function fullArticle(article, hideCategories, interactive = true,cut) {
     return el('article', {class:'full-article', id:'article-' + article.id, tabindex:interactive ? '-1' : null},
       articleBlocks(article, hideCategories,cut).map(block => blockNode(block, interactive)));
+  }
+  function storyPageContent(edition,continued) {
+    return el('div',{class:'paper-content'},el('div',{class:'story-masthead'},
+      el('strong',{},edition.name),edition.issue && el('span',{},edition.issue)),
+      continued && el('p',{class:'article-meta continuation'},'Segue · '+continued.title));
+  }
+  function placeStoryBlock(container,block,interactive) {
+    const node = blockNode(block,interactive);
+    if (!block.tokens) container.append(node);
+    else {
+      let group = container.lastElementChild;
+      if (!group?.classList.contains('story-copy')) {
+        group = el('div',{class:'story-copy'});
+        container.append(group);
+      }
+      group.append(node);
+    }
+    return node;
+  }
+  function storyPage(edition,page,index,continued,print=false) {
+    const content = page && storyPageContent(edition,continued && page.article);
+    if (page) page.content.forEach(block => placeStoryBlock(content,block,!print));
+    return el(print ? 'article' : 'section',{class:print ? 'print-story' : 'paper',
+      'aria-label':page ? 'Pagina '+(index+1) : 'Pagina vuota'},content,
+      page && el('div',{class:'paper-foot'},el('span',{},dateLabel(edition.date)),el('span',{},'Pagina '+(index+1))));
   }
   // I rimandi della stampa usano gli stessi blocchi e formati delle pagine stampate.
   function printLayout(edition,size) {
@@ -2582,10 +2660,7 @@ function lettura() {
   function printEdition(edition, coverOnly, format = 'A4') {
     const size = format === 'A3' ? 'A3' : 'A4';
     const {sheet,pages,first} = printLayout(edition,size);
-    if (!coverOnly) sheet.append(...pages.map(({article,content},index) => el('article',{class:'print-story'},
-      el('div',{class:'paper-content'},first.get(article.id) !== index && el('p',{class:'article-meta'},'Segue · '+article.title),
-        content.map(block => blockNode(block,false))),
-      el('div',{class:'paper-foot'},el('span',{},edition.issue || edition.name),el('span',{},'Pagina '+(index+1))))));
+    if (!coverOnly) sheet.append(...pages.map((page,index) => storyPage(edition,page,index,first.get(page.article.id) !== index,true)));
     sheet.classList.remove('measuring');
     sheet.style.removeProperty('width');
     document.body.append(sheet);
@@ -2605,33 +2680,36 @@ function lettura() {
   function paginate(edition, stage, width, double,cuts,printLimit) {
     const probe = el('section', {class:(printLimit ? 'print-story' : 'paper')+' pagination-probe','aria-hidden':'true',inert:true,
       style:'width:' + (width / (double ? 2 : 1)) + 'px'});
-    const measure = el('div', {class:'paper-content'});
-    probe.append(measure);
     stage.append(probe);
     const limit = printLimit ?? Math.max(385, Math.min(735, window.innerHeight - 210));
     const pages = [];
     const first = new Map();
     for (const article of edition.articles.filter(item => item.published)) {
       let content = [];
+      let measure = storyPageContent(edition);
+      probe.replaceChildren(measure);
       first.set(article.id, pages.length);
       const commit = () => {
         if (!content.length) return;
         pages.push({article, content});
         content = [];
-        measure.replaceChildren();
+        measure = storyPageContent(edition,article);
+        probe.replaceChildren(measure);
       };
-      const fits = node => {
-        measure.append(node);
+      const fits = block => {
+        const node = placeStoryBlock(measure,block,false);
+        const parent = node.parentElement;
         const ok = measure.offsetHeight <= limit;
         node.remove();
+        if (parent !== measure && !parent.childElementCount) parent.remove();
         return ok;
       };
       const add = block => {
         content.push(block);
-        measure.append(blockNode(block, false));
+        placeStoryBlock(measure,block,false);
       };
       for (const block of articleBlocks(article,edition.hideCategories,cuts.get(article.id))) {
-        if (fits(blockNode(block, false))) {
+        if (fits(block)) {
           add(block);
           continue;
         }
@@ -2646,7 +2724,7 @@ function lettura() {
           let low = start, high = parts.length;
           while (low < high) {
             const middle = Math.ceil((low + high) / 2);
-            if (fits(richNode(block.tag, parts.slice(start, middle)))) low = middle;
+            if (fits({...block,tokens:parts.slice(start,middle)})) low = middle;
             else high = middle - 1;
           }
           if (low > start) {
@@ -2664,7 +2742,7 @@ function lettura() {
               let end = offset + 1, right = glyphs.length;
               while (end < right) {
                 const middle = Math.ceil((end + right) / 2);
-                if (fits(richNode(block.tag, [{...token, value:glyphs.slice(offset,middle).join('')}]))) end = middle;
+                if (fits({...block,tokens:[{...token,value:glyphs.slice(offset,middle).join('')}]})) end = middle;
                 else right = middle - 1;
               }
               add({...block, tokens:[{...token,value:glyphs.slice(offset,end).join('')}]});
@@ -2806,11 +2884,7 @@ function lettura() {
       lockCoverFit.add(coverNode);
     }
     function paper(page, index) {
-      const label = page && first.get(page.article.id) !== index ? 'Segue · ' + page.article.title : '';
-      return el('section',{class:'paper','aria-label':page ? 'Pagina ' + (index + 1) : 'Pagina vuota'},
-        el('div',{class:'paper-content'},page && label && el('p',{class:'article-meta continuation'},label),
-          page && page.content.map(block => blockNode(block,true))),
-        el('div',{class:'paper-foot'},el('span',{},edition.issue),el('span',{},page ? String(index + 1) : '')));
+      return storyPage(edition,page,index,page && first.get(page.article.id) !== index);
     }
     function pageNode(index) {
       if (flow && !coverOnly) {
