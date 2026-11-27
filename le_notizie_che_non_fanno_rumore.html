@@ -380,6 +380,7 @@ dialog::backdrop {
   outline:2px solid var(--accent);
   outline-offset:3px;
 }
+.editable-cover .frame-cell[tabindex] {cursor:pointer}
 .compose-paper {
   position:relative;
 }
@@ -1235,6 +1236,9 @@ button.front-continues {
   width:.55rem;
   height:.24rem;
   border-block:1px solid currentColor;
+}
+@media(pointer:coarse) {
+  .frame-handle.btn {width:2rem;height:2rem}
 }
 .frame-handle-left,.frame-handle-right {
   top:50%;
@@ -2182,10 +2186,12 @@ function lettura() {
   }
   const frameSides = {left:'sinistra',right:'destra',top:'alto',bottom:'basso'};
   const intersects = (a,b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+  const minimumFrameWidth = units => units > columnUnits && units <= 4*columnUnits ? columnUnits-1 : minimumWidth;
   function normalizeFrame(value,units = defaultColumns*columnUnits) {
     if (!value || !Number.isInteger(value.w) || !Number.isInteger(value.h)) return null;
-    const w = clamp(value.w,minimumWidth,units);
+    const w = clamp(value.w,minimumFrameWidth(units),units);
     return {w,h:clamp(value.h,minimumHeight,maximumHeight),anchor:value.anchor === true,autoSize:value.autoSize === true,
+      ...(value.keepSize === true ? {keepSize:true} : {}),
       x:Number.isInteger(value.x) ? clamp(value.x,0,units-1) : null,
       y:Number.isInteger(value.y) ? clamp(value.y,0,200) : null};
   }
@@ -2240,7 +2246,7 @@ function lettura() {
       const section = sections.get(item.id);
       const main = section === 'opening';
       const saved = changes.get(item.id);
-      const manual = saved && !saved.autoSize ? saved : null;
+      const manual = saved && (!saved.autoSize || saved.keepSize) ? saved : null;
       const withPhoto = item.showPhoto && photos.has(item.id);
       const openingWidth = model.opening === 'full' || units === columnUnits ? units : units-(topEditorial ? 2 : 1)*columnUnits;
       const lowerIndex = lower.indexOf(item);
@@ -2292,12 +2298,13 @@ function lettura() {
   function adjustEdge(frame,side,steps) {
     let {x,y,w,h} = frame;
     const units = frame.units ?? defaultColumns*columnUnits;
+    const minWidth = minimumFrameWidth(units);
     if (side === 'left') {
-      const edge = clamp(x-steps,Math.max(0,x+w-units),x+w-minimumWidth);
+      const edge = clamp(x-steps,Math.max(0,x+w-units),x+w-minWidth);
       w += x-edge;
       x = edge;
     } else if (side === 'right') {
-      w = clamp(w+steps,minimumWidth,units-x);
+      w = clamp(w+steps,minWidth,units-x);
     } else if (side === 'top') {
       const edge = clamp(y-steps,Math.max(0,y+h-maximumHeight),y+h-minimumHeight);
       h += y-edge;
@@ -2307,14 +2314,56 @@ function lettura() {
     }
     return {...frame,x,y,w,h};
   }
-  const frameChanged = (old,next) => ['x','y','w','h'].some(key => old[key] !== next[key]);
+  const oppositeEdge = {left:'right',right:'left',top:'bottom',bottom:'top'};
+  function planEdgeResize(frames,id,side,steps) {
+    const current = frames.find(frame => frame.id === id);
+    const empty = new Map();
+    if (!current || !steps) return empty;
+    const horizontal = side === 'left' || side === 'right';
+    const [axis,extent,cross,span] = horizontal ? ['x','w','y','h'] : ['y','h','x','w'];
+    const end = side === 'right' || side === 'bottom';
+    const edge = current[axis]+(end ? current[extent] : 0);
+    const touching = [[current,side]];
+    const connected = new Set([id]);
+    // Segue lo stesso confine anche quando un riquadro tocca due riquadri sovrapposti.
+    for (const [frame,frameSide] of touching) {
+      const adjacentSide = oppositeEdge[frameSide];
+      const adjacentEnd = adjacentSide === 'right' || adjacentSide === 'bottom';
+      for (const candidate of frames) {
+        if (connected.has(candidate.id) || candidate[axis]+(adjacentEnd ? candidate[extent] : 0) !== edge) continue;
+        if (candidate[cross] >= frame[cross]+frame[span] || frame[cross] >= candidate[cross]+candidate[span]) continue;
+        connected.add(candidate.id);
+        touching.push([candidate,adjacentSide]);
+      }
+    }
+    let delta = adjustEdge(current,side,steps)[extent]-current[extent];
+    if (!delta) return empty;
+    if (touching.length === 1) return new Map([[id,adjustEdge(current,side,delta)]]);
+    for (const [frame,edgeSide] of touching) {
+      const direction = edgeSide === side ? 1 : -1;
+      const allowed = (adjustEdge(frame,edgeSide,delta*direction)[extent]-frame[extent])*direction;
+      delta = delta > 0 ? Math.min(delta,allowed) : Math.max(delta,allowed);
+    }
+    const fixed = frames.filter(frame => !connected.has(frame.id));
+    while (delta) {
+      const resized = touching.map(([frame,edgeSide]) => adjustEdge(frame,edgeSide,edgeSide === side ? delta : -delta));
+      if (resized.every(frame => !fixed.some(other => intersects(frame,other)))) return new Map(resized.map(frame => [frame.id,frame]));
+      delta -= Math.sign(delta);
+    }
+    return empty;
+  }
   function resizeFrame(edition,id,side,steps) {
-    const current = framePlan(edition).find(item => item.id === id);
-    if (!current) return false;
-    const changed = adjustEdge(current,side,steps);
-    if (!frameChanged(current,changed)) return false;
+    const frames = framePlan(edition);
+    const changes = planEdgeResize(frames,id,side,steps);
+    if (!changes.size) return false;
+    // A confine condiviso, tutte le altre geometrie restano nelle posizioni misurate.
+    const fixed = changes.size > 1 ? new Map(frames.map(frame => [frame.id,frame])) : new Map();
     for (const item of edition.layout) {
-      if (item.id === id) item.frame = {...normalizeFrame(changed,changed.units),anchor:true};
+      const next = changes.get(item.id) || fixed.get(item.id);
+      if (next) {
+        const autoSize = !changes.has(item.id) && (!item.frame || item.frame.autoSize);
+        item.frame = {...normalizeFrame(next,next.units),anchor:item.id === id,autoSize,...(autoSize ? {keepSize:true} : {})};
+      }
       else if (item.frame?.anchor) item.frame = {...item.frame,anchor:false};
     }
     return true;
@@ -2331,7 +2380,7 @@ function lettura() {
     for (const item of edition.layout) {
       const current = normalizeFrame(item.frame,previous);
       item.frame = current && !current.autoSize ? {...current,x:null,y:null,anchor:false,
-        w:clamp(Math.round(current.w*units/previous),minimumWidth,units)} : null;
+        w:clamp(Math.round(current.w*units/previous),minimumFrameWidth(units),units)} : null;
     }
   }
   function moveIntoArea(edition,source,destination) {
@@ -2357,12 +2406,15 @@ function lettura() {
       ';--frame-rows:'+frame.h+';--photo-rows:'+Math.max(2,Math.round(frame.h*.34))+
       ';--phone-width:'+percent+'%;--phone-offset:'+offset+'%';
   }
-  function resizeHandle(side,frame,cell,apply) {
+  function resizeHandle(side,frame,cell,frames,apply) {
     const horizontal = side === 'left' || side === 'right';
     const direction = side === 'top' || side === 'left' ? -1 : 1;
     const label = 'Ridimensiona dal lato ' + frameSides[side];
-    const handle = btn(label,() => apply(side,frameChanged(frame,adjustEdge(frame,side,1)) ? 1 : -1,side),
-      'frame-handle frame-handle-' + side,{'aria-label':label,title:label + ' · trascina o usa le frecce'});
+    const expand = planEdgeResize(frames,frame.id,side,1).size > 0;
+    const shrink = planEdgeResize(frames,frame.id,side,-1).size > 0;
+    let ignoreClick = false;
+    const handle = btn(label,event => {if (!ignoreClick || !event.detail) apply(side,expand ? 1 : -1,side);},
+      'frame-handle frame-handle-' + side,{'aria-label':label,title:label + ' · trascina o usa le frecce',disabled:!expand && !shrink});
     let gesture;
     handle.addEventListener('dragstart',event => event.preventDefault());
     handle.addEventListener('pointerdown',event => {
@@ -2375,24 +2427,37 @@ function lettura() {
       const mobile = styles.display !== 'grid';
       const step = horizontal ? (grid.clientWidth + columnGap) / (mobile ? (frame.units-minimumWidth)/.45 || 1 : frame.units)
         : Math.max(18,cell.offsetHeight / frame.h + rowGap);
-      const ghost = el('div',{class:'frame-resize-outline','aria-hidden':'true'});
-      cell.append(ghost);
-      gesture = {at:horizontal ? event.clientX : event.clientY,step,ghost,id:event.pointerId,units:0};
+      ignoreClick = false;
+      gesture = {at:horizontal ? event.clientX : event.clientY,step,grid,ghosts:[],id:event.pointerId,units:0};
       handle.setPointerCapture(event.pointerId);
     });
     handle.addEventListener('pointermove',event => {
       if (gesture?.id !== event.pointerId) return;
       const distance = (horizontal ? event.clientX : event.clientY) - gesture.at;
-      const next = adjustEdge(frame,side,Math.round(distance*direction/gesture.step));
-      const units = horizontal ? next.w-frame.w : next.h-frame.h;
+      if (Math.abs(distance)>4) ignoreClick = true;
+      const changes = planEdgeResize(frames,frame.id,side,Math.round(distance*direction/gesture.step));
+      const extent = horizontal ? 'w' : 'h';
+      const units = (changes.get(frame.id)?.[extent] ?? frame[extent])-frame[extent];
+      if (units === gesture.units) return;
       gesture.units = units;
-      gesture.ghost.style.setProperty(side,(-units*gesture.step)+'px');
+      gesture.ghosts.forEach(ghost => ghost.remove());
+      gesture.ghosts = [];
+      for (const [id,next] of changes) {
+        const target = [...gesture.grid.children].find(node => node.dataset.id === id);
+        if (!target) continue;
+        const old = frames.find(item => item.id === id);
+        const edge = horizontal ? (next.x === old.x ? 'right' : 'left') : (next.y === old.y ? 'bottom' : 'top');
+        const ghost = el('div',{class:'frame-resize-outline','aria-hidden':'true'});
+        ghost.style.setProperty(edge,((old[extent]-next[extent])*gesture.step)+'px');
+        target.append(ghost);
+        gesture.ghosts.push(ghost);
+      }
     });
     const finish = event => {
       if (gesture?.id !== event.pointerId) return;
-      const {ghost,units} = gesture;
+      const {ghosts,units} = gesture;
       gesture = null;
-      ghost.remove();
+      ghosts.forEach(ghost => ghost.remove());
       if (event.type === 'pointerup' && units) apply(side,units);
     };
     for (const event of ['pointerup','pointercancel','lostpointercapture']) handle.addEventListener(event,finish);
@@ -2401,6 +2466,7 @@ function lettura() {
       const index = keys.indexOf(event.key);
       if (index < 0) return;
       event.preventDefault();
+      ignoreClick = false;
       apply(side,(index ? 1 : -1)*direction,side);
     });
     return handle;
@@ -2545,9 +2611,10 @@ function lettura() {
   }
 
   function frontPage(edition, options = {}) {
-    const {onArticle,onSelect,editable=false,insertion,resize,selected,reading=false} = options;
+    const {onArticle,onSelect,onFramePick,editable=false,insertion,resize,selected,reading=false} = options;
     const canMove = editable && edition.layout.length > 1;
-    const plan = new Map(framePlan(edition).map(frame => [frame.id,frame]));
+    const frames = framePlan(edition);
+    const plan = new Map(frames.map(frame => [frame.id,frame]));
     const grid = el('div', {class:'front-grid frame-grid'});
     const front = el('div', {class:['front','frame-cover',edition.model,editable && 'editable-cover',reading && 'reading-cover'].filter(Boolean).join(' '),
       style:'--grid-units:'+unitsFor(edition)+';--grid-rows:'+Math.max(1,...[...plan.values()].map(frame => frame.y+frame.h)),
@@ -2585,7 +2652,19 @@ function lettura() {
         style:frameStyle(frame), 'data-id':item.id, 'data-section':frame.section,
         'data-frame':[frame.x,frame.y,frame.w,frame.h].join(','), 'data-selected':onSelect ? String(item.id === selected) : null,
         'data-insertion':insertion === item.id ? 'true' : null,'data-editor':canMove || insertion ? 'true' : null,
+        tabindex:onFramePick ? '0' : null,'aria-label':onFramePick ? 'Riquadro da selezionare: '+heading : null,
         draggable:canMove ? 'true' : null});
+      if (onFramePick) {
+        cell.addEventListener('click',event => {
+          if (event.target.closest('button,a,input,select,textarea') || window.getSelection()?.isCollapsed === false) return;
+          onFramePick(item.id,false);
+        });
+        cell.addEventListener('keydown',event => {
+          if (event.target !== cell || !['Enter',' '].includes(event.key)) return;
+          event.preventDefault();
+          onFramePick(item.id,true);
+        });
+      }
       const category = !edition.hideCategories && article.categories.length ? article.categories.join(' · ') : '';
       const label = article.fiction ? 'Esempio inventato' : article.type === 'Notizia documentata' ? category : article.type;
       const tag = label && el('div', {class:'kicker'}, label);
@@ -2617,7 +2696,7 @@ function lettura() {
       }
       cell.append(link);
       if (resize && selected === item.id) cell.append(...Object.keys(frameSides).map(side =>
-        resizeHandle(side,frame,cell,(edge,steps,focus) => resize(item.id,edge,steps,focus))));
+        resizeHandle(side,frame,cell,frames,(edge,steps,focus) => resize(item.id,edge,steps,focus))));
       if (canMove) cell.append(el('button',{type:'button',class:'btn tile-grip',draggable:'false','data-move-handle':item.id,
         title:'Sposta il riquadro','aria-label':'Sposta '+heading,'aria-pressed':'false','aria-describedby':'move-layout-help'},
         el('span',{class:'grip-mark','aria-hidden':'true'})));
@@ -3201,7 +3280,7 @@ function lettura() {
   }
   return {$,el,btn,safeURL,external,dateLabel,editionClass,frontPage,fitFront,frontBody,hasRemainingBody,measureCover,fullArticle,printEdition,printLayout,mountReader,photoBounds,photoSize,samePhotoSize,
     articleBody,plainBody,cleanFormatting,blockNode,
-    framePlan,frameChanged,adjustEdge,resizeFrame,normalizeFrame,resetFramePositions,moveIntoArea,frameSides,
+    framePlan,planEdgeResize,resizeFrame,normalizeFrame,resetFramePositions,moveIntoArea,frameSides,
     readingSpreads,layoutModels,editorialSections,columnCount,unitsFor,changeColumns,sectionPlan,columnUnits};
 }
 </script>
@@ -4486,7 +4565,8 @@ function showCompose() {
   const articles = new Map(published.map(item => [item.id,item]));
   const preview = el('div',{class:'composer-preview',id:'compose-preview'});
   const paper = el('div',{class:'compose-paper'});
-  const moveHelp = el('p',{class:'hint',id:'move-layout-help'},'Trascina la maniglia di un articolo sopra un altro. Da tastiera, attiva la maniglia e usa le frecce.');
+  const moveHelp = el('p',{class:'hint',id:'move-layout-help'},
+    'Seleziona un riquadro per mostrare le maniglie. Trascina la maniglia di spostamento su un altro riquadro o usa le frecce. Apri dal titolo i comandi completi.');
   const moveNotice = el('p',{class:'sr',role:'status','aria-live':'polite'});
   const cancelMove = wireCoverMovement(paper,target,moveHelp,moveNotice,(layout,id,focus) => {
     target.layout = layout;
@@ -4563,6 +4643,13 @@ function showCompose() {
     setPane('edit');
     draw('article');
   }
+  function pickFrame(id,withKeyboard) {
+    if (selectedArticle !== id) {
+      selectedArticle = id;
+      draw();
+    }
+    if (withKeyboard) focusAfter('#compose-preview .frame-cell[data-selected=true]');
+  }
   function showReflection() {
     const opened = $('.editorial-reflection',preview)?.open;
     const used = target.layout.map(item => articles.get(item.id)).filter(Boolean);
@@ -4603,12 +4690,12 @@ function showCompose() {
     const height = Math.max(0,...R.framePlan(target).map(item => item.y+item.h));
     const columns = R.columnCount(target);
     const largeCover = target.coverImage && R.photoSize(target.coverImage.photoSize).height > 155;
-    paper.replaceChildren(R.frontPage(target,{editable:true,onSelect:selectArticle,selected:selectedArticle,resize:(id,side,units,focus) =>
+    paper.replaceChildren(R.frontPage(target,{editable:true,onSelect:selectArticle,onFramePick:pickFrame,selected:selectedArticle,resize:(id,side,units,focus) =>
       changeFrame(id,side,units,focus && 'handle-'+focus)}));
     preview.replaceChildren(...[
       el('div',{class:'preview-bar'},el('span',{class:'kicker'},'Anteprima della prima pagina'),
         el('span',{class:'hint'},models[target.model]+' · '+columns+(columns === 1 ? ' colonna' : ' colonne')+' · '+total+' di '+limit+' riquadri')),
-      total > 1 && moveHelp,moveNotice,paper,
+      total > 0 && moveHelp,moveNotice,paper,
       (total >= 6 || wordLoad > 780 || photos >= 4 || height > 29 || largeCover) && el('p',{class:'notice'},'La pagina è densa e potrebbe occupare più fogli in stampa. Riduci le fotografie o le sintesi, prova il modello essenziale o sposta qualche notizia nelle pagine interne.'),
       reflection].filter(Boolean));
   }
@@ -4717,13 +4804,14 @@ function showCompose() {
         panel.addEventListener('toggle',() => {if (panel.open) detailsOpen=key;});
         return panel;
       }
-      const frame = R.framePlan(target).find(item => item.id === current.id);
+      const frames = R.framePlan(target);
+      const frame = frames.find(item => item.id === current.id);
       const labels = {left:['a sinistra','da sinistra'],right:['a destra','da destra'],
         top:['verso l’alto','dall’alto'],bottom:['verso il basso','dal basso']};
       const resizing = Object.entries(labels).flatMap(([side,[outward,inward]]) => [1,-1].map(units => {
         const key='resize-'+side+'-'+units;
         return btn((units>0 ? 'Allarga '+outward : 'Restringi '+inward),() => changeFrame(current.id,side,units,key),'small',
-          {'data-compose':key,disabled:!R.frameChanged(frame,R.adjustEdge(frame,side,units))});
+          {'data-compose':key,disabled:!R.planEdgeResize(frames,current.id,side,units).size});
       }));
       toolsCard.append(
         section('position','Posizione e grandezza',
